@@ -1,0 +1,449 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Jan 30 20:10:13 2026
+# Process ID         : 1350281
+# Current directory  : /home/jrq/systolic_array_edge/os
+# Command line       : vivado -mode batch -source synthesize_os.tcl
+# Log file           : /home/jrq/systolic_array_edge/os/vivado.log
+# Journal file       : /home/jrq/systolic_array_edge/os/vivado.jou
+# Running On         : curry-GTR-Pro
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.3 LTS
+# Processor Detail   : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+# CPU Frequency      : 5117.870 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 130460 MB
+# Swap memory        : 2147 MB
+# Total Virtual      : 132607 MB
+# Available Virtual  : 116091 MB
+#-----------------------------------------------------------
+source synthesize_os.tcl
+# set project_name "systolic_array_os"
+# set top_module "systolic_array_os_4x4"
+# set device_part "xc7a35tcpg236-1"
+# file mkdir reports
+# create_project $project_name ./vivado/$project_name -part $device_part -force
+# set src_dir [file dirname [info script]]
+# add_files -norecurse [file join $src_dir src os_pe.v]
+# add_files -norecurse [file join $src_dir src systolic_array_os_4x4.v]
+# add_files -norecurse [file join $src_dir src matrix_multiplier_top.v]
+# set_property top $top_module [current_fileset]
+# update_compile_order -fileset sources_1
+# synth_design -top $top_module -part $device_part
+Command: synth_design -top systolic_array_os_4x4 -part xc7a35tcpg236-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 1350481
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 1935.914 ; gain = 442.816 ; free physical = 45706 ; free virtual = 109548
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'systolic_array_os_4x4' [/home/jrq/systolic_array_edge/os/src/systolic_array_os_4x4.v:16]
+INFO: [Synth 8-6157] synthesizing module 'os_pe' [/home/jrq/systolic_array_edge/os/src/os_pe.v:15]
+	Parameter DATA_WIDTH bound to: 16 - type: integer 
+	Parameter WEIGHT_WIDTH bound to: 16 - type: integer 
+	Parameter ACC_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'os_pe' (0#1) [/home/jrq/systolic_array_edge/os/src/os_pe.v:15]
+INFO: [Synth 8-6155] done synthesizing module 'systolic_array_os_4x4' (0#1) [/home/jrq/systolic_array_edge/os/src/systolic_array_os_4x4.v:16]
+WARNING: [Synth 8-7129] Port clk_enable in module os_pe is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2008.852 ; gain = 515.754 ; free physical = 45602 ; free virtual = 109446
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2026.664 ; gain = 533.566 ; free physical = 45596 ; free virtual = 109440
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35tcpg236-1
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7a35tcpg236-1
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2034.668 ; gain = 541.570 ; free physical = 45594 ; free virtual = 109438
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2043.574 ; gain = 550.477 ; free physical = 45582 ; free virtual = 109427
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 16    
+	               16 Bit    Registers := 64    
+	                4 Bit    Registers := 1     
+	                1 Bit    Registers := 83    
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 16    
+	   2 Input   16 Bit        Muxes := 64    
+	   2 Input    1 Bit        Muxes := 240   
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+WARNING: [Synth 8-7129] Port clk_enable in module os_pe is either unconnected or has no load
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[0].gen_col[0].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[0].gen_col[1].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[0].gen_col[2].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[0].gen_col[3].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[1].gen_col[0].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[1].gen_col[1].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[1].gen_col[2].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[1].gen_col[3].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[2].gen_col[0].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[2].gen_col[1].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[2].gen_col[2].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[2].gen_col[3].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[3].gen_col[0].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[3].gen_col[1].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[3].gen_col[2].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 1st driver pin 'gen_row[3].gen_col[3].pe_inst/accumulator_valid_reg_reg/Q' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin Q with 2nd driver pin 'GND' [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net Q is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/os/src/os_pe.v:243]
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2193.480 ; gain = 700.383 ; free physical = 45357 ; free virtual = 109206
+---------------------------------------------------------------------------------
+ Sort Area is  signed_mac_result_0 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_10 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_2 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_3 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_4 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_5 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_6 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_7 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_8 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_9 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_a : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_b : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_c : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_d : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_e : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_f : 0 0 : 2041 2041 : Used 1 time 0
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2193.480 ; gain = 700.383 ; free physical = 45356 ; free virtual = 109205
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2193.480 ; gain = 700.383 ; free physical = 45361 ; free virtual = 109211
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|os_pe       | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |BUFG    |     1|
+|2     |DSP48E1 |    16|
+|3     |LUT1    |     2|
+|4     |LUT2    |   716|
+|5     |LUT3    |   512|
+|6     |LUT4    |    57|
+|7     |LUT6    |     1|
+|8     |FDCE    |  1227|
+|9     |IBUF    |    89|
+|10    |OBUF    |   534|
++------+--------+------+
+
+Report Instance Areas: 
++------+----------------------------------+---------+------+
+|      |Instance                          |Module   |Cells |
++------+----------------------------------+---------+------+
+|1     |top                               |         |  3155|
+|2     |  \gen_row[0].gen_col[0].pe_inst  |os_pe    |   188|
+|3     |  \gen_row[0].gen_col[1].pe_inst  |os_pe_0  |   221|
+|4     |  \gen_row[0].gen_col[2].pe_inst  |os_pe_1  |   222|
+|5     |  \gen_row[0].gen_col[3].pe_inst  |os_pe_2  |   180|
+|6     |  \gen_row[1].gen_col[0].pe_inst  |os_pe_3  |   138|
+|7     |  \gen_row[1].gen_col[1].pe_inst  |os_pe_4  |   139|
+|8     |  \gen_row[1].gen_col[2].pe_inst  |os_pe_5  |   138|
+|9     |  \gen_row[1].gen_col[3].pe_inst  |os_pe_6  |   139|
+|10    |  \gen_row[2].gen_col[0].pe_inst  |os_pe_7  |   140|
+|11    |  \gen_row[2].gen_col[1].pe_inst  |os_pe_8  |   140|
+|12    |  \gen_row[2].gen_col[2].pe_inst  |os_pe_9  |   138|
+|13    |  \gen_row[2].gen_col[3].pe_inst  |os_pe_10 |   141|
+|14    |  \gen_row[3].gen_col[0].pe_inst  |os_pe_11 |   178|
+|15    |  \gen_row[3].gen_col[1].pe_inst  |os_pe_12 |   161|
+|16    |  \gen_row[3].gen_col[2].pe_inst  |os_pe_13 |   157|
+|17    |  \gen_row[3].gen_col[3].pe_inst  |os_pe_14 |   107|
++------+----------------------------------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 48 critical warnings and 3 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.293 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+Synthesis Optimization Complete : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2317.301 ; gain = 824.195 ; free physical = 45548 ; free virtual = 109398
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2332.168 ; gain = 0.000 ; free physical = 45678 ; free virtual = 109528
+INFO: [Netlist 29-17] Analyzing 16 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2481.789 ; gain = 0.000 ; free physical = 45602 ; free virtual = 109452
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 9fd88ee0
+INFO: [Common 17-83] Releasing license: Synthesis
+16 Infos, 3 Warnings, 48 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 2481.789 ; gain = 991.660 ; free physical = 45602 ; free virtual = 109452
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1699.357; main = 1699.357; forked = 0.000
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 2481.793; main = 2481.793; forked = 0.000
+# set report_dir [file join $src_dir reports]
+# report_timing_summary -file [file join $report_dir timing_report.txt] -max_paths 10
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+# report_utilization -file [file join $report_dir utilization_report.txt]
+# report_power -file [file join $report_dir power_report.txt]
+Command: report_power -file ./reports/power_report.txt
+WARNING: [Power 33-232] No user defined clocks were found in the design! Power estimation will be inaccurate until this is corrected.
+Resolution: Please specify clocks using create_clock/create_generated_clock for sequential elements. For pure combinatorial circuits, please specify a virtual clock, otherwise the vectorless estimation might be inaccurate
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+0 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+# set vivado_dir [file join $src_dir vivado]
+# write_checkpoint -force [file join $vivado_dir ${project_name}_syn.dcp]
+Write ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2957.832 ; gain = 0.000 ; free physical = 45423 ; free virtual = 109273
+INFO: [Common 17-1381] The checkpoint '/home/jrq/systolic_array_edge/os/vivado/systolic_array_os_syn.dcp' has been generated.
+# write_verilog -force [file join $vivado_dir ${project_name}_syn.v]
+# write_edif -force [file join $vivado_dir ${project_name}_syn.edf]
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2957.832 ; gain = 0.000 ; free physical = 45349 ; free virtual = 109199
+# close_project
+# puts "=================================================="
+==================================================
+# puts "OS 架构综合完成！"
+OS 架构综合完成！
+# puts "=================================================="
+==================================================
+# puts "报告文件："
+报告文件：
+# puts "  - 时序报告: ../reports/timing_report.txt"
+  - 时序报告: ../reports/timing_report.txt
+# puts "  - 资源报告: ../reports/utilization_report.txt"
+  - 资源报告: ../reports/utilization_report.txt
+# puts "  - 功耗报告: ../reports/power_report.txt"
+  - 功耗报告: ../reports/power_report.txt
+# puts "综合网表："
+综合网表：
+# puts "  - Verilog:  ../vivado/${project_name}_syn.v"
+  - Verilog:  ../vivado/systolic_array_os_syn.v
+# puts "  - Checkpoint: ../vivado/${project_name}_syn.dcp"
+  - Checkpoint: ../vivado/systolic_array_os_syn.dcp
+# puts "=================================================="
+==================================================
+INFO: [Common 17-206] Exiting Vivado at Fri Jan 30 20:10:31 2026...

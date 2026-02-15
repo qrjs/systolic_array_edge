@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../app/downloads"
+		},
+		{
+			"path": "../../../../app"
+		}
+	],
+	"settings": {}
+}

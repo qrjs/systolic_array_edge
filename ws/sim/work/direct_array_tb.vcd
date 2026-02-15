@@ -1,0 +1,4079 @@
+$date
+	Fri Jan 30 10:38:20 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module direct_array_tb $end
+$var wire 1 ! weight_ready $end
+$var wire 4 " output_valid [3:0] $end
+$var wire 128 # output_data [127:0] $end
+$var wire 1 $ input_ready $end
+$var wire 1 % busy $end
+$var parameter 32 & ACC_WIDTH $end
+$var parameter 32 ' CLK_PERIOD $end
+$var parameter 32 ( DATA_WIDTH $end
+$var parameter 32 ) WEIGHT_WIDTH $end
+$var reg 1 * clk $end
+$var reg 1 + clk_enable $end
+$var reg 1 , flush $end
+$var reg 16 - input_data [15:0] $end
+$var reg 1 . input_valid $end
+$var reg 4 / output_ready [3:0] $end
+$var reg 1 0 rst_n $end
+$var reg 16 1 weight_in [15:0] $end
+$var reg 1 2 weight_load $end
+$var reg 1 3 weight_valid $end
+$var integer 32 4 i [31:0] $end
+$var integer 32 5 j [31:0] $end
+$scope module dut $end
+$var wire 1 % busy $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 6 input_data [15:0] $end
+$var wire 1 $ input_ready $end
+$var wire 1 . input_valid $end
+$var wire 4 7 output_ready [3:0] $end
+$var wire 16 8 partial_ready_mesh [15:0] $end
+$var wire 1 0 rst_n $end
+$var wire 16 9 weight_in [15:0] $end
+$var wire 1 2 weight_load $end
+$var wire 1 3 weight_valid $end
+$var wire 16 : weight_valid_mesh [15:0] $end
+$var wire 16 ; weight_ready_mesh [15:0] $end
+$var wire 1 ! weight_ready $end
+$var wire 256 < weight_mesh [255:0] $end
+$var wire 16 = weight_load_mesh [15:0] $end
+$var wire 16 > pe_busy_mesh [15:0] $end
+$var wire 16 ? partial_valid_mesh [15:0] $end
+$var wire 16 @ partial_out_valid_mesh [15:0] $end
+$var wire 16 A partial_out_ready_mesh [15:0] $end
+$var wire 512 B partial_out_mesh [511:0] $end
+$var wire 512 C partial_mesh [511:0] $end
+$var wire 4 D output_valid [3:0] $end
+$var wire 128 E output_data [127:0] $end
+$var wire 16 F input_valid_mesh [15:0] $end
+$var wire 16 G input_ready_mesh [15:0] $end
+$var wire 16 H input_out_valid_mesh [15:0] $end
+$var wire 16 I input_out_ready_mesh [15:0] $end
+$var wire 256 J input_out_mesh [255:0] $end
+$var wire 256 K input_mesh [255:0] $end
+$var parameter 32 L ACC_WIDTH $end
+$var parameter 32 M ARRAY_SIZE $end
+$var parameter 32 N DATA_WIDTH $end
+$var parameter 32 O WEIGHT_WIDTH $end
+$var reg 1 P array_busy_reg $end
+$scope begin gen_last_col_ready[0] $end
+$var parameter 2 Q r $end
+$upscope $end
+$scope begin gen_last_col_ready[1] $end
+$var parameter 2 R r $end
+$upscope $end
+$scope begin gen_last_col_ready[2] $end
+$var parameter 3 S r $end
+$upscope $end
+$scope begin gen_last_col_ready[3] $end
+$var parameter 3 T r $end
+$upscope $end
+$scope begin gen_output[0] $end
+$var parameter 2 U col $end
+$upscope $end
+$scope begin gen_output[1] $end
+$var parameter 2 V col $end
+$upscope $end
+$scope begin gen_output[2] $end
+$var parameter 3 W col $end
+$upscope $end
+$scope begin gen_output[3] $end
+$var parameter 3 X col $end
+$upscope $end
+$scope begin gen_row[0] $end
+$var parameter 2 Y row $end
+$scope begin gen_col[0] $end
+$var parameter 2 Z col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 [ can_accept_input $end
+$var wire 1 \ can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 ] input_data [15:0] $end
+$var wire 1 ^ input_out_ready $end
+$var wire 1 _ input_ready $end
+$var wire 1 ` input_valid $end
+$var wire 32 a mac_result [31:0] $end
+$var wire 32 b partial_in [31:0] $end
+$var wire 1 c partial_in_ready $end
+$var wire 1 d partial_in_valid $end
+$var wire 1 e partial_out_ready $end
+$var wire 1 f pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 g weight_in [15:0] $end
+$var wire 1 h weight_load $end
+$var wire 1 i weight_ready $end
+$var wire 1 j weight_valid $end
+$var wire 32 k signed_mac_result [31:0] $end
+$var wire 32 l multiplier_out [31:0] $end
+$var wire 1 m input_out_valid $end
+$var wire 16 n input_out [15:0] $end
+$var parameter 32 o ACC_WIDTH $end
+$var parameter 32 p DATA_WIDTH $end
+$var parameter 32 q WEIGHT_WIDTH $end
+$var reg 32 r accumulator [31:0] $end
+$var reg 1 s accumulator_valid $end
+$var reg 16 t input_out_reg [15:0] $end
+$var reg 1 m input_out_valid_reg $end
+$var reg 16 u input_reg [15:0] $end
+$var reg 1 v input_valid_reg $end
+$var reg 32 w partial_out [31:0] $end
+$var reg 32 x partial_out_reg [31:0] $end
+$var reg 1 y partial_out_valid $end
+$var reg 32 z partial_reg [31:0] $end
+$var reg 1 { partial_valid_reg $end
+$var reg 1 | processing $end
+$var reg 1 } stall $end
+$var reg 16 ~ stored_weight [15:0] $end
+$var reg 1 !" weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[1] $end
+$var parameter 2 "" col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 #" can_accept_input $end
+$var wire 1 $" can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 %" input_data [15:0] $end
+$var wire 1 &" input_out_ready $end
+$var wire 1 '" input_ready $end
+$var wire 1 (" input_valid $end
+$var wire 32 )" mac_result [31:0] $end
+$var wire 32 *" partial_in [31:0] $end
+$var wire 1 +" partial_in_ready $end
+$var wire 1 ," partial_in_valid $end
+$var wire 1 -" partial_out_ready $end
+$var wire 1 ." pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 /" weight_in [15:0] $end
+$var wire 1 0" weight_load $end
+$var wire 1 1" weight_ready $end
+$var wire 1 2" weight_valid $end
+$var wire 32 3" signed_mac_result [31:0] $end
+$var wire 32 4" multiplier_out [31:0] $end
+$var wire 1 5" input_out_valid $end
+$var wire 16 6" input_out [15:0] $end
+$var parameter 32 7" ACC_WIDTH $end
+$var parameter 32 8" DATA_WIDTH $end
+$var parameter 32 9" WEIGHT_WIDTH $end
+$var reg 32 :" accumulator [31:0] $end
+$var reg 1 ;" accumulator_valid $end
+$var reg 16 <" input_out_reg [15:0] $end
+$var reg 1 5" input_out_valid_reg $end
+$var reg 16 =" input_reg [15:0] $end
+$var reg 1 >" input_valid_reg $end
+$var reg 32 ?" partial_out [31:0] $end
+$var reg 32 @" partial_out_reg [31:0] $end
+$var reg 1 A" partial_out_valid $end
+$var reg 32 B" partial_reg [31:0] $end
+$var reg 1 C" partial_valid_reg $end
+$var reg 1 D" processing $end
+$var reg 1 E" stall $end
+$var reg 16 F" stored_weight [15:0] $end
+$var reg 1 G" weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[2] $end
+$var parameter 3 H" col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 I" can_accept_input $end
+$var wire 1 J" can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 K" input_data [15:0] $end
+$var wire 1 L" input_out_ready $end
+$var wire 1 M" input_ready $end
+$var wire 1 N" input_valid $end
+$var wire 32 O" mac_result [31:0] $end
+$var wire 32 P" partial_in [31:0] $end
+$var wire 1 Q" partial_in_ready $end
+$var wire 1 R" partial_in_valid $end
+$var wire 1 S" partial_out_ready $end
+$var wire 1 T" pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 U" weight_in [15:0] $end
+$var wire 1 V" weight_load $end
+$var wire 1 W" weight_ready $end
+$var wire 1 X" weight_valid $end
+$var wire 32 Y" signed_mac_result [31:0] $end
+$var wire 32 Z" multiplier_out [31:0] $end
+$var wire 1 [" input_out_valid $end
+$var wire 16 \" input_out [15:0] $end
+$var parameter 32 ]" ACC_WIDTH $end
+$var parameter 32 ^" DATA_WIDTH $end
+$var parameter 32 _" WEIGHT_WIDTH $end
+$var reg 32 `" accumulator [31:0] $end
+$var reg 1 a" accumulator_valid $end
+$var reg 16 b" input_out_reg [15:0] $end
+$var reg 1 [" input_out_valid_reg $end
+$var reg 16 c" input_reg [15:0] $end
+$var reg 1 d" input_valid_reg $end
+$var reg 32 e" partial_out [31:0] $end
+$var reg 32 f" partial_out_reg [31:0] $end
+$var reg 1 g" partial_out_valid $end
+$var reg 32 h" partial_reg [31:0] $end
+$var reg 1 i" partial_valid_reg $end
+$var reg 1 j" processing $end
+$var reg 1 k" stall $end
+$var reg 16 l" stored_weight [15:0] $end
+$var reg 1 m" weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[3] $end
+$var parameter 3 n" col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 o" can_accept_input $end
+$var wire 1 p" can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 q" input_data [15:0] $end
+$var wire 1 r" input_out_ready $end
+$var wire 1 s" input_ready $end
+$var wire 1 t" input_valid $end
+$var wire 32 u" mac_result [31:0] $end
+$var wire 32 v" partial_in [31:0] $end
+$var wire 1 w" partial_in_ready $end
+$var wire 1 x" partial_in_valid $end
+$var wire 1 y" partial_out_ready $end
+$var wire 1 z" pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 {" weight_in [15:0] $end
+$var wire 1 |" weight_load $end
+$var wire 1 }" weight_ready $end
+$var wire 1 ~" weight_valid $end
+$var wire 32 !# signed_mac_result [31:0] $end
+$var wire 32 "# multiplier_out [31:0] $end
+$var wire 1 ## input_out_valid $end
+$var wire 16 $# input_out [15:0] $end
+$var parameter 32 %# ACC_WIDTH $end
+$var parameter 32 &# DATA_WIDTH $end
+$var parameter 32 '# WEIGHT_WIDTH $end
+$var reg 32 (# accumulator [31:0] $end
+$var reg 1 )# accumulator_valid $end
+$var reg 16 *# input_out_reg [15:0] $end
+$var reg 1 ## input_out_valid_reg $end
+$var reg 16 +# input_reg [15:0] $end
+$var reg 1 ,# input_valid_reg $end
+$var reg 32 -# partial_out [31:0] $end
+$var reg 32 .# partial_out_reg [31:0] $end
+$var reg 1 /# partial_out_valid $end
+$var reg 32 0# partial_reg [31:0] $end
+$var reg 1 1# partial_valid_reg $end
+$var reg 1 2# processing $end
+$var reg 1 3# stall $end
+$var reg 16 4# stored_weight [15:0] $end
+$var reg 1 5# weight_valid_reg $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope begin gen_row[1] $end
+$var parameter 2 6# row $end
+$scope begin gen_col[0] $end
+$var parameter 2 7# col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 8# can_accept_input $end
+$var wire 1 9# can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 :# input_data [15:0] $end
+$var wire 1 ;# input_out_ready $end
+$var wire 1 <# input_ready $end
+$var wire 1 =# input_valid $end
+$var wire 32 ># mac_result [31:0] $end
+$var wire 32 ?# partial_in [31:0] $end
+$var wire 1 @# partial_in_ready $end
+$var wire 1 A# partial_in_valid $end
+$var wire 1 B# partial_out_ready $end
+$var wire 1 C# pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 D# weight_in [15:0] $end
+$var wire 1 E# weight_load $end
+$var wire 1 F# weight_ready $end
+$var wire 1 G# weight_valid $end
+$var wire 32 H# signed_mac_result [31:0] $end
+$var wire 32 I# multiplier_out [31:0] $end
+$var wire 1 J# input_out_valid $end
+$var wire 16 K# input_out [15:0] $end
+$var parameter 32 L# ACC_WIDTH $end
+$var parameter 32 M# DATA_WIDTH $end
+$var parameter 32 N# WEIGHT_WIDTH $end
+$var reg 32 O# accumulator [31:0] $end
+$var reg 1 P# accumulator_valid $end
+$var reg 16 Q# input_out_reg [15:0] $end
+$var reg 1 J# input_out_valid_reg $end
+$var reg 16 R# input_reg [15:0] $end
+$var reg 1 S# input_valid_reg $end
+$var reg 32 T# partial_out [31:0] $end
+$var reg 32 U# partial_out_reg [31:0] $end
+$var reg 1 V# partial_out_valid $end
+$var reg 32 W# partial_reg [31:0] $end
+$var reg 1 X# partial_valid_reg $end
+$var reg 1 Y# processing $end
+$var reg 1 Z# stall $end
+$var reg 16 [# stored_weight [15:0] $end
+$var reg 1 \# weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[1] $end
+$var parameter 2 ]# col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 ^# can_accept_input $end
+$var wire 1 _# can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 `# input_data [15:0] $end
+$var wire 1 a# input_out_ready $end
+$var wire 1 b# input_ready $end
+$var wire 1 c# input_valid $end
+$var wire 32 d# mac_result [31:0] $end
+$var wire 32 e# partial_in [31:0] $end
+$var wire 1 f# partial_in_ready $end
+$var wire 1 g# partial_in_valid $end
+$var wire 1 h# partial_out_ready $end
+$var wire 1 i# pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 j# weight_in [15:0] $end
+$var wire 1 k# weight_load $end
+$var wire 1 l# weight_ready $end
+$var wire 1 m# weight_valid $end
+$var wire 32 n# signed_mac_result [31:0] $end
+$var wire 32 o# multiplier_out [31:0] $end
+$var wire 1 p# input_out_valid $end
+$var wire 16 q# input_out [15:0] $end
+$var parameter 32 r# ACC_WIDTH $end
+$var parameter 32 s# DATA_WIDTH $end
+$var parameter 32 t# WEIGHT_WIDTH $end
+$var reg 32 u# accumulator [31:0] $end
+$var reg 1 v# accumulator_valid $end
+$var reg 16 w# input_out_reg [15:0] $end
+$var reg 1 p# input_out_valid_reg $end
+$var reg 16 x# input_reg [15:0] $end
+$var reg 1 y# input_valid_reg $end
+$var reg 32 z# partial_out [31:0] $end
+$var reg 32 {# partial_out_reg [31:0] $end
+$var reg 1 |# partial_out_valid $end
+$var reg 32 }# partial_reg [31:0] $end
+$var reg 1 ~# partial_valid_reg $end
+$var reg 1 !$ processing $end
+$var reg 1 "$ stall $end
+$var reg 16 #$ stored_weight [15:0] $end
+$var reg 1 $$ weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[2] $end
+$var parameter 3 %$ col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 &$ can_accept_input $end
+$var wire 1 '$ can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 ($ input_data [15:0] $end
+$var wire 1 )$ input_out_ready $end
+$var wire 1 *$ input_ready $end
+$var wire 1 +$ input_valid $end
+$var wire 32 ,$ mac_result [31:0] $end
+$var wire 32 -$ partial_in [31:0] $end
+$var wire 1 .$ partial_in_ready $end
+$var wire 1 /$ partial_in_valid $end
+$var wire 1 0$ partial_out_ready $end
+$var wire 1 1$ pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 2$ weight_in [15:0] $end
+$var wire 1 3$ weight_load $end
+$var wire 1 4$ weight_ready $end
+$var wire 1 5$ weight_valid $end
+$var wire 32 6$ signed_mac_result [31:0] $end
+$var wire 32 7$ multiplier_out [31:0] $end
+$var wire 1 8$ input_out_valid $end
+$var wire 16 9$ input_out [15:0] $end
+$var parameter 32 :$ ACC_WIDTH $end
+$var parameter 32 ;$ DATA_WIDTH $end
+$var parameter 32 <$ WEIGHT_WIDTH $end
+$var reg 32 =$ accumulator [31:0] $end
+$var reg 1 >$ accumulator_valid $end
+$var reg 16 ?$ input_out_reg [15:0] $end
+$var reg 1 8$ input_out_valid_reg $end
+$var reg 16 @$ input_reg [15:0] $end
+$var reg 1 A$ input_valid_reg $end
+$var reg 32 B$ partial_out [31:0] $end
+$var reg 32 C$ partial_out_reg [31:0] $end
+$var reg 1 D$ partial_out_valid $end
+$var reg 32 E$ partial_reg [31:0] $end
+$var reg 1 F$ partial_valid_reg $end
+$var reg 1 G$ processing $end
+$var reg 1 H$ stall $end
+$var reg 16 I$ stored_weight [15:0] $end
+$var reg 1 J$ weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[3] $end
+$var parameter 3 K$ col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 L$ can_accept_input $end
+$var wire 1 M$ can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 N$ input_data [15:0] $end
+$var wire 1 O$ input_out_ready $end
+$var wire 1 P$ input_ready $end
+$var wire 1 Q$ input_valid $end
+$var wire 32 R$ mac_result [31:0] $end
+$var wire 32 S$ partial_in [31:0] $end
+$var wire 1 T$ partial_in_ready $end
+$var wire 1 U$ partial_in_valid $end
+$var wire 1 V$ partial_out_ready $end
+$var wire 1 W$ pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 X$ weight_in [15:0] $end
+$var wire 1 Y$ weight_load $end
+$var wire 1 Z$ weight_ready $end
+$var wire 1 [$ weight_valid $end
+$var wire 32 \$ signed_mac_result [31:0] $end
+$var wire 32 ]$ multiplier_out [31:0] $end
+$var wire 1 ^$ input_out_valid $end
+$var wire 16 _$ input_out [15:0] $end
+$var parameter 32 `$ ACC_WIDTH $end
+$var parameter 32 a$ DATA_WIDTH $end
+$var parameter 32 b$ WEIGHT_WIDTH $end
+$var reg 32 c$ accumulator [31:0] $end
+$var reg 1 d$ accumulator_valid $end
+$var reg 16 e$ input_out_reg [15:0] $end
+$var reg 1 ^$ input_out_valid_reg $end
+$var reg 16 f$ input_reg [15:0] $end
+$var reg 1 g$ input_valid_reg $end
+$var reg 32 h$ partial_out [31:0] $end
+$var reg 32 i$ partial_out_reg [31:0] $end
+$var reg 1 j$ partial_out_valid $end
+$var reg 32 k$ partial_reg [31:0] $end
+$var reg 1 l$ partial_valid_reg $end
+$var reg 1 m$ processing $end
+$var reg 1 n$ stall $end
+$var reg 16 o$ stored_weight [15:0] $end
+$var reg 1 p$ weight_valid_reg $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope begin gen_row[2] $end
+$var parameter 3 q$ row $end
+$scope begin gen_col[0] $end
+$var parameter 2 r$ col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 s$ can_accept_input $end
+$var wire 1 t$ can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 u$ input_data [15:0] $end
+$var wire 1 v$ input_out_ready $end
+$var wire 1 w$ input_ready $end
+$var wire 1 x$ input_valid $end
+$var wire 32 y$ mac_result [31:0] $end
+$var wire 32 z$ partial_in [31:0] $end
+$var wire 1 {$ partial_in_ready $end
+$var wire 1 |$ partial_in_valid $end
+$var wire 1 }$ partial_out_ready $end
+$var wire 1 ~$ pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 !% weight_in [15:0] $end
+$var wire 1 "% weight_load $end
+$var wire 1 #% weight_ready $end
+$var wire 1 $% weight_valid $end
+$var wire 32 %% signed_mac_result [31:0] $end
+$var wire 32 &% multiplier_out [31:0] $end
+$var wire 1 '% input_out_valid $end
+$var wire 16 (% input_out [15:0] $end
+$var parameter 32 )% ACC_WIDTH $end
+$var parameter 32 *% DATA_WIDTH $end
+$var parameter 32 +% WEIGHT_WIDTH $end
+$var reg 32 ,% accumulator [31:0] $end
+$var reg 1 -% accumulator_valid $end
+$var reg 16 .% input_out_reg [15:0] $end
+$var reg 1 '% input_out_valid_reg $end
+$var reg 16 /% input_reg [15:0] $end
+$var reg 1 0% input_valid_reg $end
+$var reg 32 1% partial_out [31:0] $end
+$var reg 32 2% partial_out_reg [31:0] $end
+$var reg 1 3% partial_out_valid $end
+$var reg 32 4% partial_reg [31:0] $end
+$var reg 1 5% partial_valid_reg $end
+$var reg 1 6% processing $end
+$var reg 1 7% stall $end
+$var reg 16 8% stored_weight [15:0] $end
+$var reg 1 9% weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[1] $end
+$var parameter 2 :% col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 ;% can_accept_input $end
+$var wire 1 <% can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 =% input_data [15:0] $end
+$var wire 1 >% input_out_ready $end
+$var wire 1 ?% input_ready $end
+$var wire 1 @% input_valid $end
+$var wire 32 A% mac_result [31:0] $end
+$var wire 32 B% partial_in [31:0] $end
+$var wire 1 C% partial_in_ready $end
+$var wire 1 D% partial_in_valid $end
+$var wire 1 E% partial_out_ready $end
+$var wire 1 F% pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 G% weight_in [15:0] $end
+$var wire 1 H% weight_load $end
+$var wire 1 I% weight_ready $end
+$var wire 1 J% weight_valid $end
+$var wire 32 K% signed_mac_result [31:0] $end
+$var wire 32 L% multiplier_out [31:0] $end
+$var wire 1 M% input_out_valid $end
+$var wire 16 N% input_out [15:0] $end
+$var parameter 32 O% ACC_WIDTH $end
+$var parameter 32 P% DATA_WIDTH $end
+$var parameter 32 Q% WEIGHT_WIDTH $end
+$var reg 32 R% accumulator [31:0] $end
+$var reg 1 S% accumulator_valid $end
+$var reg 16 T% input_out_reg [15:0] $end
+$var reg 1 M% input_out_valid_reg $end
+$var reg 16 U% input_reg [15:0] $end
+$var reg 1 V% input_valid_reg $end
+$var reg 32 W% partial_out [31:0] $end
+$var reg 32 X% partial_out_reg [31:0] $end
+$var reg 1 Y% partial_out_valid $end
+$var reg 32 Z% partial_reg [31:0] $end
+$var reg 1 [% partial_valid_reg $end
+$var reg 1 \% processing $end
+$var reg 1 ]% stall $end
+$var reg 16 ^% stored_weight [15:0] $end
+$var reg 1 _% weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[2] $end
+$var parameter 3 `% col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 a% can_accept_input $end
+$var wire 1 b% can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 c% input_data [15:0] $end
+$var wire 1 d% input_out_ready $end
+$var wire 1 e% input_ready $end
+$var wire 1 f% input_valid $end
+$var wire 32 g% mac_result [31:0] $end
+$var wire 32 h% partial_in [31:0] $end
+$var wire 1 i% partial_in_ready $end
+$var wire 1 j% partial_in_valid $end
+$var wire 1 k% partial_out_ready $end
+$var wire 1 l% pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 m% weight_in [15:0] $end
+$var wire 1 n% weight_load $end
+$var wire 1 o% weight_ready $end
+$var wire 1 p% weight_valid $end
+$var wire 32 q% signed_mac_result [31:0] $end
+$var wire 32 r% multiplier_out [31:0] $end
+$var wire 1 s% input_out_valid $end
+$var wire 16 t% input_out [15:0] $end
+$var parameter 32 u% ACC_WIDTH $end
+$var parameter 32 v% DATA_WIDTH $end
+$var parameter 32 w% WEIGHT_WIDTH $end
+$var reg 32 x% accumulator [31:0] $end
+$var reg 1 y% accumulator_valid $end
+$var reg 16 z% input_out_reg [15:0] $end
+$var reg 1 s% input_out_valid_reg $end
+$var reg 16 {% input_reg [15:0] $end
+$var reg 1 |% input_valid_reg $end
+$var reg 32 }% partial_out [31:0] $end
+$var reg 32 ~% partial_out_reg [31:0] $end
+$var reg 1 !& partial_out_valid $end
+$var reg 32 "& partial_reg [31:0] $end
+$var reg 1 #& partial_valid_reg $end
+$var reg 1 $& processing $end
+$var reg 1 %& stall $end
+$var reg 16 && stored_weight [15:0] $end
+$var reg 1 '& weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[3] $end
+$var parameter 3 (& col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 )& can_accept_input $end
+$var wire 1 *& can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 +& input_data [15:0] $end
+$var wire 1 ,& input_out_ready $end
+$var wire 1 -& input_ready $end
+$var wire 1 .& input_valid $end
+$var wire 32 /& mac_result [31:0] $end
+$var wire 32 0& partial_in [31:0] $end
+$var wire 1 1& partial_in_ready $end
+$var wire 1 2& partial_in_valid $end
+$var wire 1 3& partial_out_ready $end
+$var wire 1 4& pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 5& weight_in [15:0] $end
+$var wire 1 6& weight_load $end
+$var wire 1 7& weight_ready $end
+$var wire 1 8& weight_valid $end
+$var wire 32 9& signed_mac_result [31:0] $end
+$var wire 32 :& multiplier_out [31:0] $end
+$var wire 1 ;& input_out_valid $end
+$var wire 16 <& input_out [15:0] $end
+$var parameter 32 =& ACC_WIDTH $end
+$var parameter 32 >& DATA_WIDTH $end
+$var parameter 32 ?& WEIGHT_WIDTH $end
+$var reg 32 @& accumulator [31:0] $end
+$var reg 1 A& accumulator_valid $end
+$var reg 16 B& input_out_reg [15:0] $end
+$var reg 1 ;& input_out_valid_reg $end
+$var reg 16 C& input_reg [15:0] $end
+$var reg 1 D& input_valid_reg $end
+$var reg 32 E& partial_out [31:0] $end
+$var reg 32 F& partial_out_reg [31:0] $end
+$var reg 1 G& partial_out_valid $end
+$var reg 32 H& partial_reg [31:0] $end
+$var reg 1 I& partial_valid_reg $end
+$var reg 1 J& processing $end
+$var reg 1 K& stall $end
+$var reg 16 L& stored_weight [15:0] $end
+$var reg 1 M& weight_valid_reg $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope begin gen_row[3] $end
+$var parameter 3 N& row $end
+$scope begin gen_col[0] $end
+$var parameter 2 O& col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 P& can_accept_input $end
+$var wire 1 Q& can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 R& input_data [15:0] $end
+$var wire 1 S& input_out_ready $end
+$var wire 1 T& input_ready $end
+$var wire 1 U& input_valid $end
+$var wire 32 V& mac_result [31:0] $end
+$var wire 32 W& partial_in [31:0] $end
+$var wire 1 X& partial_in_ready $end
+$var wire 1 Y& partial_in_valid $end
+$var wire 1 Z& partial_out_ready $end
+$var wire 1 [& pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 \& weight_in [15:0] $end
+$var wire 1 ]& weight_load $end
+$var wire 1 ^& weight_ready $end
+$var wire 1 _& weight_valid $end
+$var wire 32 `& signed_mac_result [31:0] $end
+$var wire 32 a& multiplier_out [31:0] $end
+$var wire 1 b& input_out_valid $end
+$var wire 16 c& input_out [15:0] $end
+$var parameter 32 d& ACC_WIDTH $end
+$var parameter 32 e& DATA_WIDTH $end
+$var parameter 32 f& WEIGHT_WIDTH $end
+$var reg 32 g& accumulator [31:0] $end
+$var reg 1 h& accumulator_valid $end
+$var reg 16 i& input_out_reg [15:0] $end
+$var reg 1 b& input_out_valid_reg $end
+$var reg 16 j& input_reg [15:0] $end
+$var reg 1 k& input_valid_reg $end
+$var reg 32 l& partial_out [31:0] $end
+$var reg 32 m& partial_out_reg [31:0] $end
+$var reg 1 n& partial_out_valid $end
+$var reg 32 o& partial_reg [31:0] $end
+$var reg 1 p& partial_valid_reg $end
+$var reg 1 q& processing $end
+$var reg 1 r& stall $end
+$var reg 16 s& stored_weight [15:0] $end
+$var reg 1 t& weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[1] $end
+$var parameter 2 u& col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 v& can_accept_input $end
+$var wire 1 w& can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 x& input_data [15:0] $end
+$var wire 1 y& input_out_ready $end
+$var wire 1 z& input_ready $end
+$var wire 1 {& input_valid $end
+$var wire 32 |& mac_result [31:0] $end
+$var wire 32 }& partial_in [31:0] $end
+$var wire 1 ~& partial_in_ready $end
+$var wire 1 !' partial_in_valid $end
+$var wire 1 "' partial_out_ready $end
+$var wire 1 #' pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 $' weight_in [15:0] $end
+$var wire 1 %' weight_load $end
+$var wire 1 &' weight_ready $end
+$var wire 1 '' weight_valid $end
+$var wire 32 (' signed_mac_result [31:0] $end
+$var wire 32 )' multiplier_out [31:0] $end
+$var wire 1 *' input_out_valid $end
+$var wire 16 +' input_out [15:0] $end
+$var parameter 32 ,' ACC_WIDTH $end
+$var parameter 32 -' DATA_WIDTH $end
+$var parameter 32 .' WEIGHT_WIDTH $end
+$var reg 32 /' accumulator [31:0] $end
+$var reg 1 0' accumulator_valid $end
+$var reg 16 1' input_out_reg [15:0] $end
+$var reg 1 *' input_out_valid_reg $end
+$var reg 16 2' input_reg [15:0] $end
+$var reg 1 3' input_valid_reg $end
+$var reg 32 4' partial_out [31:0] $end
+$var reg 32 5' partial_out_reg [31:0] $end
+$var reg 1 6' partial_out_valid $end
+$var reg 32 7' partial_reg [31:0] $end
+$var reg 1 8' partial_valid_reg $end
+$var reg 1 9' processing $end
+$var reg 1 :' stall $end
+$var reg 16 ;' stored_weight [15:0] $end
+$var reg 1 <' weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[2] $end
+$var parameter 3 =' col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 >' can_accept_input $end
+$var wire 1 ?' can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 @' input_data [15:0] $end
+$var wire 1 A' input_out_ready $end
+$var wire 1 B' input_ready $end
+$var wire 1 C' input_valid $end
+$var wire 32 D' mac_result [31:0] $end
+$var wire 32 E' partial_in [31:0] $end
+$var wire 1 F' partial_in_ready $end
+$var wire 1 G' partial_in_valid $end
+$var wire 1 H' partial_out_ready $end
+$var wire 1 I' pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 J' weight_in [15:0] $end
+$var wire 1 K' weight_load $end
+$var wire 1 L' weight_ready $end
+$var wire 1 M' weight_valid $end
+$var wire 32 N' signed_mac_result [31:0] $end
+$var wire 32 O' multiplier_out [31:0] $end
+$var wire 1 P' input_out_valid $end
+$var wire 16 Q' input_out [15:0] $end
+$var parameter 32 R' ACC_WIDTH $end
+$var parameter 32 S' DATA_WIDTH $end
+$var parameter 32 T' WEIGHT_WIDTH $end
+$var reg 32 U' accumulator [31:0] $end
+$var reg 1 V' accumulator_valid $end
+$var reg 16 W' input_out_reg [15:0] $end
+$var reg 1 P' input_out_valid_reg $end
+$var reg 16 X' input_reg [15:0] $end
+$var reg 1 Y' input_valid_reg $end
+$var reg 32 Z' partial_out [31:0] $end
+$var reg 32 [' partial_out_reg [31:0] $end
+$var reg 1 \' partial_out_valid $end
+$var reg 32 ]' partial_reg [31:0] $end
+$var reg 1 ^' partial_valid_reg $end
+$var reg 1 _' processing $end
+$var reg 1 `' stall $end
+$var reg 16 a' stored_weight [15:0] $end
+$var reg 1 b' weight_valid_reg $end
+$upscope $end
+$upscope $end
+$scope begin gen_col[3] $end
+$var parameter 3 c' col $end
+$scope begin genblk1 $end
+$upscope $end
+$scope begin genblk2 $end
+$upscope $end
+$scope module pe_inst $end
+$var wire 1 d' can_accept_input $end
+$var wire 1 e' can_accept_partial $end
+$var wire 1 * clk $end
+$var wire 1 + clk_enable $end
+$var wire 1 , flush $end
+$var wire 16 f' input_data [15:0] $end
+$var wire 1 g' input_out_ready $end
+$var wire 1 h' input_ready $end
+$var wire 1 i' input_valid $end
+$var wire 32 j' mac_result [31:0] $end
+$var wire 32 k' partial_in [31:0] $end
+$var wire 1 l' partial_in_ready $end
+$var wire 1 m' partial_in_valid $end
+$var wire 1 n' partial_out_ready $end
+$var wire 1 o' pe_busy $end
+$var wire 1 0 rst_n $end
+$var wire 16 p' weight_in [15:0] $end
+$var wire 1 q' weight_load $end
+$var wire 1 r' weight_ready $end
+$var wire 1 s' weight_valid $end
+$var wire 32 t' signed_mac_result [31:0] $end
+$var wire 32 u' multiplier_out [31:0] $end
+$var wire 1 v' input_out_valid $end
+$var wire 16 w' input_out [15:0] $end
+$var parameter 32 x' ACC_WIDTH $end
+$var parameter 32 y' DATA_WIDTH $end
+$var parameter 32 z' WEIGHT_WIDTH $end
+$var reg 32 {' accumulator [31:0] $end
+$var reg 1 |' accumulator_valid $end
+$var reg 16 }' input_out_reg [15:0] $end
+$var reg 1 v' input_out_valid_reg $end
+$var reg 16 ~' input_reg [15:0] $end
+$var reg 1 !( input_valid_reg $end
+$var reg 32 "( partial_out [31:0] $end
+$var reg 32 #( partial_out_reg [31:0] $end
+$var reg 1 $( partial_out_valid $end
+$var reg 32 %( partial_reg [31:0] $end
+$var reg 1 &( partial_valid_reg $end
+$var reg 1 '( processing $end
+$var reg 1 (( stall $end
+$var reg 16 )( stored_weight [15:0] $end
+$var reg 1 *( weight_valid_reg $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_row[0] $end
+$var parameter 2 +( row $end
+$scope begin gen_weight_col[0] $end
+$var parameter 2 ,( col $end
+$upscope $end
+$scope begin gen_weight_col[1] $end
+$var parameter 2 -( col $end
+$upscope $end
+$scope begin gen_weight_col[2] $end
+$var parameter 3 .( col $end
+$upscope $end
+$scope begin gen_weight_col[3] $end
+$var parameter 3 /( col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_row[1] $end
+$var parameter 2 0( row $end
+$scope begin gen_weight_col[0] $end
+$var parameter 2 1( col $end
+$upscope $end
+$scope begin gen_weight_col[1] $end
+$var parameter 2 2( col $end
+$upscope $end
+$scope begin gen_weight_col[2] $end
+$var parameter 3 3( col $end
+$upscope $end
+$scope begin gen_weight_col[3] $end
+$var parameter 3 4( col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_row[2] $end
+$var parameter 3 5( row $end
+$scope begin gen_weight_col[0] $end
+$var parameter 2 6( col $end
+$upscope $end
+$scope begin gen_weight_col[1] $end
+$var parameter 2 7( col $end
+$upscope $end
+$scope begin gen_weight_col[2] $end
+$var parameter 3 8( col $end
+$upscope $end
+$scope begin gen_weight_col[3] $end
+$var parameter 3 9( col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_row[3] $end
+$var parameter 3 :( row $end
+$scope begin gen_weight_col[0] $end
+$var parameter 2 ;( col $end
+$upscope $end
+$scope begin gen_weight_col[1] $end
+$var parameter 2 <( col $end
+$upscope $end
+$scope begin gen_weight_col[2] $end
+$var parameter 3 =( col $end
+$upscope $end
+$scope begin gen_weight_col[3] $end
+$var parameter 3 >( col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_valid_row[0] $end
+$var parameter 2 ?( w_row $end
+$scope begin gen_weight_valid_col[0] $end
+$var parameter 2 @( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[1] $end
+$var parameter 2 A( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[2] $end
+$var parameter 3 B( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[3] $end
+$var parameter 3 C( w_col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_valid_row[1] $end
+$var parameter 2 D( w_row $end
+$scope begin gen_weight_valid_col[0] $end
+$var parameter 2 E( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[1] $end
+$var parameter 2 F( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[2] $end
+$var parameter 3 G( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[3] $end
+$var parameter 3 H( w_col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_valid_row[2] $end
+$var parameter 3 I( w_row $end
+$scope begin gen_weight_valid_col[0] $end
+$var parameter 2 J( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[1] $end
+$var parameter 2 K( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[2] $end
+$var parameter 3 L( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[3] $end
+$var parameter 3 M( w_col $end
+$upscope $end
+$upscope $end
+$scope begin gen_weight_valid_row[3] $end
+$var parameter 3 N( w_row $end
+$scope begin gen_weight_valid_col[0] $end
+$var parameter 2 O( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[1] $end
+$var parameter 2 P( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[2] $end
+$var parameter 3 Q( w_col $end
+$upscope $end
+$scope begin gen_weight_valid_col[3] $end
+$var parameter 3 R( w_col $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b11 R(
+b10 Q(
+b1 P(
+b0 O(
+b11 N(
+b11 M(
+b10 L(
+b1 K(
+b0 J(
+b10 I(
+b11 H(
+b10 G(
+b1 F(
+b0 E(
+b1 D(
+b11 C(
+b10 B(
+b1 A(
+b0 @(
+b0 ?(
+b11 >(
+b10 =(
+b1 <(
+b0 ;(
+b11 :(
+b11 9(
+b10 8(
+b1 7(
+b0 6(
+b10 5(
+b11 4(
+b10 3(
+b1 2(
+b0 1(
+b1 0(
+b11 /(
+b10 .(
+b1 -(
+b0 ,(
+b0 +(
+b10000 z'
+b10000 y'
+b100000 x'
+b11 c'
+b10000 T'
+b10000 S'
+b100000 R'
+b10 ='
+b10000 .'
+b10000 -'
+b100000 ,'
+b1 u&
+b10000 f&
+b10000 e&
+b100000 d&
+b0 O&
+b11 N&
+b10000 ?&
+b10000 >&
+b100000 =&
+b11 (&
+b10000 w%
+b10000 v%
+b100000 u%
+b10 `%
+b10000 Q%
+b10000 P%
+b100000 O%
+b1 :%
+b10000 +%
+b10000 *%
+b100000 )%
+b0 r$
+b10 q$
+b10000 b$
+b10000 a$
+b100000 `$
+b11 K$
+b10000 <$
+b10000 ;$
+b100000 :$
+b10 %$
+b10000 t#
+b10000 s#
+b100000 r#
+b1 ]#
+b10000 N#
+b10000 M#
+b100000 L#
+b0 7#
+b1 6#
+b10000 '#
+b10000 &#
+b100000 %#
+b11 n"
+b10000 _"
+b10000 ^"
+b100000 ]"
+b10 H"
+b10000 9"
+b10000 8"
+b100000 7"
+b1 ""
+b10000 q
+b10000 p
+b100000 o
+b0 Z
+b0 Y
+b11 X
+b10 W
+b1 V
+b0 U
+b11 T
+b10 S
+b1 R
+b0 Q
+b10000 O
+b10000 N
+b100 M
+b100000 L
+b10000 )
+b10000 (
+b1010 '
+b100000 &
+$end
+#0
+$dumpvars
+0*(
+b0 )(
+0((
+0'(
+0&(
+b0 %(
+0$(
+b0 #(
+b0 "(
+0!(
+b0 ~'
+b0 }'
+0|'
+b0 {'
+b0 w'
+0v'
+b0 u'
+b0 t'
+0s'
+1r'
+0q'
+b0 p'
+0o'
+0n'
+0m'
+1l'
+b0 k'
+b0 j'
+0i'
+1h'
+1g'
+b0 f'
+1e'
+1d'
+0b'
+b0 a'
+0`'
+0_'
+0^'
+b0 ]'
+0\'
+b0 ['
+b0 Z'
+0Y'
+b0 X'
+b0 W'
+0V'
+b0 U'
+b0 Q'
+0P'
+b0 O'
+b0 N'
+0M'
+1L'
+0K'
+b0 J'
+0I'
+0H'
+0G'
+1F'
+b0 E'
+b0 D'
+0C'
+1B'
+1A'
+b0 @'
+1?'
+1>'
+0<'
+b0 ;'
+0:'
+09'
+08'
+b0 7'
+06'
+b0 5'
+b0 4'
+03'
+b0 2'
+b0 1'
+00'
+b0 /'
+b0 +'
+0*'
+b0 )'
+b0 ('
+0''
+1&'
+0%'
+b0 $'
+0#'
+0"'
+0!'
+1~&
+b0 }&
+b0 |&
+0{&
+1z&
+1y&
+b0 x&
+1w&
+1v&
+0t&
+b0 s&
+0r&
+0q&
+0p&
+b0 o&
+0n&
+b0 m&
+b0 l&
+0k&
+b0 j&
+b0 i&
+0h&
+b0 g&
+b0 c&
+0b&
+b0 a&
+b0 `&
+0_&
+1^&
+0]&
+b0 \&
+0[&
+0Z&
+0Y&
+1X&
+b0 W&
+b0 V&
+0U&
+1T&
+1S&
+b0 R&
+1Q&
+1P&
+0M&
+b0 L&
+0K&
+0J&
+0I&
+b0 H&
+0G&
+b0 F&
+b0 E&
+0D&
+b0 C&
+b0 B&
+0A&
+b0 @&
+b0 <&
+0;&
+b0 :&
+b0 9&
+08&
+17&
+06&
+b0 5&
+04&
+13&
+02&
+11&
+b0 0&
+b0 /&
+0.&
+1-&
+1,&
+b0 +&
+1*&
+1)&
+0'&
+b0 &&
+0%&
+0$&
+0#&
+b0 "&
+0!&
+b0 ~%
+b0 }%
+0|%
+b0 {%
+b0 z%
+0y%
+b0 x%
+b0 t%
+0s%
+b0 r%
+b0 q%
+0p%
+1o%
+0n%
+b0 m%
+0l%
+1k%
+0j%
+1i%
+b0 h%
+b0 g%
+0f%
+1e%
+1d%
+b0 c%
+1b%
+1a%
+0_%
+b0 ^%
+0]%
+0\%
+0[%
+b0 Z%
+0Y%
+b0 X%
+b0 W%
+0V%
+b0 U%
+b0 T%
+0S%
+b0 R%
+b0 N%
+0M%
+b0 L%
+b0 K%
+0J%
+1I%
+0H%
+b0 G%
+0F%
+1E%
+0D%
+1C%
+b0 B%
+b0 A%
+0@%
+1?%
+1>%
+b0 =%
+1<%
+1;%
+09%
+b0 8%
+07%
+06%
+05%
+b0 4%
+03%
+b0 2%
+b0 1%
+00%
+b0 /%
+b0 .%
+0-%
+b0 ,%
+b0 (%
+0'%
+b0 &%
+b0 %%
+0$%
+1#%
+0"%
+b0 !%
+0~$
+1}$
+0|$
+1{$
+b0 z$
+b0 y$
+0x$
+1w$
+1v$
+b0 u$
+1t$
+1s$
+0p$
+b0 o$
+0n$
+0m$
+0l$
+b0 k$
+0j$
+b0 i$
+b0 h$
+0g$
+b0 f$
+b0 e$
+0d$
+b0 c$
+b0 _$
+0^$
+b0 ]$
+b0 \$
+0[$
+1Z$
+0Y$
+b0 X$
+0W$
+1V$
+0U$
+1T$
+b0 S$
+b0 R$
+0Q$
+1P$
+1O$
+b0 N$
+1M$
+1L$
+0J$
+b0 I$
+0H$
+0G$
+0F$
+b0 E$
+0D$
+b0 C$
+b0 B$
+0A$
+b0 @$
+b0 ?$
+0>$
+b0 =$
+b0 9$
+08$
+b0 7$
+b0 6$
+05$
+14$
+03$
+b0 2$
+01$
+10$
+0/$
+1.$
+b0 -$
+b0 ,$
+0+$
+1*$
+1)$
+b0 ($
+1'$
+1&$
+0$$
+b0 #$
+0"$
+0!$
+0~#
+b0 }#
+0|#
+b0 {#
+b0 z#
+0y#
+b0 x#
+b0 w#
+0v#
+b0 u#
+b0 q#
+0p#
+b0 o#
+b0 n#
+0m#
+1l#
+0k#
+b0 j#
+0i#
+1h#
+0g#
+1f#
+b0 e#
+b0 d#
+0c#
+1b#
+1a#
+b0 `#
+1_#
+1^#
+0\#
+b0 [#
+0Z#
+0Y#
+0X#
+b0 W#
+0V#
+b0 U#
+b0 T#
+0S#
+b0 R#
+b0 Q#
+0P#
+b0 O#
+b0 K#
+0J#
+b0 I#
+b0 H#
+0G#
+1F#
+0E#
+b0 D#
+0C#
+1B#
+0A#
+1@#
+b0 ?#
+b0 >#
+0=#
+1<#
+1;#
+b0 :#
+19#
+18#
+05#
+b0 4#
+03#
+02#
+01#
+b0 0#
+0/#
+b0 .#
+b0 -#
+0,#
+b0 +#
+b0 *#
+0)#
+b0 (#
+b0 $#
+0##
+b0 "#
+b0 !#
+0~"
+1}"
+0|"
+b0 {"
+0z"
+1y"
+0x"
+1w"
+b0 v"
+b0 u"
+0t"
+1s"
+1r"
+b0 q"
+1p"
+1o"
+0m"
+b0 l"
+0k"
+0j"
+0i"
+b0 h"
+0g"
+b0 f"
+b0 e"
+0d"
+b0 c"
+b0 b"
+0a"
+b0 `"
+b0 \"
+0["
+b0 Z"
+b0 Y"
+0X"
+1W"
+0V"
+b0 U"
+0T"
+1S"
+0R"
+1Q"
+b0 P"
+b0 O"
+0N"
+1M"
+1L"
+b0 K"
+1J"
+1I"
+0G"
+b0 F"
+0E"
+0D"
+0C"
+b0 B"
+0A"
+b0 @"
+b0 ?"
+0>"
+b0 ="
+b0 <"
+0;"
+b0 :"
+b0 6"
+05"
+b0 4"
+b0 3"
+02"
+11"
+00"
+b0 /"
+0."
+1-"
+0,"
+1+"
+b0 *"
+b0 )"
+0("
+1'"
+1&"
+b0 %"
+1$"
+1#"
+0!"
+b0 ~
+0}
+0|
+0{
+b0 z
+0y
+b0 x
+b0 w
+0v
+b0 u
+b0 t
+0s
+b0 r
+b0 n
+0m
+b0 l
+b0 k
+0j
+1i
+0h
+b0 g
+0f
+1e
+0d
+1c
+b0 b
+b0 a
+0`
+1_
+1^
+b0 ]
+1\
+1[
+0P
+b0 K
+b0 J
+b1111111111111111 I
+b0 H
+b1111111111111111 G
+b0 F
+b0 E
+b0 D
+b0 C
+b0 B
+b111111111111 A
+b0 @
+b0 ?
+b0 >
+b0 =
+b0 <
+b1111111111111111 ;
+b0 :
+b0 9
+b1111111111111111 8
+b0 7
+b0 6
+bx 5
+bx 4
+03
+02
+b0 1
+00
+b0 /
+0.
+b0 -
+0,
+1+
+0*
+0%
+1$
+b0 #
+b0 "
+1!
+$end
+#5000
+1*
+#10000
+0*
+#15000
+1*
+#20000
+0*
+#25000
+1*
+#30000
+0*
+#35000
+1*
+#40000
+0*
+#45000
+10
+1*
+#50000
+0*
+#55000
+1*
+#60000
+0*
+#65000
+1h
+10"
+1V"
+1|"
+1E#
+1k#
+13$
+1Y$
+1"%
+1H%
+1n%
+16&
+1]&
+1%'
+1K'
+1q'
+b0 4
+b1111111111111111 =
+12
+1*
+#70000
+0*
+#75000
+1j
+12"
+1X"
+1~"
+1G#
+1m#
+15$
+1[$
+1$%
+1J%
+1p%
+18&
+1_&
+1''
+1M'
+1s'
+b1 g
+b1 /"
+b1 U"
+b1 {"
+b1 D#
+b1 j#
+b1 2$
+b1 X$
+b1 !%
+b1 G%
+b1 m%
+b1 5&
+b1 \&
+b1 $'
+b1 J'
+b1 p'
+b1111111111111111 :
+13
+b1000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001 <
+b1 1
+b1 9
+1*
+#80000
+0*
+#85000
+1*(
+b1 )(
+1b'
+b1 a'
+1<'
+b1 ;'
+1t&
+b1 s&
+1M&
+b1 L&
+1'&
+b1 &&
+1_%
+b1 ^%
+19%
+b1 8%
+1p$
+b1 o$
+1J$
+b1 I$
+1$$
+b1 #$
+1\#
+b1 [#
+15#
+b1 4#
+1m"
+b1 l"
+1G"
+b1 F"
+1!"
+b1 ~
+b1 4
+1*
+#90000
+0*
+#95000
+1*
+#100000
+0*
+#105000
+b10 4
+1*
+#110000
+0*
+#115000
+1*
+#120000
+0*
+#125000
+b11 4
+1*
+#130000
+0*
+#135000
+1*
+#140000
+0*
+#145000
+b100 4
+1*
+#150000
+0*
+#155000
+1*
+#160000
+0*
+#165000
+b101 4
+1*
+#170000
+0*
+#175000
+1*
+#180000
+0*
+#185000
+b110 4
+1*
+#190000
+0*
+#195000
+1*
+#200000
+0*
+#205000
+b111 4
+1*
+#210000
+0*
+#215000
+1*
+#220000
+0*
+#225000
+b1000 4
+1*
+#230000
+0*
+#235000
+1*
+#240000
+0*
+#245000
+b1001 4
+1*
+#250000
+0*
+#255000
+1*
+#260000
+0*
+#265000
+b1010 4
+1*
+#270000
+0*
+#275000
+1*
+#280000
+0*
+#285000
+b1011 4
+1*
+#290000
+0*
+#295000
+1*
+#300000
+0*
+#305000
+b1100 4
+1*
+#310000
+0*
+#315000
+1*
+#320000
+0*
+#325000
+b1101 4
+1*
+#330000
+0*
+#335000
+1*
+#340000
+0*
+#345000
+b1110 4
+1*
+#350000
+0*
+#355000
+1*
+#360000
+0*
+#365000
+b1111 4
+1*
+#370000
+0*
+#375000
+1*
+#380000
+0*
+#385000
+0h
+00"
+0V"
+0|"
+0E#
+0k#
+03$
+0Y$
+0"%
+0H%
+0n%
+06&
+0]&
+0%'
+0K'
+0q'
+0j
+02"
+0X"
+0~"
+0G#
+0m#
+05$
+0[$
+0$%
+0J%
+0p%
+08&
+0_&
+0''
+0M'
+0s'
+b0 =
+02
+b0 :
+03
+b10000 4
+1*
+#390000
+0*
+#395000
+1*
+#400000
+0*
+#405000
+1*
+#410000
+0*
+#415000
+1*
+#420000
+0*
+#425000
+1*
+#430000
+0*
+#435000
+1Z&
+1"'
+1H'
+1n'
+b1111111111111111 A
+b0 5
+b0 4
+b1111 /
+b1111 7
+1*
+#440000
+0*
+#445000
+1d
+b1 ?
+1`
+1=#
+1x$
+1U&
+b1 ]
+b1 :#
+b1 u$
+b1 R&
+b1000100010001 F
+1.
+b1000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001 K
+b1 -
+b1 6
+1*
+#450000
+0*
+#455000
+1v
+b1 a
+b1 k
+b1 l
+b1 u
+1{
+1S#
+b1 >#
+b1 H#
+b1 I#
+b1 R#
+10%
+b1 y$
+b1 %%
+b1 &%
+b1 /%
+1k&
+b1 V&
+b1 `&
+b1 a&
+b1 j&
+b1 5
+1*
+#460000
+0*
+#465000
+1,"
+1{&
+b1 x&
+1@%
+b1 =%
+1c#
+b1 `#
+b1 >
+1f
+b11 ?
+1("
+b1 %"
+b11001100110011 F
+b10000000000000001000000000000000000000000000000000000000000000001000000000000000100000000000000000000000000000000000000000000000100000000000000010000000000000000000000000000000000000000000000010000000000000001 K
+1b&
+b1 c&
+b1 i&
+1'%
+b1 (%
+b1 .%
+1J#
+b1 K#
+b1 Q#
+1|
+1s
+b1 r
+b1000100010001 H
+1m
+b1000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001 J
+b1 n
+b1 t
+1*
+#470000
+0*
+#475000
+1A#
+b1 ?#
+b10011 ?
+b100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b1 @
+1y
+b1 B
+b1 w
+b1 x
+1>"
+b1 )"
+b1 3"
+b1 4"
+b1 ="
+1C"
+1y#
+b1 d#
+b1 n#
+b1 o#
+b1 x#
+1V%
+b1 A%
+b1 K%
+b1 L%
+b1 U%
+13'
+b1 |&
+b1 ('
+b1 )'
+b1 2'
+1%
+1P
+b10 5
+1*
+#480000
+0*
+#485000
+1R"
+1C'
+b1 @'
+1f%
+b1 c%
+1+$
+b1 ($
+b11 >
+1."
+b10111 ?
+1N"
+b1 K"
+b111011101110111 F
+b100000000000000010000000000000001000000000000000000000000000000010000000000000001000000000000000100000000000000000000000000000001000000000000000100000000000000010000000000000000000000000000000100000000000000010000000000000001 K
+1*'
+b1 +'
+b1 1'
+1M%
+b1 N%
+b1 T%
+1p#
+b1 q#
+b1 w#
+1X#
+b10 >#
+b10 H#
+b1 W#
+1D"
+1;"
+b1 :"
+b11001100110011 H
+15"
+b10000000000000001000000000000000000000000000000000000000000000001000000000000000100000000000000000000000000000000000000000000000100000000000000010000000000000000000000000000000000000000000000010000000000000001 J
+b1 6"
+b1 <"
+1*
+#490000
+0*
+#495000
+1g#
+b1 e#
+b10011 >
+1C#
+b110111 ?
+b10000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b11 @
+1A"
+b100000000000000000000000000000001 B
+b1 ?"
+b1 @"
+1d"
+b1 O"
+b1 Y"
+b1 Z"
+b1 c"
+1i"
+1Y#
+1P#
+b10 O#
+1A$
+b1 ,$
+b1 6$
+b1 7$
+b1 @$
+1|%
+b1 g%
+b1 q%
+b1 r%
+b1 {%
+1Y'
+b1 D'
+b1 N'
+b1 O'
+b1 X'
+b11 5
+1*
+#500000
+0*
+#505000
+1x"
+1i'
+b1 f'
+1.&
+b1 +&
+1Q$
+b1 N$
+1|$
+b10 z$
+b10111 >
+1T"
+1t"
+b1 q"
+b100111111 ?
+b100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b1111111111111111 F
+b1000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001 K
+1P'
+b1 Q'
+b1 W'
+1s%
+b1 t%
+b1 z%
+18$
+b1 9$
+b1 ?$
+1~#
+b10 d#
+b10 n#
+b1 }#
+b10011 @
+1V#
+b1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000001 B
+b10 T#
+b10 U#
+1j"
+1a"
+b1 `"
+b111011101110111 H
+1["
+b100000000000000010000000000000001000000000000000000000000000000010000000000000001000000000000000100000000000000000000000000000001000000000000000100000000000000010000000000000000000000000000000100000000000000010000000000000001 J
+b1 \"
+b1 b"
+1*
+#510000
+0*
+#515000
+1/$
+b1 -$
+b110111 >
+1i#
+b101111111 ?
+b100000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b10111 @
+1g"
+b1000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b1 e"
+b1 f"
+1,#
+b1 u"
+b1 !#
+b1 "#
+b1 +#
+11#
+1!$
+1v#
+b10 u#
+1g$
+b1 R$
+b1 \$
+b1 ]$
+b1 f$
+15%
+b11 y$
+b11 %%
+b10 4%
+1D&
+b1 /&
+b1 9&
+b1 :&
+b1 C&
+1!(
+b1 j'
+b1 t'
+b1 u'
+b1 ~'
+b1 4
+b0 5
+1*
+#520000
+0*
+#525000
+1~$
+1D%
+b10 B%
+b100111111 >
+1z"
+b1101111111 ?
+b10000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1v'
+b1 w'
+b1 }'
+1;&
+b1 <&
+b1 B&
+16%
+1-%
+b11 ,%
+1^$
+b1 _$
+b1 e$
+1F$
+b10 ,$
+b10 6$
+b1 E$
+b110111 @
+1|#
+b100000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b10 z#
+b10 {#
+12#
+1)#
+b1 (#
+b1111111111111111 H
+1##
+b1000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001 J
+b1 $#
+b1 *#
+1*
+#530000
+0*
+#535000
+1U$
+b1 S$
+b101111111 >
+11$
+1Y&
+b11 W&
+b1001111111111 ?
+b11000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1/#
+b1 -#
+b1 .#
+1G$
+1>$
+b10 =$
+b100111111 @
+13%
+b110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b11 1%
+b11 2%
+1[%
+b11 A%
+b11 K%
+b10 Z%
+b1 5
+1*
+#540000
+0*
+#545000
+b1101111111 >
+1F%
+1j%
+b10 h%
+b1011111111111 ?
+b11000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1p&
+b100 V&
+b100 `&
+b11 o&
+1\%
+1S%
+b11 R%
+1l$
+b10 R$
+b10 \$
+b1 k$
+b101111111 @
+1D$
+b110000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b10 B$
+b10 C$
+1*
+#550000
+0*
+#555000
+1W$
+1!'
+b11 }&
+b1001111111111 >
+1[&
+b11011111111111 ?
+b1100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1m$
+1d$
+b10 c$
+b1101111111 @
+1Y%
+b11000000000000000000000000000000110000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b11 W%
+b11 X%
+1#&
+b11 g%
+b11 q%
+b10 "&
+1q&
+1h&
+b100 g&
+b10 5
+1*
+#560000
+0*
+#565000
+b1011111111111 >
+1l%
+12&
+b10 0&
+b1 "
+b1 D
+b100 #
+b100 E
+b11111111111111 ?
+b1100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+18'
+b100 |&
+b100 ('
+b11 7'
+1n&
+b100 l&
+b100 m&
+1$&
+1y%
+b11 x%
+b1001111111111 @
+1j$
+b100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b10 h$
+b10 i$
+1*
+#570000
+0*
+#575000
+1G'
+b11 E'
+b11011111111111 >
+1#'
+b111111111111111 ?
+b110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b1011111111111 @
+1!&
+b100000000000000000000000000000000000000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b11 }%
+b11 ~%
+1I&
+b11 /&
+b11 9&
+b10 H&
+19'
+10'
+b100 /'
+b11 5
+1*
+#580000
+0*
+#585000
+b11111111111111 >
+14&
+b11 "
+b11 D
+b10000000000000000000000000000000100 #
+b10000000000000000000000000000000100 E
+1^'
+b100 D'
+b100 N'
+b11 ]'
+b11011111111111 @
+16'
+b10000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b100 4'
+b100 5'
+1J&
+1A&
+b11 @&
+1*
+#590000
+0*
+#595000
+1m'
+b11 k'
+b111111111111111 >
+1I'
+b1111111111111111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b11111111111111 @
+1G&
+b10000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b11 E&
+b11 F&
+1_'
+1V'
+b100 U'
+b10 4
+b0 5
+1*
+#600000
+0*
+#605000
+b111 "
+b111 D
+b1000000000000000000000000000000010000000000000000000000000000000100 #
+b1000000000000000000000000000000010000000000000000000000000000000100 E
+1&(
+b100 j'
+b100 t'
+b11 %(
+b111111111111111 @
+1\'
+b1000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b100 Z'
+b100 ['
+1*
+#610000
+0*
+#615000
+b1111111111111111 >
+1o'
+1'(
+1|'
+b100 {'
+b1 5
+1*
+#620000
+0*
+#625000
+b1111 "
+b1111 D
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100 #
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100 E
+b1111111111111111 @
+1$(
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001 B
+b100 "(
+b100 #(
+1*
+#630000
+0*
+#635000
+b10 5
+1*
+#640000
+0*
+#645000
+1*
+#650000
+0*
+#655000
+b11 5
+1*
+#660000
+0*
+#665000
+1*
+#670000
+0*
+#675000
+b11 4
+b0 5
+1*
+#680000
+0*
+#685000
+1*
+#690000
+0*
+#695000
+b1 5
+1*
+#700000
+0*
+#705000
+1*
+#710000
+0*
+#715000
+b10 5
+1*
+#720000
+0*
+#725000
+1*
+#730000
+0*
+#735000
+b11 5
+1*
+#740000
+0*
+#745000
+1*
+#750000
+0*
+#755000
+0d
+b1111111111111110 ?
+0`
+0=#
+0x$
+0U&
+b1110111011101110 F
+0.
+b100 4
+b100 5
+1*
+#760000
+0*
+#765000
+0k&
+00%
+0S#
+0{
+0v
+1*
+#770000
+0*
+#775000
+0,"
+b1111111111111100 ?
+0("
+0c#
+0@%
+0{&
+b1100110011001100 F
+0m
+0|
+0s
+0J#
+0Y#
+0P#
+0'%
+06%
+0-%
+b1110111011101110 H
+0b&
+0q&
+0h&
+1*
+#780000
+0*
+#785000
+0Y&
+0|$
+0A#
+0[&
+b1110 "
+b1110 D
+0~$
+0C#
+b1110111011101110 >
+0f
+b1110111011101100 ?
+03'
+0n&
+0V%
+03%
+0y#
+0V#
+0C"
+0>"
+b1110111011101110 @
+0y
+1*
+#790000
+0*
+#795000
+0R"
+b1110111011101000 ?
+0N"
+0+$
+0f%
+0C'
+b1000100010001000 F
+05"
+0D"
+0;"
+0X#
+0p#
+0!$
+0v#
+05%
+0M%
+0\%
+0S%
+0p&
+b1100110011001100 H
+0*'
+09'
+00'
+1*
+#800000
+0*
+#805000
+0!'
+0D%
+0g#
+0#'
+b1100 "
+b1100 D
+0F%
+0i#
+b1100110011001100 >
+0."
+b1100110011001000 ?
+0Y'
+06'
+0|%
+0Y%
+0A$
+0|#
+0i"
+0d"
+b1100110011001100 @
+0A"
+1*
+#810000
+0*
+#815000
+0x"
+b1100110011000000 ?
+0t"
+0Q$
+0.&
+0i'
+b0 F
+0["
+0j"
+0a"
+0~#
+08$
+0G$
+0>$
+0[%
+0s%
+0$&
+0y%
+08'
+b1000100010001000 H
+0P'
+0_'
+0V'
+1*
+#820000
+0*
+#825000
+0G'
+0j%
+0/$
+0I'
+b1000 "
+b1000 D
+0l%
+01$
+b1000100010001000 >
+0T"
+b1000100010000000 ?
+0!(
+0\'
+0D&
+0!&
+0g$
+0D$
+01#
+0,#
+b1000100010001000 @
+0g"
+1*
+#830000
+0*
+#835000
+0##
+02#
+0)#
+0F$
+0^$
+0m$
+0d$
+0#&
+0;&
+0J&
+0A&
+0^'
+b0 H
+0v'
+0'(
+0|'
+1*
+#840000
+0*
+#845000
+0m'
+02&
+0U$
+0o'
+b0 "
+b0 D
+04&
+0W$
+b0 >
+0z"
+b0 ?
+0$(
+0G&
+0j$
+b0 @
+0/#
+1*
+#850000
+0*
+#855000
+0l$
+0I&
+0&(
+0%
+0P
+1h
+10"
+1V"
+1|"
+1E#
+1k#
+13$
+1Y$
+1"%
+1H%
+1n%
+16&
+1]&
+1%'
+1K'
+1q'
+b0 4
+b1111111111111111 =
+12
+1*
+#860000
+0*
+#865000
+1j
+12"
+1X"
+1~"
+1G#
+1m#
+15$
+1[$
+1$%
+1J%
+1p%
+18&
+1_&
+1''
+1M'
+1s'
+b10 g
+b10 /"
+b10 U"
+b10 {"
+b10 D#
+b10 j#
+b10 2$
+b10 X$
+b10 !%
+b10 G%
+b10 m%
+b10 5&
+b10 \&
+b10 $'
+b10 J'
+b10 p'
+b1 4
+b1111111111111111 :
+13
+b10000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000000000001000000000000000100000000000000010 <
+b10 1
+b10 9
+1*
+#870000
+0*
+#875000
+b10 a
+b10 k
+b10 l
+b10 ~
+b10 )"
+b10 3"
+b10 4"
+b10 F"
+b10 O"
+b10 Y"
+b10 Z"
+b10 l"
+b10 u"
+b10 !#
+b10 "#
+b10 4#
+b11 >#
+b11 H#
+b10 I#
+b10 [#
+b11 d#
+b11 n#
+b10 o#
+b10 #$
+b11 ,$
+b11 6$
+b10 7$
+b10 I$
+b11 R$
+b11 \$
+b10 ]$
+b10 o$
+b100 y$
+b100 %%
+b10 &%
+b10 8%
+b100 A%
+b100 K%
+b10 L%
+b10 ^%
+b100 g%
+b100 q%
+b10 r%
+b10 &&
+b100 /&
+b100 9&
+b10 :&
+b10 L&
+b101 V&
+b101 `&
+b10 a&
+b10 s&
+b101 |&
+b101 ('
+b10 )'
+b10 ;'
+b101 D'
+b101 N'
+b10 O'
+b10 a'
+b101 j'
+b101 t'
+b10 u'
+b10 )(
+b10 4
+1*
+#880000
+0*
+#885000
+b11 4
+1*
+#890000
+0*
+#895000
+b100 4
+1*
+#900000
+0*
+#905000
+b101 4
+1*
+#910000
+0*
+#915000
+b110 4
+1*
+#920000
+0*
+#925000
+b111 4
+1*
+#930000
+0*
+#935000
+b1000 4
+1*
+#940000
+0*
+#945000
+b1001 4
+1*
+#950000
+0*
+#955000
+b1010 4
+1*
+#960000
+0*
+#965000
+b1011 4
+1*
+#970000
+0*
+#975000
+b1100 4
+1*
+#980000
+0*
+#985000
+b1101 4
+1*
+#990000
+0*
+#995000
+b1110 4
+1*
+#1000000
+0*
+#1005000
+b1111 4
+1*
+#1010000
+0*
+#1015000
+0h
+00"
+0V"
+0|"
+0E#
+0k#
+03$
+0Y$
+0"%
+0H%
+0n%
+06&
+0]&
+0%'
+0K'
+0q'
+0j
+02"
+0X"
+0~"
+0G#
+0m#
+05$
+0[$
+0$%
+0J%
+0p%
+08&
+0_&
+0''
+0M'
+0s'
+b0 =
+02
+b0 :
+03
+b10000 4
+1*
+#1020000
+0*
+#1025000
+1*
+#1030000
+0*
+#1035000
+1*
+#1040000
+0*
+#1045000
+1*
+#1050000
+0*
+#1055000
+1*
+#1060000
+0*
+#1065000
+b0 5
+b0 4
+1*
+#1070000
+0*
+#1075000
+1d
+b1 ?
+1`
+1=#
+1x$
+1U&
+b11 ]
+b11 :#
+b11 u$
+b11 R&
+b1 5
+b1000100010001 F
+1.
+b1000000000000000100000000000000010000000000000011000000000000000100000000000000010000000000000001000000000000001100000000000000010000000000000001000000000000000100000000000000110000000000000001000000000000000100000000000000010000000000000011 K
+b11 -
+b11 6
+1*
+#1080000
+0*
+#1085000
+1k&
+b1001 V&
+b1001 `&
+b110 a&
+b11 j&
+10%
+b1000 y$
+b1000 %%
+b110 &%
+b11 /%
+1S#
+b111 >#
+b111 H#
+b110 I#
+b11 R#
+1{
+1v
+b110 a
+b110 k
+b110 l
+b11 u
+b10 5
+1*
+#1090000
+0*
+#1095000
+1,"
+b11 ?
+1("
+b11 %"
+b1 >
+1f
+1c#
+b11 `#
+1@%
+b11 =%
+1{&
+b11 x&
+b11001100110011 F
+b1000000000000000100000000000000110000000000000011000000000000000100000000000000010000000000000011000000000000001100000000000000010000000000000001000000000000001100000000000000110000000000000001000000000000000100000000000000110000000000000011 K
+1m
+b11 n
+b11 t
+1|
+1s
+b110 r
+1J#
+b11 K#
+b11 Q#
+1'%
+b11 (%
+b11 .%
+b1000100010001 H
+1b&
+b1000000000000000100000000000000010000000000000011000000000000000100000000000000010000000000000001000000000000001100000000000000010000000000000001000000000000000100000000000000110000000000000001000000000000000100000000000000010000000000000011 J
+b11 c&
+b11 i&
+b11 5
+1*
+#1100000
+0*
+#1105000
+1A#
+b110 ?#
+b10011 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1%
+1P
+13'
+b1001 |&
+b1001 ('
+b110 )'
+b11 2'
+1V%
+b1000 A%
+b1000 K%
+b110 L%
+b11 U%
+1y#
+b111 d#
+b111 n#
+b110 o#
+b11 x#
+1C"
+1>"
+b110 )"
+b110 3"
+b110 4"
+b11 ="
+b1 @
+1y
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000110 B
+b110 w
+b110 x
+b1 4
+b0 5
+1*
+#1110000
+0*
+#1115000
+1R"
+b10111 ?
+1N"
+b11 K"
+b11 >
+1."
+1+$
+b11 ($
+1f%
+b11 c%
+1C'
+b11 @'
+b111011101110111 F
+b1000000000000001100000000000000110000000000000011000000000000000100000000000000110000000000000011000000000000001100000000000000010000000000000011000000000000001100000000000000110000000000000001000000000000001100000000000000110000000000000011 K
+15"
+b11 6"
+b11 <"
+1D"
+1;"
+b110 :"
+1X#
+b1100 >#
+b1100 H#
+b110 W#
+1p#
+b11 q#
+b11 w#
+1M%
+b11 N%
+b11 T%
+b11001100110011 H
+1*'
+b1000000000000000100000000000000110000000000000011000000000000000100000000000000010000000000000011000000000000001100000000000000010000000000000001000000000000001100000000000000110000000000000001000000000000000100000000000000110000000000000011 J
+b11 +'
+b11 1'
+b1 5
+1*
+#1120000
+0*
+#1125000
+b10011 >
+1C#
+1g#
+b110 e#
+b110111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1Y'
+b1001 D'
+b1001 N'
+b110 O'
+b11 X'
+1|%
+b1000 g%
+b1000 q%
+b110 r%
+b11 {%
+1A$
+b111 ,$
+b111 6$
+b110 7$
+b11 @$
+1Y#
+1P#
+b1100 O#
+1i"
+1d"
+b110 O"
+b110 Y"
+b110 Z"
+b11 c"
+b11 @
+1A"
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000110 B
+b110 ?"
+b110 @"
+b10 5
+1*
+#1130000
+0*
+#1135000
+1x"
+1t"
+b11 q"
+b10111 >
+1T"
+1|$
+b1100 z$
+1Q$
+b11 N$
+1.&
+b11 +&
+1i'
+b11 f'
+b100111111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b1111111111111111 F
+b11000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011 K
+1["
+b11 \"
+b11 b"
+1j"
+1a"
+b110 `"
+b10011 @
+1V#
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000110000000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000110 B
+b1100 T#
+b1100 U#
+1~#
+b1100 d#
+b1100 n#
+b110 }#
+18$
+b11 9$
+b11 ?$
+1s%
+b11 t%
+b11 z%
+b111011101110111 H
+1P'
+b1000000000000001100000000000000110000000000000011000000000000000100000000000000110000000000000011000000000000001100000000000000010000000000000011000000000000001100000000000000110000000000000001000000000000001100000000000000110000000000000011 J
+b11 Q'
+b11 W'
+b11 5
+1*
+#1140000
+0*
+#1145000
+b110111 >
+1i#
+1/$
+b110 -$
+b101111111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000000100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1!(
+b1001 j'
+b1001 t'
+b110 u'
+b11 ~'
+1D&
+b1000 /&
+b1000 9&
+b110 :&
+b11 C&
+15%
+b10010 y$
+b10010 %%
+b1100 4%
+1g$
+b111 R$
+b111 \$
+b110 ]$
+b11 f$
+1!$
+1v#
+b1100 u#
+11#
+1,#
+b110 u"
+b110 !#
+b110 "#
+b11 +#
+b10111 @
+1g"
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000110000000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b110 e"
+b110 f"
+b10 4
+b0 5
+1*
+#1150000
+0*
+#1155000
+1z"
+1D%
+b1100 B%
+b100111111 >
+1~$
+b1101111111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1##
+b11 $#
+b11 *#
+12#
+1)#
+b110 (#
+b110111 @
+1|#
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b1100 z#
+b1100 {#
+1F$
+b1100 ,$
+b1100 6$
+b110 E$
+1^$
+b11 _$
+b11 e$
+16%
+1-%
+b10010 ,%
+1;&
+b11 <&
+b11 B&
+b1111111111111111 H
+1v'
+b11000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011 J
+b11 w'
+b11 }'
+b1 5
+1*
+#1160000
+0*
+#1165000
+1Y&
+b10010 W&
+b101111111 >
+11$
+1U$
+b110 S$
+b1001111111111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000010010000000000000000000000000000000100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1[%
+b10010 A%
+b10010 K%
+b1100 Z%
+13%
+b10010 1%
+b10010 2%
+1G$
+1>$
+b1100 =$
+b100111111 @
+1/#
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000100100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b110 -#
+b110 .#
+b10 5
+1*
+#1170000
+0*
+#1175000
+1j%
+b1100 h%
+b1101111111 >
+1F%
+b1011111111111 ?
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000010010000000000000000000000000000000100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b101111111 @
+1D$
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000100100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b1100 B$
+b1100 C$
+1l$
+b1100 R$
+b1100 \$
+b110 k$
+1\%
+1S%
+b10010 R%
+1p&
+b11000 V&
+b11000 `&
+b10010 o&
+b11 5
+1*
+#1180000
+0*
+#1185000
+1[&
+1!'
+b10010 }&
+b1001111111111 >
+1W$
+b11011111111111 ?
+b11000000000000000000000000000000110000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000000100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1q&
+1h&
+b11000 g&
+1#&
+b10010 g%
+b10010 q%
+b1100 "&
+b1101111111 @
+1Y%
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000100000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b10010 W%
+b10010 X%
+1m$
+1d$
+b1100 c$
+b11 4
+b0 5
+1*
+#1190000
+0*
+#1195000
+12&
+b1100 0&
+b1011111111111 >
+1l%
+b11111111111111 ?
+b11000000000000000000000000000000110000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+b1 "
+b1 D
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000 #
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000 E
+1j$
+b1100 h$
+b1100 i$
+1$&
+1y%
+b10010 x%
+b1001111111111 @
+1n&
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b11000 l&
+b11000 m&
+18'
+b11000 |&
+b11000 ('
+b10010 7'
+b1 5
+1*
+#1200000
+0*
+#1205000
+b11011111111111 >
+1#'
+1G'
+b10010 E'
+b111111111111111 ?
+b11000000000000000000000000000100100000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+19'
+10'
+b11000 /'
+1I&
+b10010 /&
+b10010 9&
+b1100 H&
+b1011111111111 @
+1!&
+b100000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000000110000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b10010 }%
+b10010 ~%
+b10 5
+1*
+#1210000
+0*
+#1215000
+b11111111111111 >
+14&
+b11 "
+b11 D
+b100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000 #
+b100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000 E
+1J&
+1A&
+b10010 @&
+b11011111111111 @
+16'
+b100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000110000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b11000 4'
+b11000 5'
+1^'
+b11000 D'
+b11000 N'
+b10010 ]'
+b11 5
+1*
+#1220000
+0*
+#1225000
+b111111111111111 >
+1I'
+1m'
+b10010 k'
+b10010000000000000000000000000000100100000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 C
+1_'
+1V'
+b11000 U'
+b11111111111111 @
+1G&
+b100000000000000000000000000000001000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100100000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b10010 E&
+b10010 F&
+0d
+b1111111111111110 ?
+0`
+0=#
+0x$
+0U&
+b1110111011101110 F
+0.
+b100 4
+b100 5
+1*
+#1230000
+0*
+#1235000
+b111 "
+b111 D
+b100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000 #
+b100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000 E
+0v
+0{
+0S#
+00%
+0k&
+b111111111111111 @
+1\'
+b100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100100000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b11000 Z'
+b11000 ['
+1&(
+b11000 j'
+b11000 t'
+b10010 %(
+1*
+#1240000
+0*
+#1245000
+0,"
+b1111111111111111 >
+1o'
+0{&
+0@%
+0c#
+b1111111111111100 ?
+0("
+b1100110011001100 F
+1'(
+1|'
+b11000 {'
+0q&
+0h&
+0b&
+06%
+0-%
+0'%
+0Y#
+0P#
+0J#
+0|
+0s
+b1110111011101110 H
+0m
+1*
+#1250000
+0*
+#1255000
+0A#
+0|$
+0Y&
+0f
+0C#
+0~$
+b1110111011101100 ?
+b1110111011101110 >
+0[&
+b1110 "
+b1110 D
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000 #
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000 E
+0y
+0>"
+0C"
+0V#
+0y#
+03%
+0V%
+0n&
+03'
+b1110111011101110 @
+1$(
+b11000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000100100000000000000000000000000001001000000000000000000000000000010010000000000000000000000000000100100000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110000000000000000000000000000000110000000000000000000000000000001100000000000000000000000000000011000000000000000000000000000000110 B
+b11000 "(
+b11000 #(
+1*
+#1260000
+0*
+#1265000
+0R"
+0C'
+0f%
+0+$
+b1110111011101000 ?
+0N"
+b1000100010001000 F
+09'
+00'
+0*'
+0p&
+0\%
+0S%
+0M%
+05%
+0!$
+0v#
+0p#
+0X#
+0D"
+0;"
+b1100110011001100 H
+05"
+1*
+#1270000
+0*
+#1275000
+0g#
+0D%
+0!'
+0."
+0i#
+0F%
+b1100110011001000 ?
+b1100110011001100 >
+0#'
+b1100 "
+b1100 D
+0A"
+0d"
+0i"
+0|#
+0A$
+0Y%
+0|%
+b1100110011001100 @
+06'
+0Y'
+1*
+#1280000
+0*
+#1285000
+0x"
+0i'
+0.&
+0Q$
+b1100110011000000 ?
+0t"
+b0 F
+0_'
+0V'
+0P'
+08'
+0$&
+0y%
+0s%
+0[%
+0G$
+0>$
+08$
+0~#
+0j"
+0a"
+b1000100010001000 H
+0["
+1*
+#1290000
+0*
+#1295000
+0/$
+0j%
+0G'
+0T"
+01$
+0l%
+b1000100010000000 ?
+b1000100010001000 >
+0I'
+b1000 "
+b1000 D
+0g"
+0,#
+01#
+0D$
+0g$
+0!&
+0D&
+b1000100010001000 @
+0\'
+0!(
+1*
+#1300000
+0*
+#1305000
+0'(
+0|'
+0v'
+0^'
+0J&
+0A&
+0;&
+0#&
+0m$
+0d$
+0^$
+0F$
+02#
+0)#
+b0 H
+0##
+1*
+#1310000
+0*
+#1315000
+0U$
+02&
+0m'
+0z"
+0W$
+04&
+b0 ?
+b0 >
+0o'
+b0 "
+b0 D
+0/#
+0j$
+0G&
+b0 @
+0$(
+1*
+#1320000
+0*
+#1325000
+0%
+0P
+0&(
+0I&
+0l$
+1*
+#1330000
+0*
+#1335000
+1*
+#1340000
+0*
+#1345000
+1*
+#1350000
+0*
+#1355000
+1*
+#1360000
+0*
+#1365000
+1*
+#1370000
+0*
+#1375000
+1*
+#1380000
+0*
+#1385000
+1*
+#1390000
+0*
+#1395000
+1*
+#1400000
+0*
+#1405000
+1*
+#1410000
+0*
+#1415000
+1*
+#1420000
+0*
+#1425000
+1*
+#1430000
+0*
+#1435000
+1*
+#1440000
+0*
+#1445000
+1*
+#1450000
+0*
+#1455000
+1*
+#1460000
+0*
+#1465000
+1*
+#1470000
+0*
+#1475000
+1*
+#1480000
+0*
+#1485000
+1*
+#1490000
+0*
+#1495000
+1*
+#1500000
+0*
+#1505000
+1*
+#1510000
+0*
+#1515000
+1*
+#1520000
+0*
+#1525000
+b100 4
+1*
+#1530000
+0*
+#1535000
+1*
+#1540000
+0*
+#1545000
+1*
+#1550000
+0*
+#1555000
+1*
+#1560000
+0*
+#1565000
+1*
+#1570000
+0*
+#1575000
+1*
+#1580000
+0*
+#1585000
+1*
+#1590000
+0*
+#1595000
+1*
+#1600000
+0*
+#1605000
+1*
+#1610000
+0*
+#1615000
+1*
+#1620000
+0*
+#1625000
+1*
+#1630000
+0*
+#1635000
+1*
+#1640000
+0*
+#1645000
+1*
+#1650000
+0*
+#1655000
+1*
+#1660000
+0*
+#1665000
+1*
+#1670000
+0*
+#1675000
+1*
+#1680000
+0*
+#1685000
+1*
+#1690000
+0*
+#1695000
+1*
+#1700000
+0*
+#1705000
+1*
+#1710000
+0*
+#1715000
+1*
+#1720000
+0*
+#1725000
+1*

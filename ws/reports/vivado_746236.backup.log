@@ -1,0 +1,453 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Jan 30 10:29:58 2026
+# Process ID         : 746236
+# Current directory  : /home/jrq/systolic_array_edge
+# Command line       : vivado -mode batch -source /home/jrq/systolic_array_edge/script/synthesize.tcl -nojournal -log /home/jrq/systolic_array_edge/reports/vivado.log
+# Log file           : /home/jrq/systolic_array_edge/reports/vivado.log
+# Journal file       : 
+# Running On         : curry-GTR-Pro
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.3 LTS
+# Processor Detail   : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+# CPU Frequency      : 5089.454 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 130460 MB
+# Swap memory        : 2147 MB
+# Total Virtual      : 132607 MB
+# Available Virtual  : 121537 MB
+#-----------------------------------------------------------
+source /home/jrq/systolic_array_edge/script/synthesize.tcl
+# set project_dir [file dirname [file dirname [info script]]]
+# set src_dir "$project_dir/src"
+# set reports_dir "$project_dir/reports"
+# file mkdir $reports_dir
+# puts "Creating Vivado project..."
+Creating Vivado project...
+# create_project -force systolic_array "$project_dir/vivado_project" -part xc7a35tcpg236-1
+# puts "\nAdding source files..."
+
+Adding source files...
+# add_files [glob "$src_dir/*.v"]
+# set_property top systolic_array_4x4 [current_fileset]
+# update_compile_order -fileset sources_1
+# puts "Source files added successfully"
+Source files added successfully
+# puts "\n=============================================================================="
+
+==============================================================================
+# puts "Running Synthesis..."
+Running Synthesis...
+# puts "=============================================================================="
+==============================================================================
+# synth_design -top systolic_array_4x4 -part xc7a35tcpg236-1
+Command: synth_design -top systolic_array_4x4 -part xc7a35tcpg236-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 746336
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 1935.441 ; gain = 443.852 ; free physical = 58345 ; free virtual = 115106
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'systolic_array_4x4' [/home/jrq/systolic_array_edge/src/systolic_array_4x4.v:16]
+INFO: [Synth 8-6157] synthesizing module 'pe' [/home/jrq/systolic_array_edge/src/pe.v:15]
+	Parameter DATA_WIDTH bound to: 16 - type: integer 
+	Parameter WEIGHT_WIDTH bound to: 16 - type: integer 
+	Parameter ACC_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'pe' (0#1) [/home/jrq/systolic_array_edge/src/pe.v:15]
+INFO: [Synth 8-6155] done synthesizing module 'systolic_array_4x4' (0#1) [/home/jrq/systolic_array_edge/src/systolic_array_4x4.v:16]
+WARNING: [Synth 8-6014] Unused sequential element weight_valid_reg_reg was removed.  [/home/jrq/systolic_array_edge/src/pe.v:137]
+WARNING: [Synth 8-6014] Unused sequential element partial_out_reg_reg was removed.  [/home/jrq/systolic_array_edge/src/pe.v:254]
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[31] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[30] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[29] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[28] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[27] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[26] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[25] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[24] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[23] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[22] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[21] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[20] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[19] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[18] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[17] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[16] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[15] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[14] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[13] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[12] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[11] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[10] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[9] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[8] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[7] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[6] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[5] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[4] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[3] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[2] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[1] driven by constant 0
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2009.379 ; gain = 517.789 ; free physical = 58259 ; free virtual = 115022
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2027.191 ; gain = 535.602 ; free physical = 58259 ; free virtual = 115021
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35tcpg236-1
+INFO: [Device 21-403] Loading part xc7a35tcpg236-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2035.195 ; gain = 543.605 ; free physical = 58259 ; free virtual = 115021
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2044.102 ; gain = 552.512 ; free physical = 58247 ; free virtual = 115010
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 48    
+	               16 Bit    Registers := 48    
+	                1 Bit    Registers := 81    
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 48    
+	   2 Input   16 Bit        Muxes := 32    
+	   2 Input    1 Bit        Muxes := 192   
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+DSP Report: Generating DSP signed_mac_result, operation Mode is: C+A*B.
+DSP Report: operator signed_mac_result is absorbed into DSP signed_mac_result.
+DSP Report: operator multiplier_out is absorbed into DSP signed_mac_result.
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[31] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[30] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[29] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[28] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[27] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[26] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[25] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[24] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[23] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[22] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[21] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[20] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[19] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[18] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[17] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[16] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[15] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[14] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[13] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[12] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[11] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[10] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[9] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[8] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[7] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[6] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[5] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[4] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[3] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[2] driven by constant 0
+WARNING: [Synth 8-3917] design systolic_array_4x4 has port pe_status[1] driven by constant 0
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 1st driver pin 'gen_row[0].gen_col[0].pe_inst/can_accept_partial_inferred/can_accept_partial' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 2nd driver pin 'VCC' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net partial_in_ready is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 1st driver pin 'gen_row[0].gen_col[1].pe_inst/can_accept_partial_inferred/can_accept_partial' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 2nd driver pin 'VCC' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net partial_in_ready is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 1st driver pin 'gen_row[0].gen_col[2].pe_inst/can_accept_partial_inferred/can_accept_partial' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 2nd driver pin 'VCC' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net partial_in_ready is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 1st driver pin 'gen_row[0].gen_col[3].pe_inst/can_accept_partial_inferred/can_accept_partial' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin partial_in_ready with 2nd driver pin 'VCC' [/home/jrq/systolic_array_edge/src/pe.v:109]
+CRITICAL WARNING: [Synth 8-6858] multi-driven net partial_in_ready is connected to at least one constant driver which has been preserved, other driver is ignored [/home/jrq/systolic_array_edge/src/pe.v:109]
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 2189.820 ; gain = 698.230 ; free physical = 58097 ; free virtual = 114868
+---------------------------------------------------------------------------------
+ Sort Area is  signed_mac_result_0 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_10 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_2 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_3 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_4 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_5 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_6 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_7 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_8 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_9 : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_a : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_b : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_c : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_d : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_e : 0 0 : 2041 2041 : Used 1 time 0
+ Sort Area is  signed_mac_result_f : 0 0 : 2041 2041 : Used 1 time 0
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 32     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2189.820 ; gain = 698.230 ; free physical = 58097 ; free virtual = 114868
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2189.820 ; gain = 698.230 ; free physical = 58097 ; free virtual = 114868
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57703 ; free virtual = 114474
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57703 ; free virtual = 114474
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57701 ; free virtual = 114472
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57701 ; free virtual = 114472
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57697 ; free virtual = 114468
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57697 ; free virtual = 114468
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|pe          | C+A*B       | 16     | 16     | 0      | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 0      | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 0      | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 0      | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|pe          | C+A*B       | 16     | 16     | 48     | -      | 32     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |BUFG    |     1|
+|2     |DSP48E1 |    16|
+|3     |LUT1    |     2|
+|4     |LUT2    |  1813|
+|5     |LUT3    |    43|
+|6     |LUT4    |    56|
+|7     |LUT5    |    47|
+|8     |LUT6    |    54|
+|9     |FDCE    |  2189|
+|10    |IBUF    |    42|
+|11    |OBUF    |   167|
++------+--------+------+
+
+Report Instance Areas: 
++------+----------------------------------+-------+------+
+|      |Instance                          |Module |Cells |
++------+----------------------------------+-------+------+
+|1     |top                               |       |  4430|
+|2     |  \gen_row[0].gen_col[0].pe_inst  |pe     |   260|
+|3     |  \gen_row[0].gen_col[1].pe_inst  |pe_0   |   258|
+|4     |  \gen_row[0].gen_col[2].pe_inst  |pe_1   |   259|
+|5     |  \gen_row[0].gen_col[3].pe_inst  |pe_2   |   204|
+|6     |  \gen_row[1].gen_col[0].pe_inst  |pe_3   |   292|
+|7     |  \gen_row[1].gen_col[1].pe_inst  |pe_4   |   290|
+|8     |  \gen_row[1].gen_col[2].pe_inst  |pe_5   |   293|
+|9     |  \gen_row[1].gen_col[3].pe_inst  |pe_6   |   238|
+|10    |  \gen_row[2].gen_col[0].pe_inst  |pe_7   |   284|
+|11    |  \gen_row[2].gen_col[1].pe_inst  |pe_8   |   292|
+|12    |  \gen_row[2].gen_col[2].pe_inst  |pe_9   |   292|
+|13    |  \gen_row[2].gen_col[3].pe_inst  |pe_10  |   238|
+|14    |  \gen_row[3].gen_col[0].pe_inst  |pe_11  |   274|
+|15    |  \gen_row[3].gen_col[1].pe_inst  |pe_12  |   271|
+|16    |  \gen_row[3].gen_col[2].pe_inst  |pe_13  |   262|
+|17    |  \gen_row[3].gen_col[3].pe_inst  |pe_14  |   212|
++------+----------------------------------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57697 ; free virtual = 114468
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 12 critical warnings and 65 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2318.633 ; gain = 827.043 ; free physical = 57695 ; free virtual = 114466
+Synthesis Optimization Complete : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2318.641 ; gain = 827.043 ; free physical = 57695 ; free virtual = 114466
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2334.477 ; gain = 0.000 ; free physical = 57805 ; free virtual = 114576
+INFO: [Netlist 29-17] Analyzing 16 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2483.066 ; gain = 0.000 ; free physical = 57748 ; free virtual = 114532
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 52ada5f5
+INFO: [Common 17-83] Releasing license: Synthesis
+16 Infos, 65 Warnings, 12 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 2483.066 ; gain = 995.445 ; free physical = 57749 ; free virtual = 114533
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1942.211; main = 1942.211; forked = 0.000
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 2483.070; main = 2483.070; forked = 0.000
+# puts "\n=============================================================================="
+
+==============================================================================
+# puts "Generating Reports..."
+Generating Reports...
+# puts "=============================================================================="
+==============================================================================
+# puts "\n1. Resource Utilization Report..."
+
+1. Resource Utilization Report...
+# report_utilization -file "$reports_dir/utilization_report.txt" -percentages
+ERROR: [Common 17-170] Unknown option '-percentages', please type 'report_utilization -help' for usage info.
+INFO: [Common 17-206] Exiting Vivado at Fri Jan 30 10:30:12 2026...

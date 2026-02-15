@@ -1,0 +1,20 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2025  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.60+39 (git sha1 49feaa114, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+
+-- Running command `read_verilog -sv src/pe.v src/systolic_array_4x4.v; hierarchy -check -top systolic_array_4x4; synth_xilinx -top systolic_array_4x4; stat' --
+
+1. Executing Verilog-2005 frontend: src/pe.v
+Parsing SystemVerilog input from `src/pe.v' to AST representation.
+verilog frontend filename src/pe.v
+Generating RTLIL representation for module `\pe'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: src/systolic_array_4x4.v
+Parsing SystemVerilog input from `src/systolic_array_4x4.v' to AST representation.
+verilog frontend filename src/systolic_array_4x4.v
+src/systolic_array_4x4.v:49: ERROR: syntax error, unexpected '[', expecting ')' or ',' or '='

@@ -1,0 +1,20 @@
+# Yosys综合脚本
+# 功能：综合Systolic阵列，生成真实的资源使用报告
+
+# 读取源文件
+read_verilog -sv {
+    src/pe.v
+    src/systolic_array_4x4.v
+}
+
+# 设置顶层模块
+hierarchy -check -top systolic_array_4x4
+
+# 转换为Xilinx FPGA
+synth_xilinx -top systolic_array_4x4
+
+# 生成统计报告
+stat
+
+# 打印技术映射统计
+stat -tech xilinx

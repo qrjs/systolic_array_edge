@@ -1,0 +1,42 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Jan 30 10:38:25 2026
+# Process ID         : 757716
+# Current directory  : /home/jrq/systolic_array_edge/sim/work
+# Command line       : vivado -mode batch -source /home/jrq/systolic_array_edge/script/synthesize.tcl -nojournal -log /home/jrq/systolic_array_edge/reports/vivado_optimized.log
+# Log file           : /home/jrq/systolic_array_edge/reports/vivado_optimized.log
+# Journal file       : 
+# Running On         : curry-GTR-Pro
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.3 LTS
+# Processor Detail   : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+# CPU Frequency      : 1765.998 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 130460 MB
+# Swap memory        : 2147 MB
+# Total Virtual      : 132607 MB
+# Available Virtual  : 119880 MB
+#-----------------------------------------------------------
+source /home/jrq/systolic_array_edge/script/synthesize.tcl
+# set project_dir [file dirname [file dirname [info script]]]
+# set src_dir "$project_dir/src"
+# set constraints_dir "$project_dir/constraints"
+# set reports_dir "$project_dir/reports"
+# file mkdir $reports_dir
+# puts "Creating Vivado project..."
+Creating Vivado project...
+# create_project -force systolic_array "$project_dir/vivado_project" -part xc7a35tcpg236-1
+# puts "\nAdding source files..."
+
+Adding source files...
+# add_files [glob "$src_dir/*.v"]
+# puts "\nAdding constraint files..."
+
+Adding constraint files...
+# add_files -fileset constrs_1 -copy_to $constraints_dir [glob "$constraints_dir/*.xdc"]
+ERROR: [Vivado 12-3630] The destination file '/home/jrq/systolic_array_edge/constraints/systolic_array.xdc' already exists, please use -force if you want to overwrite!
+INFO: [Common 17-206] Exiting Vivado at Fri Jan 30 10:38:29 2026...
