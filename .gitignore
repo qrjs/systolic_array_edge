@@ -1,0 +1,53 @@
+# Allow-list strategy for clone-and-run
+# 1. Ignore everything
+*
+
+# 2. Unignore directories so we can traverse them
+!*/
+
+# 3. Re-ignore specific directories we typically want to exclude
+# (files inside these will be ignored because the parent is ignored)
+vivado/
+.Xil/
+reports/
+logs/
+work/
+sim/
+outputs/
+db/
+ndm/
+alib*/
+*OneSpin*
+.vscode/
+.idea/
+.DS_Store
+
+# 4. Unignore essential source files and documentation
+!*.v
+!*.sv
+!*.vh
+!*.svh
+!*.tcl
+!*.sh
+!*.txt
+!*.md
+!*.pdf
+!*.png
+!*.jpg
+!*.jpeg
+!*.sdc
+!*.xdc
+!*.c
+!*.h
+!*.cpp
+!Makefile
+!makefile
+!.gitignore
+!LICENSE
+
+# 5. Specifically ignore known generated files that might match above (if any)
+# (e.g. if a .txt file is generated in the root, exclude it explicitly if needed)
+# But generated folders like reports/ are already excluded.
+
+# 6. Ignore specific binary artifacts/files that shouldn't be tracked
+sim

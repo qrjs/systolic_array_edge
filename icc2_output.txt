@@ -1,9 +1,0 @@
-
-Warning: Cannot use command line editor for terminal type 'xterm-256color'. (CLE-100)
-icc2_shell> help check_license
- check_license        # Checks for the existence of license feature
-icc2_shell> 
-Maximum memory usage for this session: 123.77 MB
-CPU usage for this session:      1 seconds (  0.00 hours)
-Elapsed time for this session:      2 seconds (  0.00 hours)
-Thank you for using IC Compiler II.
