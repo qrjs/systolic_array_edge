@@ -68,7 +68,14 @@ make help-all
 - `docs/统一Makefile与仿真综合使用说明_CN.md:1`
 - `docs/边缘优化实践与实现说明_CN.md:1`
 - `docs/论文大纲_面向边缘计算脉动阵列_CN.md:1`
+- `docs/ASIC前端完成清单_CN.md:1`
 
 补充状态说明见：
 
 - `DATAFLOW_VALIDATION_STATUS_CN.md:1`
+
+ASIC handoff 骨架见：
+
+- `asic/README.md:1`
+- `asic/flows/openroad/README.md:1`
+- `asic_commercial/README.md:1`

@@ -35,13 +35,13 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
-	.PHONY: \
-		help help-all run open regress backend report verify \
-		impl impl-all impl-summary \
-		check sim wave view surfer surfer-vcs txt-one txt txt-all txt-all-iverilog txt-all-vcs \
-		synth synth-all synth-summary verify-func verify-backend verify-full clean clean-arch distclean distclean-arch \
-		vector-gen batch-gen random random-iverilog random-vcs batch batch-iverilog batch-vcs \
-		$(ARCH_SHORTCUT_TARGETS) $(LEGACY_TARGETS)
+.PHONY: \
+	help help-all run open regress backend report verify \
+	impl impl-all impl-summary \
+	check sim wave view surfer surfer-vcs txt-one txt txt-all txt-all-iverilog txt-all-vcs \
+	synth synth-all synth-summary verify-func verify-backend verify-full clean clean-arch distclean distclean-arch \
+	vector-gen batch-gen random random-iverilog random-vcs batch batch-iverilog batch-vcs \
+	$(ARCH_SHORTCUT_TARGETS) $(LEGACY_TARGETS)
 
 
 define RUN_MULTI_ARCH_TXT
