@@ -19,12 +19,14 @@ module systolic_array_ws_tb;
     // 输入数据接口
     reg [DATA_WIDTH-1:0] input_data;
     reg input_valid;
+    reg [1:0] input_row_sel;  // Select Row 0..3
     wire input_ready;
 
     // 权重数据接口
     reg [WEIGHT_WIDTH-1:0] weight_in;
     reg weight_valid;
     reg weight_load;
+    reg [3:0] weight_addr;  // Address 0..15
     wire weight_ready;
 
     // 输出数据接口
@@ -49,9 +51,11 @@ module systolic_array_ws_tb;
         .weight_in(weight_in),
         .weight_valid(weight_valid),
         .weight_load(weight_load),
+        .weight_addr(weight_addr),
         .weight_ready(weight_ready),
         .input_data(input_data),
         .input_valid(input_valid),
+        .input_row_sel(input_row_sel),
         .input_ready(input_ready),
         .output_data(output_data),
         .output_valid(output_valid),
@@ -108,11 +112,14 @@ module systolic_array_ws_tb;
             // 加载权重 (16个权重，所有为1)
             $display("\nLoading weights (all = 1)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd1;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -122,10 +129,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 1)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd1;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             // 等待输出稳定
@@ -212,11 +223,14 @@ module systolic_array_ws_tb;
             // 加载权重 (所有为2)
             $display("\nLoading weights (all = 2)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd2;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -226,10 +240,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 3)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd3;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             // 等待输出
@@ -319,11 +337,14 @@ module systolic_array_ws_tb;
             // 加载权重 (所有为5)
             $display("\nLoading weights (all = 5)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd5;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -333,10 +354,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 0)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd0;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             // 等待输出
@@ -404,11 +429,14 @@ module systolic_array_ws_tb;
             // 加载权重 (所有为10)
             $display("\nLoading weights (all = 10)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd10;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -418,10 +446,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 10)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd10;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -485,11 +517,14 @@ module systolic_array_ws_tb;
             // 加载权重
             $display("\nLoading weights (all = 1)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd1;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -499,10 +534,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 255)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd255;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -565,11 +604,14 @@ module systolic_array_ws_tb;
 
             $display("\nLoading weights (all = 3)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd3;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -578,10 +620,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 2)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd2;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -670,10 +716,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 1)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd1;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -748,11 +798,14 @@ module systolic_array_ws_tb;
             // 加载权重
             $display("\nLoading weights (all = 2)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd2;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
 
@@ -830,21 +883,28 @@ module systolic_array_ws_tb;
             $display("\n=== First Computation ===");
             $display("Loading weights (all = 2)...");
             weight_load = 1;
-            repeat(16) begin
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 weight_in = 16'd2;
                 weight_valid = 1;
+                weight_addr = i[3:0];
             end
+            // Extra cycle for last PE to capture
+            @(posedge clk);
             weight_valid = 0;
             weight_load = 0;
             repeat(10) @(posedge clk);
 
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd3;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -863,10 +923,14 @@ module systolic_array_ws_tb;
             $display("\n=== Second Computation (reusing weights) ===");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
-                input_data = 16'd4;  // 不同的输入
+                input_data = 16'd4;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -950,10 +1014,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 1)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd1;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork
@@ -1010,10 +1078,14 @@ module systolic_array_ws_tb;
             $display("\nSending input data (all = 1)...");
             output_ready = 4'b1111;
             input_valid = 1;
-            repeat(16) begin
+            // Send input data row by row
+            for (i = 0; i < 16; i = i + 1) begin
                 @(posedge clk);
                 input_data = 16'd1;
+                input_row_sel = (i / 4);  // Select row based on input index
             end
+            // Extra cycle
+            @(posedge clk);
             input_valid = 0;
 
             fork

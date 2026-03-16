@@ -1,0 +1,7 @@
+# Random generated expected output
+# case=edge_004 seed=20260325
+C
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0

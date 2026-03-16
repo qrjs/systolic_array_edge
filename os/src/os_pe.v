@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================================
 // Processing Element (PE) for Output Stationary Systolic Array
 // 功能：执行乘加运算 (MAC)，输出驻留数据流
@@ -130,7 +132,12 @@ module os_pe #(
             if (input_valid && input_ready) begin
                 input_reg <= input_in;
                 input_valid_reg <= 1'b1;
-            end else begin
+            end else if (input_out_valid && input_out_ready) begin
+                // Clear after passing data to next PE
+                input_valid_reg <= 1'b0;
+            end else if (!input_valid && input_out_ready && !input_out_valid) begin
+                // Clear when: no input, downstream ready, and no data waiting to pass
+                // This clears stale valid signals when pipeline is idle
                 input_valid_reg <= 1'b0;
             end
         end
@@ -172,7 +179,12 @@ module os_pe #(
             if (weight_valid && weight_ready) begin
                 weight_reg <= weight_in;
                 weight_valid_reg <= 1'b1;
-            end else begin
+            end else if (weight_out_valid && weight_out_ready) begin
+                // Clear after passing data to next PE
+                weight_valid_reg <= 1'b0;
+            end else if (!weight_valid && weight_out_ready && !weight_out_valid) begin
+                // Clear when: no weight, downstream ready, and no data waiting to pass
+                // This clears stale valid signals when pipeline is idle
                 weight_valid_reg <= 1'b0;
             end
         end
@@ -231,24 +243,9 @@ module os_pe #(
                 accumulator <= mac_result;
                 accumulator_valid_reg <= 1'b1;
                 computing <= 1'b1;
-            end
-        end
-    end
-
-    //==========================================================================
-    // 累加器输出逻辑
-    //==========================================================================
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            accumulator_valid_reg <= 1'b0;
-        end else if (flush) begin
-            accumulator_valid_reg <= 1'b0;
-        end else begin
-            // 当请求读取且累加器有有效数据时
-            if (accumulator_read && accumulator_valid_reg) begin
-                accumulator_valid_reg <= 1'b1;
-            end else if (accumulator_read) begin
+            end else if (accumulator_read && accumulator_valid_reg) begin
                 accumulator_valid_reg <= 1'b0;
+                computing <= 1'b0;
             end
         end
     end

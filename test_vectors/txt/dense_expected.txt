@@ -1,0 +1,6 @@
+# Dense matrix expected output
+C
+17 22 17 9
+8 7 13 7
+12 11 13 7
+22 13 13 15

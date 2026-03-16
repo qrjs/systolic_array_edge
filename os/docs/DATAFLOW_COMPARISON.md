@@ -330,7 +330,7 @@ systolic_array_edge/
 │   ├── os_pe.v                   # OS PE 模块
 │   └── systolic_array_os_4x4.v   # OS 阵列
 ├── tb/
-│   ├── systolic_array_tb.v       # WS testbench
+│   ├── systolic_array_os_tb.v    # 当前 OS 主功能 testbench
 │   ├── systolic_array_is_tb.v    # IS testbench
 │   └── systolic_array_os_tb.v    # OS testbench
 └── doc/
@@ -345,7 +345,7 @@ systolic_array_edge/
 
 ```bash
 # 编译
-iverilog -g2012 -o sim_ws src/pe.v src/systolic_array_4x4.v tb/systolic_array_tb.v
+make os
 
 # 运行
 vvp sim_ws

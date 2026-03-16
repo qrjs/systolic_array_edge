@@ -1,0 +1,7 @@
+# Random generated expected output
+# case=rand_004 seed=20260316
+C
+-48 -362 133 223
+30 -56 256 -96
+26 70 -14 -312
+130 250 -39 117

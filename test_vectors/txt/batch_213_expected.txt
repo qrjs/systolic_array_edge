@@ -1,0 +1,7 @@
+# Random generated expected output
+# case=batch_213 seed=20260318
+C
+2269 2383 93 -2655
+1971 207 -798 2290
+800 -20 58 785
+2210 840 -558 790

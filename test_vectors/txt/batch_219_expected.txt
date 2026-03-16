@@ -1,0 +1,7 @@
+# Random generated expected output
+# case=batch_219 seed=20260318
+C
+-1728 6247 2838 -1698
+0 1119 435 -1920
+-2752 -90 1670 2280
+-320 -3058 250 -374

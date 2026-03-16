@@ -45,7 +45,7 @@
 ### 2.2 模块层次
 
 ```
-matrix_multiplier_top (顶层封装)
+standard_os_array_4x4 / systolic_array_os_4x4（当前保留顶层）
     ├── systolic_array_4x4 (4x4阵列)
     │   └── pe (Processing Element) × 16
     └── 控制逻辑和缓冲

@@ -1,0 +1,6 @@
+# cancellation expected output
+C
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0

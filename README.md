@@ -1,101 +1,53 @@
-# Systolic Array 边缘加速器 - 三种数据流架构
+# Systolic Array Edge
 
-## 项目简介
+本仓库包含四种 `4x4` 脉动阵列数据流实现：
 
-本项目实现了三种Systolic Array数据流架构，用于边缘AI加速：
-
-### 三种架构
-- **WS (Weight Stationary)** - 权重复用数据流
-- **IS (Input Stationary)** - 输入驻留数据流
-- **OS (Output Stationary)** - 输出驻留数据流
-
-## 目录结构
-
-```
-systolic_array_edge/
-├── ws/                    # Weight Stationary 架构
-│   ├── src/             # 设计代码
-│   ├── tb/              # 测试代码
-│   ├── scripts/         # 测试脚本
-│   ├── tools/           # Python工具
-│   ├── docs/            # 架构文档
-│   └── tests/           # 测试向量
-│
-├── is/                    # Input Stationary 架构
-│   ├── src/
-│   ├── tb/
-│   ├── scripts/
-│   ├── tools/
-│   ├── docs/
-│   └── tests/
-│
-├── os/                    # Output Stationary 架构
-│   ├── src/
-│   ├── tb/
-│   ├── scripts/
-│   ├── tools/
-│   ├── docs/
-│   └── tests/
-│
-├── docs/                  # 共享文档
-├── scripts/               # 共享脚本
-├── tools/                 # 共享工具
-├── tests/                 # 共享测试
-└── reports/               # 综合报告
-```
+- `ws/`：Weight Stationary
+- `is/`：Input Stationary
+- `os/`：Output Stationary
+- `dip/`：DiP（Diagonal-Input & Permutated weight-stationary）
 
 ## 快速开始
 
-### 测试单个架构
+最常用命令都在仓库根目录执行：
+
 ```bash
-cd ws && bash scripts/run_ws_test.sh
-cd is && bash scripts/run_is_test.sh
-cd os && bash scripts/run_os_test.sh
+make ws
+make ws-vcs
+make dip-wave
+make dip-verdi-vcs
+make txt
+make batch-iverilog
+make dip-vivado
+make clean
 ```
 
-### 运行所有测试
+如果你想显式指定架构和工具，也可以用统一入口：
+
 ```bash
-bash scripts/run_all_tests.sh
+make sim ARCH=ws SIM=iverilog
+make wave ARCH=dip SIM=vcs
+make view ARCH=os SIM=iverilog VIEWER=surfer
+make txt-one ARCH=is SIM=iverilog VECTOR_DIR=test_vectors/txt
+make synth ARCH=dip
 ```
 
-### 生成测试用例
-```bash
-# 为所有架构生成300个测试用例
-python tools/generate_300_tests.py
-```
+## 你现在能做什么
 
-## 测试覆盖
+- 用 `iverilog` / `VCS` 跑功能仿真
+- 用 `Surfer` / `Verdi` 打开波形
+- 用 `.txt` 输入和标准答案做回归
+- 在 `.txt` 回归里查看零值门控潜力（`A_nz / B_nz / active_mac / zero_gated / skip_ratio`）
+- 用随机向量和大批量向量做四架构统一测试
+- 用 `Vivado` 对四个架构分别综合
+- 在每个架构子目录下拿到自己的综合报告
 
-每种架构都有：
-- **100个测试用例** - 20个固定模式 + 80个随机测试
-- **Python Golden Model** - 精确的期望值计算
-- **完整文档** - 架构说明、测试报告、覆盖率分析
+## 重点文档
 
-## 测试结果
+完整中文上手说明见：
 
-- **WS**: 12/12 核心测试通过 ✅
-- **IS**: 12/12 核心测试通过 ✅
-- **OS**: 12/12 核心测试通过 ✅
-- **总计**: 36/36 通过 (100%)
+- `docs/统一Makefile与仿真综合使用说明_CN.md:1`
 
-## 文档
+补充状态说明见：
 
-- `docs/TEST_REPORT_300.txt` - 300个测试用例完整报告
-- `docs/TEST_COVERAGE_REPORT.md` - 测试覆盖率分析
-- `ws/docs/` - WS架构详细文档
-- `is/docs/` - IS架构详细文档
-- `os/docs/` - OS架构详细文档
-
-## 工具
-
-- `tools/golden_model.py` - Golden Model参考实现
-- `tools/generate_300_tests.py` - 测试用例生成器
-- `tools/run_comprehensive_tests.py` - 综合测试工具
-
-## 作者
-
-Systolic Array 边缘加速器项目组
-
-## 许可证
-
-MIT License
+- `DATAFLOW_VALIDATION_STATUS_CN.md:1`

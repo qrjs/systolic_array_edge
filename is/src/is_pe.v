@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================================
 // Processing Element (PE) for Input Stationary Systolic Array
 // 功能：执行乘加运算 (MAC)，输入激活驻留数据流
@@ -15,7 +17,8 @@
 module is_pe #(
     parameter DATA_WIDTH = 16,
     parameter WEIGHT_WIDTH = 16,
-    parameter ACC_WIDTH = 32
+    parameter ACC_WIDTH = 32,
+    parameter PE_ID = 0
 )(
     //==========================================================================
     // 时钟和复位
@@ -153,6 +156,9 @@ module is_pe #(
             if (weight_valid && weight_ready) begin
                 weight_reg <= weight_in;
                 weight_valid_reg <= 1'b1;
+            end else if (accumulator_valid) begin
+                // Keep weight_valid_reg high until MAC consumes it
+                weight_valid_reg <= weight_valid_reg;
             end else begin
                 weight_valid_reg <= 1'b0;
             end
@@ -225,15 +231,16 @@ module is_pe #(
             accumulator_valid <= 1'b0;
             processing <= 1'b0;
         end else if (!stall) begin
-            // 当有有效权重和部分和时，执行MAC运算
             if (weight_valid_reg && partial_valid_reg && input_valid_reg) begin
                 accumulator <= mac_result;
                 accumulator_valid <= 1'b1;
                 processing <= 1'b1;
-            end else begin
+            end else if (partial_out_ready && partial_out_valid) begin
+                // Clear accumulator_valid only after partial_out has been consumed
                 accumulator_valid <= 1'b0;
                 processing <= 1'b0;
             end
+            // Otherwise keep accumulator_valid as-is (sticky until consumed)
         end
     end
 
@@ -255,9 +262,16 @@ module is_pe #(
                 partial_out_reg <= accumulator;
                 partial_out <= accumulator;
                 partial_out_valid <= 1'b1;
+                `ifdef DEBUG
+                    $display("[%0t] PARTIAL_UPDATE: accum=%0d -> partial_out=%0d",
+                             $time, $signed(accumulator), $signed(partial_out));
+                `endif
             end else if (partial_out_ready && partial_out_valid) begin
                 // 握手完成
                 partial_out_valid <= 1'b0;
+                `ifdef DEBUG
+                    $display("[%0t] PARTIAL_HANDSHAKE: output ready, clearing valid", $time);
+                `endif
             end
         end
     end
@@ -301,8 +315,18 @@ module is_pe #(
     // 调试和监控
     //==========================================================================
     `ifdef DEBUG
+        // 监控累加器和stall状态（仅用于调试PE(3,3)）
         always @(posedge clk) begin
-            if (input_load && input_valid && input_ready)
+            if (input_valid_reg || weight_valid_reg || partial_valid_reg ||
+                accumulator_valid || stall) begin
+                $display("[%0t] PE_DBG: in_loaded=%b wt_vld_reg=%b part_vld_reg=%b accum_vld=%b stall=%b accum=%0d",
+                         $time, input_valid_reg, weight_valid_reg, partial_valid_reg,
+                         accumulator_valid, stall, $signed(accumulator));
+            end
+        end
+
+        always @(posedge clk) begin
+            if (input_load && input_ready)
                 $display("[%0t] IS_PE[%0d,%0d] Input loaded: %0d",
                          $time, 0, 0, $signed(input_in));
 
@@ -317,6 +341,16 @@ module is_pe #(
             if (partial_out_valid && partial_out_ready)
                 $display("[%0t] IS_PE[%0d,%0d] Partial out: %0d",
                          $time, 0, 0, $signed(partial_out));
+        end
+
+        // 监控MAC运算的输入值
+        always @(posedge clk) begin
+            if (weight_valid_reg || partial_valid_reg || accumulator_valid) begin
+                $display("[%0t] PE[%0d] MAC_IN: stored_in=%0d wt_reg=%0d part_reg=%0d mac_res=%0d accum=%0d accum_vld=%b",
+                         $time, PE_ID, $signed(stored_input), $signed(weight_reg),
+                         $signed(partial_reg), $signed(mac_result),
+                         $signed(accumulator), accumulator_valid);
+            end
         end
     `endif
 

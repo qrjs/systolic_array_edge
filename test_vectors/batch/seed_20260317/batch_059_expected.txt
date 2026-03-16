@@ -1,0 +1,7 @@
+# Random generated expected output
+# case=batch_059 seed=20260317
+C
+33 932 859 178
+882 4218 1359 -4389
+345 578 1432 -871
+52 466 718 0

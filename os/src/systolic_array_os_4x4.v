@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================================
 // Systolic Array 4x4 - Output Stationary Dataflow
 // 功能：4x4 PE阵列，执行矩阵乘法 C = A × B
@@ -31,13 +33,14 @@ module systolic_array_os_4x4 #(
     //==========================================================================
     input  wire [DATA_WIDTH*ARRAY_SIZE-1:0] input_in,  // 向量输入，每列一个数据
     input  wire [ARRAY_SIZE-1:0]            input_valid, // 每列独立的valid信号
+    input  wire [1:0]                       input_row_sel, // Create row selection
     output wire [ARRAY_SIZE-1:0]            input_ready, // 每列独立的ready信号
 
     //==========================================================================
-    // 权重数据接口（从左侧流入，水平流动）
-    // 说明：权重矩阵B的数据从左侧输入，水平向右流动
+    // 权重数据接口（每列独立输入）
+    // 说明：权重矩阵B的数据按列直接送入对应PE列
     //==========================================================================
-    input  wire [WEIGHT_WIDTH-1:0] weight_in,
+    input  wire [WEIGHT_WIDTH*ARRAY_SIZE-1:0] weight_in, // 每列一个权重
     input  wire weight_valid,
     output wire weight_ready,
 
@@ -111,35 +114,61 @@ module systolic_array_os_4x4 #(
                 //-----------------------------------------------------------------
                 // 输入数据连接（垂直方向）
                 //-----------------------------------------------------------------
+                //-----------------------------------------------------------------
+                // 输入数据连接（垂直方向 - OS数据流）
+                //-----------------------------------------------------------------
+                // OS Dataflow: 输入从顶部流入，垂直向下传递
+                // Row 0从外部获得输入，其他row从上方的PE获得输入
+
+                wire [DATA_WIDTH-1:0] input_to_pe;
+                wire input_valid_to_pe;
+                wire input_ready_from_pe;
+
+                // 输入数据来源：Row 0从外部输入，其他row从上方的PE输出
                 if (row == 0) begin
-                    // 第一行：从外部向量输入接收数据（每列独立输入）
-                    assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] =
-                           input_in[col*DATA_WIDTH +: DATA_WIDTH];
-                    assign input_valid_mesh[row*ARRAY_SIZE + col] = input_valid[col];
-                    // input_ready在另一个generate块中连接
+                    // 第一行：从外部输入获得数据（只在valid时传递）
+                    assign input_to_pe = input_valid[col] ? input_in[col*DATA_WIDTH +: DATA_WIDTH] : {DATA_WIDTH{1'b0}};
+                    assign input_valid_to_pe = input_valid[col];
                 end else begin
-                    // 其他行：从上方PE接收数据
-                    assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] =
-                           input_out_mesh[((row-1)*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH];
-                    assign input_valid_mesh[row*ARRAY_SIZE + col] = input_out_valid_mesh[(row-1)*ARRAY_SIZE + col];
-                    assign input_out_ready_mesh[(row-1)*ARRAY_SIZE + col] = input_ready_mesh[row*ARRAY_SIZE + col];
+                    // 其他行：从上方PE的输出获得数据
+                    assign input_to_pe = input_out_mesh[((row-1)*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH];
+                    assign input_valid_to_pe = input_out_valid_mesh[(row-1)*ARRAY_SIZE + col];
                 end
 
-                //-----------------------------------------------------------------
-                // 权重数据连接（水平方向）
-                //-----------------------------------------------------------------
-                if (col == 0) begin
-                    // 第一列：从外部输入接收权重
-                    assign weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_in;
-                    assign weight_valid_mesh[row*ARRAY_SIZE + col] = weight_valid;
-                    // weight_ready在另一个generate块中连接
-                end else begin
-                    // 其他列：从左侧PE接收权重
-                    assign weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] =
-                           weight_out_mesh[(row*ARRAY_SIZE + col-1)*WEIGHT_WIDTH +: WEIGHT_WIDTH];
-                    assign weight_valid_mesh[row*ARRAY_SIZE + col] = weight_out_valid_mesh[(row*ARRAY_SIZE + col-1)];
-                    assign weight_out_ready_mesh[(row*ARRAY_SIZE + col-1)] = weight_ready_mesh[row*ARRAY_SIZE + col];
+                assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] = input_to_pe;
+                assign input_valid_mesh[row*ARRAY_SIZE + col] = input_valid_to_pe;
+
+                // Connect input_out_ready for data flow between rows
+                // Each row's input_out_ready is controlled by the next row's input_ready
+                if (row < ARRAY_SIZE - 1) begin
+                    // Not last row: connect to next row's input_ready
+                    assign input_out_ready_mesh[row*ARRAY_SIZE + col] = input_ready_mesh[(row+1)*ARRAY_SIZE + col];
                 end
+                // Note: Last row's input_out_ready is set to 1 in boundary handling
+
+                //-----------------------------------------------------------------
+                // 权重数据连接（水平方向 - OS数据流）
+                //-----------------------------------------------------------------
+                // OS Dataflow: 权重从左侧流入，水平向右传递
+                // Col 0从外部获得权重，其他col从左侧的PE获得权重
+
+                wire [WEIGHT_WIDTH-1:0] weight_to_pe;
+                wire weight_valid_to_pe;
+                wire weight_ready_from_pe;
+
+                // 权重数据来源：Col 0从外部输入，其他col从左侧PE的输出
+                if (col == 0) begin
+                    // 第一列：从外部输入获得权重（只在valid时传递）
+                    assign weight_to_pe = weight_valid ? weight_in[row*WEIGHT_WIDTH +: WEIGHT_WIDTH] : {WEIGHT_WIDTH{1'b0}};
+                    assign weight_valid_to_pe = weight_valid;
+                end else begin
+                    // 其他列：从左侧PE的输出获得权重
+                    assign weight_to_pe = weight_out_mesh[(row*ARRAY_SIZE + (col-1))*WEIGHT_WIDTH +: WEIGHT_WIDTH];
+                    assign weight_valid_to_pe = weight_out_valid_mesh[(row*ARRAY_SIZE + (col-1))];
+                end
+
+                assign weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_to_pe;
+                assign weight_valid_mesh[row*ARRAY_SIZE + col] = weight_valid_to_pe;
 
                 //-----------------------------------------------------------------
                 // PE实例化
@@ -226,10 +255,8 @@ module systolic_array_os_4x4 #(
         end
     endgenerate
 
-    assign weight_ready_comb = (weight_ready_mesh[0*ARRAY_SIZE + 0] &&
-                                weight_ready_mesh[1*ARRAY_SIZE + 0] &&
-                                weight_ready_mesh[2*ARRAY_SIZE + 0] &&
-                                weight_ready_mesh[3*ARRAY_SIZE + 0]);
+    // weight_ready: AND of selected row's all-column PE ready signals
+    assign weight_ready_comb = &weight_ready_mesh;
 
     // 输出寄存器（改善时序的关键！）
     reg [ARRAY_SIZE-1:0] input_ready_reg;

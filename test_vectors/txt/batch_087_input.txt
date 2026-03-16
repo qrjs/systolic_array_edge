@@ -1,0 +1,12 @@
+# Random generated input vector
+# case=batch_087 seed=20260318
+A
+-9 63 0 48
+0 31 2 0
+-56 59 30 58
+-29 -37 33 0
+B
+0 0 0 0
+0 0 0 0
+0 0 -50 -28
+11 0 62 0

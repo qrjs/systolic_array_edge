@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================================
 // Systolic Array 4x4 - Input Stationary Dataflow
 // 功能：4x4 PE阵列，执行矩阵乘法 C = A × B
@@ -32,73 +34,57 @@ module systolic_array_is_4x4 #(
     input  wire [DATA_WIDTH-1:0] input_in,
     input  wire input_valid,
     input  wire input_load,
+    input  wire [3:0] input_addr,     // Address 0..15
     output wire input_ready,
 
     //==========================================================================
     // 权重数据接口（从左侧流入）
-    // 说明：权重矩阵B的数据按列顺序从左侧输入
     //==========================================================================
     input  wire [WEIGHT_WIDTH-1:0] weight_in,
     input  wire weight_valid,
     output wire weight_ready,
 
     //==========================================================================
-    // 输出数据接口（从下方流出）
-    // 说明：计算结果矩阵C从阵列底部输出
+    // 输出数据接口（结果从底部流出）
     //==========================================================================
-    output wire [ACC_WIDTH*ARRAY_SIZE-1:0]  output_data,
-    output wire [ARRAY_SIZE-1:0]            output_valid,
-    input  wire [ARRAY_SIZE-1:0]            output_ready,
+    output wire [ACC_WIDTH*ARRAY_SIZE-1:0] output_data,
+    output wire [ARRAY_SIZE-1:0] output_valid,
+    input  wire [ARRAY_SIZE-1:0] output_ready,
 
     //==========================================================================
-    // 控制和状态信号
+    // 控制和配置接口
     //==========================================================================
-    input  wire flush,          // 清空流水线
-    input  wire clk_enable,     // 时钟使能（用于时钟门控，优化功耗）
-    output wire busy            // 阵列忙标志
+    input  wire flush,             // 清空流水线
+    input  wire clk_enable,        // 时钟使能（用于时钟门控）
+    output wire busy               // 阵列忙标志
 );
 
     //==========================================================================
-    // 内部信号连接
+    // 内部信号声明
     //==========================================================================
+    // 输入激活网格信号（16个PE）
+    wire [DATA_WIDTH*16-1:0] input_mesh;
+    wire [15:0] input_valid_mesh;
+    wire [15:0] input_load_mesh;
+    wire [15:0] input_ready_mesh;
+    // 权重网格信号（16个PE）
+    wire [WEIGHT_WIDTH*16-1:0] weight_mesh;
+    wire [15:0] weight_valid_mesh;
+    wire [15:0] weight_ready_mesh;
+    wire [WEIGHT_WIDTH*16-1:0] weight_out_mesh;
+    wire [15:0] weight_out_valid_mesh;
+    wire [15:0] weight_out_ready_mesh;
 
-    //-------------------------------------------------------------------------
-    // 输入激活传递网络
-    // 输入矩阵A按行主序加载，PE[row][col]接收输入A[row][col]
-    //-------------------------------------------------------------------------
-    wire [DATA_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] input_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_valid_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_load_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_ready_mesh;
+    // 部分和网格信号（16个PE）
+    wire [ACC_WIDTH*16-1:0] partial_mesh;
+    wire [15:0] partial_valid_mesh;
+    wire [15:0] partial_ready_mesh;
+    wire [ACC_WIDTH*16-1:0] partial_out_mesh;
+    wire [15:0] partial_out_valid_mesh;
+    wire [15:0] partial_out_ready_mesh;
 
-    //-------------------------------------------------------------------------
-    // 权重数据传递网络（水平方向，从左向右流动）
-    //-------------------------------------------------------------------------
-    wire [WEIGHT_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] weight_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]             weight_valid_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]             weight_ready_mesh;
-    wire [WEIGHT_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] weight_out_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]             weight_out_valid_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]             weight_out_ready_mesh;
-
-    //-------------------------------------------------------------------------
-    // 部分和传递网络（垂直方向，从上向下流动）
-    //-------------------------------------------------------------------------
-    wire [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] partial_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_valid_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_ready_mesh;
-    wire [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] partial_out_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_out_valid_mesh;
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_out_ready_mesh;
-
-    //-------------------------------------------------------------------------
-    // PE状态信号
-    //-------------------------------------------------------------------------
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0] pe_busy_mesh;
-
-    //-------------------------------------------------------------------------
-    // 阵列状态寄存器
-    //-------------------------------------------------------------------------
+    // 阵列忙标志
+    wire [15:0] pe_busy_mesh;
     reg array_busy_reg;
 
     //==========================================================================
@@ -110,67 +96,69 @@ module systolic_array_is_4x4 #(
     generate
         for (i_row = 0; i_row < ARRAY_SIZE; i_row = i_row + 1) begin : gen_input_valid_row
             for (i_col = 0; i_col < ARRAY_SIZE; i_col = i_col + 1) begin : gen_input_valid_col
-                // 输入有效信号：全局有效
-                assign input_valid_mesh[i_row*ARRAY_SIZE + i_col] = input_valid;
-                // 输入加载信号：全局加载
-                assign input_load_mesh[i_row*ARRAY_SIZE + i_col] = input_load;
+                // Address matching
+                wire addr_match = (input_addr == (i_row * ARRAY_SIZE + i_col));
+                // 输入有效信号：匹配地址
+                assign input_valid_mesh[i_row*ARRAY_SIZE + i_col] = input_valid && addr_match;
+                // 输入加载信号：匹配地址
+                assign input_load_mesh[i_row*ARRAY_SIZE + i_col] = input_load && addr_match;
             end
         end
     endgenerate
 
     // 输入激活数据路由：广播策略
     // 简化实现：所有PE接收相同的输入输入（实际应用中应根据PE位置路由）
-    genvar row, col;
+    genvar input_row, input_col;
     generate
-        for (row = 0; row < ARRAY_SIZE; row = row + 1) begin : gen_input_row
-            for (col = 0; col < ARRAY_SIZE; col = col + 1) begin : gen_input_col
-                assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] = input_in;
+        for (input_row = 0; input_row < ARRAY_SIZE; input_row = input_row + 1) begin : gen_input_row
+            for (input_col = 0; input_col < ARRAY_SIZE; input_col = input_col + 1) begin : gen_input_col
+                assign input_mesh[(input_row*ARRAY_SIZE + input_col)*DATA_WIDTH +: DATA_WIDTH] = input_in;
             end
         end
     endgenerate
 
-    // 输入就绪信号：当所有PE都准备好时，才就绪
-    assign input_ready = &input_ready_mesh;  // 简化实现
+    // 输入就绪信号：只有被寻址的PE需要在preload阶段握手
+    assign input_ready = input_ready_mesh[input_addr];
 
     //==========================================================================
     // PE阵列实例化和互连
     //==========================================================================
     // 4x4阵列：PE[row][col]，row表示行，col表示列
 
+    genvar pe_row, pe_col;
     generate
-        for (row = 0; row < ARRAY_SIZE; row = row + 1) begin : gen_row
-            for (col = 0; col < ARRAY_SIZE; col = col + 1) begin : gen_col
+        for (pe_row = 0; pe_row < ARRAY_SIZE; pe_row = pe_row + 1) begin : gen_row
+            for (pe_col = 0; pe_col < ARRAY_SIZE; pe_col = pe_col + 1) begin : gen_col
 
                 //-----------------------------------------------------------------
                 // 权重数据连接（水平方向）
                 //-----------------------------------------------------------------
-                if (col == 0) begin
+                if (pe_col == 0) begin
                     // 第一列：从外部输入接收权重
-                    assign weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_in;
-                    assign weight_valid_mesh[row*ARRAY_SIZE + col] = weight_valid;
+                    assign weight_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_in;
+                    assign weight_valid_mesh[pe_row*ARRAY_SIZE + pe_col] = weight_valid;
                     // weight_ready在另一个generate块中连接
                 end else begin
                     // 其他列：从左侧PE接收权重
-                    assign weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] =
-                           weight_out_mesh[(row*ARRAY_SIZE + col-1)*WEIGHT_WIDTH +: WEIGHT_WIDTH];
-                    assign weight_valid_mesh[row*ARRAY_SIZE + col] = weight_out_valid_mesh[row*ARRAY_SIZE + col-1];
-                    assign weight_out_ready_mesh[row*ARRAY_SIZE + col-1] = weight_ready_mesh[row*ARRAY_SIZE + col];
+                    assign weight_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] =
+                           weight_out_mesh[(pe_row*ARRAY_SIZE + pe_col-1)*WEIGHT_WIDTH +: WEIGHT_WIDTH];
+                    assign weight_valid_mesh[pe_row*ARRAY_SIZE + pe_col] = weight_out_valid_mesh[pe_row*ARRAY_SIZE + pe_col-1];
+                    assign weight_out_ready_mesh[pe_row*ARRAY_SIZE + pe_col-1] = weight_ready_mesh[pe_row*ARRAY_SIZE + pe_col];
                 end
 
                 //-----------------------------------------------------------------
                 // 部分和连接（垂直方向）
                 //-----------------------------------------------------------------
-                if (row == 0) begin
+                if (pe_row == 0) begin
                     // 第一行：部分和初始化为0
-                    assign partial_mesh[(row*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH] = {ACC_WIDTH{1'b0}};
-                    assign partial_valid_mesh[row*ARRAY_SIZE + col] = weight_valid_mesh[row*ARRAY_SIZE + col];
-                    assign partial_ready_mesh[row*ARRAY_SIZE + col] = 1'b1;  // 常就绪
+                    assign partial_mesh[(pe_row*ARRAY_SIZE + pe_col)*ACC_WIDTH +: ACC_WIDTH] = {ACC_WIDTH{1'b0}};
+                    assign partial_valid_mesh[pe_row*ARRAY_SIZE + pe_col] = weight_valid_mesh[pe_row*ARRAY_SIZE + pe_col];
                 end else begin
                     // 其他行：从上方PE接收部分和
-                    assign partial_mesh[(row*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH] =
-                           partial_out_mesh[((row-1)*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH];
-                    assign partial_valid_mesh[row*ARRAY_SIZE + col] = partial_out_valid_mesh[(row-1)*ARRAY_SIZE + col];
-                    assign partial_out_ready_mesh[(row-1)*ARRAY_SIZE + col] = partial_ready_mesh[row*ARRAY_SIZE + col];
+                    assign partial_mesh[(pe_row*ARRAY_SIZE + pe_col)*ACC_WIDTH +: ACC_WIDTH] =
+                           partial_out_mesh[((pe_row-1)*ARRAY_SIZE + pe_col)*ACC_WIDTH +: ACC_WIDTH];
+                    assign partial_valid_mesh[pe_row*ARRAY_SIZE + pe_col] = partial_out_valid_mesh[(pe_row-1)*ARRAY_SIZE + pe_col];
+                    assign partial_out_ready_mesh[(pe_row-1)*ARRAY_SIZE + pe_col] = partial_ready_mesh[pe_row*ARRAY_SIZE + pe_col];
                 end
 
                 //-----------------------------------------------------------------
@@ -179,38 +167,39 @@ module systolic_array_is_4x4 #(
                 is_pe #(
                     .DATA_WIDTH(DATA_WIDTH),
                     .WEIGHT_WIDTH(WEIGHT_WIDTH),
-                    .ACC_WIDTH(ACC_WIDTH)
+                    .ACC_WIDTH(ACC_WIDTH),
+                    .PE_ID(pe_row * ARRAY_SIZE + pe_col)
                 ) pe_inst (
                     // 时钟和复位
                     .clk(clk),
                     .rst_n(rst_n),
 
                     // 输入激活接口
-                    .input_load(input_load_mesh[row*ARRAY_SIZE + col]),
-                    .input_valid(input_valid_mesh[row*ARRAY_SIZE + col]),
-                    .input_in(input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH]),
-                    .input_ready(input_ready_mesh[row*ARRAY_SIZE + col]),
+                    .input_load(input_load_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .input_valid(input_valid_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .input_in(input_mesh[(pe_row*ARRAY_SIZE + pe_col)*DATA_WIDTH +: DATA_WIDTH]),
+                    .input_ready(input_ready_mesh[pe_row*ARRAY_SIZE + pe_col]),
 
                     // 权重数据接口
-                    .weight_valid(weight_valid_mesh[row*ARRAY_SIZE + col]),
-                    .weight_in(weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
-                    .weight_ready(weight_ready_mesh[row*ARRAY_SIZE + col]),
-                    .weight_out(weight_out_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
-                    .weight_out_valid(weight_out_valid_mesh[row*ARRAY_SIZE + col]),
-                    .weight_out_ready(weight_out_ready_mesh[row*ARRAY_SIZE + col]),
+                    .weight_valid(weight_valid_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .weight_in(weight_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                    .weight_ready(weight_ready_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .weight_out(weight_out_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                    .weight_out_valid(weight_out_valid_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .weight_out_ready(weight_out_ready_mesh[pe_row*ARRAY_SIZE + pe_col]),
 
                     // 部分和接口
-                    .partial_in_valid(partial_valid_mesh[row*ARRAY_SIZE + col]),
-                    .partial_in(partial_mesh[(row*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH]),
-                    .partial_in_ready(partial_ready_mesh[row*ARRAY_SIZE + col]),
-                    .partial_out(partial_out_mesh[(row*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH]),
-                    .partial_out_valid(partial_out_valid_mesh[row*ARRAY_SIZE + col]),
-                    .partial_out_ready(partial_out_ready_mesh[row*ARRAY_SIZE + col]),
+                    .partial_in_valid(partial_valid_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .partial_in(partial_mesh[(pe_row*ARRAY_SIZE + pe_col)*ACC_WIDTH +: ACC_WIDTH]),
+                    .partial_in_ready(partial_ready_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .partial_out(partial_out_mesh[(pe_row*ARRAY_SIZE + pe_col)*ACC_WIDTH +: ACC_WIDTH]),
+                    .partial_out_valid(partial_out_valid_mesh[pe_row*ARRAY_SIZE + pe_col]),
+                    .partial_out_ready(partial_out_ready_mesh[pe_row*ARRAY_SIZE + pe_col]),
 
                     // 控制和时钟门控接口
                     .flush(flush),
                     .clk_enable(clk_enable),
-                    .pe_busy(pe_busy_mesh[row*ARRAY_SIZE + col])
+                    .pe_busy(pe_busy_mesh[pe_row*ARRAY_SIZE + pe_col])
                 );
 
             end
@@ -222,17 +211,77 @@ module systolic_array_is_4x4 #(
     //==========================================================================
     // 最后一行的PE输出作为最终结果
 
+    genvar out_col;
     generate
-        for (col = 0; col < ARRAY_SIZE; col = col + 1) begin : gen_output
+        for (out_col = 0; out_col < ARRAY_SIZE; out_col = out_col + 1) begin : gen_output
             // 输出数据连接
-            assign output_data[col*ACC_WIDTH +: ACC_WIDTH] =
-                   partial_out_mesh[((ARRAY_SIZE-1)*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH];
+            assign output_data[out_col*ACC_WIDTH +: ACC_WIDTH] =
+                   partial_out_mesh[((ARRAY_SIZE-1)*ARRAY_SIZE + out_col)*ACC_WIDTH +: ACC_WIDTH];
             // 输出有效信号连接
-            assign output_valid[col] = partial_out_valid_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + col];
+            assign output_valid[out_col] = partial_out_valid_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + out_col];
             // 输出就绪信号连接
-            assign partial_out_ready_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + col] = output_ready[col];
+            assign partial_out_ready_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + out_col] = output_ready[out_col];
         end
     endgenerate
+
+    // Debug: monitor partial outputs
+    `ifdef DEBUG
+        always @(posedge clk) begin
+            for (integer k = 0; k < ARRAY_SIZE; k = k + 1) begin
+                if (partial_out_valid_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + k]) begin
+                    $display("[%0t] DEBUG: partial_out[%0d] = %0d, valid=%b, ready=%b",
+                             $time, k, $signed(partial_out_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + k]),
+                             partial_out_valid_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + k],
+                             partial_out_ready_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + k]);
+                end
+            end
+        end
+
+        // Monitor first row PE states
+        always @(posedge clk) begin
+            if (weight_valid_mesh[0] || weight_valid_mesh[3] ||
+                partial_out_valid_mesh[0] || partial_out_valid_mesh[3]) begin
+                $display("[%0t] DEBUG_COL0: PE(0,0) wt=%0d wt_out=%0d part_out=%0d part_out_vld=%b | PE(0,3) wt=%0d wt_out=%0d part_out=%0d part_out_vld=%b",
+                         $time,
+                         $signed(weight_mesh[0*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                         $signed(weight_out_mesh[0*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                         $signed(partial_out_mesh[0*ACC_WIDTH +: ACC_WIDTH]),
+                         partial_out_valid_mesh[0],
+                         $signed(weight_mesh[3*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                         $signed(weight_out_mesh[3*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                         $signed(partial_out_mesh[3*ACC_WIDTH +: ACC_WIDTH]),
+                         partial_out_valid_mesh[3]);
+            end
+        end
+
+        // Monitor column 3 partial sum flow across rows
+        always @(posedge clk) begin
+            if (partial_out_valid_mesh[3] || partial_out_valid_mesh[7] ||
+                partial_out_valid_mesh[11] || partial_out_valid_mesh[15] ||
+                partial_valid_mesh[15]) begin
+                $display("[%0t] DEBUG_COL3: PE(2,3) out=%0d vld=%b | PE(3,3) in_vld=%b in=%0d out=%0d out_vld=%b",
+                         $time,
+                         $signed(partial_out_mesh[11*ACC_WIDTH +: ACC_WIDTH]), partial_out_valid_mesh[11],
+                         partial_valid_mesh[15], $signed(partial_mesh[15*ACC_WIDTH +: ACC_WIDTH]),
+                         $signed(partial_out_mesh[15*ACC_WIDTH +: ACC_WIDTH]), partial_out_valid_mesh[15]);
+            end
+        end
+
+        // Monitor PE(3,3) output changes
+        always @(posedge clk) begin
+            // Monitor all output changes to find when data gets lost
+            if (partial_out_valid_mesh[15] || partial_out_ready_mesh[15] ||
+                ($signed(partial_out_mesh[15*ACC_WIDTH +: ACC_WIDTH]) != 0)) begin
+                $display("[%0t] TRACE33: part_out=%0d part_vld=%b part_rdy=%b -> out_data=%0d out_vld=%b",
+                         $time,
+                         $signed(partial_out_mesh[15*ACC_WIDTH +: ACC_WIDTH]),
+                         partial_out_valid_mesh[15],
+                         partial_out_ready_mesh[15],
+                         $signed(output_data[3*ACC_WIDTH +: ACC_WIDTH]),
+                         output_valid[3]);
+            end
+        end
+    `endif
 
     //==========================================================================
     // 边界处理：最后一列PE的weight_out_ready

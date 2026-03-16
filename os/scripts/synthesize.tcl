@@ -8,7 +8,7 @@
 set project_dir [file dirname [file dirname [info script]]]
 set src_dir "$project_dir/src"
 set constraints_dir "$project_dir/constraints"
-set reports_dir "$project_dir/reports"
+set reports_dir "$project_dir/reports/synth"
 
 # 创建报告目录
 file mkdir $reports_dir
@@ -26,7 +26,7 @@ puts "\nAdding constraint files..."
 add_files -fileset constrs_1 -force [glob "$constraints_dir/*.xdc"]
 
 # 设置顶层模块
-set_property top systolic_array_4x4 [current_fileset]
+set_property top systolic_array_os_4x4 [current_fileset]
 
 # 更新编译顺序
 update_compile_order -fileset sources_1
@@ -41,7 +41,7 @@ puts "==========================================================================
 set_property strategy Flow_PerfOptimized_high [get_runs synth_1]
 
 # 执行综合
-synth_design -top systolic_array_4x4 -part xc7a35tcpg236-1 -fanout_limit 400 -fsm_extraction one_hot -resource_sharing auto -max_bram -1 -max_dsp -1
+synth_design -top systolic_array_os_4x4 -part xc7a35tcpg236-1 -fanout_limit 400 -fsm_extraction one_hot -resource_sharing auto -max_bram -1 -max_dsp -1
 
 # 生成综合报告
 puts "\n=============================================================================="

@@ -15,10 +15,10 @@ is/
 ├── src/                    # 源代码
 ├── tb/                     # 测试文件
 ├── constraints/            # 时序约束
-├── script/                 # 综合/验证脚本
+├── scripts/                # 综合/验证脚本
 ├── reports/                # 综合/验证报告
-├── doc/                    # 文档
-└── verification/           # Golden Model 验证
+├── docs/                   # 文档
+└── tb/                     # 当前保留的主功能 / 波形 / 文件回归 testbench
 ```
 
 ## 快速开始
@@ -40,4 +40,4 @@ vivado -mode batch -source synthesize.tcl
 
 ## 文档
 
-- [详细说明](../doc/DATAFLOW_COMPARISON.md)
+- 详细对比见 `DATAFLOW_COMPARISON.md`

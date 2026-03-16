@@ -1,0 +1,6 @@
+# Signed mixed-value expected output
+C
+-17 14 -5 -5
+2 1 17 2
+10 -17 13 14
+16 4 -13 19

@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================================
 // Systolic Array 4x4 for Matrix Multiplication
 // 功能：4x4 PE阵列，执行矩阵乘法 C = A × B
@@ -27,63 +29,46 @@ module systolic_array_4x4 #(
 
     //==========================================================================
     // 权重加载接口
-    // 说明：权重矩阵B需要按特定模式加载到阵列中
     //==========================================================================
     input  wire [WEIGHT_WIDTH-1:0] weight_in,
     input  wire weight_valid,
     input  wire weight_load,
+    input  wire [3:0] weight_addr, // Address 0..15
     output wire weight_ready,
 
     //==========================================================================
-    // 输入数据接口（从左侧流入）
-    // 说明：输入矩阵A的数据按行顺序从左侧输入
+    // 输入数据接口
     //==========================================================================
     input  wire [DATA_WIDTH-1:0] input_data,
     input  wire input_valid,
+    input  wire [1:0] input_row_sel, // Select Row 0..3
     output wire input_ready,
 
-    //==========================================================================
-    // 输出数据接口（从下方流出）
-    // 说明：计算结果矩阵C从阵列底部输出
-    //==========================================================================
+    // ... (rest of ports unchanged)
     output wire [ACC_WIDTH*ARRAY_SIZE-1:0]  output_data,
     output wire [ARRAY_SIZE-1:0]            output_valid,
     input  wire [ARRAY_SIZE-1:0]            output_ready,
 
-    //==========================================================================
-    // 控制和状态信号
-    //==========================================================================
-    input  wire flush,          // 清空流水线
-    input  wire clk_enable,     // 时钟使能（用于时钟门控，优化功耗）
-    output wire busy            // 阵列忙标志
+    input  wire flush,
+    input  wire clk_enable,
+    output wire busy
 );
-
-    //==========================================================================
-    // 内部信号连接
-    //==========================================================================
-
-    //-------------------------------------------------------------------------
-    // 权重传递网络
-    // 权重需要按照特定模式路由到各个PE
-    //-------------------------------------------------------------------------
+    // ... (internal wires)
     wire [WEIGHT_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] weight_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            weight_valid_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            weight_load_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            weight_ready_mesh;
 
-    //-------------------------------------------------------------------------
-    // 输入数据传递网络（水平方向，从左向右流动）
-    //-------------------------------------------------------------------------
     wire [DATA_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] input_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_valid_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_ready_mesh;
     wire [DATA_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] input_out_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_out_valid_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            input_out_ready_mesh;
+    
+    wire [ARRAY_SIZE*ARRAY_SIZE-1:0] pe_busy_mesh;
+    reg array_busy_reg;
 
-    //-------------------------------------------------------------------------
-    // 部分和传递网络（垂直方向，从上向下流动）
-    //-------------------------------------------------------------------------
     wire [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] partial_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_valid_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_ready_mesh;
@@ -91,49 +76,47 @@ module systolic_array_4x4 #(
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_out_valid_mesh;
     wire [ARRAY_SIZE*ARRAY_SIZE-1:0]            partial_out_ready_mesh;
 
-    //-------------------------------------------------------------------------
-    // PE状态信号
-    //-------------------------------------------------------------------------
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0] pe_busy_mesh;
-
-    //-------------------------------------------------------------------------
-    // 阵列状态寄存器
-    //-------------------------------------------------------------------------
-    reg array_busy_reg;
-
-    //==========================================================================
-    // 权重加载控制逻辑
-    //==========================================================================
-    // 权重矩阵B按行主序加载，PE[row][col]接收权重B[col][row]
-    // 这样可以实现数据的有效复用
-
+    // Weight Loading Logic with Address
     genvar w_row, w_col;
     generate
         for (w_row = 0; w_row < ARRAY_SIZE; w_row = w_row + 1) begin : gen_weight_valid_row
             for (w_col = 0; w_col < ARRAY_SIZE; w_col = w_col + 1) begin : gen_weight_valid_col
-                // 权重有效信号：全局有效
-                assign weight_valid_mesh[w_row*ARRAY_SIZE + w_col] = weight_valid;
-                // 权重加载信号：全局加载
-                assign weight_load_mesh[w_row*ARRAY_SIZE + w_col] = weight_load;
+                // Enable load only if address matches
+                wire addr_match = (weight_addr == (w_row * ARRAY_SIZE + w_col));
+                
+                assign weight_valid_mesh[w_row*ARRAY_SIZE + w_col] = weight_valid && addr_match;
+                assign weight_load_mesh[w_row*ARRAY_SIZE + w_col] = weight_load && addr_match;
             end
         end
     endgenerate
 
-    // 权重数据路由：广播策略
-    // 在实际应用中，可以根据需要实现更智能的路由策略
     genvar row, col;
     generate
         for (row = 0; row < ARRAY_SIZE; row = row + 1) begin : gen_weight_row
             for (col = 0; col < ARRAY_SIZE; col = col + 1) begin : gen_weight_col
-                // 简化实现：所有PE接收相同的权重输入
-                // 实际应用中应该根据PE位置路由不同的权重
                 assign weight_mesh[(row*ARRAY_SIZE + col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_in;
             end
         end
     endgenerate
 
-    // 权重就绪信号：当所有PE都准备好时，才就绪
-    assign weight_ready = &weight_ready_mesh[0];  // 简化实现
+    // Input Routing Logic (Demux to Row)
+    generate
+        for (row = 0; row < ARRAY_SIZE; row = row + 1) begin : gen_input_row
+            for (col = 0; col < ARRAY_SIZE; col = col + 1) begin : gen_input_col
+                if (col == 0) begin
+                    // Row Selection: Only drive input if row matches selection
+                    assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] = input_data;
+                    assign input_valid_mesh[row*ARRAY_SIZE + col] = input_valid && (row == input_row_sel);
+                end else begin
+                    // ... (rest unchanged)
+                    assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] =
+                           input_out_mesh[(row*ARRAY_SIZE + col-1)*DATA_WIDTH +: DATA_WIDTH];
+                    assign input_valid_mesh[row*ARRAY_SIZE + col] = input_out_valid_mesh[row*ARRAY_SIZE + col-1];
+                    assign input_out_ready_mesh[row*ARRAY_SIZE + col-1] = input_ready_mesh[row*ARRAY_SIZE + col];
+                end
+            end
+        end
+    endgenerate
 
     //==========================================================================
     // PE阵列实例化和互连
@@ -144,21 +127,8 @@ module systolic_array_4x4 #(
         for (row = 0; row < ARRAY_SIZE; row = row + 1) begin : gen_row
             for (col = 0; col < ARRAY_SIZE; col = col + 1) begin : gen_col
 
-                //-----------------------------------------------------------------
-                // 输入数据连接（水平方向）
-                //-----------------------------------------------------------------
-                if (col == 0) begin
-                    // 第一列：从外部输入接收数据
-                    assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] = input_data;
-                    assign input_valid_mesh[row*ARRAY_SIZE + col] = input_valid;
-                    // input_ready在另一个generate块中连接，避免多驱动
-                end else begin
-                    // 其他列：从左侧PE接收数据
-                    assign input_mesh[(row*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH] =
-                           input_out_mesh[(row*ARRAY_SIZE + col-1)*DATA_WIDTH +: DATA_WIDTH];
-                    assign input_valid_mesh[row*ARRAY_SIZE + col] = input_out_valid_mesh[row*ARRAY_SIZE + col-1];
-                    assign input_out_ready_mesh[row*ARRAY_SIZE + col-1] = input_ready_mesh[row*ARRAY_SIZE + col];
-                end
+                // Input connection moved to separate generate block
+                // (no logic here)
 
                 //-----------------------------------------------------------------
                 // 部分和连接（垂直方向）
@@ -167,7 +137,6 @@ module systolic_array_4x4 #(
                     // 第一行：部分和初始化为0
                     assign partial_mesh[(row*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH] = {ACC_WIDTH{1'b0}};
                     assign partial_valid_mesh[row*ARRAY_SIZE + col] = input_valid_mesh[row*ARRAY_SIZE + col];
-                    assign partial_ready_mesh[row*ARRAY_SIZE + col] = 1'b1;  // 常就绪
                 end else begin
                     // 其他行：从上方PE接收部分和
                     assign partial_mesh[(row*ARRAY_SIZE + col)*ACC_WIDTH +: ACC_WIDTH] =
@@ -263,13 +232,11 @@ module systolic_array_4x4 #(
     wire input_ready_comb;
     wire weight_ready_comb;
 
-    assign input_ready_comb = (input_ready_mesh[0*ARRAY_SIZE + 0] &&
-                              input_ready_mesh[1*ARRAY_SIZE + 0] &&
-                              input_ready_mesh[2*ARRAY_SIZE + 0] &&
-                              input_ready_mesh[3*ARRAY_SIZE + 0]);
+    // Only the selected row consumes the scalar activation stream.
+    assign input_ready_comb = input_ready_mesh[input_row_sel * ARRAY_SIZE];
 
-    // weight_ready 与 input_ready 相同（使用同一数据通道）
-    assign weight_ready_comb = input_ready_comb;
+    // Only the addressed PE consumes the scalar preload weight transaction.
+    assign weight_ready_comb = weight_ready_mesh[weight_addr];
 
     // 输出寄存器（改善时序的关键！）
     reg input_ready_reg;
@@ -374,5 +341,22 @@ module systolic_array_4x4 #(
     // 2. 延迟测量
     // 3. 利用率统计
     // 4. 功耗估算
+
+    `ifdef DEBUG
+        // Keep the cycle-by-cycle trace available for bring-up without paying the
+        // simulation cost in the default regression path.
+        always @(posedge clk) begin
+            if (input_valid)
+                $display("ARRAY DEBUG: Input Valid In: %b Sel: %d", input_valid, input_row_sel);
+            if (|input_valid_mesh)
+                $display("ARRAY DEBUG: Input Mesh Valid: %h", input_valid_mesh);
+            if (|partial_valid_mesh)
+                $display("ARRAY DEBUG: Partial In Valid: %h", partial_valid_mesh);
+            if (|partial_out_valid_mesh)
+                $display("ARRAY DEBUG: Partial Out Valid: %h", partial_out_valid_mesh);
+            if (|output_valid)
+                $display("ARRAY DEBUG: Output Valid: %b", output_valid);
+        end
+    `endif
 
 endmodule

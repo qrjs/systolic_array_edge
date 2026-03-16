@@ -1,0 +1,12 @@
+# Random generated input vector
+# case=edge_004 seed=20260325
+A
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+B
+0 0 0 18
+0 0 0 0
+0 0 0 0
+0 0 -28 0

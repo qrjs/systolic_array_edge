@@ -8,7 +8,7 @@
 set project_dir [file dirname [file dirname [info script]]]
 set src_dir "$project_dir/src"
 set constraints_dir "$project_dir/constraints"
-set reports_dir "$project_dir/reports"
+set reports_dir "$project_dir/reports/synth"
 
 # 创建报告目录
 file mkdir $reports_dir

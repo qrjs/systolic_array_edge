@@ -1,0 +1,6 @@
+# rank1_outer expected output
+C
+20 0 -10 30
+40 0 -20 60
+-20 0 10 -30
+60 0 -30 90

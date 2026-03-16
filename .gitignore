@@ -8,6 +8,7 @@
 # 3. Re-ignore specific directories we typically want to exclude
 # (files inside these will be ignored because the parent is ignored)
 vivado/
+vivado_project/
 .Xil/
 reports/
 logs/
@@ -52,3 +53,21 @@ alib*/
 
 # 6. Ignore specific binary artifacts/files that shouldn't be tracked
 sim
+
+# 7. Ignore high-frequency generated artifacts explicitly
+*.log
+*.jou
+*.backup.log
+*.backup.jou
+*.vcd
+*.vvp
+test_logs/
+simple_sim.daidir/
+sim_is
+*_inputs.hex
+*_weights.hex
+*_expected.hex
+test_vectors_*_100.json
+*/tb/sim/
+*/tb/sim_*
+*/scripts/*sim*.log

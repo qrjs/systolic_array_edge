@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 //==============================================================================
 // Processing Element (PE) for Systolic Array
 // 功能：执行乘加运算 (MAC)，支持权重保持和数据流动
@@ -159,6 +161,9 @@ module pe #(
             if (input_valid && input_ready) begin
                 input_reg <= input_data;
                 input_valid_reg <= 1'b1;
+            end else if (accumulator_valid) begin
+                // Keep input_valid_reg high until MAC consumes it
+                input_valid_reg <= input_valid_reg;
             end else begin
                 input_valid_reg <= 1'b0;
             end
@@ -202,6 +207,9 @@ module pe #(
             if (partial_in_valid && partial_in_ready) begin
                 partial_reg <= partial_in;
                 partial_valid_reg <= 1'b1;
+            end else if (accumulator_valid) begin
+                // Keep partial_valid_reg high until MAC consumes it
+                partial_valid_reg <= partial_valid_reg;
             end else begin
                 partial_valid_reg <= 1'b0;
             end
@@ -236,10 +244,12 @@ module pe #(
                 accumulator <= mac_result;
                 accumulator_valid <= 1'b1;
                 processing <= 1'b1;
-            end else begin
+            end else if (partial_out_ready && partial_out_valid) begin
+                // Clear accumulator_valid only after partial_out has been consumed
                 accumulator_valid <= 1'b0;
                 processing <= 1'b0;
             end
+            // Otherwise keep accumulator_valid as-is (sticky until consumed)
         end
     end
 
