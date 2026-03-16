@@ -113,10 +113,20 @@ module standard_os_array_4x4 #(
                         current_b_valid = b_valid_pipe[row_idx - 1][col_idx];
                     end
 
-                    a_pipe[row_idx][col_idx] <= current_a;
-                    b_pipe[row_idx][col_idx] <= current_b;
-                    a_valid_pipe[row_idx][col_idx] <= current_a_valid;
-                    b_valid_pipe[row_idx][col_idx] <= current_b_valid;
+                    // 低翻转优化：仅在 valid=1 时推进 A/B 数据；无效时保持数据寄存器不变。
+                    if (current_a_valid) begin
+                        a_pipe[row_idx][col_idx] <= current_a;
+                        a_valid_pipe[row_idx][col_idx] <= 1'b1;
+                    end else begin
+                        a_valid_pipe[row_idx][col_idx] <= 1'b0;
+                    end
+
+                    if (current_b_valid) begin
+                        b_pipe[row_idx][col_idx] <= current_b;
+                        b_valid_pipe[row_idx][col_idx] <= 1'b1;
+                    end else begin
+                        b_valid_pipe[row_idx][col_idx] <= 1'b0;
+                    end
 
                     if (current_a_valid && current_b_valid) begin
                         // 低功耗优化：OS 中虽然每个输出单元都必须经历 ARRAY_SIZE 次“到达事件”，

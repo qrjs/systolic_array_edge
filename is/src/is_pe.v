@@ -92,7 +92,7 @@ module is_pe #(
 
     // 状态和控制信号
     reg                   processing;              // 处理中标志
-    reg                   stall;                   // 停顿标志
+    wire                  stall;                   // 停顿标志
     wire                  can_accept_weight;       // 可以接受权重
     wire                  can_accept_partial;      // 可以接受部分和
 
@@ -110,18 +110,9 @@ module is_pe #(
     //==========================================================================
     // 停顿逻辑
     //==========================================================================
-    always @(*) begin
-        stall = 1'b0;
-        if (weight_out_valid_reg && !weight_out_ready) begin
-            stall = 1'b1;  // 权重输出阻塞
-        end
-        if (partial_out_valid && !partial_out_ready) begin
-            stall = 1'b1;  // 部分和输出阻塞
-        end
-        if (flush) begin
-            stall = 1'b1;  // 刷新时停顿
-        end
-    end
+    assign stall = flush
+                || (weight_out_valid_reg && !weight_out_ready)   // 权重输出阻塞
+                || (partial_out_valid && !partial_out_ready);    // 部分和输出阻塞
 
     //==========================================================================
     // 输入激活加载逻辑
@@ -134,7 +125,8 @@ module is_pe #(
             // 刷新时清除输入激活
             stored_input <= {DATA_WIDTH{1'b0}};
             input_valid_reg <= 1'b0;
-        end else if (input_load && input_valid && input_ready) begin
+        // clk_enable=0 时保持 preload 状态，等效于局部门控，避免空拍改写寄存器。
+        end else if (clk_enable && input_load && input_valid && input_ready) begin
             // 加载新的输入激活
             stored_input <= input_in;
             input_valid_reg <= 1'b1;
@@ -152,7 +144,8 @@ module is_pe #(
         end else if (flush) begin
             weight_reg <= {WEIGHT_WIDTH{1'b0}};
             weight_valid_reg <= 1'b0;
-        end else if (!stall) begin
+        // 权重通路在冻结期间保持寄存器内容不变，减少无效翻转并消除 clk_enable 空载告警。
+        end else if (clk_enable && !stall) begin
             if (weight_valid && weight_ready) begin
                 weight_reg <= weight_in;
                 weight_valid_reg <= 1'b1;
@@ -173,7 +166,7 @@ module is_pe #(
         end else if (flush) begin
             weight_out_reg <= {WEIGHT_WIDTH{1'b0}};
             weight_out_valid_reg <= 1'b0;
-        end else if (!stall) begin
+        end else if (clk_enable && !stall) begin
             if (weight_valid_reg) begin
                 weight_out_reg <= weight_reg;
                 weight_out_valid_reg <= 1'b1;
@@ -198,7 +191,7 @@ module is_pe #(
         end else if (flush) begin
             partial_reg <= {ACC_WIDTH{1'b0}};
             partial_valid_reg <= 1'b0;
-        end else if (!stall) begin
+        end else if (clk_enable && !stall) begin
             if (partial_in_valid && partial_in_ready) begin
                 partial_reg <= partial_in;
                 partial_valid_reg <= 1'b1;
@@ -230,7 +223,7 @@ module is_pe #(
             accumulator <= {ACC_WIDTH{1'b0}};
             accumulator_valid <= 1'b0;
             processing <= 1'b0;
-        end else if (!stall) begin
+        end else if (clk_enable && !stall) begin
             if (weight_valid_reg && partial_valid_reg && input_valid_reg) begin
                 accumulator <= mac_result;
                 accumulator_valid <= 1'b1;
@@ -256,7 +249,7 @@ module is_pe #(
             partial_out_reg <= {ACC_WIDTH{1'b0}};
             partial_out <= {ACC_WIDTH{1'b0}};
             partial_out_valid <= 1'b0;
-        end else if (!stall) begin
+        end else if (clk_enable && !stall) begin
             if (accumulator_valid) begin
                 // 新的计算结果
                 partial_out_reg <= accumulator;

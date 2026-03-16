@@ -26,16 +26,20 @@ create_clock -period 10.000 -name clk [get_ports clk]
 
 # 输入数据接口 (16位)
 # 假设外部器件在时钟上升沿后 2ns 内输出数据
-set_input_delay -clock clk -max 2.000 [get_ports input_data]
-set_input_delay -clock clk -min 0.500 [get_ports input_data]
+set_input_delay -clock clk -max 2.000 [get_ports input_in]
+set_input_delay -clock clk -min 0.500 [get_ports input_in]
+
+# 输入地址接口
+set_input_delay -clock clk -max 2.000 [get_ports input_addr[*]]
+set_input_delay -clock clk -min 0.500 [get_ports input_addr[*]]
 
 # 权重输入接口 (16位)
 set_input_delay -clock clk -max 2.000 [get_ports weight_in]
 set_input_delay -clock clk -min 0.500 [get_ports weight_in]
 
-# 输入有效信号
-set_input_delay -clock clk -max 2.000 [get_ports {input_valid weight_valid weight_load}]
-set_input_delay -clock clk -min 0.500 [get_ports {input_valid weight_valid weight_load}]
+# 输入有效/控制信号
+set_input_delay -clock clk -max 2.000 [get_ports {input_valid weight_valid input_load clk_enable}]
+set_input_delay -clock clk -min 0.500 [get_ports {input_valid weight_valid input_load clk_enable}]
 
 # 输出就绪信号
 set_input_delay -clock clk -max 2.000 [get_ports {output_ready[*]}]

@@ -12,24 +12,43 @@
 最常用命令都在仓库根目录执行：
 
 ```bash
-make ws
-make ws-vcs
-make dip-wave
-make dip-verdi-vcs
-make txt
-make batch-iverilog
-make dip-vivado
+make run ARCH=ws
+make wave ARCH=dip
+make open ARCH=ws
+make regress
+make backend
+make impl ARCH=is
+make impl-summary
+make verify
 make clean
 ```
 
-如果你想显式指定架构和工具，也可以用统一入口：
+兼容旧别名仍然保留，例如：
+
+```bash
+make ws
+make ws-vcs
+make dip-wave
+make surfer ARCH=ws
+make txt
+make verify-full
+```
+
+如果你想显式指定架构和工具，也可以继续使用底层统一入口：
 
 ```bash
 make sim ARCH=ws SIM=iverilog
-make wave ARCH=dip SIM=vcs
 make view ARCH=os SIM=iverilog VIEWER=surfer
 make txt-one ARCH=is SIM=iverilog VECTOR_DIR=test_vectors/txt
 make synth ARCH=dip
+make impl-summary
+```
+
+命令总览：
+
+```bash
+make help
+make help-all
 ```
 
 ## 你现在能做什么
@@ -47,6 +66,8 @@ make synth ARCH=dip
 完整中文上手说明见：
 
 - `docs/统一Makefile与仿真综合使用说明_CN.md:1`
+- `docs/边缘优化实践与实现说明_CN.md:1`
+- `docs/论文大纲_面向边缘计算脉动阵列_CN.md:1`
 
 补充状态说明见：
 

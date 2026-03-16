@@ -134,10 +134,16 @@ module standard_is_array_4x4 #(
                         end
                     end
 
-                    weight_pipe[row_idx][col_idx] <= current_weight;
-                    valid_pipe[row_idx][col_idx] <= current_valid;
-                    col_tag_pipe[row_idx][col_idx] <= current_tag;
-                    psum_pipe[row_idx][col_idx] <= current_valid ? next_psum : {ACC_WIDTH{1'b0}};
+                    // 低翻转优化：无效 token 周期不改写 weight/tag，只清 valid/psum。
+                    if (current_valid) begin
+                        weight_pipe[row_idx][col_idx] <= current_weight;
+                        valid_pipe[row_idx][col_idx] <= 1'b1;
+                        col_tag_pipe[row_idx][col_idx] <= current_tag;
+                        psum_pipe[row_idx][col_idx] <= next_psum;
+                    end else begin
+                        valid_pipe[row_idx][col_idx] <= 1'b0;
+                        psum_pipe[row_idx][col_idx] <= {ACC_WIDTH{1'b0}};
+                    end
 
                     if ((row_idx == 0) && current_valid) begin
                         input_col_tag[col_idx] <= input_col_tag[col_idx] + {{(TAG_WIDTH-1){1'b0}}, 1'b1};

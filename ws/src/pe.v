@@ -99,7 +99,7 @@ module pe #(
 
     // 状态和控制信号
     reg                   processing;              // 处理中标志
-    reg                   stall;                   // 停顿标志
+    wire                  stall;                   // 停顿标志
     wire                  can_accept_input;        // 可以接受输入
     wire                  can_accept_partial;      // 可以接受部分和
 
@@ -117,18 +117,9 @@ module pe #(
     // 停顿逻辑
     //==========================================================================
     // 当输出阻塞或需要等待时，停顿流水线
-    always @(*) begin
-        stall = 1'b0;
-        if (input_out_valid_reg && !input_out_ready) begin
-            stall = 1'b1;  // 输出阻塞
-        end
-        if (partial_out_valid && !partial_out_ready) begin
-            stall = 1'b1;  // 部分和输出阻塞
-        end
-        if (flush) begin
-            stall = 1'b1;  // 刷新时停顿
-        end
-    end
+    assign stall = flush
+                || (input_out_valid_reg && !input_out_ready)   // 输出阻塞
+                || (partial_out_valid && !partial_out_ready);  // 部分和输出阻塞
 
     //==========================================================================
     // 权重加载逻辑
@@ -139,7 +130,7 @@ module pe #(
             weight_valid_reg <= 1'b0;
         end else if (flush) begin
             // 刷新时不清除权重，权重是静态配置
-        end else if (weight_load && weight_valid && weight_ready) begin
+        end else if (clk_enable && weight_load && weight_valid && weight_ready) begin
             // 加载新权重
             stored_weight <= weight_in;
             weight_valid_reg <= 1'b1;
@@ -157,14 +148,13 @@ module pe #(
         end else if (flush) begin
             input_reg <= {DATA_WIDTH{1'b0}};
             input_valid_reg <= 1'b0;
-        end else if (!stall) begin
+        // clk_enable=0 时保持当前流水线状态，等价于局部时钟门控效果，
+        // 可在不改接口协议的前提下减少无效翻转。
+        end else if (clk_enable && !stall) begin
             if (input_valid && input_ready) begin
                 input_reg <= input_data;
                 input_valid_reg <= 1'b1;
-            end else if (accumulator_valid) begin
-                // Keep input_valid_reg high until MAC consumes it
-                input_valid_reg <= input_valid_reg;
-            end else begin
+            end else if (!accumulator_valid) begin
                 input_valid_reg <= 1'b0;
             end
         end
@@ -178,7 +168,8 @@ module pe #(
         end else if (flush) begin
             input_out_reg <= {DATA_WIDTH{1'b0}};
             input_out_valid_reg <= 1'b0;
-        end else if (!stall) begin
+        // 输出级与输入级同样受 clk_enable 控制，保证冻结期间 valid/data 一致保持。
+        end else if (clk_enable && !stall) begin
             if (input_valid_reg) begin
                 input_out_reg <= input_reg;
                 input_out_valid_reg <= 1'b1;
@@ -203,14 +194,12 @@ module pe #(
         end else if (flush) begin
             partial_reg <= {ACC_WIDTH{1'b0}};
             partial_valid_reg <= 1'b0;
-        end else if (!stall) begin
+        // 部分和输入寄存级也门控，避免上游空拍导致无意义写入。
+        end else if (clk_enable && !stall) begin
             if (partial_in_valid && partial_in_ready) begin
                 partial_reg <= partial_in;
                 partial_valid_reg <= 1'b1;
-            end else if (accumulator_valid) begin
-                // Keep partial_valid_reg high until MAC consumes it
-                partial_valid_reg <= partial_valid_reg;
-            end else begin
+            end else if (!accumulator_valid) begin
                 partial_valid_reg <= 1'b0;
             end
         end
@@ -238,7 +227,7 @@ module pe #(
             accumulator <= {ACC_WIDTH{1'b0}};
             accumulator_valid <= 1'b0;
             processing <= 1'b0;
-        end else if (!stall) begin
+        end else if (clk_enable && !stall) begin
             // 当有有效输入和部分和时，执行MAC运算
             if (input_valid_reg && partial_valid_reg) begin
                 accumulator <= mac_result;
@@ -265,7 +254,7 @@ module pe #(
             partial_out_reg <= {ACC_WIDTH{1'b0}};
             partial_out <= {ACC_WIDTH{1'b0}};
             partial_out_valid <= 1'b0;
-        end else if (!stall) begin
+        end else if (clk_enable && !stall) begin
             if (accumulator_valid) begin
                 // 新的计算结果
                 partial_out_reg <= accumulator;

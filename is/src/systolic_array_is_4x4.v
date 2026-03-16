@@ -117,8 +117,11 @@ module systolic_array_is_4x4 #(
         end
     endgenerate
 
-    // 输入就绪信号：只有被寻址的PE需要在preload阶段握手
-    assign input_ready = input_ready_mesh[input_addr];
+    // 输入就绪信号：只有被寻址的PE需要在 preload 阶段握手。
+    // 这里增加一拍输出寄存，避免把深层 PE 的 stall/valid 扇出直接拉到顶层端口，
+    // 从而缩短综合报告中最差的 control-to-output 路径。
+    wire input_ready_comb;
+    assign input_ready_comb = input_ready_mesh[input_addr];
 
     //==========================================================================
     // PE阵列实例化和互连
@@ -306,20 +309,24 @@ module systolic_array_is_4x4 #(
                                 weight_ready_mesh[3*ARRAY_SIZE + 0]);
 
     // 输出寄存器（改善时序的关键！）
+    reg input_ready_reg;
     reg weight_ready_reg;
     reg busy_reg;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
+            input_ready_reg <= 1'b0;
             weight_ready_reg <= 1'b0;
             busy_reg <= 1'b0;
         end else begin
+            input_ready_reg <= input_ready_comb;
             weight_ready_reg <= weight_ready_comb;
             busy_reg <= array_busy_reg;
         end
     end
 
     // 输出连接
+    assign input_ready = input_ready_reg;
     assign weight_ready = weight_ready_reg;
     assign busy = busy_reg;
 

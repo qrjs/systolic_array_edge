@@ -137,10 +137,17 @@ module standard_ws_array_4x4 #(
                         end
                     end
 
-                    data_pipe[row_idx][col_idx] <= current_data;
-                    valid_pipe[row_idx][col_idx] <= current_valid;
-                    row_tag_pipe[row_idx][col_idx] <= current_tag;
-                    psum_pipe[row_idx][col_idx] <= current_valid ? next_psum : {ACC_WIDTH{1'b0}};
+                    // 低翻转优化（边缘场景更关注能耗）：
+                    // 无效 token 周期仅清 valid/psum，data/tag 保持不变，减少寄存器翻转。
+                    if (current_valid) begin
+                        data_pipe[row_idx][col_idx] <= current_data;
+                        valid_pipe[row_idx][col_idx] <= 1'b1;
+                        row_tag_pipe[row_idx][col_idx] <= current_tag;
+                        psum_pipe[row_idx][col_idx] <= next_psum;
+                    end else begin
+                        valid_pipe[row_idx][col_idx] <= 1'b0;
+                        psum_pipe[row_idx][col_idx] <= {ACC_WIDTH{1'b0}};
+                    end
 
                     if ((col_idx == 0) && current_valid) begin
                         input_row_tag[row_idx] <= input_row_tag[row_idx] + {{(TAG_WIDTH-1){1'b0}}, 1'b1};

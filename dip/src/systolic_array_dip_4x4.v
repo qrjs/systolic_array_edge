@@ -41,6 +41,12 @@ module systolic_array_dip_4x4 #(
     reg                   output_row_valid_reg;
     reg [ACC_WIDTH*ARRAY_SIZE-1:0] output_row_data_reg;
     reg [ACTIVITY_DEPTH-1:0] activity_sr;
+    reg                   busy_reg;
+
+    // busy_comb 汇总了输入、权重、结果采集以及内部 token 排空状态。
+    // 这里不直接把组合锥送到顶层端口，而是寄存一拍，避免 activity_sr 到 busy
+    // 成为综合报告中的最差 control-to-output 路径。
+    wire                  busy_comb;
 
     genvar row_idx;
     genvar col_idx;
@@ -92,6 +98,8 @@ module systolic_array_dip_4x4 #(
 
     // 当底部一整行的 valid 同时为 1 时，说明一整行输出已经准备好。
     assign row_ready = &bottom_row_valid;
+    assign busy_comb = weight_row_valid | input_row_valid | row_capture_valid_reg |
+                       output_row_valid_reg | row_ready | (|activity_sr);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -100,12 +108,14 @@ module systolic_array_dip_4x4 #(
             row_capture_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
             output_row_valid_reg <= 1'b0;
             output_row_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
+            busy_reg <= 1'b0;
         end else if (flush) begin
             activity_sr <= {ACTIVITY_DEPTH{1'b0}};
             row_capture_valid_reg <= 1'b0;
             row_capture_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
             output_row_valid_reg <= 1'b0;
             output_row_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
+            busy_reg <= 1'b0;
         end else if (clk_enable) begin
             activity_sr <= {activity_sr[ACTIVITY_DEPTH-2:0], input_row_valid};
 
@@ -120,12 +130,12 @@ module systolic_array_dip_4x4 #(
             // 再寄存一拍，把从底部采集到的整行结果整理成稳定输出。
             output_row_valid_reg <= row_capture_valid_reg;
             output_row_data_reg <= row_capture_data_reg;
+            busy_reg <= busy_comb;
         end
     end
 
     assign output_row_valid = output_row_valid_reg;
     assign output_row_data = output_row_data_reg;
-    // busy 覆盖输入装载、权重装载、结果采集，以及阵列内部尚未排空的所有情况。
-    assign busy = weight_row_valid | input_row_valid | row_capture_valid_reg | output_row_valid_reg | row_ready | (|activity_sr);
+    assign busy = busy_reg;
 
 endmodule

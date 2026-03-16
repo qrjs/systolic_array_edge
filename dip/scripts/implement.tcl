@@ -1,14 +1,14 @@
 #!/usr/bin/tclsh
 #
-# Vivado synthesis script (non-project flow) for OS array.
+# Vivado implementation script (non-project flow) for DIP array.
 #
 
 set project_dir [file dirname [file dirname [info script]]]
 set src_dir "$project_dir/src"
 set constraints_dir "$project_dir/constraints"
-set reports_dir "$project_dir/reports/synth"
+set reports_dir "$project_dir/reports/impl"
 set part_name "xc7a35tcpg236-1"
-set top_name "systolic_array_os_4x4"
+set top_name "systolic_array_dip_4x4"
 
 file mkdir $reports_dir
 file delete -force "$reports_dir/.Xil"
@@ -31,23 +31,39 @@ if {[llength $xdc_files] > 0} {
 puts "\n=============================================================================="
 puts "Running Synthesis..."
 puts "=============================================================================="
-synth_design -top $top_name -part $part_name -flatten_hierarchy rebuilt -fsm_extraction one_hot -resource_sharing auto -retiming
+# 采用 out-of-context 模式执行 core-only 后端，实现阶段不再受验证顶层 I/O 数量限制，
+# 便于获得阵列核心本身的 post-route 时序。
+synth_design -mode out_of_context -top $top_name -part $part_name -flatten_hierarchy rebuilt -fsm_extraction one_hot -resource_sharing auto -retiming
 opt_design -directive Explore
+
+puts "\n=============================================================================="
+puts "Running Placement..."
+puts "=============================================================================="
+place_design -directive Explore
+phys_opt_design -directive ExploreWithHoldFix
+report_timing_summary -file "$reports_dir/timing_post_place.txt" -max_paths 20 -report_unconstrained
+
+puts "\n=============================================================================="
+puts "Running Routing..."
+puts "=============================================================================="
+route_design -directive Explore
+phys_opt_design -directive ExploreWithHoldFix
+report_timing_summary -file "$reports_dir/timing_post_route.txt" -max_paths 20 -report_unconstrained
+report_timing -sort_by slack -max_paths 20 -input_pins -file "$reports_dir/timing_details_post_route.txt"
 
 puts "\n=============================================================================="
 puts "Generating Reports..."
 puts "=============================================================================="
 report_utilization -file "$reports_dir/utilization_report.txt"
-report_timing_summary -file "$reports_dir/timing_report.txt" -max_paths 20 -report_unconstrained
 report_clock_interaction -file "$reports_dir/clock_interaction.txt"
 report_power -file "$reports_dir/power_report.txt"
 report_drc -file "$reports_dir/drc.txt"
 
-write_checkpoint -force "$reports_dir/os_synth.dcp"
-write_verilog -force "$reports_dir/os_syn.v"
+write_checkpoint -force "$reports_dir/dip_impl.dcp"
+write_verilog -force "$reports_dir/dip_impl.v"
 
 puts "\n=============================================================================="
-puts "Synthesis Complete!"
+puts "Implementation Complete!"
 puts "=============================================================================="
 puts "\nReports generated in: $reports_dir"
 
