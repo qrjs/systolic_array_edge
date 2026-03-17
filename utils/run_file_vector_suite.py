@@ -61,15 +61,21 @@ def color_status(ok: bool) -> str:
     return f"{C.BOLD}{color}{word}{C.RESET}"
 
 
-def run(cmd: list[str], cwd: Path, env: dict[str, str] | None = None) -> str:
+def run(
+    cmd: list[str],
+    cwd: Path,
+    env: dict[str, str] | None = None,
+    *,
+    check: bool = True,
+) -> tuple[int, str]:
     result = subprocess.run(cmd, cwd=cwd, text=True, capture_output=True, env=env)
     if result.stdout:
         print(result.stdout, end="")
     if result.stderr:
         print(result.stderr, end="", file=sys.stderr)
-    if result.returncode != 0:
+    if check and result.returncode != 0:
         raise SystemExit(result.returncode)
-    return result.stdout + result.stderr
+    return result.returncode, result.stdout + result.stderr
 
 
 def vcs_env() -> dict[str, str]:
@@ -85,7 +91,10 @@ def build_once(arch: str, sim: str, build_dir: Path) -> Path:
     build_dir.mkdir(parents=True, exist_ok=True)
     if sim == "iverilog":
         exe = build_dir / f"{cfg['top']}.vvp"
-        run(["iverilog", "-g2012", "-Wall", "-I", str(ROOT), "-o", str(exe), *(str(p) for p in cfg["rtl"]), str(cfg["tb"])] , build_dir)
+        run(
+            ["iverilog", "-g2012", "-Wall", "-I", str(ROOT), "-o", str(exe), *(str(p) for p in cfg["rtl"]), str(cfg["tb"])],
+            build_dir,
+        )
         return exe
     exe = build_dir / f"{cfg['top']}.simv"
     run([
@@ -120,16 +129,21 @@ def main() -> int:
         case_name = input_path.stem[:-6]
         expected_path = (vector_dir / f"{case_name}_expected.txt").resolve()
         pass_marker = f"[{args.arch.upper()}_FILE][PASS]"
+        fail_marker = f"[{args.arch.upper()}_FILE][FAIL]"
         if args.simulator == "iverilog":
-            cmd = ["vvp", str(exe), f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
-            output = run(cmd, output_dir)
+            cmd = ["vvp", str(exe), "+SOFT_FAIL", f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
+            rc, output = run(cmd, output_dir, check=False)
         else:
             run_log = output_dir / f"{case_name}.run.log"
-            cmd = [str(exe), "-l", str(run_log), f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
-            output = run(cmd, output_dir, env=vcs_env())
+            cmd = [str(exe), "-l", str(run_log), "+SOFT_FAIL", f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
+            rc, output = run(cmd, output_dir, env=vcs_env(), check=False)
             if run_log.exists():
                 output += run_log.read_text(errors="ignore")
         ok = pass_marker in output
+        if fail_marker in output:
+            ok = False
+        elif (pass_marker not in output) and (rc != 0):
+            ok = False
         power_match = power_pattern.search(output)
         if power_match:
             active_mac = int(power_match.group(1))

@@ -29,6 +29,7 @@ module standard_os_file_tb;
     integer failures;
     string input_path;
     string expected_path;
+    bit soft_fail_mode;
 
     reg signed [DATA_WIDTH-1:0] a_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     reg signed [WEIGHT_WIDTH-1:0] b_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
@@ -69,6 +70,7 @@ module standard_os_file_tb;
         if (!$value$plusargs("EXPECTED=%s", expected_path)) begin
             $fatal(1, "Missing +EXPECTED=<path>");
         end
+        soft_fail_mode = $test$plusargs("SOFT_FAIL");
 
         clk = 1'b0;
         rst_n = 1'b0;
@@ -131,7 +133,12 @@ module standard_os_file_tb;
         end
 
         if (!result_valid_q) begin
-            $fatal(1, "[OS_FILE] timed out waiting for result_valid");
+            if (soft_fail_mode) begin
+                $display("[OS_FILE][FAIL] %0s reason=timeout", input_path);
+                $finish;
+            end else begin
+                $fatal(1, "[OS_FILE] timed out waiting for result_valid");
+            end
         end
 
         @(posedge clk);
@@ -151,7 +158,12 @@ module standard_os_file_tb;
             $display("[OS_FILE][PASS] %0s", input_path);
             $finish;
         end else begin
-            $fatal(1, "[OS_FILE] failures=%0d", failures);
+            if (soft_fail_mode) begin
+                $display("[OS_FILE][FAIL] %0s failures=%0d", input_path, failures);
+                $finish;
+            end else begin
+                $fatal(1, "[OS_FILE] failures=%0d", failures);
+            end
         end
     end
 endmodule
