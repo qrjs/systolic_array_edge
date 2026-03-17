@@ -1,36 +1,55 @@
 # Commercial EDA Handoff
 
-This directory is a separate staging area for commercial ASIC flows.
+`asic_commercial/` is the isolated staging area for commercial ASIC tools.
+
+中文上机说明见 `FLOW_BRINGUP_CN.md`。
+
+Current delivered targets:
+
+- `ws`
+- `is`
+- `os`
+- `dip`
 
 Design goals:
 
 - keep the existing `asic/` handoff and open-source flow untouched
-- prepare a clean place for DC/Genus/Innovus/PT/Tempus style bring-up
-- avoid duplicating validated RTL and `SDC`; reference the existing files
+- reuse the validated RTL, filelist, and `SDC`
+- provide a copy-friendly commercial runset for another server
 
-Current first target:
+## What is included
 
-- `DIP`
+For each dataflow under `ws/`, `is/`, `os/`, and `dip/`, this directory now contains:
+
+- Synopsys DC synthesis run script and Tcl runset
+- VCS gate-level post-simulation run script and testbench
+- Synopsys Formality equivalence-check run script
+- Synopsys ICC2 back-end run script and staged Tcl flow
+- Calibre DRC/LVS wrapper scripts
+- environment checking scripts
+- a Chinese tutorial for bring-up and execution order
 
 ## Directory layout
 
-- `dip/config/`: design metadata and library template files
-- `dip/scripts/`: environment setup and handoff checks
-- `dip/templates/`: commercial EDA script templates
-- `dip/dc/`: reserved for synthesis outputs and vendor-specific scripts
-- `dip/innovus/`: reserved for place-and-route setup
-- `dip/pt/`: reserved for signoff timing setup
-- `dip/logs/`, `dip/reports/`, `dip/results/`: generated outputs
+- `<flow>/config/`: design metadata and foundry/library placeholders
+- `<flow>/scripts/`: environment prep, checks, and run entry points
+- `<flow>/dc/`: DC work area
+- `<flow>/postsim/`: VCS gate-level simulation workspace
+- `<flow>/fm/`: Formality work area
+- `<flow>/icc2/`: ICC2 work area
+- `<flow>/calibre/`: Calibre notes and generated run area
+- `<flow>/logs/`, `<flow>/reports/`, `<flow>/results/`: generated outputs
 
-## How this is meant to be used
+## Recommended use
 
-1. Fill in `dip/config/libs.env` from `dip/config/libs.example.env`
-2. Run `dip/scripts/check_handoff.sh`
-3. Copy or adapt the templates in `dip/templates/` into your real tool runset
-4. Keep tool-generated data inside `asic_commercial/`
+1. Pick one flow directory such as `ws/`, `is/`, `os/`, or `dip/`
+2. Fill in `<flow>/config/libs.env` from `<flow>/config/libs.example.env`
+3. Run `<flow>/scripts/check_handoff.sh`
+4. Run `<flow>/scripts/run_dc.sh`
+5. Run `<flow>/scripts/run_fm.sh`
+6. Run `<flow>/scripts/run_postsim.sh`
+7. Run `<flow>/scripts/run_icc2.sh all`
+8. Run `<flow>/scripts/run_calibre_drc.sh`
+9. Run `<flow>/scripts/run_calibre_lvs.sh`
 
-## Notes
-
-- This directory is preparation only. It does not assume a specific foundry kit.
-- The current templates are intentionally conservative and require you to fill in
-  real library, LEF, RC, and MMMC paths before use.
+Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.

@@ -128,8 +128,11 @@ module systolic_array_dip_4x4 #(
             end
 
             // 再寄存一拍，把从底部采集到的整行结果整理成稳定输出。
+            // 无新结果时保持 output_row_data_reg 稳定，避免输出总线无效翻转。
             output_row_valid_reg <= row_capture_valid_reg;
-            output_row_data_reg <= row_capture_data_reg;
+            if (row_capture_valid_reg) begin
+                output_row_data_reg <= row_capture_data_reg;
+            end
             busy_reg <= busy_comb;
         end
     end

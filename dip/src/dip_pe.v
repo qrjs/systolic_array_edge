@@ -24,6 +24,7 @@ module dip_pe #(
     reg                           stage1_valid;
     reg signed [DATA_WIDTH-1:0]   stage1_data;
     reg signed [ACC_WIDTH-1:0]    stage1_psum;
+    reg                           stage1_mac_en;
 
     reg                           stage2_valid;
     reg signed [DATA_WIDTH-1:0]   stage2_data;
@@ -35,6 +36,7 @@ module dip_pe #(
             stage1_valid  <= 1'b0;
             stage1_data   <= {DATA_WIDTH{1'b0}};
             stage1_psum   <= {ACC_WIDTH{1'b0}};
+            stage1_mac_en <= 1'b0;
             stage2_valid  <= 1'b0;
             stage2_data   <= {DATA_WIDTH{1'b0}};
             stage2_psum   <= {ACC_WIDTH{1'b0}};
@@ -42,6 +44,7 @@ module dip_pe #(
             stage1_valid  <= 1'b0;
             stage1_data   <= {DATA_WIDTH{1'b0}};
             stage1_psum   <= {ACC_WIDTH{1'b0}};
+            stage1_mac_en <= 1'b0;
             stage2_valid  <= 1'b0;
             stage2_data   <= {DATA_WIDTH{1'b0}};
             stage2_psum   <= {ACC_WIDTH{1'b0}};
@@ -51,17 +54,29 @@ module dip_pe #(
             end
 
             stage2_valid <= stage1_valid;
-            stage2_data  <= stage1_data;
-            // 低功耗优化：DiP 的每个 PE 在真正执行 MAC 前先判断操作数是否为 0。
-            // 若该 token 对输出没有贡献，则直接透传部分和，避免无效切换。
-            stage2_psum  <= stage1_psum;
-            if (stage1_valid && (stage1_data != 0) && (stored_weight != 0)) begin
-                stage2_psum <= stage1_psum + (stage1_data * stored_weight);
+            if (stage1_valid) begin
+                stage2_data <= stage1_data;
+                // 边缘场景更关心无效翻转和控制开销，因此把 “是否真的需要 MAC”
+                // 的判定前移到 stage1 并寄存成 stage1_mac_en。
+                // 这样 stage2 只在 token 有效且确实有贡献时才切换 DSP / adder，
+                // 无效周期则仅清 valid，数据寄存器保持稳定，减少翻转。
+                stage2_psum <= stage1_psum;
+                if (stage1_mac_en) begin
+                    stage2_psum <= stage1_psum + (stage1_data * stored_weight);
+                end
             end
 
             stage1_valid <= token_valid_in;
-            stage1_data  <= data_in;
-            stage1_psum  <= psum_in;
+            if (token_valid_in) begin
+                stage1_data <= data_in;
+                stage1_psum <= psum_in;
+                // 若 weight_load 与 token_valid_in 同拍出现，则这个 token 在下一拍
+                // 应该使用新装入的权重，因此这里优先用 weight_in 参与零值判定。
+                stage1_mac_en <= (data_in != 0) &&
+                                 ((weight_load ? weight_in : stored_weight) != 0);
+            end else begin
+                stage1_mac_en <= 1'b0;
+            end
         end
     end
 

@@ -33,6 +33,8 @@ make synth ARCH=ws
 - `.txt` 文件驱动回归
 
 ## 文档入口
+- 零基础导读：`docs/脉动阵列零基础上手与仓库导读_CN.md`
 - 完整中文说明：`docs/统一Makefile与仿真综合使用说明_CN.md`
+- 数据流资料对照与前端评审：`docs/数据流资料对照与前端实现评审_CN.md`
 - 根入口：`README.md`
 - DiP 说明：`dip/README.md`

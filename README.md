@@ -1,11 +1,31 @@
 # Systolic Array Edge
 
-本仓库包含四种 `4x4` 脉动阵列数据流实现：
+本仓库包含四种 `4x4` 脉动阵列数据流实现，并且已经把统一仿真、文件回归、
+波形查看和综合入口收敛到一套顶层 Makefile 体系：
 
 - `ws/`：Weight Stationary
 - `is/`：Input Stationary
 - `os/`：Output Stationary
 - `dip/`：DiP（Diagonal-Input & Permutated weight-stationary）
+
+## 先看什么
+
+如果你还没系统学过脉动阵列，建议按这个顺序上手：
+
+1. `docs/脉动阵列零基础上手与仓库导读_CN.md`
+2. `docs/数据流资料对照与前端实现评审_CN.md`
+3. `DATAFLOW_VALIDATION_STATUS_CN.md`
+4. 再回到四个子目录的 `README.md`
+
+当前仓库里最推荐作为“正式前端入口”阅读和使用的模块是：
+
+- `ws/src/standard_ws_array_4x4.v`
+- `is/src/standard_is_array_4x4.v`
+- `os/src/standard_os_array_4x4.v`
+- `dip/src/standard_dip_array_4x4.v`
+
+低层 `systolic_array_*.v` 和 `*_pe.v` 仍然保留，用于理解内部传播结构以及兼容
+现有 ASIC handoff，但不再是仓库级的首选学习入口。
 
 ## 快速开始
 
@@ -51,7 +71,29 @@ make help
 make help-all
 ```
 
-## 你现在能做什么
+如果你第一次使用，最建议先跑这组：
+
+```bash
+make ws
+make is
+make os
+make dip
+make ws-txt
+make is-txt
+make os-txt
+make dip-txt
+```
+
+## 四种数据流怎么区分
+
+| 架构 | 核心语义 | 当前推荐前端入口 |
+|------|----------|------------------|
+| `WS` | 权重尽量驻留在 PE，输入流动，部分和传播 | `ws/src/standard_ws_array_4x4.v` |
+| `IS` | 输入尽量驻留在 PE，权重流动，部分和传播 | `is/src/standard_is_array_4x4.v` |
+| `OS` | 输出/部分和驻留在 PE，本地累加后统一读出 | `os/src/standard_os_array_4x4.v` |
+| `DiP` | 输入按对角方向传播，权重按旋转布局注入 | `dip/src/standard_dip_array_4x4.v` |
+
+## 当前你能做什么
 
 - 用 `iverilog` / `VCS` 跑功能仿真
 - 用 `Surfer` / `Verdi` 打开波形
@@ -61,11 +103,24 @@ make help-all
 - 用 `Vivado` 对四个架构分别综合
 - 在每个架构子目录下拿到自己的综合报告
 
+## 当前验证状态
+
+在 2026-03-17 重新实测后，四个标准 wrapper 的 `.txt` 文件驱动回归在
+`iverilog` 口径下都通过了 `268 / 268`。
+
+更完整的结论见：
+
+- `DATAFLOW_VALIDATION_STATUS_CN.md`
+- `docs/数据流资料对照与前端实现评审_CN.md`
+
 ## 重点文档
 
 完整中文上手说明见：
 
+- `docs/脉动阵列零基础上手与仓库导读_CN.md:1`
+- `docs/四种数据流波形与时序教学图解_CN.md:1`
 - `docs/统一Makefile与仿真综合使用说明_CN.md:1`
+- `docs/数据流资料对照与前端实现评审_CN.md:1`
 - `docs/边缘优化实践与实现说明_CN.md:1`
 - `docs/论文大纲_面向边缘计算脉动阵列_CN.md:1`
 - `docs/ASIC前端完成清单_CN.md:1`

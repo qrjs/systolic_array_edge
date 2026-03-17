@@ -119,7 +119,11 @@ module standard_dip_array_4x4 #(
                 drain_issued_reg <= 1'b1;
             end else begin
                 stream_input_row_valid <= input_row_valid;
-                stream_input_row_data <= input_row_data;
+                if (input_row_valid) begin
+                    // 对于边缘场景下大量空拍输入，让数据总线在 invalid 周期保持稳定，
+                    // 避免把无效 input_row_data 的切换传播到 DiP 内核。
+                    stream_input_row_data <= input_row_data;
+                end
                 if (!input_row_valid && prev_input_row_valid && started_reg && !done_reg && !drain_issued_reg) begin
                     drain_pending_reg <= 1'b1;
                 end
