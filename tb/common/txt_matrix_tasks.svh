@@ -6,6 +6,14 @@ localparam string ANSI_BOLD  = "\033[1m";
 localparam string ANSI_RESET = "\033[0m";
 localparam integer MATRIX_CELL_W = 12;
 
+function automatic string selected_case_name();
+    string case_name;
+    if ($value$plusargs("CASE=%s", case_name)) begin
+        return case_name;
+    end
+    return "";
+endfunction
+
 // 读取输入 txt 中的 A、B 矩阵。
 // 文件格式约定为：先出现 A 段，再出现 B 段，中间允许用 # 开头的注释行。
 task automatic read_input_txt(input string path);
@@ -15,11 +23,20 @@ task automatic read_input_txt(input string path);
     integer scan_rc;
     integer value;
     string token;
+    string case_name;
+    string wanted_case;
     reg [8*256-1:0] rest;
+    bit use_current_case;
+    bit matched_case;
+    bit saw_case_section;
     fd = $fopen(path, "r");
     if (fd == 0) begin
         $fatal(1, "Failed to open input txt: %s", path);
     end
+    wanted_case = selected_case_name();
+    use_current_case = (wanted_case == "");
+    matched_case = use_current_case;
+    saw_case_section = 1'b0;
 
     scan_rc = 1;
     while (scan_rc == 1) begin
@@ -27,22 +44,43 @@ task automatic read_input_txt(input string path);
         if (scan_rc == 1) begin
         if (token == "#") begin
             void'($fgets(rest, fd));
+        end else if (token == "CASE") begin
+            saw_case_section = 1'b1;
+            if ($fscanf(fd, "%s", case_name) != 1) begin
+                $fatal(1, "Malformed CASE section in %s", path);
+            end
+            use_current_case = (wanted_case == "") || (case_name == wanted_case);
+            if (use_current_case) begin
+                matched_case = 1'b1;
+            end
         end else if (token == "A") begin
+            if (!saw_case_section) begin
+                use_current_case = 1'b1;
+                matched_case = 1'b1;
+            end
             for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
                 for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
                     if ($fscanf(fd, "%d", value) != 1) begin
                         $fatal(1, "Malformed A section in %s", path);
                     end
-                    a_matrix[row_idx][col_idx] = value;
+                    if (use_current_case) begin
+                        a_matrix[row_idx][col_idx] = value;
+                    end
                 end
             end
         end else if (token == "B") begin
+            if (!saw_case_section) begin
+                use_current_case = 1'b1;
+                matched_case = 1'b1;
+            end
             for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
                 for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
                     if ($fscanf(fd, "%d", value) != 1) begin
                         $fatal(1, "Malformed B section in %s", path);
                     end
-                    b_matrix[row_idx][col_idx] = value;
+                    if (use_current_case) begin
+                        b_matrix[row_idx][col_idx] = value;
+                    end
                 end
             end
         end else begin
@@ -52,6 +90,9 @@ task automatic read_input_txt(input string path);
     end
 
     $fclose(fd);
+    if (!matched_case) begin
+        $fatal(1, "Failed to find CASE=%s in input txt: %s", wanted_case, path);
+    end
 endtask
 
 // 读取标准答案 txt 中的 C 矩阵。
@@ -62,11 +103,20 @@ task automatic read_expected_txt(input string path);
     integer scan_rc;
     integer value;
     string token;
+    string case_name;
+    string wanted_case;
     reg [8*256-1:0] rest;
+    bit use_current_case;
+    bit matched_case;
+    bit saw_case_section;
     fd = $fopen(path, "r");
     if (fd == 0) begin
         $fatal(1, "Failed to open expected txt: %s", path);
     end
+    wanted_case = selected_case_name();
+    use_current_case = (wanted_case == "");
+    matched_case = use_current_case;
+    saw_case_section = 1'b0;
 
     scan_rc = 1;
     while (scan_rc == 1) begin
@@ -74,13 +124,28 @@ task automatic read_expected_txt(input string path);
         if (scan_rc == 1) begin
         if (token == "#") begin
             void'($fgets(rest, fd));
+        end else if (token == "CASE") begin
+            saw_case_section = 1'b1;
+            if ($fscanf(fd, "%s", case_name) != 1) begin
+                $fatal(1, "Malformed CASE section in %s", path);
+            end
+            use_current_case = (wanted_case == "") || (case_name == wanted_case);
+            if (use_current_case) begin
+                matched_case = 1'b1;
+            end
         end else if (token == "C") begin
+            if (!saw_case_section) begin
+                use_current_case = 1'b1;
+                matched_case = 1'b1;
+            end
             for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
                 for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
                     if ($fscanf(fd, "%d", value) != 1) begin
                         $fatal(1, "Malformed C section in %s", path);
                     end
-                    expected_matrix[row_idx][col_idx] = value;
+                    if (use_current_case) begin
+                        expected_matrix[row_idx][col_idx] = value;
+                    end
                 end
             end
         end else begin
@@ -90,6 +155,9 @@ task automatic read_expected_txt(input string path);
     end
 
     $fclose(fd);
+    if (!matched_case) begin
+        $fatal(1, "Failed to find CASE=%s in expected txt: %s", wanted_case, path);
+    end
 endtask
 
 // 打印矩阵表头，让 c0/c1/c2/c3 与后续数值列对齐。

@@ -84,4 +84,14 @@ module dip_pe #(
     assign data_out = stage2_data;
     assign psum_out = stage2_psum;
 
+    `ifdef FORMAL
+        cover property (@(posedge clk) weight_load);
+        cover property (@(posedge clk) token_valid_in);
+        cover property (@(posedge clk) token_valid_in && stage1_mac_en);
+        cover property (@(posedge clk) token_valid_in && !stage1_mac_en);
+        cover property (@(posedge clk) weight_load && token_valid_in);
+        cover property (@(posedge clk) stage2_valid);
+        cover property (@(posedge clk) flush);
+    `endif
+
 endmodule

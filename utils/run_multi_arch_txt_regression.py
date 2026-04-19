@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import shutil
 import subprocess
 import sys
 import unicodedata
@@ -75,7 +76,8 @@ def parse_suite_summary(text: str) -> tuple[int, int, int, bool]:
 
 def run_arch(arch: str, simulator: str, vector_dir: Path) -> tuple[int, Path]:
     log_dir = ROOT / "test_logs" / "multi_arch_txt"
-    log_dir.mkdir(parents=True, exist_ok=True)
+    if not log_dir.exists():
+        log_dir.mkdir(parents=True, exist_ok=True)
     log_path = log_dir / f"{arch}_{simulator}.log"
     cmd = [
         "make",
@@ -121,6 +123,9 @@ def main() -> int:
     args = parser.parse_args()
 
     vector_dir = Path(args.vector_dir).resolve()
+    log_dir = ROOT / "test_logs" / "multi_arch_txt"
+    if log_dir.exists():
+        shutil.rmtree(log_dir)
     results: list[dict[str, object]] = []
 
     print(f"[multi-arch] label={args.label} simulator={args.simulator} vector_dir={vector_dir}")

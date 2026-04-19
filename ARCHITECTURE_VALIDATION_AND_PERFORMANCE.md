@@ -6,13 +6,12 @@
 推荐直接在仓库根目录使用：
 
 ```bash
-make ws
-make is
-make os
-make dip
 make txt
-make txt-all-vcs
-make random-vcs RANDOM_VECTOR_SEED=20260319 RANDOM_VECTOR_COUNT=2
+make random RANDOM_VECTOR_SEED=3 RANDOM_VECTOR_COUNT=16
+make random RANDOM_VECTOR_SEED=3 RANDOM_VECTOR_COUNT=64
+make run ARCH=ws
+make wave ARCH=dip
+make cov ARCH=dip
 ```
 
 ## 通用参数化入口
@@ -25,12 +24,12 @@ make txt-one ARCH=dip SIM=vcs
 make synth ARCH=ws
 ```
 
-## 各架构支持能力
-- `iverilog` 功能仿真
-- `VCS` 功能仿真
-- `Surfer / Verdi` 波形查看
-- `Vivado` 综合
-- `.txt` 文件驱动回归
+## 当前验证结构
+- `txt`：固定基准回归
+- `random`：随机回归
+- `batch`：`random` 的大样本兼容别名
+- `run / wave / view`：调试验证
+- `cov`：覆盖率回归
 
 ## 文档入口
 - 零基础导读：`docs/脉动阵列零基础上手与仓库导读_CN.md`

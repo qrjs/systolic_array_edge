@@ -4,12 +4,16 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 VCS_LICENSE_FILE = os.environ.get("VCS_LICENSE_FILE", "5999@curry-GTR-Pro")
+DEFAULT_COVERAGE_METRICS = "line+tgl+cond+branch+assert"
+SUITE_INPUT_NAME = "suite_input.txt"
+SUITE_EXPECTED_NAME = "suite_expected.txt"
 
 
 ARCH_CONFIG = {
@@ -86,7 +90,41 @@ def vcs_env() -> dict[str, str]:
     return env
 
 
-def build_once(arch: str, sim: str, build_dir: Path) -> Path:
+def parse_suite_case_names(path: Path) -> list[str]:
+    case_names: list[str] = []
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("CASE "):
+            _, case_name = line.split(None, 1)
+            case_names.append(case_name.strip())
+    return case_names
+
+
+def discover_cases(vector_dir: Path) -> list[tuple[str, Path, Path]]:
+    suite_input = vector_dir / SUITE_INPUT_NAME
+    suite_expected = vector_dir / SUITE_EXPECTED_NAME
+    if suite_input.exists() and suite_expected.exists():
+        return [(case_name, suite_input.resolve(), suite_expected.resolve()) for case_name in parse_suite_case_names(suite_input)]
+
+    cases: list[tuple[str, Path, Path]] = []
+    for input_path in sorted(vector_dir.glob("*_input.txt")):
+        input_path = input_path.resolve()
+        case_name = input_path.stem[:-6]
+        expected_path = (vector_dir / f"{case_name}_expected.txt").resolve()
+        cases.append((case_name, input_path, expected_path))
+    return cases
+
+
+def build_once(
+    arch: str,
+    sim: str,
+    build_dir: Path,
+    *,
+    enable_coverage: bool = False,
+    coverage_metrics: str = DEFAULT_COVERAGE_METRICS,
+) -> Path:
     cfg = ARCH_CONFIG[arch]
     build_dir.mkdir(parents=True, exist_ok=True)
     if sim == "iverilog":
@@ -97,12 +135,26 @@ def build_once(arch: str, sim: str, build_dir: Path) -> Path:
         )
         return exe
     exe = build_dir / f"{cfg['top']}.simv"
-    run([
-        "vcs", "-full64", "-sverilog", "+incdir+" + str(ROOT), "-timescale=1ns/1ps", "-debug_access+all", "-kdb",
-        "-licwait", "10",
-        "-LDFLAGS", "-Wl,--no-as-needed", "-l", str(build_dir / "compile.log"),
-        "-top", cfg["top"], "-o", str(exe), *(str(p) for p in cfg["rtl"]), str(cfg["tb"])
-    ], build_dir, env=vcs_env())
+    cmd = [
+        "vcs",
+        "-full64",
+        "-sverilog",
+        "+incdir+" + str(ROOT),
+        "-timescale=1ns/1ps",
+        "-debug_access+all",
+        "-kdb",
+        "-licwait",
+        "10",
+        "-LDFLAGS",
+        "-Wl,--no-as-needed",
+        "-l",
+        str(build_dir / "compile.log"),
+    ]
+    if enable_coverage:
+        cmd.extend(["+define+FORMAL", "-cm", coverage_metrics])
+    cmd.extend(["-top", cfg["top"], "-o", str(exe), *(str(p) for p in cfg["rtl"]), str(cfg["tb"])])
+    run(cmd, build_dir, env=vcs_env())
+    exe.chmod(exe.stat().st_mode | 0o111)
     return exe
 
 
@@ -112,33 +164,60 @@ def main() -> int:
     parser.add_argument("--simulator", required=True, choices=["iverilog", "vcs"])
     parser.add_argument("--vector-dir", required=True)
     parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--enable-coverage", action="store_true")
+    parser.add_argument("--coverage-metrics", default=DEFAULT_COVERAGE_METRICS)
     args = parser.parse_args()
+    if args.enable_coverage and args.simulator != "vcs":
+        parser.error("--enable-coverage currently requires --simulator vcs")
 
     vector_dir = Path(args.vector_dir).resolve()
     output_dir = Path(args.output_dir).resolve()
+    case_vdb_dir = output_dir / "case_vdb"
+    merged_vdb = output_dir / "merged.vdb"
+    report_dir = output_dir / "report"
+    if args.enable_coverage:
+        for stale_path in [case_vdb_dir, merged_vdb, report_dir]:
+            if stale_path.exists():
+                shutil.rmtree(stale_path)
+        case_vdb_dir.mkdir(parents=True, exist_ok=True)
     build_dir = (output_dir / "build").resolve()
-    exe = build_once(args.arch, args.simulator, build_dir)
+    exe = build_once(
+        args.arch,
+        args.simulator,
+        build_dir,
+        enable_coverage=args.enable_coverage,
+        coverage_metrics=args.coverage_metrics,
+    )
 
     results: list[tuple[str, bool]] = []
     failures = 0
     power_samples: list[tuple[int, int, int]] = []
+    coverage_case_vdbs: list[Path] = []
+    coverage_failed = False
     power_pattern = re.compile(r"\[[A-Z_]+\]\[POWER\].*?active_mac=(\d+)/(\d+).*?zero_gated=(\d+)")
 
-    for input_path in sorted(vector_dir.glob("*_input.txt")):
-        input_path = input_path.resolve()
-        case_name = input_path.stem[:-6]
-        expected_path = (vector_dir / f"{case_name}_expected.txt").resolve()
+    for case_name, input_path, expected_path in discover_cases(vector_dir):
         pass_marker = f"[{args.arch.upper()}_FILE][PASS]"
         fail_marker = f"[{args.arch.upper()}_FILE][FAIL]"
+        case_plusarg = f"+CASE={case_name}"
         if args.simulator == "iverilog":
-            cmd = ["vvp", str(exe), "+SOFT_FAIL", f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
+            cmd = ["vvp", str(exe), "+SOFT_FAIL", case_plusarg, f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
             rc, output = run(cmd, output_dir, check=False)
         else:
             run_log = output_dir / f"{case_name}.run.log"
-            cmd = [str(exe), "-l", str(run_log), "+SOFT_FAIL", f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
+            exe.chmod(exe.stat().st_mode | 0o111)
+            cmd = [str(exe), "-l", str(run_log)]
+            case_vdb = case_vdb_dir / f"{case_name}.vdb"
+            if args.enable_coverage:
+                if case_vdb.exists():
+                    shutil.rmtree(case_vdb)
+                cmd.extend(["-cm", args.coverage_metrics, "-cm_name", case_name, "-cm_dir", str(case_vdb)])
+            cmd.extend(["+SOFT_FAIL", case_plusarg, f"+INPUT={input_path}", f"+EXPECTED={expected_path}"])
             rc, output = run(cmd, output_dir, env=vcs_env(), check=False)
             if run_log.exists():
                 output += run_log.read_text(errors="ignore")
+            if args.enable_coverage and case_vdb.exists():
+                coverage_case_vdbs.append(case_vdb)
         ok = pass_marker in output
         if fail_marker in output:
             ok = False
@@ -180,11 +259,41 @@ def main() -> int:
         avg_skip_pct = (100.0 * sum_zero / sum_total) if sum_total else 0.0
         print(
             f"TXT_POWER arch={args.arch.upper()} simulator={args.simulator} "
-            f"cases={len(power_samples)} active_mac={sum_active} total_mac={sum_total} "
-            f"zero_gated={sum_zero} avg_skip_pct={avg_skip_pct:.2f}%"
-        )
+                f"cases={len(power_samples)} active_mac={sum_active} total_mac={sum_total} "
+                f"zero_gated={sum_zero} avg_skip_pct={avg_skip_pct:.2f}%"
+            )
 
-    return 1 if failures else 0
+    if args.enable_coverage:
+        urg_bin = shutil.which("urg")
+        if urg_bin is None:
+            coverage_failed = True
+            print(
+                f"COVERAGE_REPORT arch={args.arch.upper()} simulator={args.simulator} "
+                f"status=FAIL reason=missing_urg report={report_dir}"
+            )
+        elif not coverage_case_vdbs:
+            coverage_failed = True
+            print(
+                f"COVERAGE_REPORT arch={args.arch.upper()} simulator={args.simulator} "
+                f"status=FAIL reason=no_case_vdb report={report_dir}"
+            )
+        else:
+            design_vdb = build_dir / f"{ARCH_CONFIG[args.arch]['top']}.simv.vdb"
+            urg_cmd = [urg_bin, "-full64", "-dbname", str(merged_vdb), "-report", str(report_dir)]
+            if design_vdb.exists():
+                urg_cmd.extend(["-dir", str(design_vdb)])
+            for case_vdb in coverage_case_vdbs:
+                urg_cmd.extend(["-dir", str(case_vdb)])
+            urg_rc, _ = run(urg_cmd, output_dir, env=vcs_env(), check=False)
+            coverage_ok = (urg_rc == 0) and report_dir.exists()
+            coverage_failed = not coverage_ok
+            status = "PASS" if coverage_ok else "FAIL"
+            print(
+                f"COVERAGE_REPORT arch={args.arch.upper()} simulator={args.simulator} "
+                f"status={status} cases={len(coverage_case_vdbs)} merged={merged_vdb} report={report_dir}"
+            )
+
+    return 1 if (failures or coverage_failed) else 0
 
 
 if __name__ == "__main__":

@@ -1,302 +1,257 @@
-# 统一 Makefile 使用说明（仿真/验证/综合）
+# 统一 Makefile 与仿真验证使用说明
 
-本文档面向日常开发与论文实验，目标是：
+更新时间：2026-03-18
 
-- 用统一命令跑通四架构（WS/IS/OS/DIP）
-- 一键完成功能验证与后端综合
-- 自动产出可直接写论文的汇总指标表
+本文档只讲三件事：
+
+1. 常用仿真/验证命令怎么跑
+2. 每类命令会产生什么数据
+3. 现在测试前是否会自动删除旧数据
 
 ---
 
-## 1. 架构与入口
+## 1. 统一入口
 
-仓库包含四种 `4x4` 数据流实现：
+仓库统一从根目录 `Makefile` 进入。
 
-- `ws/`：Weight Stationary
-- `is/`：Input Stationary
-- `os/`：Output Stationary
-- `dip/`：DiP
+四种架构：
 
-统一入口：
-
-- 根目录 `Makefile`
+- `ws`
+- `is`
+- `os`
+- `dip`
 
 建议优先在仓库根目录执行命令。
 
-命令查看方式：
-
-- `make help`：查看推荐主入口
-- `make help-all`：查看完整命令列表
-
 ---
 
-## 2. 高频命令速查
+## 2. 先记住这些命令
 
-优先记住下面 6 个主入口：
-
-```bash
-# 单架构功能仿真
-make run ARCH=ws
-
-# 单架构生成波形
-make wave ARCH=dip
-
-# 打开波形（默认 Surfer）
-make open ARCH=ws
-
-# 四架构固定向量回归
-make regress
-
-# 四架构综合 + 汇总
-make backend
-
-# 单架构布局布线（post-route）
-make impl ARCH=is
-
-# 端到端一键验证（推荐）
-make verify
-```
-
-兼容旧别名仍保留，例如：
-
-```bash
-make ws
-make ws-vcs
-make dip-wave
-make surfer ARCH=ws
-make txt
-make verify-full
-```
-
----
-
-## 3. 命令分层
-
-建议把入口分成两层理解：
-
-- 主入口：`run / wave / open / regress / backend / verify`
-- 兼容入口：`ws / ws-vcs / txt / verify-full / dip-wave` 等历史命令
-
-第一次上手时，只需要先记住主入口。
-
-### 3.1 功能仿真
-
-推荐主入口：
-
-```bash
-make run ARCH=ws
-make run ARCH=is
-make run ARCH=os
-make run ARCH=dip
-```
-
-指定 `VCS`：
-
-```bash
-make run ARCH=ws SIM=vcs
-make run ARCH=dip SIM=vcs
-```
-
-兼容别名：
-
-```bash
-make ws-vcs
-make is-vcs
-make os-vcs
-make dip-vcs
-```
-
-### 3.2 波形
-
-生成波形：
-
-```bash
-make wave ARCH=ws
-make wave ARCH=dip
-```
-
-查看波形：
-
-```bash
-make open ARCH=ws
-make open ARCH=dip SIM=vcs
-make open ARCH=ws VIEWER=verdi
-```
-
-兼容别名：
-
-```bash
-make surfer ARCH=ws
-make surfer-vcs ARCH=dip
-make ws-verdi
-```
-
-### 3.3 回归
-
-推荐主入口：
-
-```bash
-make regress
-make regress SIM=vcs
-```
-
-单架构 `.txt` 回归：
+固定基准回归：
 
 ```bash
 make ws-txt
 make is-txt
 make os-txt
 make dip-txt
-```
-
-四架构统一回归：
-
-```bash
-make regress
-make txt-all-vcs
-```
-
-随机/批量：
-
-```bash
-make random-iverilog
-make batch-iverilog
-```
-
-### 3.4 综合与后端指标
-
-推荐主入口：
-
-```bash
-make backend
-make report
-make impl-summary
-```
-
-单架构综合：
-
-```bash
-make synth ARCH=ws
-make synth ARCH=is
-make synth ARCH=os
-make synth ARCH=dip
-```
-
-四架构综合：
-
-```bash
-make backend
-```
-
-汇总表生成：
-
-```bash
-make report
-```
-
-输出：
-
-- `test_logs/synth_summary/synth_metrics.csv`
-- `test_logs/synth_summary/synth_metrics.md`
-- `test_logs/impl_summary/impl_metrics.csv`
-- `test_logs/impl_summary/impl_metrics.md`
-
----
-
-## 4. 一键验证入口
-
-### 4.1 功能完备性
-
-```bash
 make regress
 ```
 
-含义：执行四架构统一固定向量回归（默认 `iverilog`）。
-
-### 4.2 后端完备性
+随机回归：
 
 ```bash
-make backend
+make random
+make random-vcs
 ```
 
-含义：执行四架构综合并生成统一指标表。
-
-### 4.3 端到端验证（推荐）
+`batch` 兼容入口：
 
 ```bash
-make verify
+make batch
+make batch-vcs
 ```
 
-含义：按“功能验证 -> 后端综合 -> 指标汇总”顺序一次跑完。
-
-如需查看全部底层命令，可执行：
+调试仿真：
 
 ```bash
-make help-all
+make run ARCH=ws
+make wave ARCH=dip
+make open ARCH=ws
+```
+
+覆盖率：
+
+```bash
+make cov ARCH=dip
 ```
 
 ---
 
-## 5. 如何解读汇总指标
+## 3. 每类命令分别做什么
 
-`synth_metrics.md` 中每行对应一个架构，核心字段：
+### 3.1 `*-txt`
 
-- `LUT / FF / DSP`：资源开销
-- `WNS(ns)`：setup 裕量（<0 表示 setup 违例）
-- `WHS(ns)`：hold 裕量（<0 表示 hold 违例）
-- `TotalPower(W) / Dynamic(W)`：综合态 vectorless 功耗估计
+`ws-txt / is-txt / os-txt / dip-txt` 是单架构固定基准回归。
 
-注意：
+它们会：
 
-- 综合态功耗仅用于趋势比较，不等同于最终板级实测功耗。
-- 建议后续补 `place&route` 后报告，作为论文最终 PPA 结论。
+1. 读取 `test_vectors/txt/` 下已有的输入文件和标准答案文件
+2. 编译对应架构的文件型 testbench
+3. 跑文本比对
+4. 在对应架构的 `sim/txt_vectors/...` 下输出本轮日志
 
-`impl_metrics.md` 中每行对应一个架构，核心字段：
+### 3.2 `regress` / `front-verify`
 
-- `STATUS`：`READY` 表示该架构已生成 post-route 报告，`MISSING` 表示尚未执行 `make impl ARCH=<arch>`
-- `PostRouteWNS(ns)`：布局布线后的 setup 裕量
-- `PostRouteWHS(ns)`：布局布线后的 hold 裕量
-- `PostRouteFmax(MHz)`：按 `Fmax = 1000 / (Tclk - WNS)` 估算的 post-route 频率
+这是四架构固定基准回归入口。
 
-说明：
+它们本质上就是依次执行四个 `*-txt`，再给出统一汇总结果。
 
-- 当前 `impl` 采用 `out_of_context` 的 core-only 实现流，主要用于观察阵列核心本身的时序能力。
-- 这组数据适合论文中的“核心级后端时序”对比，不等同于带完整板级 I/O 的 full-chip 最终频率。
-- DIP 当前的 hold 修复来自更合理的输入最小延迟建模，反映的是 OOC 边界条件，而不是 RTL 功能变化。
+### 3.3 `random`
+
+`make random` 等价于 `make random-iverilog`。
+
+它会先生成一批新的随机向量，再对四种架构执行统一回归。
+
+随机向量目录形如：
+
+- `test_vectors/generated/seed_<seed>/`
+
+但目录内部现在只保留两个文件：
+
+- `suite_input.txt`
+- `suite_expected.txt`
+
+### 3.4 `batch`
+
+`batch` 不再表示第二种验证流程。
+
+它现在只是 `random` 的大样本兼容别名：
+
+- 内部仍然调用同一套随机向量生成与文本比对逻辑
+- 只是默认样本数更大
+- 默认 seed 用时间戳，所以每次运行都会换一批数据
+
+如果你想复现某一轮结果，可以显式传入 `BATCH_VECTOR_SEED=<固定值>`。
+生成目录也已经收敛到同一个根目录：
+
+- `test_vectors/generated/seed_<seed>/`
+
+### 3.5 `run`
+
+`run` 是单架构调试仿真入口。
+
+用途：
+
+- 快速冒烟
+- 检查功能行为
+- 配合日志看问题
+
+它不是正式功能结论的主口径。
+
+### 3.6 `wave` / `open`
+
+用于生成波形和打开波形。
+
+用途：
+
+- 观察握手
+- 观察时序
+- 定位 flush / latency / drain 等边界问题
+
+### 3.7 `cov`
+
+仍然是文本向量驱动回归，只是额外打开 VCS 覆盖率收集。
+
+输出通常在：
+
+- `*/sim/coverage/vcs/`
 
 ---
 
-## 6. 目录约定
+## 4. 现在测试前会自动清理哪些旧数据
 
-- 回归日志：`test_logs/multi_arch_txt`
-- 综合报告：`<arch>/reports/synth`
-- post-route 报告：`<arch>/reports/impl`
-- 综合中间日志：`<arch>/sim/vivado`
-- 综合汇总：`test_logs/synth_summary`
-- post-route 汇总：`test_logs/impl_summary`
+当前已经统一成“先删旧数据，再跑新测试”。
+
+### 4.1 随机向量
+
+在生成前会先删除旧目录：
+
+- `make random` 先删旧的 `test_vectors/generated/seed_<seed>/`
+- `make batch` 先删旧的 `test_vectors/generated/seed_<seed>/`
+
+然后才生成新的：
+
+- `suite_input.txt`
+- `suite_expected.txt`
+
+### 4.2 单架构仿真输出
+
+在每次运行前会先清空对应输出目录：
+
+- `sim`
+- `wave`
+- `txt`
+- `cov`
+
+也就是说，每轮结果都是本轮新产物，不会夹杂上一次残留。
+
+### 4.3 多架构汇总日志
+
+`regress / front-verify / random / batch` 这些多架构入口在开始前会先清掉：
+
+- `test_logs/multi_arch_txt/`
+
+然后再写本轮汇总日志。
 
 ---
 
-## 7. 推荐实验流程（论文）
+## 5. 文件格式说明
 
-1. 功能正确性：`make regress`
-2. 后端指标：`make backend`
-3. post-route 时序：`make impl ARCH=is`、`make impl ARCH=dip`
-4. 导出汇总表：`make report`
-5. 一致性复核：重复不同 seed 的随机回归
+### 5.1 固定基准向量
+
+固定基准仍然使用历史格式：
+
+- 一个 case 对应一个 `*_input.txt`
+- 一个 case 对应一个 `*_expected.txt`
+
+这类文件主要位于：
+
+- `test_vectors/txt/`
+
+### 5.2 随机向量
+
+随机向量现在统一使用汇总格式：
+
+- `suite_input.txt`
+- `suite_expected.txt`
+
+文件内部使用 `CASE <name>` 分段。
+
+testbench 会通过 `+CASE=<name>` 读取当前 case 对应的数据。
 
 ---
 
-## 8. 常见问题
+## 6. 建议怎么用
 
-1. `WHS` 为负怎么办？  
-综合阶段出现轻微 hold 负裕量很常见，建议在 `route` 后再看最终 hold。
+如果你想做可复现的正式回归：
 
-2. `WNS` 为负怎么办？  
-说明 setup 不满足目标时钟，优先处理关键路径流水化或寄存器重定时。
+```bash
+make regress
+```
 
-3. 功耗值看起来偏高/偏低？  
-先确认约束完整（尤其 DIP 的 XDC），再比较同条件下四架构相对趋势。
+如果你想做新的随机抽检：
 
-4. 为什么 `impl` 只建议先跑 `IS/DIP`？  
-当前完整验证顶层 I/O 很多，直接做 full-chip 实现会受器件管脚数限制；因此先用 core-only OOC 流拿 post-route 时序更合理。
+```bash
+make random RANDOM_VECTOR_SEED=3 RANDOM_VECTOR_COUNT=32
+```
+
+如果你想做更大规模随机回归：
+
+```bash
+make random RANDOM_VECTOR_SEED=3 RANDOM_VECTOR_COUNT=128
+```
+
+如果你手里还有旧脚本，也可以继续写：
+
+```bash
+make batch BATCH_VECTOR_SEED=3 BATCH_VECTOR_COUNT=128
+```
+
+它只是兼容别名。
+
+如果你在定位波形或接口边界问题：
+
+```bash
+make run ARCH=dip
+make wave ARCH=dip
+```
+
+---
+
+## 7. 一句话总结
+
+现在这套仿真/验证流程的核心原则是：
+
+- 正式验证统一走文本比对
+- 随机回归只保留两个汇总文本文件
+- 每次测试默认先清旧数据，再产生新结果

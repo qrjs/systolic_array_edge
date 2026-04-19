@@ -29,30 +29,25 @@
 
 ## 快速开始
 
-最常用命令都在仓库根目录执行：
+最常用命令都在仓库根目录执行。建议先按这 5 类理解：
 
 ```bash
+make txt
+make random
+make batch
 make run ARCH=ws
 make wave ARCH=dip
 make open ARCH=ws
-make regress
-make backend
-make impl ARCH=is
-make impl-summary
-make verify
-make clean
+make cov ARCH=dip
 ```
 
-兼容旧别名仍然保留，例如：
+它们分别表示：
 
-```bash
-make ws
-make ws-vcs
-make dip-wave
-make surfer ARCH=ws
-make txt
-make verify-full
-```
+- `txt`：固定基准回归
+- `random`：随机回归
+- `batch`：`random` 的大样本兼容别名
+- `run / wave / open`：调试验证
+- `cov`：覆盖率回归
 
 如果你想显式指定架构和工具，也可以继续使用底层统一入口：
 
@@ -60,6 +55,7 @@ make verify-full
 make sim ARCH=ws SIM=iverilog
 make view ARCH=os SIM=iverilog VIEWER=surfer
 make txt-one ARCH=is SIM=iverilog VECTOR_DIR=test_vectors/txt
+make cov ARCH=dip VECTOR_DIR=test_vectors/txt
 make synth ARCH=dip
 make impl-summary
 ```
@@ -74,14 +70,9 @@ make help-all
 如果你第一次使用，最建议先跑这组：
 
 ```bash
-make ws
-make is
-make os
-make dip
-make ws-txt
-make is-txt
-make os-txt
-make dip-txt
+make txt
+make random RANDOM_VECTOR_SEED=3 RANDOM_VECTOR_COUNT=16
+make run ARCH=ws
 ```
 
 ## 四种数据流怎么区分
@@ -98,8 +89,9 @@ make dip-txt
 - 用 `iverilog` / `VCS` 跑功能仿真
 - 用 `Surfer` / `Verdi` 打开波形
 - 用 `.txt` 输入和标准答案做回归
+- 用 `VCS + urg` 跑功能覆盖率并产出报告
 - 在 `.txt` 回归里查看零值门控潜力（`A_nz / B_nz / active_mac / zero_gated / skip_ratio`）
-- 用随机向量和大批量向量做四架构统一测试
+- 用随机向量做四架构统一测试，`batch` 只是大样本兼容入口
 - 用 `Vivado` 对四个架构分别综合
 - 在每个架构子目录下拿到自己的综合报告
 
@@ -120,6 +112,7 @@ make dip-txt
 - `docs/脉动阵列零基础上手与仓库导读_CN.md:1`
 - `docs/四种数据流波形与时序教学图解_CN.md:1`
 - `docs/统一Makefile与仿真综合使用说明_CN.md:1`
+- `docs/功能覆盖率使用说明_CN.md:1`
 - `docs/数据流资料对照与前端实现评审_CN.md:1`
 - `docs/边缘优化实践与实现说明_CN.md:1`
 - `docs/论文大纲_面向边缘计算脉动阵列_CN.md:1`

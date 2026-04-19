@@ -44,9 +44,12 @@ module standard_dip_array_4x4 #(
     reg                                 result_pending_reg;
     reg                                 started_reg;
     reg                                 done_reg;
+    integer                             input_nonzero_count;
+    integer                             weight_nonzero_count;
 
     integer row_idx;
     integer col_idx;
+    integer density_idx;
 
     systolic_array_dip_4x4 #(
         .DATA_WIDTH(DATA_WIDTH),
@@ -149,6 +152,19 @@ module standard_dip_array_4x4 #(
         end
     end
 
+    always @(*) begin
+        input_nonzero_count = 0;
+        weight_nonzero_count = 0;
+        for (density_idx = 0; density_idx < ARRAY_SIZE; density_idx = density_idx + 1) begin
+            if ($signed(input_row_data[((density_idx + 1) * DATA_WIDTH) - 1 -: DATA_WIDTH]) != 0) begin
+                input_nonzero_count = input_nonzero_count + 1;
+            end
+            if ($signed(weight_row_data[((density_idx + 1) * WEIGHT_WIDTH) - 1 -: WEIGHT_WIDTH]) != 0) begin
+                weight_nonzero_count = weight_nonzero_count + 1;
+            end
+        end
+    end
+
     generate
         genvar out_row;
         genvar out_col;
@@ -164,5 +180,63 @@ module standard_dip_array_4x4 #(
     assign result_valid = result_valid_reg;
     // busy 同时覆盖：内部阵列仍忙、drain 尚未完成、或整块结果尚未收齐。
     assign busy = stream_busy | drain_pending_reg | (started_reg & ~done_reg);
+
+    `ifdef FORMAL
+        covergroup dip_flow_cg @(posedge clk);
+            option.per_instance = 1;
+
+            cp_weight_row_valid: coverpoint weight_row_valid {
+                bins seen = {1'b1};
+            }
+
+            cp_input_row_valid: coverpoint input_row_valid {
+                bins seen = {1'b1};
+            }
+
+            cp_output_row_valid: coverpoint output_row_valid {
+                bins seen = {1'b1};
+            }
+
+            cp_result_valid: coverpoint result_valid_reg {
+                bins seen = {1'b1};
+            }
+
+            cp_drain_pending: coverpoint drain_pending_reg {
+                bins idle = {1'b0};
+                bins armed = {1'b1};
+            }
+
+            cp_captured_rows: coverpoint captured_rows {
+                bins none = {0};
+                bins partial = {[1:ARRAY_SIZE-1]};
+                bins full = {ARRAY_SIZE};
+            }
+
+            cp_input_density: coverpoint input_nonzero_count iff (input_row_valid) {
+                bins zero = {0};
+                bins sparse = {[1:2]};
+                bins dense = {[3:ARRAY_SIZE]};
+            }
+
+            cp_weight_density: coverpoint weight_nonzero_count iff (weight_row_valid) {
+                bins zero = {0};
+                bins sparse = {[1:2]};
+                bins dense = {[3:ARRAY_SIZE]};
+            }
+
+            cp_busy: coverpoint busy {
+                bins idle = {1'b0};
+                bins active = {1'b1};
+            }
+
+            cross cp_input_density, cp_weight_density;
+        endgroup
+
+        dip_flow_cg u_dip_flow_cg = new();
+
+        cover property (@(posedge clk) !input_row_valid && prev_input_row_valid ##1 drain_pending_reg);
+        cover property (@(posedge clk) input_row_valid ##[1:16] output_row_valid);
+        cover property (@(posedge clk) output_row_valid ##[1:8] result_valid_reg);
+    `endif
 
 endmodule

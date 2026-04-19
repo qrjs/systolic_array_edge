@@ -141,4 +141,15 @@ module systolic_array_dip_4x4 #(
     assign output_row_data = output_row_data_reg;
     assign busy = busy_reg;
 
+    `ifdef FORMAL
+        cover property (@(posedge clk) weight_row_valid);
+        cover property (@(posedge clk) input_row_valid);
+        cover property (@(posedge clk) row_ready);
+        cover property (@(posedge clk) row_ready ##1 output_row_valid_reg);
+        cover property (@(posedge clk) pe_valid_out[ARRAY_SIZE - 1][0]);
+        cover property (@(posedge clk) pe_valid_out[ARRAY_SIZE - 1][ARRAY_SIZE - 1]);
+        cover property (@(posedge clk) busy_reg);
+        cover property (@(posedge clk) !busy_reg);
+    `endif
+
 endmodule

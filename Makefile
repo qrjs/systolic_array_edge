@@ -15,20 +15,24 @@ RANDOM_VECTOR_MIN ?= -16
 RANDOM_VECTOR_MAX ?= 16
 RANDOM_VECTOR_SPARSE ?= 0.20
 RANDOM_VECTOR_PREFIX ?= rand
-RANDOM_VECTOR_DIR ?= $(PROJECT_ROOT)/test_vectors/generated/seed_$(RANDOM_VECTOR_SEED)
+RANDOM_VECTOR_ROOT := $(PROJECT_ROOT)/test_vectors/generated
+RANDOM_VECTOR_DIR ?= $(RANDOM_VECTOR_ROOT)/seed_$(RANDOM_VECTOR_SEED)
 
-BATCH_VECTOR_SEED ?= 20260317
+# `batch` 保留为随机回归的大样本兼容别名，不再单独维护一套目录结构。
+ifeq ($(origin BATCH_VECTOR_SEED), undefined)
+BATCH_VECTOR_SEED := $(shell date +%Y%m%d%H%M%S)
+endif
 BATCH_VECTOR_COUNT ?= 128
 BATCH_VECTOR_MIN ?= -64
 BATCH_VECTOR_MAX ?= 64
 BATCH_VECTOR_SPARSE ?= 0.30
 BATCH_VECTOR_PREFIX ?= batch
-BATCH_VECTOR_DIR ?= $(PROJECT_ROOT)/test_vectors/batch/seed_$(BATCH_VECTOR_SEED)
+BATCH_VECTOR_DIR ?= $(RANDOM_VECTOR_ROOT)/seed_$(BATCH_VECTOR_SEED)
 
 ARCH_SHORTCUT_TARGETS := $(foreach arch,$(ARCHES), \
 	$(arch) $(arch)-iverilog $(arch)-vcs $(arch)-wave $(arch)-wave-vcs \
 	$(arch)-surfer $(arch)-surfer-vcs $(arch)-verdi $(arch)-verdi-vcs \
-	$(arch)-txt $(arch)-txt-vcs $(arch)-synth $(arch)-vivado $(arch)-clean)
+	$(arch)-txt $(arch)-txt-vcs $(arch)-cov $(arch)-synth $(arch)-vivado $(arch)-clean)
 
 LEGACY_TARGETS := \
 	test test-ws test-is test-os test-dip \
@@ -36,9 +40,10 @@ LEGACY_TARGETS := \
 	txt-random txt-random-iverilog txt-random-vcs
 
 .PHONY: \
-	help help-all run open regress backend report verify \
+	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
 	check sim wave view surfer surfer-vcs txt-one txt txt-all txt-all-iverilog txt-all-vcs \
+	cov cov-all \
 	synth synth-all synth-summary verify-func verify-backend verify-full clean clean-arch distclean distclean-arch \
 	vector-gen batch-gen random random-iverilog random-vcs batch batch-iverilog batch-vcs \
 	$(ARCH_SHORTCUT_TARGETS) $(LEGACY_TARGETS)
@@ -109,6 +114,9 @@ $(1)-txt:
 $(1)-txt-vcs:
 	@$(MAKE) txt-one ARCH=$(1) SIM=vcs VECTOR_DIR="$(VECTOR_DIR_ABS)"
 
+$(1)-cov:
+	@$(MAKE) cov ARCH=$(1) VECTOR_DIR="$(VECTOR_DIR_ABS)"
+
 $(1)-synth:
 	@$(MAKE) synth ARCH=$(1)
 
@@ -122,23 +130,20 @@ endef
 help:
 	@echo "统一 Makefile 入口"
 	@echo ""
-	@echo "推荐主入口："
-	@echo "  make run ARCH=ws       # 单架构功能仿真（默认 SIM=iverilog）"
+	@echo "推荐先记这 5 类："
+	@echo "  make txt               # 固定基准回归（四架构，默认 SIM=iverilog）"
+	@echo "  make random            # 随机回归（先删旧向量，再生成新 suite_* 文件）"
+	@echo "  make batch             # random 的大样本兼容别名"
+	@echo "  make run ARCH=ws       # 单架构调试仿真"
 	@echo "  make wave ARCH=dip     # 单架构生成波形"
 	@echo "  make open ARCH=ws      # 打开波形（默认 VIEWER=surfer）"
-	@echo "  make regress           # 四架构固定 .txt 回归（默认 SIM=iverilog）"
-	@echo "  make backend           # 四架构综合并生成汇总表"
-	@echo "  make impl ARCH=is      # 单架构布局布线（post-route 时序）"
-	@echo "  make verify            # 一键执行回归 + 综合 + 汇总"
-	@echo "  make clean             # 清理全部架构中间文件"
+	@echo "  make cov ARCH=dip      # 单架构 VCS 功能覆盖率"
 	@echo ""
-	@echo "快捷别名仍可继续使用："
-	@echo "  make ws                # 等价于 make run ARCH=ws"
-	@echo "  make ws-vcs            # 等价于 make run ARCH=ws SIM=vcs"
-	@echo "  make dip-wave          # 等价于 make wave ARCH=dip"
-	@echo "  make surfer ARCH=ws    # 等价于 make open ARCH=ws VIEWER=surfer"
-	@echo "  make txt               # 等价于 make regress"
-	@echo "  make verify-full       # 等价于 make verify"
+	@echo "说明："
+	@echo "  txt / random / cov 属于正式验证"
+	@echo "  run / wave / open 属于调试验证"
+	@echo "  regress / front-verify 是 txt 的历史别名"
+	@echo "  batch / batch-vcs 是 random 的大样本兼容别名"
 	@echo ""
 	@echo "查看完整命令："
 	@echo "  make help-all"
@@ -151,31 +156,44 @@ help:
 help-all:
 	@echo "完整命令入口"
 	@echo ""
-	@echo "主入口："
+	@echo "验证主入口："
+	@echo "  make txt"
+	@echo "  make random"
+	@echo "  make batch"
 	@echo "  make run ARCH=ws SIM=iverilog"
 	@echo "  make wave ARCH=dip SIM=vcs"
 	@echo "  make open ARCH=os SIM=iverilog VIEWER=surfer"
-	@echo "  make regress"
-		@echo "  make backend"
-		@echo "  make report"
-		@echo "  make impl ARCH=is"
-		@echo "  make impl-summary"
-		@echo "  make verify"
+	@echo "  make cov ARCH=dip"
 	@echo ""
 	@echo "底层入口："
 	@echo "  make sim ARCH=ws SIM=iverilog"
 	@echo "  make view ARCH=os SIM=iverilog VIEWER=surfer"
 	@echo "  make txt-one ARCH=is SIM=iverilog VECTOR_DIR=$(PROJECT_ROOT)/test_vectors/txt"
+	@echo "  make cov ARCH=dip VECTOR_DIR=$(PROJECT_ROOT)/test_vectors/txt"
+	@echo ""
+	@echo "后端入口："
+	@echo "  make backend"
+	@echo "  make report"
 	@echo "  make synth ARCH=ws"
+	@echo "  make impl ARCH=is"
 	@echo "  make synth-summary"
+	@echo "  make impl-summary"
+	@echo "  make verify"
 	@echo "  make verify-full"
 	@echo ""
-	@echo "批量回归："
+	@echo "兼容别名："
+	@echo "  make regress"
+	@echo "  make front-verify"
 	@echo "  make txt-all-vcs"
 	@echo "  make random-iverilog"
 	@echo "  make batch-vcs"
 	@echo ""
-	@echo "批量参数："
+	@echo "随机参数："
+	@echo "  RANDOM_VECTOR_COUNT=$(RANDOM_VECTOR_COUNT)"
+	@echo "  RANDOM_VECTOR_SEED=$(RANDOM_VECTOR_SEED)"
+	@echo "  RANDOM_VECTOR_DIR=$(RANDOM_VECTOR_DIR)"
+	@echo ""
+	@echo "batch 兼容参数："
 	@echo "  BATCH_VECTOR_COUNT=$(BATCH_VECTOR_COUNT)"
 	@echo "  BATCH_VECTOR_SEED=$(BATCH_VECTOR_SEED)"
 	@echo "  BATCH_VECTOR_DIR=$(BATCH_VECTOR_DIR)"
@@ -223,8 +241,15 @@ surfer-vcs: validate-arch
 txt-one: validate-arch validate-sim
 	@$(MAKE) -C "$(PROJECT_ROOT)/$(ARCH)/scripts" txt SIM="$(SIM)" VECTOR_DIR="$(VECTOR_DIR_ABS)"
 
+cov: validate-arch
+	@$(MAKE) -C "$(PROJECT_ROOT)/$(ARCH)/scripts" cov VECTOR_DIR="$(VECTOR_DIR_ABS)"
+
 regress:
 	$(call RUN_REGRESS_BY_SIM)
+
+front-verify: regress
+
+frontend-verify: front-verify
 
 txt: regress
 
@@ -235,6 +260,11 @@ txt-all-iverilog:
 
 txt-all-vcs:
 	$(call RUN_MULTI_ARCH_TXT,txt-all,vcs,$(VECTOR_DIR_ABS))
+
+cov-all:
+	@for arch in $(ARCHES); do \
+		$(MAKE) cov ARCH=$$arch VECTOR_DIR="$(VECTOR_DIR_ABS)" || exit $$?; \
+	done
 
 synth: validate-arch
 	@$(MAKE) -C "$(PROJECT_ROOT)/$(ARCH)/scripts" synth
@@ -261,7 +291,7 @@ impl-all:
 	done
 
 # 快速功能完备性验证（统一固定向量回归）
-verify-func: txt-all-iverilog
+verify-func: front-verify
 
 # 后端完备性验证（四架构综合 + 统一指标表）
 verify-backend: synth-all synth-summary
@@ -282,6 +312,7 @@ clean:
 	done
 	@rm -rf "$(PROJECT_ROOT)/csrc" "$(PROJECT_ROOT)/verdiLog"
 	@rm -f "$(PROJECT_ROOT)"/ucli.key "$(PROJECT_ROOT)"/vc_hdrs.h
+	@rm -rf "$(PROJECT_ROOT)/test_vectors/generated" "$(PROJECT_ROOT)/test_vectors/batch"
 
 distclean-arch: validate-arch
 	@$(MAKE) -C "$(PROJECT_ROOT)/$(ARCH)/scripts" distclean
@@ -293,10 +324,18 @@ distclean: clean
 	@rm -rf "$(PROJECT_ROOT)/test_logs"
 
 vector-gen:
+	@rm -rf "$(RANDOM_VECTOR_DIR)"
 	$(call GENERATE_TXT_VECTORS,$(RANDOM_VECTOR_DIR),$(RANDOM_VECTOR_COUNT),$(RANDOM_VECTOR_SEED),$(RANDOM_VECTOR_PREFIX),$(RANDOM_VECTOR_MIN),$(RANDOM_VECTOR_MAX),$(RANDOM_VECTOR_SPARSE))
 
 batch-gen:
-	$(call GENERATE_TXT_VECTORS,$(BATCH_VECTOR_DIR),$(BATCH_VECTOR_COUNT),$(BATCH_VECTOR_SEED),$(BATCH_VECTOR_PREFIX),$(BATCH_VECTOR_MIN),$(BATCH_VECTOR_MAX),$(BATCH_VECTOR_SPARSE))
+	@$(MAKE) vector-gen \
+		RANDOM_VECTOR_DIR="$(BATCH_VECTOR_DIR)" \
+		RANDOM_VECTOR_COUNT="$(BATCH_VECTOR_COUNT)" \
+		RANDOM_VECTOR_SEED="$(BATCH_VECTOR_SEED)" \
+		RANDOM_VECTOR_PREFIX="$(BATCH_VECTOR_PREFIX)" \
+		RANDOM_VECTOR_MIN="$(BATCH_VECTOR_MIN)" \
+		RANDOM_VECTOR_MAX="$(BATCH_VECTOR_MAX)" \
+		RANDOM_VECTOR_SPARSE="$(BATCH_VECTOR_SPARSE)"
 
 random: random-iverilog
 
@@ -309,10 +348,10 @@ random-vcs: vector-gen
 batch: batch-iverilog
 
 batch-iverilog: batch-gen
-	$(call RUN_MULTI_ARCH_TXT,batch,iverilog,$(BATCH_VECTOR_DIR))
+	$(call RUN_MULTI_ARCH_TXT,random-batch,iverilog,$(BATCH_VECTOR_DIR))
 
 batch-vcs: batch-gen
-	$(call RUN_MULTI_ARCH_TXT,batch,vcs,$(BATCH_VECTOR_DIR))
+	$(call RUN_MULTI_ARCH_TXT,random-batch,vcs,$(BATCH_VECTOR_DIR))
 
 $(foreach arch,$(ARCHES),$(eval $(call ARCH_SHORTCUT_TEMPLATE,$(arch))))
 

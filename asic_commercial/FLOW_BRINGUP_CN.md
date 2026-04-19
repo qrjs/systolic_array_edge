@@ -4,6 +4,12 @@
 `VCS -> DC -> FM -> ICC2 -> Calibre`
 所需要的环境、后仿必需输入，以及工艺库检查方法。
 
+说明：
+
+- 本文档面向商业 ASIC 后端与 gate-level 后仿流程
+- 仓库里的前端正式功能验证口径已经统一为 `.txt` 输入 / `.txt` 标准答案比对
+- 前端验证说明见 [前端验证口径统一说明_CN.md](/home/jrq/systolic_array_edge/docs/前端验证口径统一说明_CN.md)
+
 适用对象：
 
 - `asic_commercial/ws`
@@ -230,4 +236,3 @@ POSTSIM_SDF_MODE=none ./scripts/run_postsim.sh
 
 - `asic_commercial/README.md`
 - `asic_commercial/dip/README.md`
-

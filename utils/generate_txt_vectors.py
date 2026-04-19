@@ -6,6 +6,8 @@ import random
 from pathlib import Path
 
 MATRIX_SIZE = 4
+SUITE_INPUT_NAME = "suite_input.txt"
+SUITE_EXPECTED_NAME = "suite_expected.txt"
 
 
 def matmul(a: list[list[int]], b: list[list[int]]) -> list[list[int]]:
@@ -28,25 +30,29 @@ def random_matrix(rng: random.Random, value_min: int, value_max: int, sparse_pro
     ]
 
 
-def write_input(path: Path, case_name: str, seed: int, a: list[list[int]], b: list[list[int]]) -> None:
+def write_suite_input(path: Path, seed: int, cases: list[tuple[str, list[list[int]], list[list[int]]]]) -> None:
     with path.open("w", encoding="utf-8") as handle:
-        handle.write(f"# Random generated input vector\n")
-        handle.write(f"# case={case_name} seed={seed}\n")
-        handle.write("A\n")
-        for row in a:
-            handle.write(" ".join(map(str, row)) + "\n")
-        handle.write("B\n")
-        for row in b:
-            handle.write(" ".join(map(str, row)) + "\n")
+        handle.write("# Random generated input vector suite\n")
+        handle.write(f"# seed={seed} count={len(cases)}\n")
+        for case_name, a_matrix, b_matrix in cases:
+            handle.write(f"CASE {case_name}\n")
+            handle.write("A\n")
+            for row in a_matrix:
+                handle.write(" ".join(map(str, row)) + "\n")
+            handle.write("B\n")
+            for row in b_matrix:
+                handle.write(" ".join(map(str, row)) + "\n")
 
 
-def write_expected(path: Path, case_name: str, seed: int, c: list[list[int]]) -> None:
+def write_suite_expected(path: Path, seed: int, cases: list[tuple[str, list[list[int]]]]) -> None:
     with path.open("w", encoding="utf-8") as handle:
-        handle.write(f"# Random generated expected output\n")
-        handle.write(f"# case={case_name} seed={seed}\n")
-        handle.write("C\n")
-        for row in c:
-            handle.write(" ".join(map(str, row)) + "\n")
+        handle.write("# Random generated expected output suite\n")
+        handle.write(f"# seed={seed} count={len(cases)}\n")
+        for case_name, c_matrix in cases:
+            handle.write(f"CASE {case_name}\n")
+            handle.write("C\n")
+            for row in c_matrix:
+                handle.write(" ".join(map(str, row)) + "\n")
 
 
 def main() -> int:
@@ -73,23 +79,26 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     if args.clean:
-        for path in output_dir.glob("*_input.txt"):
-            path.unlink()
-        for path in output_dir.glob("*_expected.txt"):
+        for path in output_dir.glob("*.txt"):
             path.unlink()
 
     rng = random.Random(args.seed)
+    input_cases: list[tuple[str, list[list[int]], list[list[int]]]] = []
+    expected_cases: list[tuple[str, list[list[int]]]] = []
 
     for case_idx in range(args.count):
         case_name = f"{args.prefix}_{case_idx:03d}"
         a_matrix = random_matrix(rng, args.value_min, args.value_max, args.sparse_prob)
         b_matrix = random_matrix(rng, args.value_min, args.value_max, args.sparse_prob)
         c_matrix = matmul(a_matrix, b_matrix)
+        input_cases.append((case_name, a_matrix, b_matrix))
+        expected_cases.append((case_name, c_matrix))
 
-        write_input(output_dir / f"{case_name}_input.txt", case_name, args.seed, a_matrix, b_matrix)
-        write_expected(output_dir / f"{case_name}_expected.txt", case_name, args.seed, c_matrix)
         if not args.quiet:
             print(f"GENERATED case={case_name} seed={args.seed}")
+
+    write_suite_input(output_dir / SUITE_INPUT_NAME, args.seed, input_cases)
+    write_suite_expected(output_dir / SUITE_EXPECTED_NAME, args.seed, expected_cases)
 
     print(
         f"GENERATED_SUMMARY dir={output_dir} count={args.count} seed={args.seed} "
