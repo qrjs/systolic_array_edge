@@ -20,77 +20,56 @@ module dip_pe #(
 );
 
     reg signed [WEIGHT_WIDTH-1:0] stored_weight;
+    reg                           token_valid_reg;
+    reg signed [DATA_WIDTH-1:0]   data_out_reg;
+    reg signed [ACC_WIDTH-1:0]    psum_out_reg;
 
-    reg                           stage1_valid;
-    reg signed [DATA_WIDTH-1:0]   stage1_data;
-    reg signed [ACC_WIDTH-1:0]    stage1_psum;
-    reg                           stage1_mac_en;
+    wire signed [WEIGHT_WIDTH-1:0] active_weight;
+    wire                           mac_enable;
+    wire signed [ACC_WIDTH-1:0]    mac_result;
 
-    reg                           stage2_valid;
-    reg signed [DATA_WIDTH-1:0]   stage2_data;
-    reg signed [ACC_WIDTH-1:0]    stage2_psum;
+    assign active_weight = weight_load ? weight_in : stored_weight;
+    assign mac_enable = token_valid_in && (data_in != 0) && (active_weight != 0);
+    assign mac_result = psum_in + (data_in * active_weight);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             stored_weight <= {WEIGHT_WIDTH{1'b0}};
-            stage1_valid  <= 1'b0;
-            stage1_data   <= {DATA_WIDTH{1'b0}};
-            stage1_psum   <= {ACC_WIDTH{1'b0}};
-            stage1_mac_en <= 1'b0;
-            stage2_valid  <= 1'b0;
-            stage2_data   <= {DATA_WIDTH{1'b0}};
-            stage2_psum   <= {ACC_WIDTH{1'b0}};
+            token_valid_reg <= 1'b0;
+            data_out_reg <= {DATA_WIDTH{1'b0}};
+            psum_out_reg <= {ACC_WIDTH{1'b0}};
         end else if (flush) begin
-            stage1_valid  <= 1'b0;
-            stage1_data   <= {DATA_WIDTH{1'b0}};
-            stage1_psum   <= {ACC_WIDTH{1'b0}};
-            stage1_mac_en <= 1'b0;
-            stage2_valid  <= 1'b0;
-            stage2_data   <= {DATA_WIDTH{1'b0}};
-            stage2_psum   <= {ACC_WIDTH{1'b0}};
+            token_valid_reg <= 1'b0;
+            data_out_reg <= {DATA_WIDTH{1'b0}};
+            psum_out_reg <= {ACC_WIDTH{1'b0}};
         end else if (clk_enable) begin
             if (weight_load) begin
                 stored_weight <= weight_in;
             end
 
-            stage2_valid <= stage1_valid;
-            if (stage1_valid) begin
-                stage2_data <= stage1_data;
-                // 边缘场景更关心无效翻转和控制开销，因此把 “是否真的需要 MAC”
-                // 的判定前移到 stage1 并寄存成 stage1_mac_en。
-                // 这样 stage2 只在 token 有效且确实有贡献时才切换 DSP / adder，
-                // 无效周期则仅清 valid，数据寄存器保持稳定，减少翻转。
-                stage2_psum <= stage1_psum;
-                if (stage1_mac_en) begin
-                    stage2_psum <= stage1_psum + (stage1_data * stored_weight);
+            if (token_valid_in) begin
+                data_out_reg <= data_in;
+                if (mac_enable) begin
+                    psum_out_reg <= mac_result;
+                end else begin
+                    psum_out_reg <= psum_in;
                 end
             end
-
-            stage1_valid <= token_valid_in;
-            if (token_valid_in) begin
-                stage1_data <= data_in;
-                stage1_psum <= psum_in;
-                // 若 weight_load 与 token_valid_in 同拍出现，则这个 token 在下一拍
-                // 应该使用新装入的权重，因此这里优先用 weight_in 参与零值判定。
-                stage1_mac_en <= (data_in != 0) &&
-                                 ((weight_load ? weight_in : stored_weight) != 0);
-            end else begin
-                stage1_mac_en <= 1'b0;
-            end
+            token_valid_reg <= token_valid_in;
         end
     end
 
-    assign token_valid_out = stage2_valid;
-    assign data_out = stage2_data;
-    assign psum_out = stage2_psum;
+    assign token_valid_out = token_valid_reg;
+    assign data_out = data_out_reg;
+    assign psum_out = psum_out_reg;
 
     `ifdef FORMAL
         cover property (@(posedge clk) weight_load);
         cover property (@(posedge clk) token_valid_in);
-        cover property (@(posedge clk) token_valid_in && stage1_mac_en);
-        cover property (@(posedge clk) token_valid_in && !stage1_mac_en);
+        cover property (@(posedge clk) token_valid_in && mac_enable);
+        cover property (@(posedge clk) token_valid_in && !mac_enable);
         cover property (@(posedge clk) weight_load && token_valid_in);
-        cover property (@(posedge clk) stage2_valid);
+        cover property (@(posedge clk) token_valid_reg);
         cover property (@(posedge clk) flush);
     `endif
 

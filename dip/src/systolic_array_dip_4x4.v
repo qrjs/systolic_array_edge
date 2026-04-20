@@ -23,8 +23,10 @@ module systolic_array_dip_4x4 #(
     output wire                                   busy
 );
 
-    // activity_sr 用来粗略跟踪阵列内部是否还存在尚未排空的活动 token。
-    localparam integer ACTIVITY_DEPTH = (ARRAY_SIZE * 2) + 4;
+    reg                                   prev_input_row_valid;
+    reg                                   drain_valid_reg;
+    wire                                  stream_input_row_valid;
+    wire [DATA_WIDTH*ARRAY_SIZE-1:0]      stream_input_row_data;
 
     wire [DATA_WIDTH-1:0] pe_data_in   [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     wire [ACC_WIDTH-1:0]  pe_psum_in   [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
@@ -33,6 +35,7 @@ module systolic_array_dip_4x4 #(
     wire [DATA_WIDTH-1:0] pe_data_out  [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     wire [ACC_WIDTH-1:0]  pe_psum_out  [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     wire                  pe_valid_out [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
+    wire [ARRAY_SIZE*ARRAY_SIZE-1:0] pe_valid_bitmap;
     wire [ARRAY_SIZE-1:0] bottom_row_valid;
     wire                  row_ready;
 
@@ -40,25 +43,24 @@ module systolic_array_dip_4x4 #(
     reg [ACC_WIDTH*ARRAY_SIZE-1:0] row_capture_data_reg;
     reg                   output_row_valid_reg;
     reg [ACC_WIDTH*ARRAY_SIZE-1:0] output_row_data_reg;
-    reg [ACTIVITY_DEPTH-1:0] activity_sr;
-    reg                   busy_reg;
     integer               out_col_idx;
 
-    // busy_comb 汇总了输入、权重、结果采集以及内部 token 排空状态。
-    // 这里不直接把组合锥送到顶层端口，而是寄存一拍，避免 activity_sr 到 busy
-    // 成为综合报告中的最差 control-to-output 路径。
     wire                  busy_comb;
 
     genvar row_idx;
     genvar col_idx;
 
+    assign stream_input_row_valid = input_row_valid | drain_valid_reg;
+    assign stream_input_row_data = input_row_valid ? input_row_data :
+                                   {(DATA_WIDTH*ARRAY_SIZE){1'b0}};
+
     generate
         for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin : gen_rows
             for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin : gen_cols
                 if (row_idx == 0) begin : gen_top_inputs
-                    assign pe_valid_in[row_idx][col_idx] = input_row_valid;
+                    assign pe_valid_in[row_idx][col_idx] = stream_input_row_valid;
                     assign pe_data_in[row_idx][col_idx] =
-                        input_row_data[((col_idx + 1) * DATA_WIDTH) - 1 -: DATA_WIDTH];
+                        stream_input_row_data[((col_idx + 1) * DATA_WIDTH) - 1 -: DATA_WIDTH];
                     assign pe_psum_in[row_idx][col_idx] = {ACC_WIDTH{1'b0}};
                 end else begin : gen_internal_inputs
                     // DiP 的关键连接方式：上一行不是直接喂给同列，而是循环右移一列后喂给下一行。
@@ -87,6 +89,8 @@ module systolic_array_dip_4x4 #(
                     .data_out(pe_data_out[row_idx][col_idx]),
                     .psum_out(pe_psum_out[row_idx][col_idx])
                 );
+
+                assign pe_valid_bitmap[row_idx*ARRAY_SIZE + col_idx] = pe_valid_out[row_idx][col_idx];
             end
         end
     endgenerate
@@ -99,27 +103,29 @@ module systolic_array_dip_4x4 #(
 
     // 当底部一整行的 valid 同时为 1 时，说明一整行输出已经准备好。
     assign row_ready = &bottom_row_valid;
-    assign busy_comb = weight_row_valid | input_row_valid | row_capture_valid_reg |
-                       output_row_valid_reg | row_ready | (|activity_sr);
+    assign busy_comb = weight_row_valid | input_row_valid | drain_valid_reg |
+                       row_capture_valid_reg |
+                       output_row_valid_reg |
+                       (|pe_valid_bitmap);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            activity_sr <= {ACTIVITY_DEPTH{1'b0}};
+            prev_input_row_valid <= 1'b0;
+            drain_valid_reg <= 1'b0;
             row_capture_valid_reg <= 1'b0;
             row_capture_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
             output_row_valid_reg <= 1'b0;
             output_row_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
-            busy_reg <= 1'b0;
         end else if (flush) begin
-            activity_sr <= {ACTIVITY_DEPTH{1'b0}};
+            prev_input_row_valid <= 1'b0;
+            drain_valid_reg <= 1'b0;
             row_capture_valid_reg <= 1'b0;
             row_capture_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
             output_row_valid_reg <= 1'b0;
             output_row_data_reg <= {(ACC_WIDTH*ARRAY_SIZE){1'b0}};
-            busy_reg <= 1'b0;
         end else if (clk_enable) begin
-            activity_sr <= {activity_sr[ACTIVITY_DEPTH-2:0], input_row_valid};
-
+            prev_input_row_valid <= input_row_valid;
+            drain_valid_reg <= !input_row_valid && prev_input_row_valid;
             row_capture_valid_reg <= row_ready;
             if (row_ready) begin
                 for (out_col_idx = 0; out_col_idx < ARRAY_SIZE; out_col_idx = out_col_idx + 1) begin
@@ -128,19 +134,16 @@ module systolic_array_dip_4x4 #(
                 end
             end
 
-            // 再寄存一拍，把从底部采集到的整行结果整理成稳定输出。
-            // 无新结果时保持 output_row_data_reg 稳定，避免输出总线无效翻转。
             output_row_valid_reg <= row_capture_valid_reg;
             if (row_capture_valid_reg) begin
                 output_row_data_reg <= row_capture_data_reg;
             end
-            busy_reg <= busy_comb;
         end
     end
 
     assign output_row_valid = output_row_valid_reg;
     assign output_row_data = output_row_data_reg;
-    assign busy = busy_reg;
+    assign busy = busy_comb;
 
     `ifdef FORMAL
         cover property (@(posedge clk) weight_row_valid);
@@ -149,8 +152,8 @@ module systolic_array_dip_4x4 #(
         cover property (@(posedge clk) row_ready ##1 output_row_valid_reg);
         cover property (@(posedge clk) pe_valid_out[ARRAY_SIZE - 1][0]);
         cover property (@(posedge clk) pe_valid_out[ARRAY_SIZE - 1][ARRAY_SIZE - 1]);
-        cover property (@(posedge clk) busy_reg);
-        cover property (@(posedge clk) !busy_reg);
+        cover property (@(posedge clk) busy_comb);
+        cover property (@(posedge clk) !busy_comb);
     `endif
 
 endmodule

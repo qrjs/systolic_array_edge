@@ -5,10 +5,13 @@
 #   dc_shell -f asic_commercial/syn/scripts/run.tcl
 #   ARCH_LIST="ws dip" RUN_MODE=ultra CLK_PERIOD=1.0 \
 #       dc_shell -f asic_commercial/syn/scripts/run.tcl
+#   RUN_MODE=mixed ULTRA_ARCH_LIST=dip CLK_PERIOD=5.0 \
+#       dc_shell -f asic_commercial/syn/scripts/run.tcl
 #
 # Environment variables:
 #   ARCH_LIST       Space/comma-separated list. Default: "ws is os dip"
-#   RUN_MODE        base | ultra | compare. Default: base
+#   RUN_MODE        base | ultra | compare | mixed. Default: base
+#   ULTRA_ARCH_LIST Only used by mixed mode. Default: dip
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
 #   DC_LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
 #   DC_TARGET_LIBRARY  Default: slow.db
@@ -232,7 +235,20 @@ proc resolve_clk_period {actual_run_mode} {
     if {$actual_run_mode eq "ultra"} {
         return [env_or_default ULTRA_CLK_PERIOD [expr {$shared_clk_period ne "" ? $shared_clk_period : 1.0}]]
     }
+    if {$actual_run_mode eq "mixed"} {
+        return [env_or_default BASE_CLK_PERIOD [expr {$shared_clk_period ne "" ? $shared_clk_period : 5.0}]]
+    }
     error "Unsupported run mode '$actual_run_mode' for clock-period resolution"
+}
+
+proc resolve_arch_run_mode {global_run_mode ultra_arch_list arch_name} {
+    if {$global_run_mode eq "mixed"} {
+        if {[lsearch -exact $ultra_arch_list $arch_name] >= 0} {
+            return "ultra"
+        }
+        return "base"
+    }
+    return $global_run_mode
 }
 
 proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constraint_mode clk_period result_group} {
@@ -381,6 +397,7 @@ set SYN_ROOT         [file normalize [file join $SCRIPT_DIR ..]]
 set REPO_ROOT        [file normalize [file join $SCRIPT_DIR .. .. ..]]
 set ARCH_LIST        [split_arch_list [env_or_default ARCH_LIST "ws is os dip"]]
 set RUN_MODE         [string tolower [env_or_default RUN_MODE "base"]]
+set ULTRA_ARCH_LIST  [split_arch_list [env_or_default ULTRA_ARCH_LIST [expr {$RUN_MODE eq "mixed" ? "dip" : ""}]]]
 set CONSTRAINT_MODE  [string tolower [env_or_default CONSTRAINT_MODE "uniform"]]
 set REPORT_ROOT      [file normalize [env_or_default REPORT_ROOT [file join $SYN_ROOT reports]]]
 set MAPPED_ROOT      [file normalize [env_or_default MAPPED_ROOT [file join $SYN_ROOT mapped]]]
@@ -391,11 +408,14 @@ switch -- $RUN_MODE {
     ultra {
         set ACTIVE_RUN_MODES [list $RUN_MODE]
     }
+    mixed {
+        set ACTIVE_RUN_MODES {mixed}
+    }
     compare {
         set ACTIVE_RUN_MODES {base ultra}
     }
     default {
-        error "Unsupported RUN_MODE '$RUN_MODE' (expected base, ultra, or compare)"
+        error "Unsupported RUN_MODE '$RUN_MODE' (expected base, ultra, compare, or mixed)"
     }
 }
 
@@ -409,6 +429,9 @@ if {$DRY_RUN eq "1"} {
     puts "  REPO_ROOT       = $REPO_ROOT"
     puts "  ARCH_LIST       = $ARCH_LIST"
     puts "  RUN_MODE        = $RUN_MODE"
+    if {$RUN_MODE eq "mixed"} {
+        puts "  ULTRA_ARCH_LIST = $ULTRA_ARCH_LIST"
+    }
     puts "  ACTIVE_MODES    = $ACTIVE_RUN_MODES"
     puts "  CONSTRAINT_MODE = $CONSTRAINT_MODE"
     puts "  LIB_SEARCH_PATH = $dryrun_lib_search_path"
@@ -423,7 +446,8 @@ if {$DRY_RUN eq "1"} {
     }
     foreach arch_name $ARCH_LIST {
         set cfg [arch_config $REPO_ROOT $arch_name]
-        puts "  $arch_name => top=[dict get $cfg top], filelist=[dict get $cfg filelist]"
+        set arch_run_mode [resolve_arch_run_mode $RUN_MODE $ULTRA_ARCH_LIST $arch_name]
+        puts "  $arch_name => top=[dict get $cfg top], filelist=[dict get $cfg filelist], synth_mode=$arch_run_mode"
     }
     exit 0
 }
@@ -441,12 +465,13 @@ foreach actual_run_mode $ACTIVE_RUN_MODES {
     }
 
     foreach arch_name $ARCH_LIST {
+        set arch_run_mode [resolve_arch_run_mode $RUN_MODE $ULTRA_ARCH_LIST $arch_name]
         lappend summary_rows [run_one_arch \
             $REPO_ROOT \
             $REPORT_ROOT \
             $MAPPED_ROOT \
             $arch_name \
-            $actual_run_mode \
+            $arch_run_mode \
             $CONSTRAINT_MODE \
             $actual_clk_period \
             $result_group]

@@ -83,7 +83,15 @@ CLK_PERIOD=1.0 \
 RUN_TAG=ws_dip_1ghz \
 dc_shell -f asic_commercial/syn/scripts/run.tcl
 
+ARCH_LIST="ws is os dip" \
+RUN_MODE=mixed \
+ULTRA_ARCH_LIST=dip \
+CLK_PERIOD=5.0 \
+RUN_TAG=all_mixed_200mhz \
+dc_shell -f asic_commercial/syn/scripts/run.tcl
+
 ./asic_commercial/syn/scripts/run_dc.sh compare
+./asic_commercial/syn/scripts/run_dc.sh mixed
 
 make dc-compare
 ```
@@ -93,6 +101,7 @@ Short commands:
 - `./asic_commercial/syn/scripts/run_dc.sh base`
 - `./asic_commercial/syn/scripts/run_dc.sh ultra`
 - `./asic_commercial/syn/scripts/run_dc.sh compare`
+- `./asic_commercial/syn/scripts/run_dc.sh mixed`
 - `make dc-base`
 - `make dc-ultra`
 - `make dc-compare`
@@ -114,3 +123,12 @@ reports under:
 - `asic_commercial/syn/reports/<RUN_TAG>/ultra/<arch>/`
 
 and emits one merged `summary.csv` / `summary.md` at `asic_commercial/syn/reports/<RUN_TAG>/`.
+
+When `RUN_MODE=mixed`, the script runs one shared constraint point and selects
+the compile strategy per architecture:
+
+- architectures in `ULTRA_ARCH_LIST` use `compile_ultra -gate_clock`
+- all other architectures use normal `compile`
+
+This is useful for side-by-side comparisons such as `dip` at `compile_ultra`
+versus `ws/is/os` at normal synthesis under the same `200 MHz` target.
