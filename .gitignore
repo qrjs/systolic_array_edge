@@ -32,6 +32,7 @@ alib*/
 !*.sh
 !*.txt
 !*.md
+!*.f
 !*.pdf
 !*.png
 !*.jpg
