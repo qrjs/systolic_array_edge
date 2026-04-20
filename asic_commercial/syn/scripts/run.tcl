@@ -10,6 +10,9 @@
 #   ARCH_LIST       Space/comma-separated list. Default: "ws is os dip"
 #   RUN_MODE        base | ultra | compare. Default: base
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
+#   LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
+#   TARGET_LIBRARY  Default: slow.db
+#   LINK_LIBRARY    Default: "* slow.db"
 #   CLK_PERIOD      Shared fallback period in ns for uniform constraints.
 #   BASE_CLK_PERIOD Default: 5.0
 #   ULTRA_CLK_PERIOD Default: 1.0
@@ -24,6 +27,25 @@ proc env_or_default {name default_value} {
         return $::env($name)
     }
     return $default_value
+}
+
+proc configure_libraries {} {
+    set lib_search_path [env_or_default LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
+    set target_library_raw [env_or_default TARGET_LIBRARY "slow.db"]
+    set link_library_raw [env_or_default LINK_LIBRARY "* slow.db"]
+
+    set current_search_path [get_app_var search_path]
+    if {[lsearch -exact $current_search_path $lib_search_path] < 0} {
+        set_app_var search_path [concat $current_search_path [list $lib_search_path]]
+    }
+
+    set_app_var target_library [split $target_library_raw]
+    set_app_var link_library [split $link_library_raw]
+
+    puts "Library setup:"
+    puts "  LIB_SEARCH_PATH = $lib_search_path"
+    puts "  TARGET_LIBRARY  = $target_library_raw"
+    puts "  LINK_LIBRARY    = $link_library_raw"
 }
 
 proc split_arch_list {raw_arch_list} {
@@ -215,6 +237,7 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
     puts "===================================================================="
 
     remove_design -all
+    configure_libraries
     analyze -format sverilog $rtl_files
     elaborate $top_name
     current_design $top_name
@@ -349,12 +372,18 @@ switch -- $RUN_MODE {
 set RUN_TAG [env_or_default RUN_TAG "all_${RUN_MODE}_${CONSTRAINT_MODE}"]
 
 if {$DRY_RUN eq "1"} {
+    set dryrun_lib_search_path [env_or_default LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
+    set dryrun_target_library [env_or_default TARGET_LIBRARY "slow.db"]
+    set dryrun_link_library [env_or_default LINK_LIBRARY {* slow.db}]
     puts "DRY_RUN enabled. Parsed configuration:"
     puts "  REPO_ROOT       = $REPO_ROOT"
     puts "  ARCH_LIST       = $ARCH_LIST"
     puts "  RUN_MODE        = $RUN_MODE"
     puts "  ACTIVE_MODES    = $ACTIVE_RUN_MODES"
     puts "  CONSTRAINT_MODE = $CONSTRAINT_MODE"
+    puts "  LIB_SEARCH_PATH = $dryrun_lib_search_path"
+    puts "  TARGET_LIBRARY  = $dryrun_target_library"
+    puts "  LINK_LIBRARY    = $dryrun_link_library"
     puts "  RUN_TAG         = $RUN_TAG"
     foreach actual_run_mode $ACTIVE_RUN_MODES {
         puts "  ${actual_run_mode}_clk_period = [resolve_clk_period $actual_run_mode]"
