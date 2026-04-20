@@ -1,9 +1,13 @@
+Information: Building the design 'sync_fifo' instantiated from design 'os_core_top_4x4' with
+	the parameters "WIDTH=16,DEPTH=1". (HDL-193)
+Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'sync_fifo' in 'os_core_top_4x4'. (LINK-5)
  
 ****************************************
 Report : clock_gating
 Design : os_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 20:42:58 2026
+Date   : Mon Apr 20 22:45:21 2026
 ****************************************
 
 
@@ -12,11 +16,11 @@ Date   : Mon Apr 20 20:42:58 2026
           ------------------------------------------------------------
           |    Number of Clock gating elements    |       72         |
           |                                       |                  |
-          |    Number of Gated registers          |  2292 (96.95%)   |
+          |    Number of Gated registers          |  2225 (96.78%)   |
           |                                       |                  |
-          |    Number of Ungated registers        |    72 (3.05%)    |
+          |    Number of Ungated registers        |    74 (3.22%)    |
           |                                       |                  |
-          |    Total number of registers          |     2364         |
+          |    Total number of registers          |     2299         |
           ------------------------------------------------------------
 
 

@@ -8,7 +8,7 @@ Report : power
         -analysis_effort low
 Design : dip_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 20:32:06 2026
+Date   : Mon Apr 20 22:38:05 2026
 ****************************************
 
 
@@ -30,12 +30,12 @@ Power-specific unit information :
     Leakage Power Units = 1pW
 
 
-  Cell Internal Power  =   4.8765 mW   (97%)
-  Net Switching Power  = 132.1130 uW    (3%)
+  Cell Internal Power  =   4.9177 mW   (97%)
+  Net Switching Power  = 132.9920 uW    (3%)
                          ---------
-Total Dynamic Power    =   5.0086 mW  (100%)
+Total Dynamic Power    =   5.0507 mW  (100%)
 
-Cell Leakage Power     =   1.1913 mW
+Cell Leakage Power     =   1.2142 mW
 
 
                  Internal         Switching           Leakage            Total
@@ -45,9 +45,9 @@ io_pad             0.0000            0.0000            0.0000            0.0000 
 memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
 clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
-register           4.7406        7.6663e-03        7.9062e+07            4.8273  (  77.86%)
+register           4.7783        7.6892e-03        7.9607e+07            4.8656  (  77.66%)
 sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
-combinational      0.1358            0.1244        1.1123e+09            1.3726  (  22.14%)
+combinational      0.1394            0.1253        1.1346e+09            1.3993  (  22.34%)
 --------------------------------------------------------------------------------------------------
-Total              4.8764 mW         0.1321 mW     1.1913e+09 pW         6.1999 mW
+Total              4.9177 mW         0.1330 mW     1.2142e+09 pW         6.2648 mW
 1

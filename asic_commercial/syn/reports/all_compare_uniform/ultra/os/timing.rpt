@@ -1,3 +1,4 @@
+Warning: Design 'os_core_top_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : timing
@@ -6,7 +7,7 @@ Report : timing
         -max_paths 1
 Design : os_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 20:42:58 2026
+Date   : Mon Apr 20 22:45:21 2026
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.
@@ -14,9 +15,9 @@ Date   : Mon Apr 20 20:42:58 2026
 Operating Conditions: slow   Library: slow
 Wire Load Model Mode: top
 
-  Startpoint: DP_OP_699J3_135_296/clk_r_REG363_S1
+  Startpoint: u_os_array/gen_row[2].gen_col[1].pe_inst/DP_OP_41J30_122_2264/clk_r_REG1656_S6
               (rising edge-triggered flip-flop clocked by clk)
-  Endpoint: DP_OP_699J3_135_296/clk_r_REG190_S2
+  Endpoint: u_os_array/gen_row[2].gen_col[1].pe_inst/DP_OP_41J30_122_2264/clk_r_REG537_S2
             (rising edge-triggered flip-flop clocked by clk)
   Path Group: clk
   Path Type: max
@@ -25,36 +26,40 @@ Wire Load Model Mode: top
   --------------------------------------------------------------------------
   clock clk (rise edge)                                   0.00       0.00
   clock network delay (ideal)                             0.00       0.00
-  DP_OP_699J3_135_296/clk_r_REG363_S1/CK (DFFRHQX8)       0.00       0.00 r
-  DP_OP_699J3_135_296/clk_r_REG363_S1/Q (DFFRHQX8)        0.18       0.18 r
-  U17965/Y (XNOR2X4)                                      0.11       0.29 f
-  U17964/Y (OAI2B2X4)                                     0.12       0.41 r
-  U12225/Y (XOR2X4)                                       0.11       0.51 r
-  U9768/Y (XOR2X4)                                        0.09       0.60 r
-  U12223/Y (XNOR2X4)                                      0.09       0.69 r
-  U12222/Y (XOR2X8)                                       0.09       0.78 f
-  U17974/Y (NOR2X8)                                       0.07       0.85 r
-  U16338/Y (OAI21X6)                                      0.06       0.90 f
-  U17540/Y (AOI21X8)                                      0.07       0.97 r
-  U15802/Y (OAI21X8)                                      0.05       1.02 f
-  U16098/Y (NAND2X6)                                      0.04       1.06 r
-  U16469/Y (NAND2X8)                                      0.04       1.10 f
-  U17058/Y (NAND2X4)                                      0.03       1.14 r
-  U18201/Y (NAND2X4)                                      0.03       1.17 f
-  U20970/Y (INVX3)                                        0.02       1.19 r
-  DP_OP_699J3_135_296/clk_r_REG190_S2/D (DFFRHQX2)        0.00       1.19 r
-  data arrival time                                                  1.19
+  u_os_array/gen_row[2].gen_col[1].pe_inst/DP_OP_41J30_122_2264/clk_r_REG1656_S6/CK (DFFRHQX8)
+                                                          0.00       0.00 r
+  u_os_array/gen_row[2].gen_col[1].pe_inst/DP_OP_41J30_122_2264/clk_r_REG1656_S6/Q (DFFRHQX8)
+                                                          0.18       0.18 r
+  U16116/Y (XNOR2X4)                                      0.09       0.28 f
+  U14823/Y (OAI2B2X4)                                     0.10       0.37 r
+  U14822/Y (XNOR2X4)                                      0.11       0.48 r
+  U14814/Y (XOR2X8)                                       0.08       0.56 r
+  U11827/Y (XNOR2X4)                                      0.10       0.66 r
+  U11826/Y (XOR2X8)                                       0.08       0.74 r
+  U14813/Y (XOR2X8)                                       0.08       0.81 r
+  U10541/Y (XOR2X8)                                       0.08       0.90 r
+  U2285/Y (INVX6)                                         0.03       0.92 f
+  U10539/Y (OAI21X4)                                      0.03       0.96 r
+  U7870/Y (NAND2X4)                                       0.06       1.01 f
+  U10685/Y (NOR2X8)                                       0.07       1.08 r
+  U10533/Y (OAI21X4)                                      0.05       1.13 f
+  U11380/Y (AOI21X4)                                      0.05       1.18 r
+  U18264/Y (OAI21X2)                                      0.04       1.22 f
+  u_os_array/gen_row[2].gen_col[1].pe_inst/DP_OP_41J30_122_2264/clk_r_REG537_S2/D (DFFSHQX2)
+                                                          0.00       1.22 f
+  data arrival time                                                  1.22
 
   clock clk (rise edge)                                   1.00       1.00
   clock network delay (ideal)                             0.00       1.00
-  DP_OP_699J3_135_296/clk_r_REG190_S2/CK (DFFRHQX2)       0.00       1.00 r
-  library setup time                                     -0.09       0.91
-  data required time                                                 0.91
+  u_os_array/gen_row[2].gen_col[1].pe_inst/DP_OP_41J30_122_2264/clk_r_REG537_S2/CK (DFFSHQX2)
+                                                          0.00       1.00 r
+  library setup time                                     -0.10       0.90
+  data required time                                                 0.90
   --------------------------------------------------------------------------
-  data required time                                                 0.91
-  data arrival time                                                 -1.19
+  data required time                                                 0.90
+  data arrival time                                                 -1.22
   --------------------------------------------------------------------------
-  slack (VIOLATED)                                                  -0.28
+  slack (VIOLATED)                                                  -0.31
 
 
 1
