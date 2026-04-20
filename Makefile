@@ -6,6 +6,13 @@ SIM ?= iverilog
 VIEWER ?= surfer
 VECTOR_DIR ?= $(PROJECT_ROOT)/test_vectors/txt
 VECTOR_DIR_ABS := $(abspath $(VECTOR_DIR))
+COMM_SYN_ARCHES ?= $(ARCHES)
+COMM_SYN_CONSTRAINT_MODE ?= uniform
+COMM_SYN_RUN_TAG ?=
+COMM_SYN_CLK_PERIOD ?=
+COMM_SYN_BASE_CLK_PERIOD ?= 5.0
+COMM_SYN_ULTRA_CLK_PERIOD ?= 1.0
+COMM_SYN_DRY_RUN ?= 0
 
 ARCHES := ws is os dip
 
@@ -39,6 +46,7 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
+.PHONY: dc dc-base dc-ultra dc-compare
 .PHONY: \
 	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
@@ -77,6 +85,19 @@ define GENERATE_TXT_VECTORS
 		--sparse-prob "$(7)" \
 		--clean \
 		--quiet
+endef
+
+
+define RUN_COMMERCIAL_SYN
+	@env \
+		ARCH_LIST="$(COMM_SYN_ARCHES)" \
+		CONSTRAINT_MODE="$(COMM_SYN_CONSTRAINT_MODE)" \
+		BASE_CLK_PERIOD="$(COMM_SYN_BASE_CLK_PERIOD)" \
+		ULTRA_CLK_PERIOD="$(COMM_SYN_ULTRA_CLK_PERIOD)" \
+		DRY_RUN="$(COMM_SYN_DRY_RUN)" \
+		$(if $(strip $(COMM_SYN_CLK_PERIOD)),CLK_PERIOD="$(COMM_SYN_CLK_PERIOD)") \
+		$(if $(strip $(COMM_SYN_RUN_TAG)),RUN_TAG="$(COMM_SYN_RUN_TAG)") \
+		"$(PROJECT_ROOT)/asic_commercial/syn/scripts/run_dc.sh" $(1)
 endef
 
 
@@ -138,6 +159,7 @@ help:
 	@echo "  make wave ARCH=dip     # 单架构生成波形"
 	@echo "  make open ARCH=ws      # 打开波形（默认 VIEWER=surfer）"
 	@echo "  make cov ARCH=dip      # 单架构 VCS 功能覆盖率"
+	@echo "  make dc-compare        # 商业综合：四架构 base+ultra 对比"
 	@echo ""
 	@echo "说明："
 	@echo "  txt / random / cov 属于正式验证"
@@ -180,6 +202,9 @@ help-all:
 	@echo "  make impl-summary"
 	@echo "  make verify"
 	@echo "  make verify-full"
+	@echo "  make dc-base"
+	@echo "  make dc-ultra"
+	@echo "  make dc-compare"
 	@echo ""
 	@echo "兼容别名："
 	@echo "  make regress"
@@ -197,6 +222,17 @@ help-all:
 	@echo "  BATCH_VECTOR_COUNT=$(BATCH_VECTOR_COUNT)"
 	@echo "  BATCH_VECTOR_SEED=$(BATCH_VECTOR_SEED)"
 	@echo "  BATCH_VECTOR_DIR=$(BATCH_VECTOR_DIR)"
+
+dc: dc-base
+
+dc-base:
+	$(call RUN_COMMERCIAL_SYN,base)
+
+dc-ultra:
+	$(call RUN_COMMERCIAL_SYN,ultra)
+
+dc-compare:
+	$(call RUN_COMMERCIAL_SYN,compare)
 
 validate-arch:
 	@case "$(ARCH)" in \

@@ -8,10 +8,11 @@
 #
 # Environment variables:
 #   ARCH_LIST       Space/comma-separated list. Default: "ws is os dip"
-#   RUN_MODE        base | ultra. Default: base
+#   RUN_MODE        base | ultra | compare. Default: base
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
-#   CLK_PERIOD      Clock period in ns for uniform constraints.
-#                   Defaults: 5.0 for base, 1.0 for ultra
+#   CLK_PERIOD      Shared fallback period in ns for uniform constraints.
+#   BASE_CLK_PERIOD Default: 5.0
+#   ULTRA_CLK_PERIOD Default: 1.0
 #   RUN_TAG         Output subdirectory tag. Default: all_<run_mode>_<constraint_mode>
 #   REPORT_ROOT     Default: asic_commercial/syn/reports
 #   MAPPED_ROOT     Default: asic_commercial/syn/mapped
@@ -171,7 +172,18 @@ proc apply_uniform_constraints {clk_name clk_period} {
     set_false_path -from [get_ports rst_n]
 }
 
-proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mode clk_period run_tag} {
+proc resolve_clk_period {actual_run_mode} {
+    set shared_clk_period [env_or_default CLK_PERIOD ""]
+    if {$actual_run_mode eq "base"} {
+        return [env_or_default BASE_CLK_PERIOD [expr {$shared_clk_period ne "" ? $shared_clk_period : 5.0}]]
+    }
+    if {$actual_run_mode eq "ultra"} {
+        return [env_or_default ULTRA_CLK_PERIOD [expr {$shared_clk_period ne "" ? $shared_clk_period : 1.0}]]
+    }
+    error "Unsupported run mode '$actual_run_mode' for clock-period resolution"
+}
+
+proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mode clk_period result_group} {
     set cfg [arch_config $repo_root $arch]
     set top_name [dict get $cfg top]
     set rtl_files [read_filelist [dict get $cfg filelist] $repo_root]
@@ -180,9 +192,9 @@ proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mo
         error "No RTL files resolved for architecture '$arch'"
     }
 
-    set arch_report_dir [file join $report_root $run_tag $arch]
+    set arch_report_dir [file join $report_root $result_group $arch]
     file mkdir $arch_report_dir
-    file mkdir [file join $mapped_root $run_tag]
+    file mkdir [file join $mapped_root $result_group]
 
     set check_path      [file join $arch_report_dir check_design.rpt]
     set area_path       [file join $arch_report_dir area.rpt]
@@ -191,8 +203,8 @@ proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mo
     set violators_path  [file join $arch_report_dir violators.rpt]
     set qor_path        [file join $arch_report_dir qor.rpt]
     set gate_path       [file join $arch_report_dir gating_check.rpt]
-    set netlist_path    [file join $mapped_root $run_tag "${arch}_netlist.v"]
-    set out_sdc_path    [file join $mapped_root $run_tag "${arch}_constraints.sdc"]
+    set netlist_path    [file join $mapped_root $result_group "${arch}_netlist.v"]
+    set out_sdc_path    [file join $mapped_root $result_group "${arch}_constraints.sdc"]
 
     puts "===================================================================="
     puts "  Running $arch"
@@ -321,21 +333,32 @@ set REPORT_ROOT      [file normalize [env_or_default REPORT_ROOT [file join $SYN
 set MAPPED_ROOT      [file normalize [env_or_default MAPPED_ROOT [file join $SYN_ROOT mapped]]]
 set DRY_RUN          [env_or_default DRY_RUN "0"]
 
-set default_clk_period 5.0
-if {$RUN_MODE eq "ultra"} {
-    set default_clk_period 1.0
+switch -- $RUN_MODE {
+    base -
+    ultra {
+        set ACTIVE_RUN_MODES [list $RUN_MODE]
+    }
+    compare {
+        set ACTIVE_RUN_MODES {base ultra}
+    }
+    default {
+        error "Unsupported RUN_MODE '$RUN_MODE' (expected base, ultra, or compare)"
+    }
 }
-set CLK_PERIOD [env_or_default CLK_PERIOD $default_clk_period]
-set RUN_TAG    [env_or_default RUN_TAG "all_${RUN_MODE}_${CONSTRAINT_MODE}"]
+
+set RUN_TAG [env_or_default RUN_TAG "all_${RUN_MODE}_${CONSTRAINT_MODE}"]
 
 if {$DRY_RUN eq "1"} {
     puts "DRY_RUN enabled. Parsed configuration:"
     puts "  REPO_ROOT       = $REPO_ROOT"
     puts "  ARCH_LIST       = $ARCH_LIST"
     puts "  RUN_MODE        = $RUN_MODE"
+    puts "  ACTIVE_MODES    = $ACTIVE_RUN_MODES"
     puts "  CONSTRAINT_MODE = $CONSTRAINT_MODE"
-    puts "  CLK_PERIOD      = $CLK_PERIOD"
     puts "  RUN_TAG         = $RUN_TAG"
+    foreach actual_run_mode $ACTIVE_RUN_MODES {
+        puts "  ${actual_run_mode}_clk_period = [resolve_clk_period $actual_run_mode]"
+    }
     foreach arch $ARCH_LIST {
         set cfg [arch_config $REPO_ROOT $arch]
         puts "  $arch => top=[dict get $cfg top], filelist=[dict get $cfg filelist]"
@@ -347,8 +370,25 @@ file mkdir $REPORT_ROOT
 file mkdir $MAPPED_ROOT
 
 set summary_rows {}
-foreach arch $ARCH_LIST {
-    lappend summary_rows [run_one_arch $REPO_ROOT $REPORT_ROOT $MAPPED_ROOT $arch $RUN_MODE $CONSTRAINT_MODE $CLK_PERIOD $RUN_TAG]
+foreach actual_run_mode $ACTIVE_RUN_MODES {
+    set actual_clk_period [resolve_clk_period $actual_run_mode]
+    if {$RUN_MODE eq "compare"} {
+        set result_group [file join $RUN_TAG $actual_run_mode]
+    } else {
+        set result_group $RUN_TAG
+    }
+
+    foreach arch $ARCH_LIST {
+        lappend summary_rows [run_one_arch \
+            $REPO_ROOT \
+            $REPORT_ROOT \
+            $MAPPED_ROOT \
+            $arch \
+            $actual_run_mode \
+            $CONSTRAINT_MODE \
+            $actual_clk_period \
+            $result_group]
+    }
 }
 
 write_summary_files $REPORT_ROOT $RUN_TAG $summary_rows

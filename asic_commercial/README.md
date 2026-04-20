@@ -82,7 +82,20 @@ CONSTRAINT_MODE=uniform \
 CLK_PERIOD=1.0 \
 RUN_TAG=ws_dip_1ghz \
 dc_shell -f asic_commercial/syn/scripts/run.tcl
+
+./asic_commercial/syn/scripts/run_dc.sh compare
+
+make dc-compare
 ```
+
+Short commands:
+
+- `./asic_commercial/syn/scripts/run_dc.sh base`
+- `./asic_commercial/syn/scripts/run_dc.sh ultra`
+- `./asic_commercial/syn/scripts/run_dc.sh compare`
+- `make dc-base`
+- `make dc-ultra`
+- `make dc-compare`
 
 Outputs:
 
@@ -93,3 +106,11 @@ Outputs:
 
 The default `CONSTRAINT_MODE=uniform` is recommended when you want an apples-to-apples
 comparison of area, power, and timing across architectures.
+
+When `RUN_MODE=compare`, the script runs both `base` and `ultra`, stores detailed
+reports under:
+
+- `asic_commercial/syn/reports/<RUN_TAG>/base/<arch>/`
+- `asic_commercial/syn/reports/<RUN_TAG>/ultra/<arch>/`
+
+and emits one merged `summary.csv` / `summary.md` at `asic_commercial/syn/reports/<RUN_TAG>/`.
