@@ -1,33 +1,30 @@
-Warning: Design 'is_core_top_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
  
 ****************************************
 Report : area
 Design : is_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:36:44 2026
+Date   : Mon Apr 20 23:56:03 2026
 ****************************************
 
 Library(s) Used:
 
     slow (File: /home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db)
 
-Number of ports:                         6492
-Number of nets:                         27659
-Number of cells:                        17475
-Number of combinational cells:          14886
-Number of sequential cells:              2524
+Number of ports:                         6940
+Number of nets:                         29084
+Number of cells:                        18614
+Number of combinational cells:          15717
+Number of sequential cells:              2824
 Number of macros/black boxes:               0
-Number of buf/inv:                       1076
+Number of buf/inv:                       1627
 Number of references:                       1
 
-Combinational area:             169296.021668
-Buf/Inv area:                     3017.851274
-Noncombinational area:           39157.272574
+Combinational area:             174585.905003
+Buf/Inv area:                     4552.531322
+Noncombinational area:           44117.640674
 Macro/Black Box area:                0.000000
 Net Interconnect area:      undefined  (No wire load specified)
 
-Total cell area:                208453.294243
+Total cell area:                218703.545677
 Total area:                 undefined
-
-Information: This design contains black box (unknown) components. (RPT-8)
 1

@@ -1,14 +1,13 @@
-Warning: Design 'os_core_top_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
 Information: Updating design information... (UID-85)
 Warning: Design 'os_core_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
 Warning: A non-unate path in clock network for clock 'clk'
- from pin 'u_os_array/gen_row[3].gen_col[3].pe_inst/clk_gate_accumulator_reg/latch/CKcheckpin1' is detected. (TIM-052)
+ from pin 'clk_gate_u_os_array/gen_weight_sync_fifo[3].u_weight_sync_fifo/gen_storage.count_reg/latch/CKcheckpin1' is detected. (TIM-052)
  
 ****************************************
 Report : qor
 Design : os_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:47:14 2026
+Date   : Tue Apr 21 00:09:56 2026
 ****************************************
 
 
@@ -18,8 +17,8 @@ Date   : Mon Apr 20 23:47:14 2026
   Critical Path Length:          1.22
   Critical Path Slack:          -0.31
   Critical Path Clk Period:      1.00
-  Total Negative Slack:       -237.60
-  No. of Violating Paths:     1043.00
+  Total Negative Slack:       -218.28
+  No. of Violating Paths:      974.00
   Worst Hold Violation:          0.00
   Total Hold Violation:          0.00
   No. of Hold Violations:        0.00
@@ -28,36 +27,36 @@ Date   : Mon Apr 20 23:47:14 2026
 
   Cell Count
   -----------------------------------
-  Hierarchical Cell Count:         72
-  Hierarchical Port Count:        288
-  Leaf Cell Count:              22817
-  Buf/Inv Cell Count:            3412
-  Buf Cell Count:                 480
-  Inv Cell Count:                2932
+  Hierarchical Cell Count:         78
+  Hierarchical Port Count:        312
+  Leaf Cell Count:              24562
+  Buf/Inv Cell Count:            3981
+  Buf Cell Count:                 508
+  Inv Cell Count:                3473
   CT Buf/Inv Cell Count:            0
-  Combinational Cell Count:     20446
-  Sequential Cell Count:         2371
+  Combinational Cell Count:     22143
+  Sequential Cell Count:         2419
   Macro Count:                      0
   -----------------------------------
 
 
   Area
   -----------------------------------
-  Combinational Area:   150029.614001
-  Noncombinational Area: 48436.617744
-  Buf/Inv Area:           9522.777856
-  Total Buffer Area:          2199.36
-  Total Inverter Area:        7323.42
+  Combinational Area:   155037.257186
+  Noncombinational Area: 48231.994010
+  Buf/Inv Area:          10899.403497
+  Total Buffer Area:          2410.33
+  Total Inverter Area:        8489.07
   Macro/Black Box Area:      0.000000
   Net Area:                  0.000000
   -----------------------------------
-  Cell Area:            198466.231745
-  Design Area:          198466.231745
+  Cell Area:            203269.251196
+  Design Area:          203269.251196
 
 
   Design Rules
   -----------------------------------
-  Total Number of Nets:         24201
+  Total Number of Nets:         25580
   Nets With Violations:             1
   Max Trans Violations:             0
   Max Cap Violations:               1
@@ -68,16 +67,16 @@ Date   : Mon Apr 20 23:47:14 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                   29.97
-  Logic Optimization:                 14.42
-  Mapping Optimization:              109.27
+  Resource Sharing:                   31.45
+  Logic Optimization:                 20.25
+  Mapping Optimization:              184.09
   -----------------------------------------
-  Overall Compile Time:              193.43
-  Overall Compile Wall Clock Time:   190.16
+  Overall Compile Time:              281.36
+  Overall Compile Wall Clock Time:   280.28
 
   --------------------------------------------------------------------
 
-  Design  WNS: 0.31  TNS: 237.60  Number of Violating Paths: 1043
+  Design  WNS: 0.31  TNS: 218.28  Number of Violating Paths: 974
 
 
   Design (Hold)  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0

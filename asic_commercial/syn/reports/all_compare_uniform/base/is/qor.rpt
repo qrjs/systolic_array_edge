@@ -1,43 +1,18 @@
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=16,DEPTH=0". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=16,DEPTH=1". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=16,DEPTH=2". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=16,DEPTH=3". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=32,DEPTH=3". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=32,DEPTH=2". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=32,DEPTH=1". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4' with
-	the parameters "WIDTH=32,DEPTH=0". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Warning: Unable to resolve reference 'sync_fifo' in 'systolic_array_is_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4'. (LINK-5)
 Information: Updating design information... (UID-85)
-Warning: Design 'is_core_top_4x4' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Warning: Design 'is_core_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
  
 ****************************************
 Report : qor
 Design : is_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:36:44 2026
+Date   : Mon Apr 20 23:56:02 2026
 ****************************************
 
 
   Timing Path Group 'clk'
   -----------------------------------
-  Levels of Logic:              45.00
-  Critical Path Length:          4.86
+  Levels of Logic:              39.00
+  Critical Path Length:          4.85
   Critical Path Slack:           0.00
   Critical Path Clk Period:      5.00
   Total Negative Slack:          0.00
@@ -50,36 +25,36 @@ Date   : Mon Apr 20 23:36:44 2026
 
   Cell Count
   -----------------------------------
-  Hierarchical Cell Count:         65
-  Hierarchical Port Count:       6310
-  Leaf Cell Count:              17314
-  Buf/Inv Cell Count:            1076
-  Buf Cell Count:                  65
-  Inv Cell Count:                1011
+  Hierarchical Cell Count:         73
+  Hierarchical Port Count:       6758
+  Leaf Cell Count:              18447
+  Buf/Inv Cell Count:            1627
+  Buf Cell Count:                 402
+  Inv Cell Count:                1225
   CT Buf/Inv Cell Count:            0
-  Combinational Cell Count:     14894
-  Sequential Cell Count:         2420
+  Combinational Cell Count:     15717
+  Sequential Cell Count:         2730
   Macro Count:                      0
   -----------------------------------
 
 
   Area
   -----------------------------------
-  Combinational Area:   169296.021668
-  Noncombinational Area: 39157.272574
-  Buf/Inv Area:           3017.851274
-  Total Buffer Area:           222.97
-  Total Inverter Area:        2794.88
+  Combinational Area:   174585.905003
+  Noncombinational Area: 44117.640674
+  Buf/Inv Area:           4552.531322
+  Total Buffer Area:          1204.46
+  Total Inverter Area:        3348.07
   Macro/Black Box Area:      0.000000
   Net Area:                  0.000000
   -----------------------------------
-  Cell Area:            208453.294243
-  Design Area:          208453.294243
+  Cell Area:            218703.545677
+  Design Area:          218703.545677
 
 
   Design Rules
   -----------------------------------
-  Total Number of Nets:         21757
+  Total Number of Nets:         22742
   Nets With Violations:             0
   Max Trans Violations:             0
   Max Cap Violations:               0
@@ -90,12 +65,12 @@ Date   : Mon Apr 20 23:36:44 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                    8.92
-  Logic Optimization:                 11.00
-  Mapping Optimization:               73.11
+  Resource Sharing:                    9.82
+  Logic Optimization:                 14.06
+  Mapping Optimization:               82.89
   -----------------------------------------
-  Overall Compile Time:               96.02
-  Overall Compile Wall Clock Time:    95.03
+  Overall Compile Time:              110.10
+  Overall Compile Wall Clock Time:   111.25
 
   --------------------------------------------------------------------
 

@@ -4,7 +4,7 @@ Report : power
         -analysis_effort low
 Design : ws_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:42:04 2026
+Date   : Tue Apr 21 00:02:39 2026
 ****************************************
 
 
@@ -26,12 +26,12 @@ Power-specific unit information :
     Leakage Power Units = 1pW
 
 
-  Cell Internal Power  =  16.8892 mW   (31%)
-  Net Switching Power  =  38.3857 mW   (69%)
+  Cell Internal Power  =  22.2260 mW   (89%)
+  Net Switching Power  =   2.7981 mW   (11%)
                          ---------
-Total Dynamic Power    =  55.2748 mW  (100%)
+Total Dynamic Power    =  25.0242 mW  (100%)
 
-Cell Leakage Power     = 652.8589 uW
+Cell Leakage Power     = 716.8231 uW
 
 
                  Internal         Switching           Leakage            Total
@@ -40,10 +40,10 @@ Power Group      Power            Power               Power              Power  
 io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
-clock_network      1.0220           38.0012        1.7341e+07           39.0404  (  69.81%)
-register          15.2997        7.1931e-02        1.1908e+08           15.4908  (  27.70%)
+clock_network      1.1030            2.3253        5.0926e+06            3.4334  (  13.34%)
+register          20.6877        8.5297e-02        1.7773e+08           20.9508  (  81.39%)
 sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
-combinational      0.5674            0.3124        5.1644e+08            1.3962  (   2.50%)
+combinational      0.4353            0.3876        5.3400e+08            1.3569  (   5.27%)
 --------------------------------------------------------------------------------------------------
-Total             16.8892 mW        38.3855 mW     6.5286e+08 pW        55.9274 mW
+Total             22.2260 mW         2.7981 mW     7.1682e+08 pW        25.7410 mW
 1

@@ -1,25 +1,24 @@
-Warning: Design 'ws_core_top_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
 Information: Updating design information... (UID-85)
 Warning: Design 'ws_core_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
 Warning: A non-unate path in clock network for clock 'clk'
- from pin 'u_ws_array/gen_row[3].gen_col[3].pe_inst/clk_gate_partial_out_reg/latch/CKcheckpin1' is detected. (TIM-052)
+ from pin 'clk_gate_u_ws_array/gen_row[0].gen_col[3].pe_inst/input_valid_reg_reg/latch/CKcheckpin1' is detected. (TIM-052)
  
 ****************************************
 Report : qor
 Design : ws_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:42:04 2026
+Date   : Tue Apr 21 00:02:39 2026
 ****************************************
 
 
   Timing Path Group 'clk'
   -----------------------------------
-  Levels of Logic:              11.00
-  Critical Path Length:          0.75
-  Critical Path Slack:          -0.42
+  Levels of Logic:              10.00
+  Critical Path Length:          0.43
+  Critical Path Slack:          -0.29
   Critical Path Clk Period:      1.00
-  Total Negative Slack:       -372.35
-  No. of Violating Paths:     1526.00
+  Total Negative Slack:       -208.06
+  No. of Violating Paths:     1394.00
   Worst Hold Violation:          0.00
   Total Hold Violation:          0.00
   No. of Hold Violations:        0.00
@@ -28,36 +27,36 @@ Date   : Mon Apr 20 23:42:04 2026
 
   Cell Count
   -----------------------------------
-  Hierarchical Cell Count:         85
-  Hierarchical Port Count:        340
-  Leaf Cell Count:              18101
-  Buf/Inv Cell Count:            2445
-  Buf Cell Count:                 135
-  Inv Cell Count:                2310
+  Hierarchical Cell Count:         99
+  Hierarchical Port Count:        396
+  Leaf Cell Count:              18993
+  Buf/Inv Cell Count:            1890
+  Buf Cell Count:                  52
+  Inv Cell Count:                1838
   CT Buf/Inv Cell Count:            0
-  Combinational Cell Count:     15384
-  Sequential Cell Count:         2717
+  Combinational Cell Count:     15217
+  Sequential Cell Count:         3776
   Macro Count:                      0
   -----------------------------------
 
 
   Area
   -----------------------------------
-  Combinational Area:   105075.131582
-  Noncombinational Area: 45703.123829
-  Buf/Inv Area:           6118.963373
-  Total Buffer Area:          1139.54
-  Total Inverter Area:        4979.42
+  Combinational Area:   104421.040339
+  Noncombinational Area: 63029.132081
+  Buf/Inv Area:           4433.990534
+  Total Buffer Area:           257.54
+  Total Inverter Area:        4176.45
   Macro/Black Box Area:      0.000000
   Net Area:                  0.000000
   -----------------------------------
-  Cell Area:            150778.255411
-  Design Area:          150778.255411
+  Cell Area:            167450.172421
+  Design Area:          167450.172421
 
 
   Design Rules
   -----------------------------------
-  Total Number of Nets:         20591
+  Total Number of Nets:         21290
   Nets With Violations:             0
   Max Trans Violations:             0
   Max Cap Violations:               0
@@ -68,16 +67,16 @@ Date   : Mon Apr 20 23:42:04 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                   26.56
-  Logic Optimization:                 20.48
-  Mapping Optimization:               27.78
+  Resource Sharing:                   63.54
+  Logic Optimization:                 47.46
+  Mapping Optimization:               35.59
   -----------------------------------------
-  Overall Compile Time:              115.03
-  Overall Compile Wall Clock Time:   115.24
+  Overall Compile Time:              185.30
+  Overall Compile Wall Clock Time:   188.15
 
   --------------------------------------------------------------------
 
-  Design  WNS: 0.42  TNS: 372.35  Number of Violating Paths: 1526
+  Design  WNS: 0.29  TNS: 208.06  Number of Violating Paths: 1394
 
 
   Design (Hold)  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0

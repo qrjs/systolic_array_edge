@@ -2,14 +2,13 @@ Loading db file '/home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db'
 Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
 Warning: Design has unannotated primary inputs. (PWR-414)
 Warning: Design has unannotated sequential cell outputs. (PWR-415)
-Warning: Design has unannotated black box outputs. (PWR-428)
  
 ****************************************
 Report : power
         -analysis_effort low
 Design : ws_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:35:05 2026
+Date   : Mon Apr 20 23:54:07 2026
 ****************************************
 
 
@@ -31,12 +30,12 @@ Power-specific unit information :
     Leakage Power Units = 1pW
 
 
-  Cell Internal Power  =   5.0690 mW   (41%)
-  Net Switching Power  =   7.3206 mW   (59%)
+  Cell Internal Power  =   5.7780 mW   (98%)
+  Net Switching Power  = 113.7322 uW    (2%)
                          ---------
-Total Dynamic Power    =  12.3896 mW  (100%)
+Total Dynamic Power    =   5.8918 mW  (100%)
 
-Cell Leakage Power     =   1.2347 mW
+Cell Leakage Power     =   1.2619 mW
 
 
                  Internal         Switching           Leakage            Total
@@ -45,10 +44,10 @@ Power Group      Power            Power               Power              Power  
 io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
-clock_network  2.1826e-02            7.3043        3.8833e+07            7.3649  (  54.06%)
-register           5.0351        4.3604e-03        8.6956e+07            5.1264  (  37.63%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register           5.7443        2.0550e-03        9.8527e+07            5.8449  (  81.71%)
 sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
-combinational  1.2025e-02        1.1941e-02        1.1089e+09            1.1329  (   8.32%)
+combinational  3.3666e-02            0.1117        1.1634e+09            1.3087  (  18.29%)
 --------------------------------------------------------------------------------------------------
-Total              5.0690 mW         7.3206 mW     1.2347e+09 pW        13.6243 mW
+Total              5.7780 mW         0.1137 mW     1.2619e+09 pW         7.1536 mW
 1

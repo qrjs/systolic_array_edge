@@ -1,47 +1,22 @@
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=32,DEPTH=0". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=32,DEPTH=1". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=32,DEPTH=2". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=32,DEPTH=3". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=16,DEPTH=3". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=16,DEPTH=2". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=16,DEPTH=1". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Information: Building the design 'sync_fifo' instantiated from design 'is_core_top_4x4' with
-	the parameters "WIDTH=16,DEPTH=0". (HDL-193)
-Warning: Cannot find the design 'sync_fifo' in the library 'WORK'. (LBR-1)
-Warning: Unable to resolve reference 'sync_fifo' in 'is_core_top_4x4'. (LINK-5)
  
 ****************************************
 Report : clock_gating
 Design : is_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 23:43:59 2026
+Date   : Tue Apr 21 00:05:11 2026
 ****************************************
 
 
 
                              Clock Gating Summary
           ------------------------------------------------------------
-          |    Number of Clock gating elements    |       88         |
+          |    Number of Clock gating elements    |      101         |
           |                                       |                  |
-          |    Number of Gated registers          |  2679 (97.10%)   |
+          |    Number of Gated registers          |  3295 (99.82%)   |
           |                                       |                  |
-          |    Number of Ungated registers        |    80 (2.90%)    |
+          |    Number of Ungated registers        |     6 (0.18%)    |
           |                                       |                  |
-          |    Total number of registers          |     2759         |
+          |    Total number of registers          |     3301         |
           ------------------------------------------------------------
 
 
