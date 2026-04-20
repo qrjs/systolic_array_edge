@@ -30,16 +30,16 @@ proc split_arch_list {raw_arch_list} {
     regsub -all {[,;]} $raw_arch_list " " normalized
     set arch_list {}
     foreach token [split $normalized " "] {
-        set arch [string trim [string tolower $token]]
-        if {$arch ne ""} {
-            lappend arch_list $arch
+        set arch_name [string trim [string tolower $token]]
+        if {$arch_name ne ""} {
+            lappend arch_list $arch_name
         }
     }
     return $arch_list
 }
 
-proc arch_config {repo_root arch} {
-    switch -- $arch {
+proc arch_config {repo_root arch_name} {
+    switch -- $arch_name {
         ws {
             return [dict create \
                 top ws_core_top_4x4 \
@@ -65,7 +65,7 @@ proc arch_config {repo_root arch} {
                 sdc [file join $repo_root asic dip constraints dip_core_top_4x4.sdc]]
         }
         default {
-            error "Unsupported architecture '$arch' (expected ws/is/os/dip)"
+            error "Unsupported architecture '$arch_name' (expected ws/is/os/dip)"
         }
     }
 }
@@ -183,16 +183,16 @@ proc resolve_clk_period {actual_run_mode} {
     error "Unsupported run mode '$actual_run_mode' for clock-period resolution"
 }
 
-proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mode clk_period result_group} {
-    set cfg [arch_config $repo_root $arch]
+proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constraint_mode clk_period result_group} {
+    set cfg [arch_config $repo_root $arch_name]
     set top_name [dict get $cfg top]
     set rtl_files [read_filelist [dict get $cfg filelist] $repo_root]
 
     if {[llength $rtl_files] == 0} {
-        error "No RTL files resolved for architecture '$arch'"
+        error "No RTL files resolved for architecture '$arch_name'"
     }
 
-    set arch_report_dir [file join $report_root $result_group $arch]
+    set arch_report_dir [file join $report_root $result_group $arch_name]
     file mkdir $arch_report_dir
     file mkdir [file join $mapped_root $result_group]
 
@@ -203,11 +203,11 @@ proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mo
     set violators_path  [file join $arch_report_dir violators.rpt]
     set qor_path        [file join $arch_report_dir qor.rpt]
     set gate_path       [file join $arch_report_dir gating_check.rpt]
-    set netlist_path    [file join $mapped_root $result_group "${arch}_netlist.v"]
-    set out_sdc_path    [file join $mapped_root $result_group "${arch}_constraints.sdc"]
+    set netlist_path    [file join $mapped_root $result_group "${arch_name}_netlist.v"]
+    set out_sdc_path    [file join $mapped_root $result_group "${arch_name}_constraints.sdc"]
 
     puts "===================================================================="
-    puts "  Running $arch"
+    puts "  Running $arch_name"
     puts "    top            = $top_name"
     puts "    run_mode       = $run_mode"
     puts "    constraint     = $constraint_mode"
@@ -260,7 +260,7 @@ proc run_one_arch {repo_root report_root mapped_root arch run_mode constraint_mo
     set has_black_box [parse_black_box_flag $area_path]
 
     return [dict create \
-        arch $arch \
+        arch $arch_name \
         top $top_name \
         run_mode $run_mode \
         constraint_mode $constraint_mode \
@@ -359,9 +359,9 @@ if {$DRY_RUN eq "1"} {
     foreach actual_run_mode $ACTIVE_RUN_MODES {
         puts "  ${actual_run_mode}_clk_period = [resolve_clk_period $actual_run_mode]"
     }
-    foreach arch $ARCH_LIST {
-        set cfg [arch_config $REPO_ROOT $arch]
-        puts "  $arch => top=[dict get $cfg top], filelist=[dict get $cfg filelist]"
+    foreach arch_name $ARCH_LIST {
+        set cfg [arch_config $REPO_ROOT $arch_name]
+        puts "  $arch_name => top=[dict get $cfg top], filelist=[dict get $cfg filelist]"
     }
     exit 0
 }
@@ -378,12 +378,12 @@ foreach actual_run_mode $ACTIVE_RUN_MODES {
         set result_group $RUN_TAG
     }
 
-    foreach arch $ARCH_LIST {
+    foreach arch_name $ARCH_LIST {
         lappend summary_rows [run_one_arch \
             $REPO_ROOT \
             $REPORT_ROOT \
             $MAPPED_ROOT \
-            $arch \
+            $arch_name \
             $actual_run_mode \
             $CONSTRAINT_MODE \
             $actual_clk_period \
