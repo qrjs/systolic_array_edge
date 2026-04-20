@@ -50,7 +50,7 @@ alib*/
 !asic_commercial/syn/reports/
 # 放行 reports 文件夹下所有的 .rpt 文件
 !asic_commercial/syn/reports/**/*.rpt
-
+!asic_commercial/syn/script/run.tcl
 # (可选) 如果你还想跟踪综合出的网表和 SDC
 !asic_commercial/syn/mapped/
 !asic_commercial/syn/mapped/*.v
