@@ -10,6 +10,7 @@ Current delivered targets:
 - `is`
 - `os`
 - `dip`
+- `i2c` (DC-only helper runset for external I2C RTL)
 
 Design goals:
 
@@ -28,6 +29,10 @@ For each dataflow under `ws/`, `is/`, `os/`, and `dip/`, this directory now cont
 - Calibre DRC/LVS wrapper scripts
 - environment checking scripts
 - a Chinese tutorial for bring-up and execution order
+
+Additionally, `i2c/` contains a lightweight Synopsys DC runset derived from a
+teacher-provided synthesis script. It is intended for external RTL such as
+`ftp/i2c_master_*.v` that is not part of this repository.
 
 ## Directory layout
 
