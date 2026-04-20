@@ -60,6 +60,7 @@ module systolic_array_os_4x4 #(
     input  wire clk_enable,      // 时钟使能（用于时钟门控，优化功耗）
     output wire busy             // 阵列忙标志
 );
+    localparam integer LAST_ROW_BASE = (ARRAY_SIZE - 1) * ARRAY_SIZE;
 
     //==========================================================================
     // 内部信号连接
@@ -101,6 +102,71 @@ module systolic_array_os_4x4 #(
     //-------------------------------------------------------------------------
     reg array_busy_reg;
 
+    wire [DATA_WIDTH*ARRAY_SIZE-1:0] col_input_data_in;
+    wire [DATA_WIDTH*ARRAY_SIZE-1:0] col_input_data_out;
+    wire [ARRAY_SIZE-1:0]            col_input_valid_out;
+    wire [ARRAY_SIZE-1:0]            col_input_ready_in;
+    wire [ARRAY_SIZE-1:0]            col_input_ready_out;
+    wire [WEIGHT_WIDTH*ARRAY_SIZE-1:0] row_weight_data_in;
+    wire [WEIGHT_WIDTH*ARRAY_SIZE-1:0] row_weight_data_out;
+    wire [ARRAY_SIZE-1:0]              row_weight_valid_in;
+    wire [ARRAY_SIZE-1:0]              row_weight_valid_out;
+    wire [ARRAY_SIZE-1:0]              row_weight_ready_in;
+    wire [ARRAY_SIZE-1:0]              row_weight_ready_out;
+    genvar fifo_col;
+    genvar fifo_row;
+
+    generate
+        for (fifo_col = 0; fifo_col < ARRAY_SIZE; fifo_col = fifo_col + 1) begin : gen_input_sync_fifo
+            localparam integer FIFO_DEPTH = 1;
+            assign col_input_data_in[fifo_col*DATA_WIDTH +: DATA_WIDTH] =
+                input_in[fifo_col*DATA_WIDTH +: DATA_WIDTH];
+            assign col_input_ready_out[fifo_col] = input_ready_mesh[fifo_col];
+
+            sync_fifo #(
+                .WIDTH(DATA_WIDTH),
+                .DEPTH(FIFO_DEPTH)
+            ) u_input_sync_fifo (
+                .clk(clk),
+                .rst_n(rst_n),
+                .flush(flush),
+                .clk_enable(clk_enable),
+                .in_valid(input_valid[fifo_col] && col_input_ready_in[fifo_col] && !flush),
+                .in_data(col_input_data_in[fifo_col*DATA_WIDTH +: DATA_WIDTH]),
+                .in_ready(col_input_ready_in[fifo_col]),
+                .out_valid(col_input_valid_out[fifo_col]),
+                .out_data(col_input_data_out[fifo_col*DATA_WIDTH +: DATA_WIDTH]),
+                .out_ready(col_input_ready_out[fifo_col])
+            );
+        end
+    endgenerate
+
+    generate
+        for (fifo_row = 0; fifo_row < ARRAY_SIZE; fifo_row = fifo_row + 1) begin : gen_weight_sync_fifo
+            localparam integer FIFO_DEPTH = 1;
+            assign row_weight_data_in[fifo_row*WEIGHT_WIDTH +: WEIGHT_WIDTH] =
+                weight_in[fifo_row*WEIGHT_WIDTH +: WEIGHT_WIDTH];
+            assign row_weight_valid_in[fifo_row] = weight_valid && (&row_weight_ready_in) && !flush;
+            assign row_weight_ready_out[fifo_row] = weight_ready_mesh[fifo_row*ARRAY_SIZE];
+
+            sync_fifo #(
+                .WIDTH(WEIGHT_WIDTH),
+                .DEPTH(FIFO_DEPTH)
+            ) u_weight_sync_fifo (
+                .clk(clk),
+                .rst_n(rst_n),
+                .flush(flush),
+                .clk_enable(clk_enable),
+                .in_valid(row_weight_valid_in[fifo_row]),
+                .in_data(row_weight_data_in[fifo_row*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                .in_ready(row_weight_ready_in[fifo_row]),
+                .out_valid(row_weight_valid_out[fifo_row]),
+                .out_data(row_weight_data_out[fifo_row*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                .out_ready(row_weight_ready_out[fifo_row])
+            );
+        end
+    endgenerate
+
     //==========================================================================
     // PE阵列实例化和互连
     //==========================================================================
@@ -126,9 +192,8 @@ module systolic_array_os_4x4 #(
 
                 // 输入数据来源：Row 0从外部输入，其他row从上方的PE输出
                 if (row == 0) begin
-                    // 第一行：从外部输入获得数据（只在valid时传递）
-                    assign input_to_pe = input_valid[col] ? input_in[col*DATA_WIDTH +: DATA_WIDTH] : {DATA_WIDTH{1'b0}};
-                    assign input_valid_to_pe = input_valid[col];
+                    assign input_to_pe = col_input_data_out[col*DATA_WIDTH +: DATA_WIDTH];
+                    assign input_valid_to_pe = col_input_valid_out[col];
                 end else begin
                     // 其他行：从上方PE的输出获得数据
                     assign input_to_pe = input_out_mesh[((row-1)*ARRAY_SIZE + col)*DATA_WIDTH +: DATA_WIDTH];
@@ -158,9 +223,8 @@ module systolic_array_os_4x4 #(
 
                 // 权重数据来源：Col 0从外部输入，其他col从左侧PE的输出
                 if (col == 0) begin
-                    // 第一列：从外部输入获得权重（只在valid时传递）
-                    assign weight_to_pe = weight_valid ? weight_in[row*WEIGHT_WIDTH +: WEIGHT_WIDTH] : {WEIGHT_WIDTH{1'b0}};
-                    assign weight_valid_to_pe = weight_valid;
+                    assign weight_to_pe = row_weight_data_out[row*WEIGHT_WIDTH +: WEIGHT_WIDTH];
+                    assign weight_valid_to_pe = row_weight_valid_out[row];
                 end else begin
                     // 其他列：从左侧PE的输出获得权重
                     assign weight_to_pe = weight_out_mesh[(row*ARRAY_SIZE + (col-1))*WEIGHT_WIDTH +: WEIGHT_WIDTH];
@@ -251,12 +315,11 @@ module systolic_array_os_4x4 #(
 
     generate
         for (c = 0; c < ARRAY_SIZE; c = c + 1) begin : gen_input_ready
-            assign input_ready_comb[c] = input_ready_mesh[0*ARRAY_SIZE + c];
+            assign input_ready_comb[c] = col_input_ready_in[c];
         end
     endgenerate
 
-    // weight_ready: AND of selected row's all-column PE ready signals
-    assign weight_ready_comb = &weight_ready_mesh;
+    assign weight_ready_comb = &row_weight_ready_in;
 
     // 输出寄存器（改善时序的关键！）
     reg [ARRAY_SIZE-1:0] input_ready_reg;
@@ -289,7 +352,9 @@ module systolic_array_os_4x4 #(
         end else if (flush) begin
             array_busy_reg <= 1'b0;
         end else begin
-            array_busy_reg <= |pe_busy_mesh;  // 任一PE忙则阵列忙
+            array_busy_reg <= |pe_busy_mesh |
+                              |col_input_valid_out |
+                              |row_weight_valid_out;  // 任一PE或同步FIFO忙则阵列忙
         end
     end
 

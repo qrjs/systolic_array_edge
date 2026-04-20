@@ -58,6 +58,8 @@ module systolic_array_is_4x4 #(
     input  wire clk_enable,        // 时钟使能（用于时钟门控）
     output wire busy               // 阵列忙标志
 );
+    localparam integer LAST_ROW_BASE = (ARRAY_SIZE - 1) * ARRAY_SIZE;
+
 
     //==========================================================================
     // 内部信号声明
@@ -82,6 +84,18 @@ module systolic_array_is_4x4 #(
     wire [ACC_WIDTH*16-1:0] partial_out_mesh;
     wire [15:0] partial_out_valid_mesh;
     wire [15:0] partial_out_ready_mesh;
+
+    wire [WEIGHT_WIDTH*ARRAY_SIZE-1:0] row_weight_data_in;
+    wire [WEIGHT_WIDTH*ARRAY_SIZE-1:0] row_weight_data_out;
+    wire [ARRAY_SIZE-1:0]              row_weight_valid_in;
+    wire [ARRAY_SIZE-1:0]              row_weight_valid_out;
+    wire [ARRAY_SIZE-1:0]              row_weight_ready_in;
+    wire [ARRAY_SIZE-1:0]              row_weight_ready_out;
+    wire [ACC_WIDTH*ARRAY_SIZE-1:0]    col_output_data_in;
+    wire [ACC_WIDTH*ARRAY_SIZE-1:0]    col_output_data_out;
+    wire [ARRAY_SIZE-1:0]              col_output_valid_in;
+    wire [ARRAY_SIZE-1:0]              col_output_valid_out;
+    wire [ARRAY_SIZE-1:0]              col_output_ready_in;
 
     // 阵列忙标志
     wire [15:0] pe_busy_mesh;
@@ -123,6 +137,31 @@ module systolic_array_is_4x4 #(
     wire input_ready_comb;
     assign input_ready_comb = input_ready_mesh[input_addr];
 
+    generate
+        for (i_row = 0; i_row < ARRAY_SIZE; i_row = i_row + 1) begin : gen_weight_sync_fifo
+            localparam integer FIFO_DEPTH = i_row;
+            assign row_weight_data_in[i_row*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_in;
+            assign row_weight_valid_in[i_row] = weight_valid && (&row_weight_ready_in);
+            assign row_weight_ready_out[i_row] = weight_ready_mesh[i_row*ARRAY_SIZE];
+
+            sync_fifo #(
+                .WIDTH(WEIGHT_WIDTH),
+                .DEPTH(FIFO_DEPTH)
+            ) u_weight_sync_fifo (
+                .clk(clk),
+                .rst_n(rst_n),
+                .flush(flush),
+                .clk_enable(clk_enable),
+                .in_valid(row_weight_valid_in[i_row]),
+                .in_data(row_weight_data_in[i_row*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                .in_ready(row_weight_ready_in[i_row]),
+                .out_valid(row_weight_valid_out[i_row]),
+                .out_data(row_weight_data_out[i_row*WEIGHT_WIDTH +: WEIGHT_WIDTH]),
+                .out_ready(row_weight_ready_out[i_row])
+            );
+        end
+    endgenerate
+
     //==========================================================================
     // PE阵列实例化和互连
     //==========================================================================
@@ -137,10 +176,9 @@ module systolic_array_is_4x4 #(
                 // 权重数据连接（水平方向）
                 //-----------------------------------------------------------------
                 if (pe_col == 0) begin
-                    // 第一列：从外部输入接收权重
-                    assign weight_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] = weight_in;
-                    assign weight_valid_mesh[pe_row*ARRAY_SIZE + pe_col] = weight_valid;
-                    // weight_ready在另一个generate块中连接
+                    assign weight_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] =
+                           row_weight_data_out[pe_row*WEIGHT_WIDTH +: WEIGHT_WIDTH];
+                    assign weight_valid_mesh[pe_row*ARRAY_SIZE + pe_col] = row_weight_valid_out[pe_row];
                 end else begin
                     // 其他列：从左侧PE接收权重
                     assign weight_mesh[(pe_row*ARRAY_SIZE + pe_col)*WEIGHT_WIDTH +: WEIGHT_WIDTH] =
@@ -217,15 +255,32 @@ module systolic_array_is_4x4 #(
     genvar out_col;
     generate
         for (out_col = 0; out_col < ARRAY_SIZE; out_col = out_col + 1) begin : gen_output
-            // 输出数据连接
-            assign output_data[out_col*ACC_WIDTH +: ACC_WIDTH] =
-                   partial_out_mesh[((ARRAY_SIZE-1)*ARRAY_SIZE + out_col)*ACC_WIDTH +: ACC_WIDTH];
-            // 输出有效信号连接
-            assign output_valid[out_col] = partial_out_valid_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + out_col];
-            // 输出就绪信号连接
-            assign partial_out_ready_mesh[(ARRAY_SIZE-1)*ARRAY_SIZE + out_col] = output_ready[out_col];
+            localparam integer FIFO_DEPTH = ARRAY_SIZE - out_col - 1;
+            assign col_output_data_in[out_col*ACC_WIDTH +: ACC_WIDTH] =
+                partial_out_mesh[(LAST_ROW_BASE + out_col)*ACC_WIDTH +: ACC_WIDTH];
+            assign col_output_valid_in[out_col] = partial_out_valid_mesh[LAST_ROW_BASE + out_col];
+            assign partial_out_ready_mesh[LAST_ROW_BASE + out_col] = col_output_ready_in[out_col];
+
+            sync_fifo #(
+                .WIDTH(ACC_WIDTH),
+                .DEPTH(FIFO_DEPTH)
+            ) u_output_sync_fifo (
+                .clk(clk),
+                .rst_n(rst_n),
+                .flush(flush),
+                .clk_enable(clk_enable),
+                .in_valid(col_output_valid_in[out_col]),
+                .in_data(col_output_data_in[out_col*ACC_WIDTH +: ACC_WIDTH]),
+                .in_ready(col_output_ready_in[out_col]),
+                .out_valid(col_output_valid_out[out_col]),
+                .out_data(col_output_data_out[out_col*ACC_WIDTH +: ACC_WIDTH]),
+                .out_ready(output_ready[out_col])
+            );
         end
     endgenerate
+
+    assign output_data = col_output_data_out;
+    assign output_valid = col_output_valid_out;
 
     // Debug: monitor partial outputs
     `ifdef DEBUG
@@ -303,10 +358,7 @@ module systolic_array_is_4x4 #(
 
     wire weight_ready_comb;
 
-    assign weight_ready_comb = (weight_ready_mesh[0*ARRAY_SIZE + 0] &&
-                                weight_ready_mesh[1*ARRAY_SIZE + 0] &&
-                                weight_ready_mesh[2*ARRAY_SIZE + 0] &&
-                                weight_ready_mesh[3*ARRAY_SIZE + 0]);
+    assign weight_ready_comb = &row_weight_ready_in;
 
     // 输出寄存器（改善时序的关键！）
     reg input_ready_reg;
@@ -339,7 +391,9 @@ module systolic_array_is_4x4 #(
         end else if (flush) begin
             array_busy_reg <= 1'b0;
         end else begin
-            array_busy_reg <= |pe_busy_mesh;  // 任一PE忙则阵列忙
+            array_busy_reg <= |pe_busy_mesh |
+                              |row_weight_valid_out |
+                              |col_output_valid_out;  // 任一PE或同步FIFO忙则阵列忙
         end
     end
 
