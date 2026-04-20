@@ -29,15 +29,32 @@ proc env_or_default {name default_value} {
     return $default_value
 }
 
+proc file_exists_in_search_path {lib_name search_paths} {
+    if {[file pathtype $lib_name] eq "absolute"} {
+        return [file exists $lib_name]
+    }
+
+    foreach search_dir $search_paths {
+        if {[file exists [file join $search_dir $lib_name]]} {
+            return 1
+        }
+    }
+    return 0
+}
+
 proc configure_libraries {} {
     set lib_search_path [env_or_default DC_LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
     set target_library_raw [env_or_default DC_TARGET_LIBRARY "slow.db"]
     set link_library_raw [env_or_default DC_LINK_LIBRARY "* slow.db"]
+    set lib_search_paths [split $lib_search_path]
 
     set current_search_path [get_app_var search_path]
-    if {[lsearch -exact $current_search_path $lib_search_path] < 0} {
-        set_app_var search_path [concat $current_search_path [list $lib_search_path]]
+    foreach search_dir $lib_search_paths {
+        if {[lsearch -exact $current_search_path $search_dir] < 0} {
+            set current_search_path [concat $current_search_path [list $search_dir]]
+        }
     }
+    set_app_var search_path $current_search_path
 
     set_app_var target_library [split $target_library_raw]
     set_app_var link_library [split $link_library_raw]
@@ -49,6 +66,15 @@ proc configure_libraries {} {
 
     if {[regexp {your_library\.db} $target_library_raw] || [regexp {your_library\.db} $link_library_raw]} {
         error "Refusing to run with placeholder library name 'your_library.db'. Check your environment overrides."
+    }
+
+    foreach lib_name [concat [split $target_library_raw] [split $link_library_raw]] {
+        if {$lib_name eq "" || $lib_name eq "*"} {
+            continue
+        }
+        if {![file_exists_in_search_path $lib_name $lib_search_paths]} {
+            error "Library '$lib_name' not found. Checked search path(s): $lib_search_path"
+        }
     }
 }
 
