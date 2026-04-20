@@ -1,0 +1,85 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'standard_ws_array_4x4' contains 2 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : standard_ws_array_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 13:24:56 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: stored_weight_reg[2][2][0]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: psum_pipe_reg[2][2][31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  stored_weight_reg[2][2][0]/CK (DFFRQX2)                 0.00 #     0.00 r
+  stored_weight_reg[2][2][0]/Q (DFFRQX2)                  0.32       0.32 r
+  U5983/Y (NOR4XL)                                        0.10       0.42 f
+  U5984/Y (NAND4X2)                                       0.06       0.48 r
+  U5985/Y (AND2X1)                                        0.10       0.58 r
+  U2541/Y (INVX4)                                         0.05       0.63 f
+  U5998/Y (NOR2X1)                                        0.37       1.00 r
+  U4784/Y (XNOR2X2)                                       0.35       1.35 r
+  U4782/Y (NAND2X2)                                       0.21       1.56 f
+  U4781/Y (OAI22XL)                                       0.13       1.69 r
+  U4780/CO (ADDHXL)                                       0.13       1.82 r
+  U12429/S (CMPR42X1)                                     0.42       2.24 f
+  U5687/Y (OR2XL)                                         0.15       2.39 f
+  U5301/Y (AOI21XL)                                       0.11       2.50 r
+  U6036/Y (OAI21X1)                                       0.09       2.59 f
+  U6039/Y (AOI21X1)                                       0.10       2.69 r
+  U6042/Y (OAI21X2)                                       0.06       2.75 f
+  U5299/Y (AOI21X1)                                       0.09       2.83 r
+  U6046/Y (OAI21X1)                                       0.08       2.91 f
+  U5297/Y (AOI21XL)                                       0.11       3.03 r
+  U6049/Y (OAI21X1)                                       0.08       3.11 f
+  U6052/Y (AOI21X1)                                       0.09       3.20 r
+  U6053/Y (OAI21X1)                                       0.08       3.27 f
+  U6055/Y (AOI21X1)                                       0.10       3.38 r
+  U6056/Y (OAI21X2)                                       0.06       3.44 f
+  U1934/Y (AOI21X1)                                       0.09       3.52 r
+  U6057/Y (OAI21X1)                                       0.08       3.61 f
+  U6058/Y (AOI21X1)                                       0.10       3.71 r
+  U6059/Y (OAI21X2)                                       0.06       3.77 f
+  U6060/Y (AOI21X1)                                       0.10       3.86 r
+  U6061/Y (OAI21X2)                                       0.06       3.93 f
+  U6062/Y (AOI21X2)                                       0.08       4.01 r
+  U6063/Y (OAI21X1)                                       0.08       4.09 f
+  U6065/Y (AOI21X1)                                       0.09       4.18 r
+  U5296/Y (OAI21XL)                                       0.08       4.26 f
+  U11774/CO (ADDFHX2)                                     0.13       4.39 f
+  U11840/CO (ADDFXL)                                      0.17       4.56 f
+  U11917/CO (ADDFHX2)                                     0.12       4.69 f
+  U5499/Y (XOR2XL)                                        0.07       4.76 r
+  U6072/Y (AO22X2)                                        0.10       4.85 r
+  psum_pipe_reg[2][2][31]/D (DFFRQXL)                     0.00       4.85 r
+  data arrival time                                                  4.85
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  psum_pipe_reg[2][2][31]/CK (DFFRQXL)                    0.00       5.00 r
+  library setup time                                     -0.15       4.85
+  data required time                                                 4.85
+  --------------------------------------------------------------------------
+  data required time                                                 4.85
+  data arrival time                                                 -4.85
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

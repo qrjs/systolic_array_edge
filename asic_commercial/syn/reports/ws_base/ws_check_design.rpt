@@ -1,0 +1,35 @@
+ 
+****************************************
+check_design summary:
+Version:     O-2018.06-SP1
+Date:        Mon Apr 20 13:18:15 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                              21
+    Cells do not drive (LINT-1)                                    21
+--------------------------------------------------------------------------------
+
+Warning: In design 'standard_ws_array_4x4', cell 'C26083' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26092' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26103' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26114' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26210' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26231' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26265' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26336' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26339' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26342' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26345' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26348' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26351' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26354' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26357' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26360' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26363' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26366' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26369' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26372' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4', cell 'C26375' does not drive any nets. (LINT-1)
+1

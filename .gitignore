@@ -46,7 +46,16 @@ alib*/
 !makefile
 !.gitignore
 !LICENSE
+# --- 新增：允许跟踪综合报告和网表 ---
+# 放行 reports 文件夹本身
+!asic_commercial/syn/reports/
+# 放行 reports 文件夹下所有的 .rpt 文件
+!asic_commercial/syn/reports/**/*.rpt
 
+# (可选) 如果你还想跟踪综合出的网表和 SDC
+!asic_commercial/syn/mapped/
+!asic_commercial/syn/mapped/*.v
+!asic_commercial/syn/mapped/*.sdc
 # 5. Specifically ignore known generated files that might match above (if any)
 # (e.g. if a .txt file is generated in the root, exclude it explicitly if needed)
 # But generated folders like reports/ are already excluded.

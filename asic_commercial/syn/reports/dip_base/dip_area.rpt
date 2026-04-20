@@ -1,0 +1,33 @@
+Warning: Design 'standard_dip_array_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+ 
+****************************************
+Report : area
+Design : standard_dip_array_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 15:17:50 2026
+****************************************
+
+Library(s) Used:
+
+    slow (File: /home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db)
+
+Number of ports:                          650
+Number of nets:                          1545
+Number of cells:                         1280
+Number of combinational cells:            692
+Number of sequential cells:               588
+Number of macros/black boxes:               0
+Number of buf/inv:                         15
+Number of references:                      32
+
+Combinational area:               3716.395305
+Buf/Inv area:                       37.396801
+Noncombinational area:            9112.118421
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (No wire load specified)
+
+Total cell area:                 12828.513725
+Total area:                 undefined
+
+Information: This design contains black box (unknown) components. (RPT-8)
+1

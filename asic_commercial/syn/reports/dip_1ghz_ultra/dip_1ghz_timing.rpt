@@ -1,0 +1,54 @@
+Information: Building the design 'systolic_array_dip_4x4' instantiated from design 'standard_dip_array_4x4' with
+	the parameters "DATA_WIDTH=16,WEIGHT_WIDTH=16,ACC_WIDTH=32,ARRAY_SIZE=4". (HDL-193)
+Warning: Cannot find the design 'systolic_array_dip_4x4' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'systolic_array_dip_4x4' in 'standard_dip_array_4x4'. (LINK-5)
+Warning: Design 'standard_dip_array_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : standard_dip_array_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 16:21:39 2026
+****************************************
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: drain_pending_reg_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: stream_input_row_data_reg[38]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  drain_pending_reg_reg/CK (DFFRHQX2)                     0.00       0.00 r
+  drain_pending_reg_reg/Q (DFFRHQX2)                      0.16       0.16 r
+  U823/Y (INVX1)                                          0.06       0.22 f
+  U824/Y (OAI21X1)                                        0.12       0.34 r
+  U1070/Y (AO21X4)                                        0.14       0.48 r
+  U845/Y (BUFX2)                                          0.23       0.71 r
+  U408/Y (MX2XL)                                          0.18       0.89 r
+  stream_input_row_data_reg[38]/D (DFFRHQX1)              0.00       0.89 r
+  data arrival time                                                  0.89
+
+  clock clk (rise edge)                                   1.00       1.00
+  clock network delay (ideal)                             0.00       1.00
+  stream_input_row_data_reg[38]/CK (DFFRHQX1)             0.00       1.00 r
+  library setup time                                     -0.11       0.89
+  data required time                                                 0.89
+  --------------------------------------------------------------------------
+  data required time                                                 0.89
+  data arrival time                                                 -0.89
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

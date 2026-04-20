@@ -1,0 +1,54 @@
+Information: Building the design 'systolic_array_dip_4x4' instantiated from design 'standard_dip_array_4x4' with
+	the parameters "DATA_WIDTH=16,WEIGHT_WIDTH=16,ACC_WIDTH=32,ARRAY_SIZE=4". (HDL-193)
+Warning: Cannot find the design 'systolic_array_dip_4x4' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'systolic_array_dip_4x4' in 'standard_dip_array_4x4'. (LINK-5)
+Warning: Design 'standard_dip_array_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : standard_dip_array_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 15:17:50 2026
+****************************************
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: clk_enable (input port clocked by clk)
+  Endpoint: result_buf_reg[0][0][1]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     1.00       1.00 r
+  clk_enable (in)                          0.00       1.00 r
+  U702/Y (AOI21X1)                         0.10       1.10 f
+  U794/Y (OAI32XL)                         0.21       1.31 r
+  U690/Y (OAI21X1)                         0.53       1.84 f
+  U708/Y (BUFX2)                           0.40       2.24 f
+  U698/Y (NOR2X6)                          0.48       2.72 r
+  U115/Y (AO22XL)                          0.14       2.87 r
+  result_buf_reg[0][0][1]/D (DFFRQX1)      0.00       2.87 r
+  data arrival time                                   2.87
+
+  clock clk (rise edge)                    5.00       5.00
+  clock network delay (ideal)              0.00       5.00
+  result_buf_reg[0][0][1]/CK (DFFRQX1)     0.00       5.00 r
+  library setup time                      -0.15       4.85
+  data required time                                  4.85
+  -----------------------------------------------------------
+  data required time                                  4.85
+  data arrival time                                  -2.87
+  -----------------------------------------------------------
+  slack (MET)                                         1.99
+
+
+1

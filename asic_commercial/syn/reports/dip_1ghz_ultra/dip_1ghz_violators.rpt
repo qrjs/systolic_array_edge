@@ -1,0 +1,20 @@
+Warning: Design 'standard_dip_array_4x4' has '1' unresolved references. For more detailed information, use the "link" command. (UID-341)
+ 
+****************************************
+Report : constraint
+        -all_violators
+Design : standard_dip_array_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 16:21:39 2026
+****************************************
+
+
+   max_area
+
+                             Required        Actual
+   Design                      Area           Area           Slack
+   -----------------------------------------------------------------
+   standard_dip_array_4x4       0.00       13885.50       -13885.50 (VIOLATED)
+
+
+1
