@@ -42,6 +42,7 @@ module systolic_array_dip_4x4 #(
     reg [ACC_WIDTH*ARRAY_SIZE-1:0] output_row_data_reg;
     reg [ACTIVITY_DEPTH-1:0] activity_sr;
     reg                   busy_reg;
+    integer               out_col_idx;
 
     // busy_comb 汇总了输入、权重、结果采集以及内部 token 排空状态。
     // 这里不直接把组合锥送到顶层端口，而是寄存一拍，避免 activity_sr 到 busy
@@ -121,7 +122,7 @@ module systolic_array_dip_4x4 #(
 
             row_capture_valid_reg <= row_ready;
             if (row_ready) begin
-                for (integer out_col_idx = 0; out_col_idx < ARRAY_SIZE; out_col_idx = out_col_idx + 1) begin
+                for (out_col_idx = 0; out_col_idx < ARRAY_SIZE; out_col_idx = out_col_idx + 1) begin
                     row_capture_data_reg[((out_col_idx + 1) * ACC_WIDTH) - 1 -: ACC_WIDTH] <=
                         pe_psum_out[ARRAY_SIZE - 1][out_col_idx];
                 end

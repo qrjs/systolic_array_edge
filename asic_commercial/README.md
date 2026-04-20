@@ -58,3 +58,38 @@ teacher-provided synthesis script. It is intended for external RTL such as
 9. Run `<flow>/scripts/run_calibre_lvs.sh`
 
 Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.
+
+## Standardized multi-architecture synthesis
+
+`asic_commercial/syn/scripts/run.tcl` is the common DC entry point for
+comparing `ws`, `is`, `os`, and `dip` with a unified setup.
+
+Examples:
+
+```bash
+dc_shell -f asic_commercial/syn/scripts/run.tcl
+
+ARCH_LIST="ws is os dip" \
+RUN_MODE=base \
+CONSTRAINT_MODE=uniform \
+CLK_PERIOD=5.0 \
+RUN_TAG=all_core_base \
+dc_shell -f asic_commercial/syn/scripts/run.tcl
+
+ARCH_LIST="ws,dip" \
+RUN_MODE=ultra \
+CONSTRAINT_MODE=uniform \
+CLK_PERIOD=1.0 \
+RUN_TAG=ws_dip_1ghz \
+dc_shell -f asic_commercial/syn/scripts/run.tcl
+```
+
+Outputs:
+
+- `asic_commercial/syn/reports/<RUN_TAG>/<arch>/`: per-architecture reports
+- `asic_commercial/syn/mapped/<RUN_TAG>/`: mapped netlists and exported SDC
+- `asic_commercial/syn/reports/<RUN_TAG>/summary.csv`
+- `asic_commercial/syn/reports/<RUN_TAG>/summary.md`
+
+The default `CONSTRAINT_MODE=uniform` is recommended when you want an apples-to-apples
+comparison of area, power, and timing across architectures.

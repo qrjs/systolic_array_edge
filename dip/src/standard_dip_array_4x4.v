@@ -24,6 +24,7 @@ module standard_dip_array_4x4 #(
 );
 
     localparam integer ROW_COUNT_WIDTH = $clog2(ARRAY_SIZE + 1);
+    localparam integer ROW_INDEX_WIDTH = (ARRAY_SIZE > 1) ? $clog2(ARRAY_SIZE) : 1;
 
     // prev_input_row_valid：用于检测输入流是否刚刚结束。
     // drain_pending_reg / drain_issued_reg：在输入结束后自动补一拍全 0，
@@ -139,7 +140,7 @@ module standard_dip_array_4x4 #(
             // DiP 内核是逐行吐结果的；这里把每一行结果依次收集进 result_buf。
             if (output_row_valid && !done_reg && (captured_rows < ARRAY_SIZE)) begin
                 for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
-                    result_buf[captured_rows][col_idx] <=
+                    result_buf[captured_rows[ROW_INDEX_WIDTH-1:0]][col_idx] <=
                         $signed(output_row_data[((col_idx + 1) * ACC_WIDTH) - 1 -: ACC_WIDTH]);
                 end
 
