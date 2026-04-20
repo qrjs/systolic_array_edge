@@ -7,7 +7,7 @@ Report : timing
         -max_paths 1
 Design : ws_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 22:40:05 2026
+Date   : Mon Apr 20 23:42:04 2026
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.

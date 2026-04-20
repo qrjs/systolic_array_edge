@@ -8,7 +8,7 @@ Warning: A non-unate path in clock network for clock 'clk'
 Report : qor
 Design : os_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Mon Apr 20 22:45:21 2026
+Date   : Mon Apr 20 23:47:14 2026
 ****************************************
 
 
@@ -68,12 +68,12 @@ Date   : Mon Apr 20 22:45:21 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                   29.60
-  Logic Optimization:                 13.54
-  Mapping Optimization:              110.95
+  Resource Sharing:                   29.97
+  Logic Optimization:                 14.42
+  Mapping Optimization:              109.27
   -----------------------------------------
-  Overall Compile Time:              195.25
-  Overall Compile Wall Clock Time:   196.92
+  Overall Compile Time:              193.43
+  Overall Compile Wall Clock Time:   190.16
 
   --------------------------------------------------------------------
 
