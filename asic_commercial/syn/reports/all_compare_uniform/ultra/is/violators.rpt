@@ -1,0 +1,2305 @@
+ 
+****************************************
+Report : constraint
+        -all_violators
+Design : is_core_top_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 20:38:37 2026
+****************************************
+
+
+   max_delay/setup ('clk' group)
+
+                             Required        Actual
+   Endpoint                 Path Delay     Path Delay        Slack
+   -----------------------------------------------------------------
+   u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.33           0.60 r        -0.27  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[0].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.33           0.60 r        -0.27  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.33           0.60 r        -0.27  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.61 f        -0.27  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.34           0.61 f        -0.27  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[1].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.35           0.61 f        -0.27  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.33           0.60 r        -0.27  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.33           0.60 r        -0.27  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[0].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.61 f        -0.27  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[0].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.61 f        -0.27  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[0].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.33           0.60 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[0].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[2].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.34           0.60 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[2].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.60 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[0].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.60 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[1].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[2].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[1].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.60 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[1].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[2].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[1].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[1].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG120_S8/D
+                                0.89           1.15 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[0].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG121_S8/D
+                                0.91           1.17 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[0].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[1].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[0].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.60 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[2].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.60 r        -0.26  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG116_S8/D
+                                0.86           1.12 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[1].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.34           0.60 f        -0.26  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG976_S5/D
+                                0.89           1.15 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[2].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG920_S8/D
+                                0.90           1.16 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.33           0.59 r        -0.26  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG974_S5/D
+                                0.89           1.15 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[2].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.34           0.60 f        -0.26  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG364_S8/D
+                                0.89           1.15 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[1].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.35           0.61 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[2].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.35           0.60 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[2].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.35           0.60 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[0].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.34           0.59 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[2].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.59 f        -0.26  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[0].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.59 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[2].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.59 r        -0.26  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.33           0.58 r        -0.26  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG119_S8/D
+                                0.86           1.11 r        -0.26  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG173_S5/D
+                                0.89           1.15 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[0].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.33           0.58 r        -0.25  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG310_S11/D
+                                0.89           1.15 f        -0.25  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG814_S5/D
+                                0.89           1.14 r        -0.25  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1147_S5/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG430_S5/D
+                                0.90           1.15 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[1].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.59 r        -0.25  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG363_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG973_S5/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG641_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[1].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.59 r        -0.25  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG919_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1433_S8/D
+                                0.85           1.10 r        -0.25  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG110_S8/D
+                                0.90           1.14 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[1].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.33           0.58 r        -0.25  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG172_S5/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG700_S5/D
+                                0.90           1.15 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[3].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.35           0.59 f        -0.25  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG699_S5/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[0].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.59 r        -0.25  (VIOLATED)
+   clk_r_REG1847_S5/D           0.85           1.10 r        -0.25  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG57_S11/D
+                                0.90           1.15 r        -0.25  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG114_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG43_S11/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[1].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.34           0.58 r        -0.25  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1345_S8/D
+                                0.85           1.10 r        -0.25  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG18_S5/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG56_S11/D
+                                0.89           1.14 r        -0.25  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG104_S8/D
+                                0.89           1.14 r        -0.25  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1236_S2/D
+                                0.86           1.10 r        -0.25  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG565_S11/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG117_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG44_S11/D
+                                0.90           1.15 f        -0.25  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG569_S11/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG640_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG914_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG115_S8/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG177_S5/D
+                                0.90           1.15 f        -0.25  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG174_S5/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG340_S11/D
+                                0.89           1.14 f        -0.25  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG541_S11/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG370_S8/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG862_S11/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG637_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1208_S8/D
+                                0.90           1.15 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[3].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.59 f        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG424_S5/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG178_S5/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG975_S5/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG374_S8/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG179_S5/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1254_S2/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG175_S5/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG426_S5/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG632_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1228_S11/D
+                                0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG322_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[0].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.35           0.59 f        -0.24  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1039_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG187_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG767_S2/D
+                                0.90           1.15 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG698_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.33           0.58 f        -0.24  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG87_S11/D
+                                0.90           1.15 r        -0.24  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG488_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG351_S11/D
+                                0.91           1.15 r        -0.24  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG46_S11/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG176_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1035_S2/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG306_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG106_S8/D
+                                0.89           1.14 f        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG113_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG629_S8/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG278_S5/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1464_S5/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG381_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG647_S8/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG103_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG509_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG795_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1231_S5/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG813_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1157_S2/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG842_S11/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG772_S2/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG189_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG967_S6/D            0.85           1.09 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[1].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.58 r        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG193_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG645_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG318_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG437_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG1918_S11/D          0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG232_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG486_S2/D
+                                0.88           1.12 r        -0.24  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1346_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG961_S6/D            0.85           1.09 r        -0.24  (VIOLATED)
+   clk_r_REG1734_S5/D           0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG27_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG309_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG931_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1414_S8/D
+                                0.88           1.12 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1128_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG140_S8/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   clk_r_REG965_S6/D            0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG185_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG248_S2/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG529_S5/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1188_S5/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1340_S8/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG564_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG802_S6/D            0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1776_S8/D
+                                0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG320_S11/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG319_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG145_S8/D
+                                0.90           1.13 f        -0.24  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG507_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG188_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG1889_S8/D           0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG146_S8/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG321_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[1].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.35           0.58 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG308_S11/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1221_S8/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1187_S8/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG423_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1508_S8/D
+                                0.90           1.13 f        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG716_S5/D
+                                0.86           1.10 r        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1151_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG714_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG971_S6/D            0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG52_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG259_S2/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[1].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.34           0.57 r        -0.24  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG568_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG338_S11/D
+                                0.89           1.12 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG718_S5/D
+                                0.91           1.15 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[1].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.57 r        -0.24  (VIOLATED)
+   clk_r_REG1731_S2/D           0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG739_S5/D
+                                0.90           1.13 f        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1328_S8/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1253_S5/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1056_S2/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1295_S2/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1842_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG1822_S8/D           0.84           1.08 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[1].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.57 r        -0.24  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1189_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[2].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.57 r        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1115_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1391_S11/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1666_S5/D
+                                0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG48_S11/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG445_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG575_S11/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG843_S11/D
+                                0.91           1.14 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[3].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.57 r        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1244_S8/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   clk_r_REG1767_S5/D           0.84           1.08 r        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG339_S11/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1252_S8/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[1].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.34           0.57 r        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1308_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG711_S5/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG782_S2/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG439_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG22_S8/D
+                                0.88           1.11 r        -0.24  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1240_S5/D
+                                0.91           1.14 f        -0.24  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1038_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG376_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG369_S8/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1365_S5/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1155_S11/D
+                                0.88           1.11 r        -0.24  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG643_S8/D
+                                0.89           1.13 r        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG697_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG821_S11/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1111_S5/D
+                                0.90           1.14 f        -0.24  (VIOLATED)
+   clk_r_REG1825_S11/D          0.85           1.09 r        -0.24  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG487_S2/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   clk_r_REG1803_S2/D           0.91           1.14 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1093_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG929_S8/D
+                                0.90           1.13 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG195_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG186_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG704_S5/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG337_S11/D
+                                0.86           1.09 r        -0.24  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG305_S11/D
+                                0.89           1.13 f        -0.24  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG786_S2/D
+                                0.90           1.14 r        -0.24  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG109_S8/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG511_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1320_S8/D
+                                0.85           1.09 r        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG429_S5/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   clk_r_REG1717_S5/D           0.90           1.14 f        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG255_S2/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1410_S11/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   clk_r_REG1873_S5/D           0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG631_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG818_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1529_S5/D
+                                0.90           1.14 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG988_S5/D
+                                0.90           1.14 f        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1292_S11/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1557_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[3].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.57 r        -0.23  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG506_S2/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG282_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG636_S8/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG717_S5/D
+                                0.89           1.13 r        -0.23  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG317_S11/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG644_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[3].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.35           0.58 f        -0.23  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[1].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.57 r        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG928_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG948_S8/D
+                                0.85           1.09 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1229_S8/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[1].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.57 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG572_S11/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG257_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1517_S5/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG508_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1727_S5/D
+                                0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1509_S8/D
+                                0.89           1.13 r        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1609_S5/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG561_S11/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1309_S5/D
+                                0.90           1.13 r        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG55_S11/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG841_S11/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1643_S8/D
+                                0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG992_S5/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   clk_r_REG1741_S11/D          0.84           1.08 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG559_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG444_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG231_S2/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1060_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG158_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG438_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG710_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG933_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG350_S11/D
+                                0.91           1.14 r        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1424_S5/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG436_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG194_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG377_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG794_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG192_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG304_S11/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1062_S2/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG141_S8/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1372_S11/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG589_S11/D
+                                0.89           1.13 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG927_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1405_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1472_S11/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG307_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG497_S2/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG373_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[3].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.33           0.57 r        -0.23  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG274_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1209_S5/D
+                                0.90           1.13 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1133_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1114_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1475_S5/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1104_S11/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG535_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG822_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG724_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG781_S2/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG987_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG14_S2/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1473_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[2].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.57 r        -0.23  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG277_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1294_S5/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1474_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   clk_r_REG1912_S5/D           0.84           1.07 r        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG941_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG17_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG642_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[2].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.34           0.57 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1427_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG73_S11/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[2].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.57 r        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG375_S8/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG378_S8/D
+                                0.91           1.14 f        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1097_S8/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG856_S11/D
+                                0.85           1.07 r        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG258_S2/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1324_S11/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG86_S11/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   clk_r_REG1905_S11/D          0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1280_S2/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG793_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1683_S2/D
+                                0.86           1.09 r        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG913_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1490_S11/D
+                                0.91           1.13 f        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG598_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1177_S5/D
+                                0.91           1.14 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG990_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG184_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG534_S8/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG633_S8/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   clk_r_REG1879_S11/D          0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1037_S2/D
+                                0.89           1.12 r        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1201_S8/D
+                                0.91           1.14 r        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1173_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG399_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG380_S8/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1501_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG47_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[3].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.33           0.56 f        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG254_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1697_S8/D
+                                0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG570_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1150_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[2].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.56 r        -0.23  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[3].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.33           0.56 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1337_S5/D
+                                0.85           1.08 r        -0.23  (VIOLATED)
+   clk_r_REG1902_S8/D           0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1092_S5/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1000_S5/D
+                                0.89           1.11 f        -0.23  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG498_S2/D
+                                0.90           1.12 f        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG791_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1213_S2/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1599_S5/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1725_S11/D
+                                0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG930_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG857_S11/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG940_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG26_S11/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG333_S11/D
+                                0.86           1.08 r        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG684_S8/D
+                                0.90           1.12 f        -0.23  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1698_S5/D
+                                0.85           1.08 r        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG247_S2/D
+                                0.91           1.14 r        -0.23  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG926_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG251_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG810_S2/D
+                                0.91           1.13 f        -0.23  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG118_S8/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG848_S11/D
+                                0.90           1.13 f        -0.23  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG766_S2/D
+                                0.91           1.13 r        -0.23  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[2].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.33           0.56 r        -0.23  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1089_S2/D
+                                0.89           1.12 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG682_S8/D
+                                0.89           1.11 f        -0.23  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG627_S8/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1138_S11/D
+                                0.89           1.12 r        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG51_S11/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1326_S11/D
+                                0.90           1.12 f        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG74_S11/D
+                                0.90           1.13 r        -0.22  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG252_S2/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG45_S11/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1225_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[2].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.56 r        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG573_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG789_S2/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG630_S8/D
+                                0.91           1.13 r        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG441_S5/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   clk_r_REG1853_S11/D          0.90           1.13 f        -0.22  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG860_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG628_S8/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1053_S2/D
+                                0.90           1.13 r        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1181_S8/D
+                                0.91           1.14 f        -0.22  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1378_S2/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG817_S8/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1232_S5/D
+                                0.90           1.13 r        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1412_S11/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG246_S2/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1319_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1394_S5/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG105_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG157_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG533_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG409_S8/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   clk_r_REG1812_S11/D          0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1140_S2/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG790_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1415_S8/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG273_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1745_S5/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG770_S2/D
+                                0.88           1.10 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1061_S2/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG530_S5/D
+                                0.91           1.13 r        -0.22  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1558_S5/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1306_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1576_S2/D
+                                0.88           1.11 r        -0.22  (VIOLATED)
+   clk_r_REG1809_S8/D           0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1036_S2/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1052_S2/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1102_S11/D
+                                0.90           1.13 r        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG447_S5/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG839_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1699_S2/D
+                                0.85           1.07 r        -0.22  (VIOLATED)
+   clk_r_REG1669_S2/D           0.90           1.12 f        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1664_S11/D
+                                0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG749_S5/D
+                                0.89           1.12 f        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG779_S2/D
+                                0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG101_S11/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG203_S5/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG236_S2/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG496_S2/D
+                                0.85           1.08 r        -0.22  (VIOLATED)
+   clk_r_REG331_S9/D            0.84           1.06 r        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1329_S8/D
+                                0.92           1.14 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG540_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG788_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1283_S5/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG558_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[3].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.34           0.56 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1059_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1593_S2/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   clk_r_REG1832_S5/D           0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG648_S8/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG23_S8/D
+                                0.89           1.11 r        -0.22  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG847_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1002_S5/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG132_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   clk_r_REG1770_S8/D           0.90           1.12 f        -0.22  (VIOLATED)
+   clk_r_REG1915_S8/D           0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1143_S2/D
+                                0.91           1.13 r        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG53_S11/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG281_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG886_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   clk_r_REG1653_S2/D           0.85           1.06 r        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG155_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1416_S5/D
+                                0.88           1.10 r        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG303_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1406_S8/D
+                                0.90           1.12 f        -0.22  (VIOLATED)
+   clk_r_REG1850_S8/D           0.85           1.06 r        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG685_S8/D
+                                0.90           1.12 f        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1119_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG446_S5/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG574_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG989_S5/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG464_S5/D
+                                0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1250_S11/D
+                                0.89           1.10 r        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG334_S11/D
+                                0.88           1.10 r        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG735_S5/D
+                                0.89           1.10 r        -0.22  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG54_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG408_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   clk_r_REG1892_S11/D          0.84           1.06 r        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG792_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG588_S11/D
+                                0.86           1.07 r        -0.22  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG950_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1230_S8/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG947_S8/D
+                                0.86           1.08 r        -0.22  (VIOLATED)
+   clk_r_REG1806_S5/D           0.85           1.06 r        -0.22  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG659_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   clk_r_REG1838_S11/D          0.85           1.06 r        -0.22  (VIOLATED)
+   clk_r_REG1829_S2/D           0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG932_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1331_S5/D
+                                0.86           1.07 r        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG458_S5/D
+                                0.90           1.11 f        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG286_S11/D
+                                0.89           1.10 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG560_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1650_S5/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG205_S5/D
+                                0.86           1.07 r        -0.22  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1377_S5/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG425_S5/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG594_S11/D
+                                0.88           1.10 r        -0.22  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG725_S5/D
+                                0.90           1.12 f        -0.22  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1057_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG599_S11/D
+                                0.86           1.07 r        -0.22  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG771_S2/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1207_S11/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG330_S11/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG389_S8/D
+                                0.89           1.11 f        -0.22  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG597_S11/D
+                                0.86           1.07 r        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG142_S8/D
+                                0.90           1.12 r        -0.22  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG885_S11/D
+                                0.85           1.07 r        -0.22  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1287_S8/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG234_S2/D
+                                0.89           1.11 r        -0.21  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG456_S5/D
+                                0.90           1.12 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG612_S11/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1648_S11/D
+                                0.91           1.12 r        -0.21  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG536_S8/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG440_S5/D
+                                0.89           1.11 f        -0.21  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG840_S11/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG502_S2/D
+                                0.90           1.12 r        -0.21  (VIOLATED)
+   clk_r_REG1844_S2/D           0.85           1.07 r        -0.21  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG785_S2/D
+                                0.91           1.12 r        -0.21  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1743_S11/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1510_S5/D
+                                0.90           1.12 f        -0.21  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1146_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG1723_S11/D          0.90           1.12 f        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG740_S5/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1186_S11/D
+                                0.90           1.12 r        -0.21  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG457_S5/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG715_S5/D
+                                0.89           1.11 f        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG484_S2/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1330_S5/D
+                                0.89           1.11 f        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1127_S5/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG500_S2/D
+                                0.85           1.07 r        -0.21  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1233_S2/D
+                                0.90           1.11 r        -0.21  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1034_S2/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1210_S2/D
+                                0.90           1.11 f        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1511_S5/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1393_S11/D
+                                0.90           1.11 r        -0.21  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG349_S11/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   clk_r_REG1899_S5/D           0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1217_S5/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG316_S11/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG495_S2/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1548_S5/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG249_S2/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG571_S11/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1369_S8/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   clk_r_REG1876_S8/D           0.90           1.11 r        -0.21  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG991_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG1685_S2/D           0.90           1.11 f        -0.21  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1197_S5/D
+                                0.91           1.12 r        -0.21  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1096_S8/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1395_S2/D
+                                0.89           1.11 f        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1401_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG861_S11/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   clk_r_REG897_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG417_S6/D            0.84           1.05 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1137_S11/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG256_S2/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG206_S5/D
+                                0.90           1.11 f        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG253_S2/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG787_S2/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG858_S11/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1001_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1290_S11/D
+                                0.90           1.11 f        -0.21  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1841_S8/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG415_S6/D            0.84           1.05 r        -0.21  (VIOLATED)
+   clk_r_REG419_S6/D            0.84           1.05 r        -0.21  (VIOLATED)
+   clk_r_REG906_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1300_S5/D
+                                0.91           1.12 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG528_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG668_S8/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG539_S11/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG13_S2/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1470_S11/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   clk_r_REG899_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG583_S9/D            0.84           1.05 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1126_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1243_S8/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   clk_r_REG910_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG904_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1728_S2/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG805_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG323_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1227_S11/D
+                                0.89           1.09 r        -0.21  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1248_S11/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1058_S2/D
+                                0.91           1.11 f        -0.21  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG672_S8/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG67_S9/D             0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG341_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG327_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG250_S2/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1123_S2/D
+                                0.90           1.11 r        -0.21  (VIOLATED)
+   clk_r_REG269_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG233_S2/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1413_S11/D
+                                0.90           1.11 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1327_S11/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1507_S11/D
+                                0.86           1.07 r        -0.21  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1107_S2/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG660_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG737_S5/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1205_S11/D
+                                0.90           1.11 f        -0.21  (VIOLATED)
+   clk_r_REG59_S9/D             0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG890_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1434_S5/D
+                                0.90           1.11 r        -0.21  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1374_S11/D
+                                0.90           1.11 r        -0.21  (VIOLATED)
+   clk_r_REG94_S9/D             0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG77_S9/D             0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG63_S9/D             0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1200_S8/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG9_S9/D              0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG888_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG695_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG693_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG655_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG358_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG703_S5/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG356_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG360_S9/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1184_S11/D
+                                0.91           1.12 f        -0.21  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1528_S8/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG96_S9/D             0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG651_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1506_S11/D
+                                0.89           1.10 f        -0.21  (VIOLATED)
+   clk_r_REG691_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG748_S5/D
+                                0.86           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG674_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG518_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   clk_r_REG390_S6/D            0.85           1.06 r        -0.21  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG139_S8/D
+                                0.89           1.10 r        -0.21  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1591_S8/D
+                                0.86           1.06 r        -0.21  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG732_S5/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1492_S5/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1435_S2/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG874_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1409_S11/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG618_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1297_S2/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   clk_r_REG400_S6/D            0.85           1.06 r        -0.20  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1132_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   clk_r_REG266_S6/D            0.85           1.06 r        -0.20  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG768_S2/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1649_S8/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   clk_r_REG382_S6/D            0.85           1.06 r        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG21_S8/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1088_S2/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1110_S5/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG809_S2/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1013_S5/D
+                                0.90           1.10 f        -0.20  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG956_S8/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG525_S2/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   clk_r_REG92_S9/D             0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG235_S2/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG505_S2/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   clk_r_REG1816_S2/D           0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG386_S6/D            0.85           1.06 r        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG156_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1050_S2/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG746_S5/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG592_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1286_S8/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1098_S8/D
+                                0.89           1.10 f        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1592_S5/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1417_S5/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG949_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1131_S8/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1316_S5/D
+                                0.85           1.06 r        -0.20  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG315_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1384_S5/D
+                                0.90           1.11 f        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1251_S11/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG736_S5/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG745_S5/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1347_S2/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG414_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG578_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1488_S11/D
+                                0.91           1.11 f        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG131_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG143_S8/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1675_S8/D
+                                0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG683_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG780_S2/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1334_S2/D
+                                0.91           1.11 f        -0.20  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG690_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG953_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG329_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1590_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG58_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG859_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1375_S8/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   clk_r_REG1748_S2/D           0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG892_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG501_S2/D
+                                0.91           1.11 f        -0.20  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG494_S2/D
+                                0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG595_S11/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1012_S5/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG385_S8/D
+                                0.85           1.05 r        -0.20  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[1].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.33           0.53 r        -0.20  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[1].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.33           0.53 r        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1402_S5/D
+                                0.90           1.10 f        -0.20  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1556_S11/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG613_S11/D
+                                0.91           1.10 r        -0.20  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG658_S8/D
+                                0.86           1.05 r        -0.20  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1481_S5/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   clk_r_REG1835_S8/D           0.89           1.09 r        -0.20  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1051_S2/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   clk_r_REG1714_S2/D           0.89           1.09 r        -0.20  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1608_S8/D
+                                0.86           1.06 r        -0.20  (VIOLATED)
+   clk_r_REG546_S12/D           0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG883_S11/D
+                                0.90           1.10 r        -0.20  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[2].pe_inst/clk_gate_weight_out_reg_reg/latch/E
+                                0.33           0.53 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG586_S11/D
+                                0.89           1.08 r        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1855_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG485_S2/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG733_S5/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   clk_r_REG877_S9/D            0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1646_S11/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   clk_r_REG865_S9/D            0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1520_S8/D
+                                0.86           1.05 r        -0.20  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1118_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   clk_r_REG951_S6/D            0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1136_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG846_S11/D
+                                0.89           1.09 f        -0.20  (VIOLATED)
+   clk_r_REG579_S9/D            0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG600_S9/D            0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG545_S12/D           0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG544_S12/D           0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG548_S12/D           0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG521_S9/D            0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG524_S12/D           0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG944_S6/D            0.85           1.05 r        -0.20  (VIOLATED)
+   clk_r_REG957_S6/D            0.85           1.05 r        -0.20  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1323_S11/D
+                                0.89           1.09 r        -0.20  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1491_S8/D
+                                0.90           1.10 r        -0.19  (VIOLATED)
+   clk_r_REG1990_S11/D          0.85           1.04 r        -0.19  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1019_S5/D
+                                0.89           1.09 f        -0.19  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG465_S5/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG893_S11/D
+                                0.88           1.08 r        -0.19  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1485_S8/D
+                                0.91           1.10 f        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG896_S11/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG499_S2/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[2].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.33           0.52 r        -0.19  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[2].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.33           0.52 r        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1672_S5/D
+                                0.85           1.05 r        -0.19  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG463_S5/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG455_S5/D
+                                0.91           1.10 r        -0.19  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1467_S8/D
+                                0.89           1.08 r        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG882_S11/D
+                                0.90           1.10 r        -0.19  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG669_S8/D
+                                0.90           1.10 r        -0.19  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG85_S11/D
+                                0.89           1.08 r        -0.19  (VIOLATED)
+   u_is_array/gen_row[0].gen_col[3].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.53 f        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG713_S5/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[3].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.54 f        -0.19  (VIOLATED)
+   clk_r_REG835_S12/D           0.85           1.04 r        -0.19  (VIOLATED)
+   clk_r_REG836_S12/D           0.85           1.04 r        -0.19  (VIOLATED)
+   clk_r_REG834_S12/D           0.85           1.04 r        -0.19  (VIOLATED)
+   clk_r_REG838_S12/D           0.85           1.04 r        -0.19  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG954_S8/D
+                                0.89           1.08 r        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1498_S5/D
+                                0.89           1.08 r        -0.19  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1667_S2/D
+                                0.85           1.04 r        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG723_S5/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG666_S8/D
+                                0.89           1.08 r        -0.19  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1016_S5/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG493_S2/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   clk_r_REG808_S12/D           0.84           1.03 r        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG864_S11/D
+                                0.91           1.10 f        -0.19  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1551_S8/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG738_S5/D
+                                0.91           1.10 r        -0.19  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG673_S8/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG397_S8/D
+                                0.90           1.10 r        -0.19  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG76_S11/D
+                                0.90           1.09 f        -0.19  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG955_S8/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG204_S5/D
+                                0.90           1.09 r        -0.19  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG784_S2/D
+                                0.90           1.09 r        -0.19  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1602_S8/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1315_S5/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG244_S2/D
+                                0.90           1.09 r        -0.19  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG593_S11/D
+                                0.90           1.09 f        -0.19  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1814_S8/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG722_S5/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1049_S2/D
+                                0.90           1.09 f        -0.19  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG510_S2/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1476_S2/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG100_S11/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG671_S8/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   clk_r_REG1819_S5/D           0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG504_S2/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1193_S2/D
+                                0.90           1.09 f        -0.19  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG712_S5/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1610_S2/D
+                                0.91           1.09 r        -0.19  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG214_S5/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG887_S11/D
+                                0.86           1.05 r        -0.19  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1554_S11/D
+                                0.91           1.09 r        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG873_S11/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1172_S2/D
+                                0.86           1.04 r        -0.19  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1418_S2/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1046_S2/D
+                                0.85           1.04 r        -0.19  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1388_S8/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG863_S11/D
+                                0.86           1.04 r        -0.19  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1573_S11/D
+                                0.86           1.04 r        -0.19  (VIOLATED)
+   clk_r_REG1764_S2/D           0.85           1.03 r        -0.19  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG999_S5/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG880_S11/D
+                                0.89           1.08 f        -0.19  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG769_S2/D
+                                0.89           1.07 f        -0.19  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[3].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.35           0.53 f        -0.19  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG144_S8/D
+                                0.91           1.09 r        -0.18  (VIOLATED)
+   clk_r_REG1948_S5/D           0.84           1.03 r        -0.18  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1054_S2/D
+                                0.89           1.08 f        -0.18  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG265_S5/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG268_S8/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1493_S2/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   clk_r_REG602_S9/D            0.85           1.04 r        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1376_S8/D
+                                0.90           1.09 r        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG396_S8/D
+                                0.89           1.08 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG587_S11/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1512_S2/D
+                                0.89           1.08 f        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1574_S8/D
+                                0.90           1.09 r        -0.18  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1017_S5/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG466_S5/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG916_S8/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG245_S2/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1293_S8/D
+                                0.91           1.09 f        -0.18  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG243_S2/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[3].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.33           0.51 r        -0.18  (VIOLATED)
+   clk_r_REG875_S9/D            0.85           1.03 r        -0.18  (VIOLATED)
+   clk_r_REG869_S9/D            0.85           1.03 r        -0.18  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1045_S2/D
+                                0.85           1.03 r        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1387_S8/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1180_S8/D
+                                0.89           1.08 f        -0.18  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1018_S5/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG596_S11/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG884_S11/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG610_S11/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1585_S8/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1312_S2/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG871_S11/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   clk_r_REG969_S6/D            0.85           1.04 r        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG136_S8/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG734_S5/D
+                                0.91           1.09 r        -0.18  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1055_S2/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG915_S8/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG523_S11/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1310_S2/D
+                                0.90           1.08 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG577_S11/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG123_S8/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG163_S8/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG368_S8/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1582_S5/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[2].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.34           0.52 r        -0.18  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1596_S2/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG325_S11/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1571_S11/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG611_S11/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG881_S11/D
+                                0.90           1.08 f        -0.18  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG872_S11/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG894_S11/D
+                                0.90           1.08 r        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG398_S8/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG721_S5/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1478_S2/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1368_S8/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1530_S2/D
+                                0.86           1.04 r        -0.18  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG663_S8/D
+                                0.89           1.06 r        -0.18  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG783_S2/D
+                                0.91           1.08 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG582_S11/D
+                                0.89           1.06 r        -0.18  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG393_S8/D
+                                0.90           1.08 r        -0.18  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG855_S11/D
+                                0.86           1.03 r        -0.18  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG242_S2/D
+                                0.85           1.02 r        -0.18  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG285_S11/D
+                                0.89           1.06 f        -0.18  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG66_S11/D
+                                0.89           1.07 f        -0.18  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1398_S2/D
+                                0.86           1.03 r        -0.18  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG585_S11/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1011_S5/D
+                                0.90           1.08 r        -0.18  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[3].pe_inst/clk_gate_partial_reg_reg/latch/E
+                                0.33           0.51 f        -0.18  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG667_S8/D
+                                0.91           1.08 r        -0.18  (VIOLATED)
+   clk_r_REG1987_S8/D           0.85           1.02 r        -0.18  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG202_S5/D
+                                0.89           1.07 r        -0.18  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG503_S2/D
+                                0.89           1.07 f        -0.17  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG854_S11/D
+                                0.89           1.07 f        -0.17  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1568_S8/D
+                                0.91           1.08 f        -0.17  (VIOLATED)
+   u_is_array/gen_row[2].gen_col[2].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.51 r        -0.17  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1247_S11/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG454_S5/D
+                                0.89           1.07 f        -0.17  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1495_S2/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG1101_S11/D
+                                0.89           1.07 f        -0.17  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1362_S2/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   clk_r_REG354_S9/D            0.85           1.02 r        -0.17  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG807_S11/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG11_S11/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG8_S8/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG747_S5/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1681_S8/D
+                                0.90           1.07 r        -0.17  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1514_S2/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1048_S2/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG135_S8/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG211_S5/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG213_S5/D
+                                0.86           1.03 r        -0.17  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1216_S5/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1106_S2/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   clk_r_REG1870_S2/D           0.85           1.02 r        -0.17  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1588_S11/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1303_S8/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   clk_r_REG1886_S5/D           0.88           1.05 r        -0.17  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1840_S11/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1381_S2/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG75_S11/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG388_S8/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG130_S8/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1196_S5/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[3].pe_inst/clk_gate_weight_reg_reg/latch/E
+                                0.34           0.50 f        -0.17  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG472_S5/D
+                                0.89           1.05 r        -0.17  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG326_S11/D
+                                0.89           1.05 r        -0.17  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1239_S5/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG483_S2/D
+                                0.89           1.06 f        -0.17  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1640_S5/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   clk_r_REG1972_S5/D           0.84           1.01 r        -0.17  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG392_S8/D
+                                0.89           1.06 r        -0.17  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG879_S11/D
+                                0.86           1.02 r        -0.17  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1682_S5/D
+                                0.90           1.07 r        -0.17  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1010_S5/D
+                                0.91           1.07 f        -0.17  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG657_S8/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1562_S2/D
+                                0.89           1.06 r        -0.16  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1154_S11/D
+                                0.89           1.06 f        -0.16  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1680_S11/D
+                                0.90           1.07 r        -0.16  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG219_S5/D
+                                0.86           1.02 r        -0.16  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG1176_S5/D
+                                0.89           1.06 f        -0.16  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1421_S2/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1431_S11/D
+                                0.89           1.05 f        -0.16  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG517_S5/D
+                                0.86           1.02 r        -0.16  (VIOLATED)
+   clk_r_REG335_S9/D            0.85           1.01 r        -0.16  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1688_S5/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG62_S11/D
+                                0.85           1.01 r        -0.16  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1142_S2/D
+                                0.86           1.02 r        -0.16  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG108_S8/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1545_S2/D
+                                0.85           1.01 r        -0.16  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1527_S11/D
+                                0.90           1.06 r        -0.16  (VIOLATED)
+   clk_r_REG343_S9/D            0.85           1.01 r        -0.16  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG1691_S8/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   clk_r_REG352_S9/D            0.85           1.01 r        -0.16  (VIOLATED)
+   clk_r_REG347_S9/D            0.85           1.01 r        -0.16  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1524_S11/D
+                                0.89           1.05 f        -0.16  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG127_S8/D
+                                0.89           1.04 r        -0.16  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1575_S5/D
+                                0.89           1.05 f        -0.16  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG5_S5/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG581_S11/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   clk_r_REG621_S9/D            0.85           1.00 r        -0.16  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG635_S8/D
+                                0.89           1.05 f        -0.16  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG946_S8/D
+                                0.89           1.05 f        -0.16  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG670_S8/D
+                                0.89           1.05 r        -0.16  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1504_S11/D
+                                0.89           1.05 f        -0.16  (VIOLATED)
+   clk_r_REG590_S9/D            0.84           1.00 r        -0.15  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG654_S8/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[3].pe_inst/clk_gate_accumulator_reg/latch/E
+                                0.34           0.49 f        -0.15  (VIOLATED)
+   clk_r_REG1975_S8/D           0.84           0.99 r        -0.15  (VIOLATED)
+   u_is_array/gen_row[1].gen_col[3].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.49 f        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG895_S11/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG366_S8/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG978_S5/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG979_S5/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   clk_r_REG908_S9/D            0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1607_S11/D
+                                0.90           1.06 r        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1343_S11/D
+                                0.88           1.03 r        -0.15  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG365_S8/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG662_S8/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1656_S5/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG903_S11/D
+                                0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1461_S2/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1332_S2/D
+                                0.90           1.05 r        -0.15  (VIOLATED)
+   clk_r_REG1966_S11/D          0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1204_S11/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG220_S5/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1777_S5/D
+                                0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1659_S8/D
+                                0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1605_S11/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   clk_r_REG664_S6/D            0.85           1.00 r        -0.15  (VIOLATED)
+   clk_r_REG71_S9/D             0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG1662_S11/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[3].pe_inst/clk_gate_input_valid_reg_reg/latch/E
+                                0.34           0.48 r        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG845_S11/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   clk_r_REG394_S6/D            0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_583J2_126_808/clk_r_REG212_S5/D
+                                0.90           1.05 r        -0.15  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1043_S2/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG471_S5/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG384_S8/D
+                                0.89           1.04 r        -0.15  (VIOLATED)
+   clk_r_REG1963_S8/D           0.85           1.00 r        -0.15  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG1565_S5/D
+                                0.86           1.00 r        -0.15  (VIOLATED)
+   clk_r_REG1984_S5/D           0.85           0.99 r        -0.15  (VIOLATED)
+   clk_r_REG1954_S11/D          0.84           0.99 r        -0.15  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG1009_S5/D
+                                0.89           1.04 f        -0.15  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1525_S11/D
+                                0.90           1.05 f        -0.14  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1579_S2/D
+                                0.89           1.03 r        -0.14  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1678_S11/D
+                                0.90           1.05 f        -0.14  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG520_S8/D
+                                0.86           1.00 r        -0.14  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG918_S8/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG995_S5/D
+                                0.86           1.00 r        -0.14  (VIOLATED)
+   DP_OP_592J2_135_808/clk_r_REG271_S11/D
+                                0.89           1.03 r        -0.14  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG977_S5/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1484_S8/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   u_is_array/gen_row[3].gen_col[3].pe_inst/clk_gate_partial_out_reg/latch/E
+                                0.34           0.48 f        -0.14  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG702_S5/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG963_S8/D
+                                0.86           1.00 r        -0.14  (VIOLATED)
+   clk_r_REG1883_S2/D           0.85           0.99 r        -0.14  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1694_S11/D
+                                0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG555_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1224_S11/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG801_S5/D
+                                0.89           1.03 r        -0.14  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG804_S8/D
+                                0.89           1.03 r        -0.14  (VIOLATED)
+   clk_r_REG1978_S11/D          0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG554_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG556_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG776_S2/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG777_S2/D
+                                0.86           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG412_S6/D            0.84           0.98 r        -0.14  (VIOLATED)
+   clk_r_REG402_S6/D            0.84           0.98 r        -0.14  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG986_S5/D
+                                0.89           1.03 r        -0.14  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG126_S8/D
+                                0.89           1.03 r        -0.14  (VIOLATED)
+   clk_r_REG837_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG831_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG830_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG832_S12/D           0.85           0.99 r        -0.14  (VIOLATED)
+   clk_r_REG90_S9/D             0.85           0.98 r        -0.14  (VIOLATED)
+   clk_r_REG79_S9/D             0.85           0.98 r        -0.14  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG1122_S2/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG428_S5/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   clk_r_REG619_S9/D            0.85           0.98 r        -0.14  (VIOLATED)
+   clk_r_REG623_S9/D            0.85           0.98 r        -0.14  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG912_S8/D
+                                0.89           1.03 f        -0.14  (VIOLATED)
+   clk_r_REG1951_S8/D           0.84           0.97 r        -0.13  (VIOLATED)
+   clk_r_REG688_S6/D            0.85           0.99 r        -0.13  (VIOLATED)
+   clk_r_REG676_S6/D            0.85           0.99 r        -0.13  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG653_S8/D
+                                0.89           1.02 r        -0.13  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1726_S8/D
+                                0.90           1.03 r        -0.13  (VIOLATED)
+   clk_r_REG547_S12/D           0.85           0.98 r        -0.13  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1559_S2/D
+                                0.90           1.03 r        -0.13  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1220_S8/D
+                                0.89           1.02 f        -0.13  (VIOLATED)
+   clk_r_REG1896_S2/D           0.85           0.98 r        -0.13  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1047_S2/D
+                                0.89           1.02 r        -0.13  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG996_S5/D
+                                0.89           1.01 r        -0.13  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG240_S2/D
+                                0.89           1.02 f        -0.13  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1827_S8/D
+                                0.89           1.02 f        -0.13  (VIOLATED)
+   clk_r_REG1909_S2/D           0.85           0.98 r        -0.13  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG65_S11/D
+                                0.89           1.02 r        -0.13  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG778_S2/D
+                                0.89           1.01 r        -0.13  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG775_S2/D
+                                0.86           0.98 r        -0.13  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG964_S8/D
+                                0.89           1.01 r        -0.13  (VIOLATED)
+   clk_r_REG263_S3/D            0.85           0.98 r        -0.13  (VIOLATED)
+   clk_r_REG294_S12/D           0.85           0.98 r        -0.13  (VIOLATED)
+   clk_r_REG6_S6/D              0.85           0.98 r        -0.13  (VIOLATED)
+   clk_r_REG298_S12/D           0.84           0.97 r        -0.13  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1738_S8/D
+                                0.86           0.98 r        -0.13  (VIOLATED)
+   clk_r_REG2015_S11/D          0.84           0.97 r        -0.13  (VIOLATED)
+   clk_r_REG515_S3/D            0.85           0.98 r        -0.13  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG70_S11/D
+                                0.90           1.03 r        -0.13  (VIOLATED)
+   clk_r_REG272_S12/D           0.85           0.98 r        -0.13  (VIOLATED)
+   clk_r_REG799_S3/D            0.85           0.97 r        -0.12  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1044_S2/D
+                                0.89           1.01 r        -0.12  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1430_S11/D
+                                0.89           1.01 f        -0.12  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1665_S8/D
+                                0.90           1.02 r        -0.12  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG241_S2/D
+                                0.89           1.01 r        -0.12  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG755_S5/D
+                                0.89           1.00 r        -0.12  (VIOLATED)
+   clk_r_REG2054_S11/D          0.85           0.97 r        -0.12  (VIOLATED)
+   clk_r_REG1981_S2/D           0.85           0.97 r        -0.12  (VIOLATED)
+   clk_r_REG1007_S3/D           0.85           0.96 r        -0.12  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG902_S11/D
+                                0.88           1.00 r        -0.12  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG69_S11/D
+                                0.89           1.01 r        -0.12  (VIOLATED)
+   clk_r_REG1020_S3/D           0.84           0.96 r        -0.12  (VIOLATED)
+   clk_r_REG221_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG215_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG198_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_584J2_127_808/clk_r_REG427_S5/D
+                                0.89           1.01 f        -0.11  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG634_S8/D
+                                0.90           1.01 f        -0.11  (VIOLATED)
+   clk_r_REG867_S9/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG410_S6/D            0.84           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG406_S6/D            0.84           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG190_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG200_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG701_S5/D
+                                0.89           1.00 f        -0.11  (VIOLATED)
+   clk_r_REG217_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG209_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG223_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG88_S9/D             0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG83_S9/D             0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1696_S11/D
+                                0.90           1.01 r        -0.11  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG107_S8/D
+                                0.89           1.00 f        -0.11  (VIOLATED)
+   clk_r_REG225_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG1720_S8/D
+                                0.91           1.01 r        -0.11  (VIOLATED)
+   clk_r_REG124_S6/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG2051_S8/D           0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG686_S6/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG680_S6/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG147_S6/D            0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG1192_S2/D
+                                0.89           1.00 f        -0.11  (VIOLATED)
+   DP_OP_591J2_134_808/clk_r_REG61_S11/D
+                                0.89           1.00 r        -0.11  (VIOLATED)
+   clk_r_REG3_S3/D              0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG2041_S11/D          0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG604_S9/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG133_S6/D            0.85           0.96 r        -0.11  (VIOLATED)
+   clk_r_REG833_S12/D           0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1760_S8/D
+                                0.90           1.01 r        -0.11  (VIOLATED)
+   clk_r_REG293_S12/D           0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG290_S12/D           0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG292_S12/D           0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG959_S6/D            0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG942_S6/D            0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG934_S6/D            0.85           0.95 r        -0.11  (VIOLATED)
+   clk_r_REG938_S6/D            0.85           0.95 r        -0.11  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1744_S8/D
+                                0.90           1.01 r        -0.11  (VIOLATED)
+   clk_r_REG128_S6/D            0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG491_S2/D
+                                0.89           0.99 r        -0.11  (VIOLATED)
+   clk_r_REG207_S3/D            0.85           0.96 r        -0.11  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1042_S2/D
+                                0.89           0.99 r        -0.10  (VIOLATED)
+   clk_r_REG39_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG38_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG40_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG37_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG297_S12/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG296_S12/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG295_S12/D           0.85           0.95 r        -0.10  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG563_S11/D
+                                0.89           0.99 f        -0.10  (VIOLATED)
+   clk_r_REG2048_S5/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG302_S12/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG299_S12/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG616_S9/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG300_S12/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG2025_S8/D           0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG41_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG35_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG42_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG30_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG362_S8/D
+                                0.90           1.00 f        -0.10  (VIOLATED)
+   clk_r_REG34_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG33_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG32_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG31_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   clk_r_REG12_S12/D            0.85           0.95 r        -0.10  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG901_S11/D
+                                0.89           0.99 r        -0.10  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG754_S5/D
+                                0.89           0.98 r        -0.09  (VIOLATED)
+   clk_r_REG760_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG756_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG758_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG752_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG492_S2/D
+                                0.86           0.95 r        -0.09  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG1737_S8/D
+                                0.89           0.98 r        -0.09  (VIOLATED)
+   clk_r_REG2009_S5/D           0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG741_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG153_S6/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG1022_S3/D           0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG1028_S3/D           0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG997_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG1005_S3/D           0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG1024_S3/D           0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG1014_S3/D           0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG1026_S3/D           0.85           0.94 r        -0.09  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1775_S11/D
+                                0.90           0.99 r        -0.09  (VIOLATED)
+   clk_r_REG728_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG719_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG730_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG750_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG743_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG166_S6/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG459_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1761_S5/D
+                                0.90           0.99 r        -0.09  (VIOLATED)
+   clk_r_REG450_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG442_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG452_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG461_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1523_S11/D
+                                0.89           0.98 f        -0.09  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG844_S11/D
+                                0.90           0.99 f        -0.09  (VIOLATED)
+   clk_r_REG168_S6/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG159_S6/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG164_S6/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG469_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG477_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG473_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG475_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG467_S3/D            0.85           0.94 r        -0.09  (VIOLATED)
+   clk_r_REG829_S12/D           0.85           0.93 r        -0.09  (VIOLATED)
+   clk_r_REG826_S12/D           0.85           0.93 r        -0.09  (VIOLATED)
+   clk_r_REG828_S12/D           0.85           0.93 r        -0.09  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1759_S11/D
+                                0.90           0.99 r        -0.09  (VIOLATED)
+   clk_r_REG345_S9/D            0.85           0.94 r        -0.09  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG239_S2/D
+                                0.89           0.98 r        -0.09  (VIOLATED)
+   clk_r_REG2035_S5/D           0.85           0.93 r        -0.09  (VIOLATED)
+   clk_r_REG762_S3/D            0.84           0.93 r        -0.09  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG1754_S8/D
+                                0.91           0.99 r        -0.08  (VIOLATED)
+   clk_r_REG614_S9/D            0.85           0.93 r        -0.08  (VIOLATED)
+   clk_r_REG608_S9/D            0.85           0.93 r        -0.08  (VIOLATED)
+   clk_r_REG149_S6/D            0.85           0.94 r        -0.08  (VIOLATED)
+   clk_r_REG1030_S3/D           0.85           0.94 r        -0.08  (VIOLATED)
+   clk_r_REG2012_S8/D           0.85           0.93 r        -0.08  (VIOLATED)
+   clk_r_REG2276_S1/D           0.86           0.94 r        -0.08  (VIOLATED)
+   clk_r_REG2028_S11/D          0.85           0.93 r        -0.08  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG562_S11/D
+                                0.90           0.98 f        -0.08  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG1751_S5/D
+                                0.90           0.98 f        -0.08  (VIOLATED)
+   DP_OP_593J2_136_808/clk_r_REG1757_S11/D
+                                0.90           0.98 f        -0.08  (VIOLATED)
+   clk_r_REG2791_S1/D           0.90           0.97 f        -0.07  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG1773_S11/D
+                                0.90           0.97 f        -0.07  (VIOLATED)
+   clk_r_REG1960_S5/D           0.89           0.96 f        -0.07  (VIOLATED)
+   clk_r_REG2038_S8/D           0.84           0.91 r        -0.07  (VIOLATED)
+   clk_r_REG553_S12/D           0.85           0.92 r        -0.07  (VIOLATED)
+   clk_r_REG2867_S16/D          0.89           0.96 f        -0.07  (VIOLATED)
+   clk_r_REG196_S3/D            0.85           0.91 r        -0.07  (VIOLATED)
+   clk_r_REG479_S3/D            0.85           0.92 r        -0.07  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG983_S5/D
+                                0.90           0.96 f        -0.06  (VIOLATED)
+   clk_r_REG313_S9/D            0.84           0.90 r        -0.06  (VIOLATED)
+   clk_r_REG1003_S3/D           0.84           0.90 r        -0.06  (VIOLATED)
+   DP_OP_588J2_131_808/clk_r_REG367_S8/D
+                                0.90           0.95 f        -0.06  (VIOLATED)
+   clk_r_REG993_S3/D            0.85           0.91 r        -0.06  (VIOLATED)
+   DP_OP_586J2_129_808/clk_r_REG982_S5/D
+                                0.89           0.95 f        -0.06  (VIOLATED)
+   clk_r_REG137_S6/D            0.85           0.91 r        -0.06  (VIOLATED)
+   clk_r_REG227_S3/D            0.85           0.90 r        -0.06  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1637_S2/D
+                                0.86           0.91 r        -0.05  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG1041_S2/D
+                                0.85           0.90 r        -0.05  (VIOLATED)
+   clk_r_REG552_S12/D           0.85           0.90 r        -0.05  (VIOLATED)
+   clk_r_REG1505_S12/D          0.85           0.90 r        -0.05  (VIOLATED)
+   clk_r_REG1589_S12/D          0.85           0.90 r        -0.05  (VIOLATED)
+   clk_r_REG1679_S12/D          0.85           0.90 r        -0.05  (VIOLATED)
+   clk_r_REG1758_S12/D          0.85           0.90 r        -0.05  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG490_S2/D
+                                0.85           0.90 r        -0.05  (VIOLATED)
+   clk_r_REG404_S6/D            0.84           0.89 r        -0.05  (VIOLATED)
+   clk_r_REG161_S6/D            0.90           0.94 r        -0.04  (VIOLATED)
+   clk_r_REG81_S9/D             0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1945_S2/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG549_S12/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG551_S12/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG678_S6/D            0.85           0.89 r        -0.04  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG238_S2/D
+                                0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG825_S12/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG936_S6/D            0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG291_S12/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG283_S9/D            0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG311_S9/D            0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1116_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1202_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1304_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1389_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1486_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1569_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1660_S9/D           0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG448_S3/D            0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG726_S3/D            0.85           0.89 r        -0.04  (VIOLATED)
+   clk_r_REG1969_S2/D           0.85           0.88 r        -0.04  (VIOLATED)
+   clk_r_REG229_S3/D            0.84           0.88 r        -0.04  (VIOLATED)
+   clk_r_REG824_S12/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1521_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1586_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1603_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1676_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1692_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1755_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1099_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG1182_S9/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG827_S12/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG301_S12/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG823_S12/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG2123_S8/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG36_S12/D            0.85           0.88 r        -0.03  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1651_S2/D
+                                0.90           0.93 r        -0.03  (VIOLATED)
+   clk_r_REG2108_S5/D           0.85           0.88 r        -0.03  (VIOLATED)
+   DP_OP_594J2_137_808/clk_r_REG851_S11/D
+                                0.91           0.94 f        -0.03  (VIOLATED)
+   DP_OP_590J2_133_808/clk_r_REG923_S8/D
+                                0.90           0.93 f        -0.03  (VIOLATED)
+   clk_r_REG2807_S11/D          0.90           0.93 r        -0.03  (VIOLATED)
+   clk_r_REG2810_S9/D           0.90           0.93 f        -0.03  (VIOLATED)
+   clk_r_REG1957_S2/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG2045_S2/D           0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG421_S6/D            0.84           0.87 r        -0.03  (VIOLATED)
+   clk_r_REG2126_S11/D          0.85           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG151_S6/D            0.85           0.88 r        -0.03  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG262_S2/D
+                                0.86           0.88 r        -0.03  (VIOLATED)
+   clk_r_REG24_S9/D             0.85           0.87 r        -0.02  (VIOLATED)
+   DP_OP_589J2_132_808/clk_r_REG646_S8/D
+                                0.90           0.92 f        -0.02  (VIOLATED)
+   clk_r_REG625_S9/D            0.85           0.87 r        -0.02  (VIOLATED)
+   DP_OP_582J2_125_808/clk_r_REG798_S2/D
+                                0.86           0.88 r        -0.02  (VIOLATED)
+   clk_r_REG649_S6/D            0.85           0.87 r        -0.02  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG1636_S2/D
+                                0.89           0.91 r        -0.02  (VIOLATED)
+   DP_OP_587J2_130_808/clk_r_REG122_S8/D
+                                0.90           0.92 f        -0.02  (VIOLATED)
+   clk_r_REG811_S3/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG980_S3/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG984_S3/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1032_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1144_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1237_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1335_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG606_S9/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG182_S3/D            0.84           0.86 r        -0.02  (VIOLATED)
+   clk_r_REG531_S6/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG638_S6/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG708_S3/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1307_S12/D          0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1392_S12/D          0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1489_S12/D          0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1518_S6/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1600_S6/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1606_S12/D          0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1689_S6/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1695_S12/D          0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1774_S12/D          0.85           0.87 r        -0.02  (VIOLATED)
+   DP_OP_581J2_124_808/clk_r_REG774_S2/D
+                                0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG537_S9/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG566_S9/D            0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1382_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1422_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1479_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1515_S3/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1644_S9/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1721_S9/D           0.85           0.87 r        -0.02  (VIOLATED)
+   clk_r_REG1563_S3/D           0.85           0.86 r        -0.01  (VIOLATED)
+   DP_OP_579J2_122_808/clk_r_REG2_S2/D
+                                0.86           0.87 r        -0.01  (VIOLATED)
+   clk_r_REG2811_S3/D           0.85           0.86 r        -0.01  (VIOLATED)
+   clk_r_REG371_S6/D            0.84           0.85 r        -0.01  (VIOLATED)
+   clk_r_REG2090_S11/D          0.85           0.86 r        -0.01  (VIOLATED)
+   clk_r_REG852_S9/D            0.85           0.86 r        -0.01  (VIOLATED)
+   clk_r_REG2084_S5/D           0.85           0.86 r        -0.01  (VIOLATED)
+   DP_OP_580J2_123_808/clk_r_REG489_S2/D
+                                0.89           0.90 f        -0.01  (VIOLATED)
+   clk_r_REG49_S9/D             0.85           0.85 r        -0.01  (VIOLATED)
+   DP_OP_585J2_128_808/clk_r_REG707_S5/D
+                                0.88           0.88 r         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG2861_S13/D          0.89           0.90 r         0.00  (VIOLATED: increase significant digits)
+   DP_OP_588J2_131_808/clk_r_REG379_S8/D
+                                0.90           0.90 f         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG279_S6/D            0.84           0.84 r         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG2087_S8/D           0.85           0.85 r         0.00  (VIOLATED: increase significant digits)
+   DP_OP_582J2_125_808/clk_r_REG1040_S2/D
+                                0.89           0.89 f         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG2277_S1/D           0.81           0.81 r         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG2278_S1/D           0.81           0.81 r         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG2279_S1/D           0.81           0.81 r         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG2022_S5/D           0.89           0.89 f         0.00  (VIOLATED: increase significant digits)
+
+
+   max_area
+
+                             Required        Actual
+   Design                      Area           Area           Slack
+   -----------------------------------------------------------------
+   is_core_top_4x4              0.00       158030.41      -158030.41
+                                                                    (VIOLATED)
+
+
+1

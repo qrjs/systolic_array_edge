@@ -1,0 +1,30 @@
+ 
+****************************************
+Report : area
+Design : ws_core_top_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 20:27:08 2026
+****************************************
+
+Library(s) Used:
+
+    slow (File: /home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db)
+
+Number of ports:                         6496
+Number of nets:                         27711
+Number of cells:                        17692
+Number of combinational cells:          15130
+Number of sequential cells:              2497
+Number of macros/black boxes:               0
+Number of buf/inv:                       1524
+Number of references:                       1
+
+Combinational area:             165785.661573
+Buf/Inv area:                     4292.870513
+Noncombinational area:           38819.290144
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (No wire load specified)
+
+Total cell area:                204604.951717
+Total area:                 undefined
+1

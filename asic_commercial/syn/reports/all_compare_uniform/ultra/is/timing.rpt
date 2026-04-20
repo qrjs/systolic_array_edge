@@ -1,0 +1,57 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : is_core_top_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 20:38:37 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: flush (input port clocked by clk)
+  Endpoint: u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch
+            (rising edge-triggered flip-flop clocked by clk')
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.20       0.20 f
+  flush (in)                                              0.00       0.20 f
+  U7181/Y (INVX18)                                        0.01       0.21 r
+  U9734/Y (OAI21X8)                                       0.03       0.24 f
+  U9733/Y (NOR2X8)                                        0.05       0.30 r
+  U7066/Y (NAND2X8)                                       0.06       0.36 f
+  U6905/Y (INVX5)                                         0.05       0.41 r
+  U4000/Y (NOR2X4)                                        0.03       0.44 f
+  U6889/Y (AOI21X8)                                       0.06       0.50 r
+  U9851/Y (INVX4)                                         0.03       0.53 f
+  U7163/Y (OAI21X2)                                       0.07       0.60 r
+  u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_accumulator_reg/EN (SNPS_CLOCK_GATE_HIGH_is_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_PE_ID4_1)
+                                                          0.00       0.60 r
+  u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch/E (TLATNTSCAX2)
+                                                          0.00       0.60 r
+  data arrival time                                                  0.60
+
+  clock clk' (rise edge)                                  0.50       0.50
+  clock network delay (ideal)                             0.00       0.50
+  u_is_array/gen_row[1].gen_col[0].pe_inst/clk_gate_accumulator_reg/latch/CKcheckpin1 (TLATNTSCAX2)
+                                                          0.00       0.50 r
+  library setup time                                     -0.17       0.33
+  data required time                                                 0.33
+  --------------------------------------------------------------------------
+  data required time                                                 0.33
+  data arrival time                                                 -0.60
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -0.27
+
+
+1

@@ -1,0 +1,42 @@
+ 
+****************************************
+Report : constraint
+        -all_violators
+Design : dip_core_top_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 20:46:13 2026
+****************************************
+
+
+   max_delay/setup ('clk' group)
+
+                             Required        Actual
+   Endpoint                 Path Delay     Path Delay        Slack
+   -----------------------------------------------------------------
+   u_dip_array/gen_rows[1].gen_cols[0].u_dip_pe/clk_gate_stored_weight_reg/latch/E
+                                0.34           0.34 r         0.00  (VIOLATED: increase significant digits)
+   DP_OP_414J4_132_8326/clk_r_REG1107_S4/D
+                                0.90           0.90 f         0.00  (VIOLATED: increase significant digits)
+   DP_OP_407J4_125_8326/clk_r_REG788_S8/D
+                                0.90           0.90 r         0.00  (VIOLATED: increase significant digits)
+   DP_OP_413J4_131_8326/clk_r_REG2575_S3/D
+                                0.91           0.91 f         0.00  (VIOLATED: increase significant digits)
+   DP_OP_406J4_124_8326/clk_r_REG1232_S8/D
+                                0.90           0.90 f         0.00  (VIOLATED: increase significant digits)
+   DP_OP_412J4_130_8326/clk_r_REG163_S6/D
+                                0.89           0.89 f         0.00  (VIOLATED: increase significant digits)
+   clk_r_REG19_S8/D             0.90           0.90 f         0.00  (VIOLATED: increase significant digits)
+   DP_OP_412J4_130_8326/clk_r_REG146_S6/D
+                                0.89           0.89 r         0.00  (VIOLATED: increase significant digits)
+
+
+   max_area
+
+                             Required        Actual
+   Design                      Area           Area           Slack
+   -----------------------------------------------------------------
+   dip_core_top_4x4             0.00       184246.28      -184246.28
+                                                                    (VIOLATED)
+
+
+1

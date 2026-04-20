@@ -1,0 +1,139 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : dip_core_top_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 20 20:32:04 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/stored_weight_reg[9]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/stage2_psum_reg[31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/stored_weight_reg[9]/CK (DFFRHQX2)
+                                                          0.00 #     0.00 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/stored_weight_reg[9]/Q (DFFRHQX2)
+                                                          0.16       0.16 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/B[9] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW02_mult_0)
+                                                          0.00       0.16 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/U60/Y (INVX4)
+                                                          0.06       0.22 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/U116/Y (NOR2X1)
+                                                          0.12       0.34 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S0_9/S (ADDFHX2)
+                                                          0.20       0.54 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_2_8/S (ADDFHX4)
+                                                          0.16       0.70 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_3_7/CO (ADDFHX4)
+                                                          0.16       0.87 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_4_7/CO (ADDFHX4)
+                                                          0.16       1.03 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_5_7/CO (ADDFHX4)
+                                                          0.16       1.20 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_6_7/CO (ADDFHX4)
+                                                          0.16       1.36 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_7_7/CO (ADDFHX4)
+                                                          0.16       1.53 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_8_7/CO (ADDFHX4)
+                                                          0.16       1.69 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_9_7/CO (ADDFHX4)
+                                                          0.15       1.84 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_10_7/CO (ADDFHX2)
+                                                          0.15       1.99 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_11_7/S (ADDFX1)
+                                                          0.28       2.27 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_12_6/S (ADDFHX2)
+                                                          0.16       2.43 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_13_5/S (ADDFHX2)
+                                                          0.15       2.58 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S2_14_4/S (ADDFHX2)
+                                                          0.16       2.73 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/S4_3/S (ADDFHX4)
+                                                          0.15       2.88 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/U41/Y (XNOR2X4)
+                                                          0.09       2.97 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/FS_1/A[16] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW01_add_1)
+                                                          0.00       2.97 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/FS_1/U2/Y (AND2X6)
+                                                          0.09       3.06 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/FS_1/U28/Y (NOR2X4)
+                                                          0.04       3.10 r
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/FS_1/U33/Y (XOR2X3)
+                                                          0.09       3.19 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/FS_1/SUM[16] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW01_add_1)
+                                                          0.00       3.19 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_65/PRODUCT[18] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW02_mult_0)
+                                                          0.00       3.19 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_add_65_aco/A[18] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW02_mult_1)
+                                                          0.00       3.19 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_add_65_aco/U20/Y (AND2X6)
+                                                          0.09       3.27 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/mult_add_65_aco/PRODUCT[18] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW02_mult_1)
+                                                          0.00       3.27 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/B[18] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW01_add_0)
+                                                          0.00       3.27 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_18/CO (ADDFHX4)
+                                                          0.14       3.41 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_19/CO (ADDFHX4)
+                                                          0.11       3.52 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_20/CO (ADDFHX4)
+                                                          0.11       3.63 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_21/CO (ADDFHX4)
+                                                          0.11       3.73 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_22/CO (ADDFHX4)
+                                                          0.11       3.84 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_23/CO (ADDFHX4)
+                                                          0.11       3.95 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_24/CO (ADDFHX4)
+                                                          0.11       4.06 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_25/CO (ADDFHX4)
+                                                          0.11       4.16 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_26/CO (ADDFHX4)
+                                                          0.11       4.27 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_27/CO (ADDFHX4)
+                                                          0.11       4.38 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_28/CO (ADDFHX4)
+                                                          0.11       4.48 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_29/CO (ADDFHX4)
+                                                          0.11       4.59 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U1_30/CO (ADDFHX4)
+                                                          0.10       4.69 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/U2/Y (XNOR3X2)
+                                                          0.09       4.78 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/add_65_aco/SUM[31] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW01_add_0)
+                                                          0.00       4.78 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/U4/Y (AO22X4)
+                                                          0.13       4.91 f
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/stage2_psum_reg[31]/D (DFFRHQX2)
+                                                          0.00       4.91 f
+  data arrival time                                                  4.91
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  u_dip_array/gen_rows[3].gen_cols[1].u_dip_pe/stage2_psum_reg[31]/CK (DFFRHQX2)
+                                                          0.00       5.00 r
+  library setup time                                     -0.09       4.91
+  data required time                                                 4.91
+  --------------------------------------------------------------------------
+  data required time                                                 4.91
+  data arrival time                                                 -4.91
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1
