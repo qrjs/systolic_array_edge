@@ -10,9 +10,9 @@
 #   ARCH_LIST       Space/comma-separated list. Default: "ws is os dip"
 #   RUN_MODE        base | ultra | compare. Default: base
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
-#   LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
-#   TARGET_LIBRARY  Default: slow.db
-#   LINK_LIBRARY    Default: "* slow.db"
+#   DC_LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
+#   DC_TARGET_LIBRARY  Default: slow.db
+#   DC_LINK_LIBRARY    Default: "* slow.db"
 #   CLK_PERIOD      Shared fallback period in ns for uniform constraints.
 #   BASE_CLK_PERIOD Default: 5.0
 #   ULTRA_CLK_PERIOD Default: 1.0
@@ -30,9 +30,9 @@ proc env_or_default {name default_value} {
 }
 
 proc configure_libraries {} {
-    set lib_search_path [env_or_default LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
-    set target_library_raw [env_or_default TARGET_LIBRARY "slow.db"]
-    set link_library_raw [env_or_default LINK_LIBRARY "* slow.db"]
+    set lib_search_path [env_or_default DC_LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
+    set target_library_raw [env_or_default DC_TARGET_LIBRARY "slow.db"]
+    set link_library_raw [env_or_default DC_LINK_LIBRARY "* slow.db"]
 
     set current_search_path [get_app_var search_path]
     if {[lsearch -exact $current_search_path $lib_search_path] < 0} {
@@ -46,6 +46,10 @@ proc configure_libraries {} {
     puts "  LIB_SEARCH_PATH = $lib_search_path"
     puts "  TARGET_LIBRARY  = $target_library_raw"
     puts "  LINK_LIBRARY    = $link_library_raw"
+
+    if {[regexp {your_library\.db} $target_library_raw] || [regexp {your_library\.db} $link_library_raw]} {
+        error "Refusing to run with placeholder library name 'your_library.db'. Check your environment overrides."
+    }
 }
 
 proc split_arch_list {raw_arch_list} {
@@ -372,9 +376,9 @@ switch -- $RUN_MODE {
 set RUN_TAG [env_or_default RUN_TAG "all_${RUN_MODE}_${CONSTRAINT_MODE}"]
 
 if {$DRY_RUN eq "1"} {
-    set dryrun_lib_search_path [env_or_default LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
-    set dryrun_target_library [env_or_default TARGET_LIBRARY "slow.db"]
-    set dryrun_link_library [env_or_default LINK_LIBRARY {* slow.db}]
+    set dryrun_lib_search_path [env_or_default DC_LIB_SEARCH_PATH "/home/ic_libs/TSMC.90/aci/sc-x/synopsys"]
+    set dryrun_target_library [env_or_default DC_TARGET_LIBRARY "slow.db"]
+    set dryrun_link_library [env_or_default DC_LINK_LIBRARY {* slow.db}]
     puts "DRY_RUN enabled. Parsed configuration:"
     puts "  REPO_ROOT       = $REPO_ROOT"
     puts "  ARCH_LIST       = $ARCH_LIST"
@@ -384,6 +388,9 @@ if {$DRY_RUN eq "1"} {
     puts "  LIB_SEARCH_PATH = $dryrun_lib_search_path"
     puts "  TARGET_LIBRARY  = $dryrun_target_library"
     puts "  LINK_LIBRARY    = $dryrun_link_library"
+    if {[info exists ::env(TARGET_LIBRARY)] || [info exists ::env(LINK_LIBRARY)] || [info exists ::env(LIB_SEARCH_PATH)]} {
+        puts "  NOTE            = Generic LIB_SEARCH_PATH/TARGET_LIBRARY/LINK_LIBRARY env vars are ignored by this script."
+    }
     puts "  RUN_TAG         = $RUN_TAG"
     foreach actual_run_mode $ACTIVE_RUN_MODES {
         puts "  ${actual_run_mode}_clk_period = [resolve_clk_period $actual_run_mode]"
