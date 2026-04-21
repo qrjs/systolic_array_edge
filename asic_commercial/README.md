@@ -121,6 +121,11 @@ Outputs:
 - `asic_commercial/syn/reports/<RUN_TAG>/summary.csv`
 - `asic_commercial/syn/reports/<RUN_TAG>/summary.md`
 
+The merged summary now also records:
+
+- `selected_profile`: the actual DiP gated profile chosen during `gated_auto`
+- `gating_cells`, `gated_regs`, `gated_reg_ratio`: parsed clock-gating insertion stats
+
 The default `CONSTRAINT_MODE=uniform` is recommended when you want an apples-to-apples
 comparison of area, power, and timing across architectures.
 
@@ -140,6 +145,10 @@ the compile strategy per architecture:
 
 This is useful for side-by-side comparisons such as `dip` with clock gating
 versus `ws/is/os` at normal synthesis under the same `200 MHz` target.
+
+For thesis-style apples-to-apples dataflow comparisons, prefer a pure `base`
+tag for all four architectures and keep `mixed` results for DiP ablation or
+engineering-best appendices. See `../docs/论文综合实验口径说明_CN.md`.
 
 For `dip`, the default `DIP_COMPILE_PROFILE=gated_auto` benchmarks `gated_area`
 and `gated_ultra_area` at the same constraint point, then prefers:

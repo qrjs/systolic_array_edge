@@ -115,6 +115,7 @@ make run ARCH=ws
 - `docs/功能覆盖率使用说明_CN.md:1`
 - `docs/数据流资料对照与前端实现评审_CN.md:1`
 - `docs/边缘优化实践与实现说明_CN.md:1`
+- `docs/论文综合实验口径说明_CN.md:1`
 - `docs/论文大纲_面向边缘计算脉动阵列_CN.md:1`
 - `docs/ASIC前端完成清单_CN.md:1`
 

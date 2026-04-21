@@ -235,6 +235,42 @@ proc parse_black_box_flag {path} {
     return "no"
 }
 
+proc format_percent_ratio {value} {
+    if {![string is double -strict $value]} {
+        return "NA"
+    }
+
+    if {[expr {abs($value - round($value))}] < 1.0e-9} {
+        return [format "%.0f%%" $value]
+    }
+    return [format "%.2f%%" $value]
+}
+
+proc parse_gating_report {path} {
+    set default_dict [dict create gating_cells "NA" gated_regs "NA" gated_reg_ratio "NA"]
+    if {![file exists $path]} {
+        return $default_dict
+    }
+
+    set text [read_text_file $path]
+    set gating_cells "NA"
+    set gated_regs "NA"
+    set gated_reg_ratio "NA"
+
+    if {[regexp {Number of Clock gating elements\s+\|\s+([0-9]+)} $text -> gating_cells_value]} {
+        set gating_cells $gating_cells_value
+    }
+    if {[regexp {Number of Gated registers\s+\|\s+([0-9]+)\s+\(([0-9.]+)%\)} $text -> gated_regs_value gated_ratio_value]} {
+        set gated_regs $gated_regs_value
+        set gated_reg_ratio [format_percent_ratio $gated_ratio_value]
+    }
+
+    return [dict create \
+        gating_cells $gating_cells \
+        gated_regs $gated_regs \
+        gated_reg_ratio $gated_reg_ratio]
+}
+
 proc apply_uniform_constraints {clk_name clk_period} {
     create_clock -name $clk_name -period $clk_period [get_ports $clk_name]
     set_ideal_network [get_ports $clk_name]
@@ -378,7 +414,7 @@ proc run_dip_gated_profile {top_name rtl_files arch_report_dir check_path constr
     if {$dip_compile_profile ne "gated_auto"} {
         load_arch_design $top_name $rtl_files $check_path $constraint_mode $sdc_path $clk_period
         compile_dip_gated_candidate $dip_compile_profile [file join $arch_report_dir gating_check.rpt]
-        return
+        return $dip_compile_profile
     }
 
     set candidate_profiles {gated_area gated_ultra_area}
@@ -434,6 +470,7 @@ proc run_dip_gated_profile {top_name rtl_files arch_report_dir check_path constr
     puts "Selected DIP compile profile: $best_profile (timing=$best_timing area=$best_area dynamic=$best_dynamic)"
     load_arch_design $top_name $rtl_files $check_path $constraint_mode $sdc_path $clk_period
     compile_dip_gated_candidate $best_profile [file join $arch_report_dir gating_check.rpt]
+    return $best_profile
 }
 
 proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constraint_mode clk_period result_group} {
@@ -458,6 +495,8 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
     set gate_path       [file join $arch_report_dir gating_check.rpt]
     set netlist_path    [file join $mapped_root $result_group "${arch_name}_netlist.v"]
     set out_sdc_path    [file join $mapped_root $result_group "${arch_name}_constraints.sdc"]
+    set selected_profile "NA"
+    set gating_dict [dict create gating_cells "NA" gated_regs "NA" gated_reg_ratio "NA"]
 
     puts "===================================================================="
     puts "  Running $arch_name"
@@ -468,14 +507,14 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
     puts "===================================================================="
 
     if {$run_mode eq "gated" && $arch_name eq "dip"} {
-        run_dip_gated_profile \
+        set selected_profile [run_dip_gated_profile \
             $top_name \
             $rtl_files \
             $arch_report_dir \
             $check_path \
             $constraint_mode \
             [dict get $cfg sdc] \
-            $clk_period
+            $clk_period]
     } else {
         load_arch_design $top_name $rtl_files $check_path $constraint_mode [dict get $cfg sdc] $clk_period
 
@@ -511,11 +550,15 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
     set power_dict [parse_power_report $power_path]
     set timing_dict [parse_timing_report $timing_path]
     set has_black_box [parse_black_box_flag $area_path]
+    if {$run_mode eq "ultra" || ($run_mode eq "gated" && $arch_name eq "dip")} {
+        set gating_dict [parse_gating_report $gate_path]
+    }
 
     return [dict create \
         arch $arch_name \
         top $top_name \
         run_mode $run_mode \
+        selected_profile $selected_profile \
         constraint_mode $constraint_mode \
         clk_period_ns $clk_period \
         area $area \
@@ -523,7 +566,10 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
         leakage_mw [dict get $power_dict leakage_mw] \
         slack_ns [dict get $timing_dict slack_ns] \
         timing_status [dict get $timing_dict timing_status] \
-        black_box $has_black_box]
+        black_box $has_black_box \
+        gating_cells [dict get $gating_dict gating_cells] \
+        gated_regs [dict get $gating_dict gated_regs] \
+        gated_reg_ratio [dict get $gating_dict gated_reg_ratio]]
 }
 
 proc write_summary_files {report_root run_tag summary_rows} {
@@ -534,12 +580,13 @@ proc write_summary_files {report_root run_tag summary_rows} {
     set md_path  [file join $summary_dir summary.md]
 
     set csv_fh [open $csv_path w]
-    puts $csv_fh "arch,top,run_mode,constraint_mode,clk_period_ns,area,dynamic_mw,leakage_mw,slack_ns,timing_status,black_box"
+    puts $csv_fh "arch,top,run_mode,selected_profile,constraint_mode,clk_period_ns,area,dynamic_mw,leakage_mw,slack_ns,timing_status,black_box,gating_cells,gated_regs,gated_reg_ratio"
     foreach row $summary_rows {
         puts $csv_fh [join [list \
             [dict get $row arch] \
             [dict get $row top] \
             [dict get $row run_mode] \
+            [dict get $row selected_profile] \
             [dict get $row constraint_mode] \
             [dict get $row clk_period_ns] \
             [dict get $row area] \
@@ -547,20 +594,24 @@ proc write_summary_files {report_root run_tag summary_rows} {
             [dict get $row leakage_mw] \
             [dict get $row slack_ns] \
             [dict get $row timing_status] \
-            [dict get $row black_box]] ","]
+            [dict get $row black_box] \
+            [dict get $row gating_cells] \
+            [dict get $row gated_regs] \
+            [dict get $row gated_reg_ratio]] ","]
     }
     close $csv_fh
 
     set md_fh [open $md_path w]
     puts $md_fh "# Synthesis Summary"
     puts $md_fh ""
-    puts $md_fh "| Arch | Top | Mode | Constraint | Clk (ns) | Area | Dynamic (mW) | Leakage (mW) | Slack (ns) | Timing | Black Box |"
-    puts $md_fh "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |"
+    puts $md_fh "| Arch | Top | Mode | Selected Profile | Constraint | Clk (ns) | Area | Dynamic (mW) | Leakage (mW) | Slack (ns) | Timing | Black Box | Gating Cells | Gated Regs | Gated Ratio |"
+    puts $md_fh "| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | ---: | --- |"
     foreach row $summary_rows {
-        puts $md_fh [format "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |" \
+        puts $md_fh [format "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |" \
             [dict get $row arch] \
             [dict get $row top] \
             [dict get $row run_mode] \
+            [dict get $row selected_profile] \
             [dict get $row constraint_mode] \
             [dict get $row clk_period_ns] \
             [dict get $row area] \
@@ -568,7 +619,10 @@ proc write_summary_files {report_root run_tag summary_rows} {
             [dict get $row leakage_mw] \
             [dict get $row slack_ns] \
             [dict get $row timing_status] \
-            [dict get $row black_box]]
+            [dict get $row black_box] \
+            [dict get $row gating_cells] \
+            [dict get $row gated_regs] \
+            [dict get $row gated_reg_ratio]]
     }
     close $md_fh
 
