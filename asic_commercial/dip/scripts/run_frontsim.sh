@@ -21,6 +21,7 @@ compile_cmd=(
     "$VCS_BIN"
     -full64
     -sverilog
+    +define+TB_SKIP_SDF_ANNOTATE
     "+incdir+${REPO_ROOT}"
     -timescale=1ns/1ps
     -debug_access+all

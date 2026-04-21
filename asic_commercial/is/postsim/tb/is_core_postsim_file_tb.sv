@@ -74,11 +74,13 @@ module is_core_postsim_file_tb;
     end
 
     initial begin
+`ifndef TB_SKIP_SDF_ANNOTATE
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
                 $sdf_annotate(sdf_path, dut, , , "MAXIMUM");
             end
         end
+`endif
         if ($value$plusargs("VCD=%s", vcd_path)) begin
             if (vcd_path != "") begin
                 $dumpfile(vcd_path);

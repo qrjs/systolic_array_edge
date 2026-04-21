@@ -49,11 +49,13 @@ module os_core_postsim_selftest_tb;
     always #5 clk = ~clk;
 
     initial begin
+`ifndef TB_SKIP_SDF_ANNOTATE
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
                 $sdf_annotate(sdf_path, dut, , , "MAXIMUM");
             end
         end
+`endif
     end
 
     initial begin
