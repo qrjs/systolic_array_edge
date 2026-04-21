@@ -32,10 +32,10 @@ module is_core_postsim_file_tb;
     integer launch_cycle;
     integer done_cycle;
     integer case_cycles;
-    string input_path;
-    string expected_path;
-    string sdf_path;
-    string vcd_path;
+    string input_path = "";
+    string expected_path = "";
+    string sdf_path = "";
+    string vcd_path = "";
     bit soft_fail_mode;
 
     reg signed [DATA_WIDTH-1:0] a_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];

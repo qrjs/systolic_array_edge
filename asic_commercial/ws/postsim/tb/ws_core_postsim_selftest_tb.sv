@@ -27,7 +27,7 @@ module ws_core_postsim_selftest_tb;
     integer i;
     integer failures;
     integer timeout;
-    string sdf_path;
+    string sdf_path = "";
 
     ws_core_top_4x4 dut (
         .clk(clk),

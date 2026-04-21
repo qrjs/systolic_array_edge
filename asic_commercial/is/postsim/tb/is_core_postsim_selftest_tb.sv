@@ -26,7 +26,7 @@ module is_core_postsim_selftest_tb;
 
     integer i;
     integer failures;
-    string sdf_path;
+    string sdf_path = "";
 
     is_core_top_4x4 dut (
         .clk(clk),

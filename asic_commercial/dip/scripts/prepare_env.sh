@@ -52,10 +52,13 @@ resolve_repo_or_flow_path() {
 
 split_path_list() {
     local raw="${1:-}"
-    local -n out_ref="$2"
-    out_ref=()
+    local out_name="$2"
+    eval "$out_name=()"
     [[ -z "$raw" ]] && return 0
-    read -r -a out_ref <<<"$raw"
+    local item
+    for item in $raw; do
+        eval "$out_name+=(\"\$item\")"
+    done
 }
 
 choose_netlist() {
