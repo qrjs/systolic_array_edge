@@ -5,13 +5,13 @@
 #   dc_shell -f asic_commercial/syn/scripts/run.tcl
 #   ARCH_LIST="ws dip" RUN_MODE=ultra CLK_PERIOD=1.0 \
 #       dc_shell -f asic_commercial/syn/scripts/run.tcl
-#   RUN_MODE=mixed ULTRA_ARCH_LIST=dip CLK_PERIOD=5.0 \
+#   RUN_MODE=mixed GATED_ARCH_LIST=dip CLK_PERIOD=5.0 \
 #       dc_shell -f asic_commercial/syn/scripts/run.tcl
 #
 # Environment variables:
 #   ARCH_LIST       Space/comma-separated list. Default: "ws is os dip"
 #   RUN_MODE        base | ultra | compare | mixed. Default: base
-#   ULTRA_ARCH_LIST Only used by mixed mode. Default: dip
+#   GATED_ARCH_LIST Only used by mixed mode. Default: dip
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
 #   DC_LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
 #   DC_TARGET_LIBRARY  Default: slow.db
@@ -241,10 +241,10 @@ proc resolve_clk_period {actual_run_mode} {
     error "Unsupported run mode '$actual_run_mode' for clock-period resolution"
 }
 
-proc resolve_arch_run_mode {global_run_mode ultra_arch_list arch_name} {
+proc resolve_arch_run_mode {global_run_mode gated_arch_list arch_name} {
     if {$global_run_mode eq "mixed"} {
-        if {[lsearch -exact $ultra_arch_list $arch_name] >= 0} {
-            return "ultra"
+        if {[lsearch -exact $gated_arch_list $arch_name] >= 0} {
+            return "gated"
         }
         return "base"
     }
@@ -307,10 +307,17 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
         set_max_area 0
         compile_ultra -gate_clock -retime -timing_high_effort_script
         report_clock_gating > $gate_path
+    } elseif {$run_mode eq "gated"} {
+        set_clock_gating_style -minimum_bitwidth 4 \
+                               -positive_edge_logic {integrated} \
+                               -control_point before
+        insert_clock_gating
+        compile
+        report_clock_gating > $gate_path
     } elseif {$run_mode eq "base"} {
         compile
     } else {
-        error "Unsupported RUN_MODE '$run_mode' (expected base or ultra)"
+        error "Unsupported RUN_MODE '$run_mode' (expected base, gated, or ultra)"
     }
 
     report_qor > $qor_path
@@ -397,7 +404,7 @@ set SYN_ROOT         [file normalize [file join $SCRIPT_DIR ..]]
 set REPO_ROOT        [file normalize [file join $SCRIPT_DIR .. .. ..]]
 set ARCH_LIST        [split_arch_list [env_or_default ARCH_LIST "ws is os dip"]]
 set RUN_MODE         [string tolower [env_or_default RUN_MODE "base"]]
-set ULTRA_ARCH_LIST  [split_arch_list [env_or_default ULTRA_ARCH_LIST [expr {$RUN_MODE eq "mixed" ? "dip" : ""}]]]
+set GATED_ARCH_LIST  [split_arch_list [env_or_default GATED_ARCH_LIST [expr {$RUN_MODE eq "mixed" ? "dip" : ""}]]]
 set CONSTRAINT_MODE  [string tolower [env_or_default CONSTRAINT_MODE "uniform"]]
 set REPORT_ROOT      [file normalize [env_or_default REPORT_ROOT [file join $SYN_ROOT reports]]]
 set MAPPED_ROOT      [file normalize [env_or_default MAPPED_ROOT [file join $SYN_ROOT mapped]]]
@@ -430,7 +437,7 @@ if {$DRY_RUN eq "1"} {
     puts "  ARCH_LIST       = $ARCH_LIST"
     puts "  RUN_MODE        = $RUN_MODE"
     if {$RUN_MODE eq "mixed"} {
-        puts "  ULTRA_ARCH_LIST = $ULTRA_ARCH_LIST"
+        puts "  GATED_ARCH_LIST = $GATED_ARCH_LIST"
     }
     puts "  ACTIVE_MODES    = $ACTIVE_RUN_MODES"
     puts "  CONSTRAINT_MODE = $CONSTRAINT_MODE"
@@ -446,7 +453,7 @@ if {$DRY_RUN eq "1"} {
     }
     foreach arch_name $ARCH_LIST {
         set cfg [arch_config $REPO_ROOT $arch_name]
-        set arch_run_mode [resolve_arch_run_mode $RUN_MODE $ULTRA_ARCH_LIST $arch_name]
+        set arch_run_mode [resolve_arch_run_mode $RUN_MODE $GATED_ARCH_LIST $arch_name]
         puts "  $arch_name => top=[dict get $cfg top], filelist=[dict get $cfg filelist], synth_mode=$arch_run_mode"
     }
     exit 0
@@ -465,7 +472,7 @@ foreach actual_run_mode $ACTIVE_RUN_MODES {
     }
 
     foreach arch_name $ARCH_LIST {
-        set arch_run_mode [resolve_arch_run_mode $RUN_MODE $ULTRA_ARCH_LIST $arch_name]
+        set arch_run_mode [resolve_arch_run_mode $RUN_MODE $GATED_ARCH_LIST $arch_name]
         lappend summary_rows [run_one_arch \
             $REPO_ROOT \
             $REPORT_ROOT \

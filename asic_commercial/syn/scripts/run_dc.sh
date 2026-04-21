@@ -22,7 +22,7 @@ Environment overrides:
   BASE_CLK_PERIOD=<ns>
   ULTRA_CLK_PERIOD=<ns>
   CLK_PERIOD=<ns>          # shared fallback for both modes
-  ULTRA_ARCH_LIST=<archs>  # mixed mode only, default: dip
+  GATED_ARCH_LIST=<archs>  # mixed mode only, default: dip
 EOF
 }
 
@@ -54,8 +54,8 @@ if [[ $# -gt 0 ]]; then
     export ARCH_LIST="$*"
 fi
 export RUN_MODE="$run_mode"
-if [[ "$run_mode" == "mixed" && -z "${ULTRA_ARCH_LIST:-}" ]]; then
-    export ULTRA_ARCH_LIST="dip"
+if [[ "$run_mode" == "mixed" && -z "${GATED_ARCH_LIST:-}" ]]; then
+    export GATED_ARCH_LIST="dip"
 fi
 
 if [[ "$dry_run" == "1" || "${DRY_RUN:-0}" == "1" ]]; then
