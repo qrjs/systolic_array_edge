@@ -15,7 +15,12 @@ split_path_list "${SIM_LIBRARY_VERILOG:-}" sim_libs
 extra_libs=()
 split_path_list "${ADDITIONAL_SIM_VERILOGS:-}" extra_libs
 
-for item in "${sim_libs[@]}" "${extra_libs[@]}"; do
+for item in "${sim_libs[@]-}"; do
+    [[ -z "$item" ]] && continue
+    compile_cmd+=("$(resolve_path "$item")")
+done
+
+for item in "${extra_libs[@]-}"; do
     [[ -z "$item" ]] && continue
     compile_cmd+=("$(resolve_path "$item")")
 done
