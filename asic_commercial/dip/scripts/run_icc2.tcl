@@ -13,6 +13,11 @@ set ref_libs [split [require_env ICC2_REFERENCE_LIBS]]
 set input_netlist [require_env ICC2_INPUT_NETLIST]
 set sdc_file [require_env SDC_FILE]
 
+puts "ICC2 setup:"
+puts "  design_lib = $design_lib"
+puts "  tech_file  = $tech_file"
+puts "  ref_libs   = $ref_libs"
+
 if {($step eq "all" || $step eq "init") && (![file exists $design_lib] || [require_env ICC2_OVERWRITE_LIB] eq "1")} {
     file delete -force $design_lib
     create_lib $design_lib -technology $tech_file -ref_libs $ref_libs
@@ -73,4 +78,3 @@ if {$step eq "all" || $step eq "export"} {
 }
 
 quit
-

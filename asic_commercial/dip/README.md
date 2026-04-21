@@ -44,8 +44,22 @@ cp config/libs.example.env config/libs.env
 - `SIM_LIBRARY_VERILOG`
 - `ICC2_TECH_FILE`
 - `ICC2_REFERENCE_LIBS`
-- `CALIBRE_DRC_RUNSET`
-- `CALIBRE_LVS_RUNSET`
+- `GDS_STREAM_OUT_MAP`
+- `VIRTUOSO_TECH_LIB`
+
+当前仓库对你这台 `TSMC.90/sc-x` 服务器的默认假设是：
+
+- `TARGET_LIBRARY=/home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db`
+- `SIM_LIBRARY_VERILOG=/home/ic_libs/TSMC.90/aci/sc-x/verilog/tsmc090.v`
+- `ICC2_TECH_FILE=/home/ic_libs/TSMC.90/aci/sc-x/astro/tf/tsmc090_6lm_1thick.tf`
+- `ICC2_REFERENCE_LIBS=/home/ic_libs/TSMC.90/aci/sc-x/astro/tsmc090g_fram`
+- `GDS_STREAM_OUT_MAP=/home/ic_libs/TSMC.90/aci/sc-x/astro/gds2OutLayer.map`
+- `VIRTUOSO_TECH_LIB=tsmc090`
+
+注意：
+
+- 这台机器没有 `NDM` 和库转换工具，因此 `ICC2` 先走 `probe` 探测
+- 如果 `probe` 失败，说明当前库格式与现有 `ICC2` 流不兼容，本轮流程就应停在 `DC / FM / postsim`
 
 然后按顺序检查：
 
@@ -116,6 +130,14 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 
 ### 4. ICC2 布局布线
 
+先做一次最小探测：
+
+```bash
+./scripts/run_icc2_probe.sh
+```
+
+只有 `probe` 成功后，再进入正式布局布线。
+
 完整流程：
 
 ```bash
@@ -139,6 +161,22 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 - `results/icc2/dip_core_top_4x4.def`
 - `results/icc2/dip_core_top_4x4.gds`
 
+推荐的最小后端路径是：
+
+```bash
+./scripts/run_frontsim.sh
+./scripts/run_dc.sh
+./scripts/run_fm.sh
+POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh
+./scripts/run_icc2_probe.sh
+./scripts/run_icc2.sh all
+POSTSIM_NETLIST_MODE=icc2 POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
+FM_IMPLEMENTATION_MODE=icc2 ./scripts/run_fm.sh
+VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
+```
+
+如果你这轮明确不做 `Calibre` 和独立 `STA`，那上面这条就是正式流程终点。
+
 ### 5. 打开 ICC2 GUI
 
 ```bash
@@ -152,6 +190,14 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 ```bash
 VIRTUOSO_TECH_LIB=<oa_tech_lib_name> ./scripts/run_virtuoso_layout.sh
 ```
+
+对当前这台服务器，建议先直接试：
+
+```bash
+VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
+```
+
+如果 `strmin` 拒绝 `tsmc090` 这个 tech lib 名字，就保留 `results/icc2/*.gds` 作为正式交付，再改为手工 attach 工艺库的方式打开版图。
 
 默认会：
 

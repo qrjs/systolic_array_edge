@@ -68,6 +68,9 @@ check_icc2() {
     check_path "ICC2_TECH_FILE" "$(resolve_path "${ICC2_TECH_FILE:-}")"
     check_lib_list "ICC2_REFERENCE_LIBS" "${ICC2_REFERENCE_LIBS:-}"
     check_path "ICC2 input netlist" "$ICC2_INPUT_NETLIST"
+    if [[ -n "${GDS_STREAM_OUT_MAP:-}" ]]; then
+        check_path "GDS_STREAM_OUT_MAP" "$(resolve_path "$GDS_STREAM_OUT_MAP")"
+    fi
     if [[ -n "${TLUPLUS_MAX:-}" ]]; then check_path "TLUPLUS_MAX" "$(resolve_path "$TLUPLUS_MAX")"; fi
     if [[ -n "${TLUPLUS_MIN:-}" ]]; then check_path "TLUPLUS_MIN" "$(resolve_path "$TLUPLUS_MIN")"; fi
     if [[ -n "${TLUPLUS_MAP:-}" ]]; then check_path "TLUPLUS_MAP" "$(resolve_path "$TLUPLUS_MAP")"; fi

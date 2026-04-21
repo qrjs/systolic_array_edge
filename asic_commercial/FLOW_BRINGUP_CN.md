@@ -84,9 +84,10 @@
 
 注意：
 
-- 当前脚本默认 `ICC2_REFERENCE_LIBS` 期望是 `*.ndm`
-- 如果你手上只有 `OA` 库，未必能直接喂给当前脚本
-- 这时通常还需要库提供的 `NDM`，或者后续再把脚本改成建库流程
+- 当前仓库原始脚本默认更偏向 `*.ndm`
+- 但你这台 `TSMC.90/sc-x` 服务器没有 `NDM`，只有 `astro/FRAM + tech.tf`
+- 因此当前接入方式改成：先用 `run_icc2_probe.sh` 探测 `ICC2` 能不能直接接受 `astro/tsmc090g_fram`
+- 如果 `probe` 失败，本轮流程正式停在 `DC / FM / postsim`，不强行继续 `ICC2`
 
 ### 2.4 Calibre 需要
 
@@ -185,8 +186,6 @@ cp config/libs.example.env config/libs.env
 ./scripts/check_backend_inputs.sh fm
 ./scripts/check_backend_inputs.sh postsim
 ./scripts/check_backend_inputs.sh icc2
-./scripts/check_backend_inputs.sh calibre_drc
-./scripts/check_backend_inputs.sh calibre_lvs
 ```
 
 说明：
@@ -196,20 +195,27 @@ cp config/libs.example.env config/libs.env
 
 ## 6. 推荐执行顺序
 
-下面是单套 flow 的推荐顺序：
+下面是单套 flow 的推荐顺序。
+
+如果你这轮不做 `Calibre DRC/LVS`，也不做独立 `STA`，推荐路径改成：
 
 ```bash
 ./scripts/check_handoff.sh
 ./scripts/check_backend_inputs.sh dc
 ./scripts/run_dc.sh
 ./scripts/run_fm.sh
-./scripts/run_postsim.sh
+POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh
+./scripts/run_icc2_probe.sh
 ./scripts/run_icc2.sh all
-POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
+POSTSIM_NETLIST_MODE=icc2 POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 FM_IMPLEMENTATION_MODE=icc2 ./scripts/run_fm.sh
-./scripts/run_calibre_drc.sh
-./scripts/run_calibre_lvs.sh
+VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
 ```
+
+如果 `run_icc2_probe.sh` 失败：
+
+- 把本轮正式流程定义为截止到 `POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh`
+- `ICC2 / Virtuoso` 标记为“待库格式适配”
 
 如果只是先验证后仿环境有没有齐：
 
