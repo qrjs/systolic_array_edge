@@ -1,0 +1,34 @@
+ 
+****************************************
+Report : area
+Design : dip_core_top_4x4
+Version: O-2018.06-SP1
+Date   : Tue Apr 21 19:52:59 2026
+****************************************
+
+Information: Updating design information... (UID-85)
+Warning: Design 'dip_core_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Warning: A non-unate path in clock network for clock 'clk'
+ from pin 'clk_gate_u_dip_array/gen_rows[2].gen_cols[3].u_dip_pe/psum_out_reg_reg/latch/CKcheckpin1' is detected. (TIM-052)
+Library(s) Used:
+
+    slow (File: /home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db)
+
+Number of ports:                          298
+Number of nets:                         14022
+Number of cells:                        11894
+Number of combinational cells:          10688
+Number of sequential cells:              1198
+Number of macros/black boxes:               0
+Number of buf/inv:                       1015
+Number of references:                      88
+
+Combinational area:              71717.890417
+Buf/Inv area:                     2188.065671
+Noncombinational area:           18558.691241
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (No wire load specified)
+
+Total cell area:                 90276.581658
+Total area:                 undefined
+1
