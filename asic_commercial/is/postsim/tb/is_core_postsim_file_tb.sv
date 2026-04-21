@@ -74,8 +74,6 @@ module is_core_postsim_file_tb;
     end
 
     initial begin
-        sdf_path = "";
-        vcd_path = "";
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
                 $sdf_annotate(sdf_path, dut, , , "MAXIMUM");

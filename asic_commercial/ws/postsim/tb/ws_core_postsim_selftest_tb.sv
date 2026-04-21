@@ -52,7 +52,6 @@ module ws_core_postsim_selftest_tb;
     always #5 clk = ~clk;
 
     initial begin
-        sdf_path = "";
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
                 $sdf_annotate(sdf_path, dut, , , "MAXIMUM");
