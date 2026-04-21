@@ -1,0 +1,35 @@
+ 
+****************************************
+check_design summary:
+Version:     O-2018.06-SP1
+Date:        Tue Apr 21 21:22:47 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                              21
+    Cells do not drive (LINT-1)                                    21
+--------------------------------------------------------------------------------
+
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11678' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11689' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11700' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11711' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11807' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11828' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11862' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11871' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11874' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11877' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11880' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11883' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11886' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11889' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11892' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11895' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11898' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11901' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11904' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11907' does not drive any nets. (LINT-1)
+Warning: In design 'standard_ws_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'C11910' does not drive any nets. (LINT-1)
+1

@@ -1,0 +1,85 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'dip_core_std_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : qor
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Tue Apr 21 21:29:22 2026
+****************************************
+
+
+  Timing Path Group 'clk'
+  -----------------------------------
+  Levels of Logic:              31.00
+  Critical Path Length:          4.85
+  Critical Path Slack:           0.00
+  Critical Path Clk Period:      5.00
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+
+
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:         82
+  Hierarchical Port Count:       7972
+  Leaf Cell Count:              18654
+  Buf/Inv Cell Count:            2051
+  Buf Cell Count:                 346
+  Inv Cell Count:                1705
+  CT Buf/Inv Cell Count:            0
+  Combinational Cell Count:     16874
+  Sequential Cell Count:         1780
+  Macro Count:                      0
+  -----------------------------------
+
+
+  Area
+  -----------------------------------
+  Combinational Area:   165103.346528
+  Noncombinational Area: 28880.208227
+  Buf/Inv Area:           5592.585742
+  Total Buffer Area:          1004.07
+  Total Inverter Area:        4588.52
+  Macro/Black Box Area:      0.000000
+  Net Area:                  0.000000
+  -----------------------------------
+  Cell Area:            193983.554755
+  Design Area:          193983.554755
+
+
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:         22515
+  Nets With Violations:             0
+  Max Trans Violations:             0
+  Max Cap Violations:               0
+  -----------------------------------
+
+
+  Hostname: IC_EDA
+
+  Compile CPU Statistics
+  -----------------------------------------
+  Resource Sharing:                    9.09
+  Logic Optimization:                 12.34
+  Mapping Optimization:               70.57
+  -----------------------------------------
+  Overall Compile Time:               94.79
+  Overall Compile Wall Clock Time:    94.46
+
+  --------------------------------------------------------------------
+
+  Design  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+
+  Design (Hold)  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+  --------------------------------------------------------------------
+
+
+1
