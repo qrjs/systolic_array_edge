@@ -28,6 +28,10 @@ module standard_is_file_tb;
     integer t;
     integer timeout;
     integer failures;
+    integer cycle_count;
+    integer launch_cycle;
+    integer done_cycle;
+    integer case_cycles;
     string input_path;
     string expected_path;
     bit soft_fail_mode;
@@ -59,9 +63,11 @@ module standard_is_file_tb;
         if (!rst_n) begin
             result_valid_q <= 1'b0;
             result_matrix_q <= '0;
+            cycle_count <= 0;
         end else begin
             result_valid_q <= result_valid;
             result_matrix_q <= result_matrix;
+            cycle_count <= cycle_count + 1;
         end
     end
 
@@ -85,6 +91,10 @@ module standard_is_file_tb;
         weight_data_vec = '0;
         timeout = 0;
         failures = 0;
+        cycle_count = 0;
+        launch_cycle = -1;
+        done_cycle = -1;
+        case_cycles = -1;
 
         read_input_txt(input_path);
         read_expected_txt(expected_path);
@@ -104,6 +114,7 @@ module standard_is_file_tb;
         input_load_row_data = '0;
 
         @(posedge clk);
+        launch_cycle = cycle_count + 1;
         for (t = 0; t < (2 * ARRAY_SIZE) - 1; t = t + 1) begin
             reg [ARRAY_SIZE-1:0] valid_tmp;
             reg [WEIGHT_WIDTH*ARRAY_SIZE-1:0] data_tmp;
@@ -137,6 +148,10 @@ module standard_is_file_tb;
                 $fatal(1, "[IS_FILE] timed out waiting for result_valid");
             end
         end
+
+        done_cycle = cycle_count;
+        case_cycles = done_cycle - launch_cycle;
+        $display("[IS_FILE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
 
         @(posedge clk);
 

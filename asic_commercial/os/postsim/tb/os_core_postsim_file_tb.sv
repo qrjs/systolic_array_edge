@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module standard_os_file_tb;
+module os_core_postsim_file_tb;
     localparam integer DATA_WIDTH = 16;
     localparam integer WEIGHT_WIDTH = 16;
     localparam integer ACC_WIDTH = 32;
@@ -21,18 +21,20 @@ module standard_os_file_tb;
 
     reg result_valid_q;
     reg [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] result_matrix_q;
+    integer cycle_count;
+    integer launch_cycle;
+    integer done_cycle;
+    integer case_cycles;
 
     integer row_idx;
     integer col_idx;
     integer t;
     integer timeout;
     integer failures;
-    integer cycle_count;
-    integer launch_cycle;
-    integer done_cycle;
-    integer case_cycles;
     string input_path;
     string expected_path;
+    string sdf_path;
+    string vcd_path;
     bit soft_fail_mode;
 
     reg signed [DATA_WIDTH-1:0] a_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
@@ -41,7 +43,7 @@ module standard_os_file_tb;
 
     `include "tb/common/txt_matrix_tasks.svh"
 
-    standard_os_array_4x4 dut (
+    os_core_std_top_4x4 dut (
         .clk(clk),
         .rst_n(rst_n),
         .flush(flush),
@@ -66,6 +68,20 @@ module standard_os_file_tb;
             result_valid_q <= result_valid;
             result_matrix_q <= result_matrix;
             cycle_count <= cycle_count + 1;
+        end
+    end
+
+    initial begin
+        if ($value$plusargs("SDF=%s", sdf_path)) begin
+            if (sdf_path != "") begin
+                $sdf_annotate(sdf_path, dut, , , "MAXIMUM");
+            end
+        end
+        if ($value$plusargs("VCD=%s", vcd_path)) begin
+            if (vcd_path != "") begin
+                $dumpfile(vcd_path);
+                $dumpvars(0, os_core_postsim_file_tb);
+            end
         end
     end
 
@@ -95,8 +111,8 @@ module standard_os_file_tb;
 
         read_input_txt(input_path);
         read_expected_txt(expected_path);
-        print_case_context("OS_FILE", input_path, expected_path);
-        report_zero_skip_stats("OS_FILE");
+        print_case_context("OS_GATE", input_path, expected_path);
+        report_zero_skip_stats("OS_GATE");
 
         repeat (4) @(posedge clk);
         rst_n = 1'b1;
@@ -145,16 +161,16 @@ module standard_os_file_tb;
 
         if (!result_valid_q) begin
             if (soft_fail_mode) begin
-                $display("[OS_FILE][FAIL] %0s reason=timeout", input_path);
+                $display("[OS_GATE][FAIL] %0s reason=timeout", input_path);
                 $finish;
             end else begin
-                $fatal(1, "[OS_FILE] timed out waiting for result_valid");
+                $fatal(1, "[OS_GATE] timed out waiting for result_valid");
             end
         end
 
         done_cycle = cycle_count;
         case_cycles = done_cycle - launch_cycle;
-        $display("[OS_FILE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
+        $display("[OS_GATE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
 
         @(posedge clk);
 
@@ -162,7 +178,7 @@ module standard_os_file_tb;
             for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
                 reg signed [ACC_WIDTH-1:0] observed;
                 observed = result_matrix_q[((row_idx * ARRAY_SIZE + col_idx + 1) * ACC_WIDTH) - 1 -: ACC_WIDTH];
-                report_cell_compare("OS_FILE", row_idx, col_idx, expected_matrix[row_idx][col_idx], observed);
+                report_cell_compare("OS_GATE", row_idx, col_idx, expected_matrix[row_idx][col_idx], observed);
                 if (observed !== expected_matrix[row_idx][col_idx]) begin
                     failures = failures + 1;
                 end
@@ -170,15 +186,13 @@ module standard_os_file_tb;
         end
 
         if (failures == 0) begin
-            $display("[OS_FILE][PASS] %0s", input_path);
+            $display("[OS_GATE][PASS] %0s", input_path);
+            $finish;
+        end else if (soft_fail_mode) begin
+            $display("[OS_GATE][FAIL] %0s failures=%0d", input_path, failures);
             $finish;
         end else begin
-            if (soft_fail_mode) begin
-                $display("[OS_FILE][FAIL] %0s failures=%0d", input_path, failures);
-                $finish;
-            end else begin
-                $fatal(1, "[OS_FILE] failures=%0d", failures);
-            end
+            $fatal(1, "[OS_GATE] failures=%0d", failures);
         end
     end
 endmodule

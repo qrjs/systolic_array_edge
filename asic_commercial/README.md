@@ -23,6 +23,7 @@ Design goals:
 For each dataflow under `ws/`, `is/`, `os/`, and `dip/`, this directory now contains:
 
 - Synopsys DC synthesis run script and Tcl runset
+- VCS RTL file-vector front-simulation run script
 - VCS gate-level post-simulation run script and testbench
 - Synopsys Formality equivalence-check run script
 - Synopsys ICC2 back-end run script and staged Tcl flow
@@ -50,14 +51,20 @@ teacher-provided synthesis script. It is intended for external RTL such as
 1. Pick one flow directory such as `ws/`, `is/`, `os/`, or `dip/`
 2. Fill in `<flow>/config/libs.env` from `<flow>/config/libs.example.env`
 3. Run `<flow>/scripts/check_handoff.sh`
-4. Run `<flow>/scripts/run_dc.sh`
-5. Run `<flow>/scripts/run_fm.sh`
-6. Run `<flow>/scripts/run_postsim.sh`
-7. Run `<flow>/scripts/run_icc2.sh all`
-8. Run `<flow>/scripts/run_calibre_drc.sh`
-9. Run `<flow>/scripts/run_calibre_lvs.sh`
+4. Run `<flow>/scripts/run_frontsim.sh`
+5. Run `<flow>/scripts/run_dc.sh`
+6. Run `<flow>/scripts/run_fm.sh`
+7. Run `<flow>/scripts/run_postsim.sh`
+8. Run `<flow>/scripts/run_icc2.sh all`
+9. Run `<flow>/scripts/run_calibre_drc.sh`
+10. Run `<flow>/scripts/run_calibre_lvs.sh`
 
 Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.
+
+Note on flow split:
+
+- `asic_commercial/syn/` remains the centralized four-architecture PPA comparison flow.
+- `asic_commercial/ws|is|os|dip/` use standard-API wrappers so `VCS` frontsim/postsim can run the same file-vector workload cleanly.
 
 ## Standardized multi-architecture synthesis
 

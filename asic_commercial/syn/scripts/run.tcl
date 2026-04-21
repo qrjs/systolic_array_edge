@@ -266,7 +266,7 @@ proc run_dip_gated_profile {gate_path} {
             compile
         }
         gated_area {
-            set_clock_gating_style -minimum_bitwidth 16 \
+            set_clock_gating_style -minimum_bitwidth 64 \
                                    -positive_edge_logic {integrated} \
                                    -control_point before
             insert_clock_gating
@@ -274,7 +274,7 @@ proc run_dip_gated_profile {gate_path} {
             compile -map_effort high
         }
         gated_ultra_area {
-            set_clock_gating_style -minimum_bitwidth 16 \
+            set_clock_gating_style -minimum_bitwidth 64 \
                                    -positive_edge_logic {integrated} \
                                    -control_point before
             insert_clock_gating

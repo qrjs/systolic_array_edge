@@ -27,6 +27,10 @@ module standard_dip_file_tb;
     integer col_idx;
     integer timeout;
     integer failures;
+    integer cycle_count;
+    integer launch_cycle;
+    integer done_cycle;
+    integer case_cycles;
     string input_path;
     string expected_path;
     bit soft_fail_mode;
@@ -59,9 +63,11 @@ module standard_dip_file_tb;
         if (!rst_n) begin
             result_valid_q <= 1'b0;
             result_matrix_q <= '0;
+            cycle_count <= 0;
         end else begin
             result_valid_q <= result_valid;
             result_matrix_q <= result_matrix;
+            cycle_count <= cycle_count + 1;
         end
     end
 
@@ -85,6 +91,10 @@ module standard_dip_file_tb;
         input_row_data = '0;
         timeout = 0;
         failures = 0;
+        cycle_count = 0;
+        launch_cycle = -1;
+        done_cycle = -1;
+        case_cycles = -1;
 
         read_input_txt(input_path);
         read_expected_txt(expected_path);
@@ -113,6 +123,7 @@ module standard_dip_file_tb;
         weight_row_data = {b_rot[0][3], b_rot[0][2], b_rot[0][1], b_rot[0][0]};
         input_row_valid = 1'b1;
         input_row_data = {a_matrix[0][3], a_matrix[0][2], a_matrix[0][1], a_matrix[0][0]};
+        launch_cycle = cycle_count + 1;
         @(posedge clk);
 
         weight_row_valid = 1'b0;
@@ -140,6 +151,10 @@ module standard_dip_file_tb;
                 $fatal(1, "[DIP_FILE] timed out waiting for result_valid");
             end
         end
+
+        done_cycle = cycle_count;
+        case_cycles = done_cycle - launch_cycle;
+        $display("[DIP_FILE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
 
         @(posedge clk);
         @(posedge clk);

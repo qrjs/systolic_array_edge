@@ -1,6 +1,6 @@
 # IS Commercial Flow
 
-`is` uses the same commercial flow skeleton as `dip`, but with the IS ASIC handoff files and an IS-specific gate-level selftest bench.
+`is` uses the same commercial flow skeleton as `dip`, but with the IS standard-API wrapper and IS-specific VCS file-vector benches.
 
 Quick start:
 
@@ -8,6 +8,7 @@ Quick start:
 cd asic_commercial/is
 cp config/libs.example.env config/libs.env
 ./scripts/check_handoff.sh
+./scripts/run_frontsim.sh
 ./scripts/run_dc.sh
 ./scripts/run_fm.sh
 ./scripts/run_postsim.sh

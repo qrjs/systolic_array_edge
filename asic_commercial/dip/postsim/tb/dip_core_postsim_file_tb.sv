@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module standard_ws_file_tb;
+module dip_core_postsim_file_tb;
     localparam integer DATA_WIDTH = 16;
     localparam integer WEIGHT_WIDTH = 16;
     localparam integer ACC_WIDTH = 32;
@@ -13,8 +13,8 @@ module standard_ws_file_tb;
     reg weight_row_valid;
     reg [$clog2(ARRAY_SIZE)-1:0] weight_row_idx;
     reg [WEIGHT_WIDTH*ARRAY_SIZE-1:0] weight_row_data;
-    reg [ARRAY_SIZE-1:0] input_valid_vec;
-    reg [DATA_WIDTH*ARRAY_SIZE-1:0] input_data_vec;
+    reg input_row_valid;
+    reg [DATA_WIDTH*ARRAY_SIZE-1:0] input_row_data;
 
     wire result_valid;
     wire [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] result_matrix;
@@ -25,7 +25,6 @@ module standard_ws_file_tb;
 
     integer row_idx;
     integer col_idx;
-    integer t;
     integer timeout;
     integer failures;
     integer cycle_count;
@@ -34,15 +33,18 @@ module standard_ws_file_tb;
     integer case_cycles;
     string input_path;
     string expected_path;
+    string sdf_path;
+    string vcd_path;
     bit soft_fail_mode;
 
     reg signed [DATA_WIDTH-1:0] a_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     reg signed [WEIGHT_WIDTH-1:0] b_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
+    reg signed [WEIGHT_WIDTH-1:0] b_rot    [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     reg signed [ACC_WIDTH-1:0] expected_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
 
     `include "tb/common/txt_matrix_tasks.svh"
 
-    standard_ws_array_4x4 dut (
+    dip_core_std_top_4x4 dut (
         .clk(clk),
         .rst_n(rst_n),
         .flush(flush),
@@ -50,8 +52,8 @@ module standard_ws_file_tb;
         .weight_row_valid(weight_row_valid),
         .weight_row_idx(weight_row_idx),
         .weight_row_data(weight_row_data),
-        .input_valid_vec(input_valid_vec),
-        .input_data_vec(input_data_vec),
+        .input_row_valid(input_row_valid),
+        .input_row_data(input_row_data),
         .result_valid(result_valid),
         .result_matrix(result_matrix),
         .busy(busy)
@@ -72,6 +74,20 @@ module standard_ws_file_tb;
     end
 
     initial begin
+        if ($value$plusargs("SDF=%s", sdf_path)) begin
+            if (sdf_path != "") begin
+                $sdf_annotate(sdf_path, dut, , , "MAXIMUM");
+            end
+        end
+        if ($value$plusargs("VCD=%s", vcd_path)) begin
+            if (vcd_path != "") begin
+                $dumpfile(vcd_path);
+                $dumpvars(0, dip_core_postsim_file_tb);
+            end
+        end
+    end
+
+    initial begin
         if (!$value$plusargs("INPUT=%s", input_path)) begin
             $fatal(1, "Missing +INPUT=<path>");
         end
@@ -87,8 +103,8 @@ module standard_ws_file_tb;
         weight_row_valid = 1'b0;
         weight_row_idx = '0;
         weight_row_data = '0;
-        input_valid_vec = '0;
-        input_data_vec = '0;
+        input_row_valid = 1'b0;
+        input_row_data = '0;
         timeout = 0;
         failures = 0;
         cycle_count = 0;
@@ -98,60 +114,63 @@ module standard_ws_file_tb;
 
         read_input_txt(input_path);
         read_expected_txt(expected_path);
-        print_case_context("WS_FILE", input_path, expected_path);
-        report_zero_skip_stats("WS_FILE");
+        print_case_context("DIP_GATE", input_path, expected_path);
+        report_zero_skip_stats("DIP_GATE");
+
+        for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
+            for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
+                b_rot[row_idx][col_idx] = b_matrix[(row_idx + col_idx) % ARRAY_SIZE][col_idx];
+            end
+        end
 
         repeat (4) @(posedge clk);
         rst_n = 1'b1;
 
-        for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
-            weight_row_valid = 1'b1;
+        weight_row_valid = 1'b1;
+        for (row_idx = ARRAY_SIZE - 1; row_idx > 0; row_idx = row_idx - 1) begin
             weight_row_idx = row_idx[$clog2(ARRAY_SIZE)-1:0];
-            weight_row_data = {b_matrix[row_idx][3], b_matrix[row_idx][2], b_matrix[row_idx][1], b_matrix[row_idx][0]};
+            weight_row_data = {b_rot[row_idx][3], b_rot[row_idx][2], b_rot[row_idx][1], b_rot[row_idx][0]};
+            input_row_valid = 1'b0;
+            input_row_data = '0;
             @(posedge clk);
         end
+
+        weight_row_idx = '0;
+        weight_row_data = {b_rot[0][3], b_rot[0][2], b_rot[0][1], b_rot[0][0]};
+        input_row_valid = 1'b1;
+        input_row_data = {a_matrix[0][3], a_matrix[0][2], a_matrix[0][1], a_matrix[0][0]};
+        launch_cycle = cycle_count + 1;
+        @(posedge clk);
+
         weight_row_valid = 1'b0;
         weight_row_data = '0;
 
-        @(posedge clk);
-        launch_cycle = cycle_count + 1;
-        for (t = 0; t < (2 * ARRAY_SIZE) - 1; t = t + 1) begin
-            reg [ARRAY_SIZE-1:0] valid_tmp;
-            reg [DATA_WIDTH*ARRAY_SIZE-1:0] data_tmp;
-            valid_tmp = '0;
-            data_tmp = '0;
-            for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
-                integer out_row;
-                out_row = t - row_idx;
-                if ((out_row >= 0) && (out_row < ARRAY_SIZE)) begin
-                    valid_tmp[row_idx] = 1'b1;
-                    data_tmp[((row_idx + 1) * DATA_WIDTH) - 1 -: DATA_WIDTH] = a_matrix[out_row][row_idx];
-                end
-            end
-            input_valid_vec = valid_tmp;
-            input_data_vec = data_tmp;
+        for (row_idx = 1; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
+            input_row_valid = 1'b1;
+            input_row_data = {a_matrix[row_idx][3], a_matrix[row_idx][2], a_matrix[row_idx][1], a_matrix[row_idx][0]};
             @(posedge clk);
         end
-        input_valid_vec = '0;
-        input_data_vec = '0;
 
-        while (!result_valid_q && (timeout < 128)) begin
+        input_row_valid = 1'b0;
+        input_row_data = '0;
+
+        while (!result_valid_q && (timeout < 256)) begin
             @(posedge clk);
             timeout = timeout + 1;
         end
 
         if (!result_valid_q) begin
             if (soft_fail_mode) begin
-                $display("[WS_FILE][FAIL] %0s reason=timeout", input_path);
+                $display("[DIP_GATE][FAIL] %0s reason=timeout", input_path);
                 $finish;
             end else begin
-                $fatal(1, "[WS_FILE] timed out waiting for result_valid");
+                $fatal(1, "[DIP_GATE] timed out waiting for result_valid");
             end
         end
 
         done_cycle = cycle_count;
         case_cycles = done_cycle - launch_cycle;
-        $display("[WS_FILE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
+        $display("[DIP_GATE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
 
         @(posedge clk);
 
@@ -159,7 +178,7 @@ module standard_ws_file_tb;
             for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
                 reg signed [ACC_WIDTH-1:0] observed;
                 observed = result_matrix_q[((row_idx * ARRAY_SIZE + col_idx + 1) * ACC_WIDTH) - 1 -: ACC_WIDTH];
-                report_cell_compare("WS_FILE", row_idx, col_idx, expected_matrix[row_idx][col_idx], observed);
+                report_cell_compare("DIP_GATE", row_idx, col_idx, expected_matrix[row_idx][col_idx], observed);
                 if (observed !== expected_matrix[row_idx][col_idx]) begin
                     failures = failures + 1;
                 end
@@ -167,15 +186,13 @@ module standard_ws_file_tb;
         end
 
         if (failures == 0) begin
-            $display("[WS_FILE][PASS] %0s", input_path);
+            $display("[DIP_GATE][PASS] %0s", input_path);
+            $finish;
+        end else if (soft_fail_mode) begin
+            $display("[DIP_GATE][FAIL] %0s failures=%0d", input_path, failures);
             $finish;
         end else begin
-            if (soft_fail_mode) begin
-                $display("[WS_FILE][FAIL] %0s failures=%0d", input_path, failures);
-                $finish;
-            end else begin
-                $fatal(1, "[WS_FILE] failures=%0d", failures);
-            end
+            $fatal(1, "[DIP_GATE] failures=%0d", failures);
         end
     end
 endmodule

@@ -1,6 +1,6 @@
 # OS Commercial Flow
 
-`os` uses the same commercial flow skeleton as `dip`, but with the OS ASIC handoff files and an OS-specific gate-level selftest bench.
+`os` uses the same commercial flow skeleton as `dip`, but with the OS standard-API wrapper and OS-specific VCS file-vector benches.
 
 Quick start:
 
@@ -8,6 +8,7 @@ Quick start:
 cd asic_commercial/os
 cp config/libs.example.env config/libs.env
 ./scripts/check_handoff.sh
+./scripts/run_frontsim.sh
 ./scripts/run_dc.sh
 ./scripts/run_fm.sh
 ./scripts/run_postsim.sh
