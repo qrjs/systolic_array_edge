@@ -1,0 +1,24 @@
+ 
+****************************************
+Report : clock_gating
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Tue Apr 21 20:26:53 2026
+****************************************
+
+
+
+                             Clock Gating Summary
+          ------------------------------------------------------------
+          |    Number of Clock gating elements    |       10         |
+          |                                       |                  |
+          |    Number of Gated registers          |   980 (55.06%)   |
+          |                                       |                  |
+          |    Number of Ungated registers        |   800 (44.94%)   |
+          |                                       |                  |
+          |    Total number of registers          |     1780         |
+          ------------------------------------------------------------
+
+
+
+1

@@ -1,0 +1,84 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Tue Apr 21 20:28:55 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[1].u_dip_pe/token_valid_reg_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: u_dip_std_array/u_stream_dip/gen_rows[1].gen_cols[0].u_dip_pe/psum_out_reg_reg[31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[1].u_dip_pe/token_valid_reg_reg/CK (DFFRHQX4)
+                                                          0.00       0.00 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[1].u_dip_pe/token_valid_reg_reg/Q (DFFRHQX4)
+                                                          0.15       0.15 r
+  U5820/Y (NAND2X2)                                       0.15       0.30 f
+  U2424/Y (NOR2X2)                                        0.32       0.62 r
+  U5766/Y (XNOR2X1)                                       0.39       1.01 r
+  U5840/Y (NAND2X2)                                       0.24       1.25 f
+  U5105/Y (OAI22XL)                                       0.19       1.44 r
+  U11862/S (CMPR42X1)                                     0.50       1.94 f
+  U5209/Y (NOR2XL)                                        0.08       2.02 r
+  U5271/Y (OAI21XL)                                       0.09       2.11 f
+  U5206/Y (AOI21XL)                                       0.12       2.23 r
+  U5313/Y (OAI21XL)                                       0.10       2.33 f
+  U10340/Y (AOI21XL)                                      0.12       2.45 r
+  U5269/Y (OAI21XL)                                       0.10       2.54 f
+  U10415/Y (AOI21XL)                                      0.13       2.67 r
+  U10472/Y (OAI21X1)                                      0.09       2.76 f
+  U3911/Y (AOI21X1)                                       0.10       2.86 r
+  U10563/Y (OAI21X2)                                      0.06       2.92 f
+  U3907/Y (AOI21X1)                                       0.09       3.01 r
+  U10692/Y (OAI21X1)                                      0.08       3.09 f
+  U3856/Y (AOI21X1)                                       0.09       3.18 r
+  U10791/Y (OAI21X1)                                      0.08       3.27 f
+  U3123/Y (AOI21X1)                                       0.09       3.36 r
+  U10881/Y (OAI21X1)                                      0.08       3.44 f
+  U4001/Y (AOI21X1)                                       0.09       3.54 r
+  U10974/Y (OAI21X1)                                      0.08       3.62 f
+  U4036/Y (AOI21X1)                                       0.09       3.71 r
+  U1583/Y (OAI21X1)                                       0.08       3.79 f
+  U3999/Y (AOI21X1)                                       0.09       3.89 r
+  U1489/Y (OAI21X1)                                       0.08       3.96 f
+  U1630/Y (AO21X1)                                        0.17       4.13 f
+  U5332/CO (ADDFHXL)                                      0.16       4.28 f
+  U5339/CO (ADDFHXL)                                      0.16       4.45 f
+  U1615/CO (ADDFHX1)                                      0.14       4.59 f
+  U1859/CO (ADDFHX2)                                      0.12       4.71 f
+  U5699/Y (XOR2X1)                                        0.06       4.76 r
+  U11263/Y (AO22X2)                                       0.09       4.85 r
+  u_dip_std_array/u_stream_dip/gen_rows[1].gen_cols[0].u_dip_pe/psum_out_reg_reg[31]/D (DFFRQXL)
+                                                          0.00       4.85 r
+  data arrival time                                                  4.85
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  u_dip_std_array/u_stream_dip/gen_rows[1].gen_cols[0].u_dip_pe/psum_out_reg_reg[31]/CK (DFFRQXL)
+                                                          0.00       5.00 r
+  library setup time                                     -0.15       4.85
+  data required time                                                 4.85
+  --------------------------------------------------------------------------
+  data required time                                                 4.85
+  data arrival time                                                 -4.85
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

@@ -1,0 +1,49 @@
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Tue Apr 21 20:28:55 2026
+****************************************
+
+
+Library(s) Used:
+
+    slow (File: /home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db)
+
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+
+Global Operating Voltage = 0.9  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+  Cell Internal Power  =   2.1023 mW   (90%)
+  Net Switching Power  = 241.3410 uW   (10%)
+                         ---------
+Total Dynamic Power    =   2.3436 mW  (100%)
+
+Cell Leakage Power     = 325.3799 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network  3.1388e-02            0.1913        6.2623e+05            0.2233  (   8.37%)
+register           1.9847        7.4302e-03        4.3012e+07            2.0352  (  76.25%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational  8.6147e-02        4.2612e-02        2.8174e+08            0.4105  (  15.38%)
+--------------------------------------------------------------------------------------------------
+Total              2.1023 mW         0.2413 mW     3.2538e+08 pW         2.6690 mW
+1

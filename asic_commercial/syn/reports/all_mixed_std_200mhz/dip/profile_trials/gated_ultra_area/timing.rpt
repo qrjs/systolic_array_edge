@@ -1,0 +1,81 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Tue Apr 21 20:27:55 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: top
+
+  Startpoint: u_dip_std_array/u_stream_dip/gen_rows[2].gen_cols[2].u_dip_pe/token_valid_reg_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: u_dip_std_array/u_stream_dip/gen_rows[3].gen_cols[3].u_dip_pe/psum_out_reg_reg[31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_dip_std_array/u_stream_dip/gen_rows[2].gen_cols[2].u_dip_pe/token_valid_reg_reg/CK (DFFRQX1)
+                                                          0.00       0.00 r
+  u_dip_std_array/u_stream_dip/gen_rows[2].gen_cols[2].u_dip_pe/token_valid_reg_reg/Q (DFFRQX1)
+                                                          0.28       0.28 r
+  U6190/Y (NAND2X2)                                       0.17       0.45 f
+  U6535/Y (NOR2X4)                                        0.21       0.66 r
+  U2185/Y (XNOR2X2)                                       0.26       0.92 r
+  U1564/Y (NAND2XL)                                       0.40       1.32 f
+  U6538/Y (OAI22XL)                                       0.18       1.50 r
+  U2777/S (ADDHX1)                                        0.13       1.63 r
+  DP_OP_277J1_123_279/U315/CO (CMPR42X1)                  0.38       2.01 f
+  U3869/S (CMPR42X1)                                      0.37       2.38 f
+  U1592/Y (OR2XL)                                         0.15       2.53 f
+  U10623/Y (AOI21X1)                                      0.10       2.63 r
+  U10706/Y (OAI21X1)                                      0.08       2.71 f
+  U10733/Y (AOI21X1)                                      0.09       2.80 r
+  U10803/Y (OAI21X1)                                      0.08       2.88 f
+  U1496/Y (AOI21X1)                                       0.10       2.98 r
+  U4286/Y (OAI21X2)                                       0.06       3.04 f
+  U4282/Y (AOI21X1)                                       0.09       3.13 r
+  U4280/Y (OAI21X1)                                       0.08       3.21 f
+  U4275/Y (AOI21X1)                                       0.09       3.31 r
+  U1699/Y (OAI21X1)                                       0.08       3.39 f
+  U4269/Y (AOI21X1)                                       0.09       3.48 r
+  U1679/Y (OAI21X1)                                       0.08       3.56 f
+  U4263/Y (AOI21X1)                                       0.09       3.66 r
+  U1668/Y (OAI21X1)                                       0.08       3.74 f
+  U1980/Y (AOI21X1)                                       0.09       3.83 r
+  U3201/Y (OAI21X1)                                       0.08       3.91 f
+  U11286/Y (AO21X2)                                       0.13       4.04 f
+  U5445/CO (ADDFHXL)                                      0.15       4.20 f
+  U4224/CO (ADDFHXL)                                      0.16       4.35 f
+  U1607/CO (ADDFHXL)                                      0.17       4.53 f
+  U1618/CO (ADDFXL)                                       0.17       4.70 f
+  U6055/Y (XOR2X1)                                        0.06       4.76 r
+  U11447/Y (AO22X2)                                       0.09       4.85 r
+  u_dip_std_array/u_stream_dip/gen_rows[3].gen_cols[3].u_dip_pe/psum_out_reg_reg[31]/D (DFFRQXL)
+                                                          0.00       4.85 r
+  data arrival time                                                  4.85
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  u_dip_std_array/u_stream_dip/gen_rows[3].gen_cols[3].u_dip_pe/psum_out_reg_reg[31]/CK (DFFRQXL)
+                                                          0.00       5.00 r
+  library setup time                                     -0.15       4.85
+  data required time                                                 4.85
+  --------------------------------------------------------------------------
+  data required time                                                 4.85
+  data arrival time                                                 -4.85
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1
