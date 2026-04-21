@@ -5,7 +5,7 @@ Warning: Design 'is_core_top_4x4' contains 1 high-fanout nets. A fanout number o
 Report : qor
 Design : is_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Tue Apr 21 12:51:09 2026
+Date   : Tue Apr 21 18:15:38 2026
 ****************************************
 
 
@@ -65,12 +65,12 @@ Date   : Tue Apr 21 12:51:09 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                   10.13
-  Logic Optimization:                 14.19
-  Mapping Optimization:               81.90
+  Resource Sharing:                   10.00
+  Logic Optimization:                 14.54
+  Mapping Optimization:               83.43
   -----------------------------------------
-  Overall Compile Time:              109.47
-  Overall Compile Wall Clock Time:   110.06
+  Overall Compile Time:              111.68
+  Overall Compile Wall Clock Time:   110.89
 
   --------------------------------------------------------------------
 

@@ -2,13 +2,13 @@
 ****************************************
 check_design summary:
 Version:     O-2018.06-SP1
-Date:        Tue Apr 21 12:53:08 2026
+Date:        Tue Apr 21 18:17:40 2026
 ****************************************
 
                    Name                                            Total
 --------------------------------------------------------------------------------
-Cells                                                             133
-    Cells do not drive (LINT-1)                                     1
+Cells                                                             134
+    Cells do not drive (LINT-1)                                     2
     Connected to power or ground (LINT-32)                        128
     Nets connected to multiple pins on same cell (LINT-33)          4
 
@@ -16,6 +16,7 @@ Nets                                                               64
     Unloaded nets (LINT-2)                                         64
 --------------------------------------------------------------------------------
 
+Warning: In design 'systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4', cell 'B_5' does not drive any nets. (LINT-1)
 Warning: In design 'dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32', cell 'C573' does not drive any nets. (LINT-1)
 Warning: In design 'dip_core_top_4x4', net 'u_dip_array/pe_data_out[3][0][0]' driven by pin 'u_dip_array/gen_rows[3].gen_cols[0].u_dip_pe/data_out[0]' has no loads. (LINT-2)
 Warning: In design 'dip_core_top_4x4', net 'u_dip_array/pe_data_out[3][0][1]' driven by pin 'u_dip_array/gen_rows[3].gen_cols[0].u_dip_pe/data_out[1]' has no loads. (LINT-2)

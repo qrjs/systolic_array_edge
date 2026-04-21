@@ -4,7 +4,7 @@ Information: Updating design information... (UID-85)
 Report : qor
 Design : os_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Tue Apr 21 12:53:04 2026
+Date   : Tue Apr 21 18:17:35 2026
 ****************************************
 
 
@@ -64,12 +64,12 @@ Date   : Tue Apr 21 12:53:04 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                   10.07
-  Logic Optimization:                 22.32
-  Mapping Optimization:               75.98
+  Resource Sharing:                   10.99
+  Logic Optimization:                 22.70
+  Mapping Optimization:               72.79
   -----------------------------------------
-  Overall Compile Time:              111.49
-  Overall Compile Wall Clock Time:   109.22
+  Overall Compile Time:              109.89
+  Overall Compile Wall Clock Time:   110.31
 
   --------------------------------------------------------------------
 
