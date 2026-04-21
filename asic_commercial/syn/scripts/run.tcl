@@ -12,6 +12,9 @@
 #   ARCH_LIST       Space/comma-separated list. Default: "ws is os dip"
 #   RUN_MODE        base | ultra | compare | mixed. Default: base
 #   GATED_ARCH_LIST Only used by mixed mode. Default: dip
+#   DIP_COMPILE_PROFILE
+#                   gated_default | gated_area | gated_ultra_area
+#                   Default: gated_area
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
 #   DC_LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
 #   DC_TARGET_LIBRARY  Default: slow.db
@@ -251,6 +254,41 @@ proc resolve_arch_run_mode {global_run_mode gated_arch_list arch_name} {
     return $global_run_mode
 }
 
+proc run_dip_gated_profile {gate_path} {
+    set dip_compile_profile [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_area"]]
+
+    switch -- $dip_compile_profile {
+        gated_default {
+            set_clock_gating_style -minimum_bitwidth 4 \
+                                   -positive_edge_logic {integrated} \
+                                   -control_point before
+            insert_clock_gating
+            compile
+        }
+        gated_area {
+            set_clock_gating_style -minimum_bitwidth 16 \
+                                   -positive_edge_logic {integrated} \
+                                   -control_point before
+            insert_clock_gating
+            set_max_area 0
+            compile -map_effort high
+        }
+        gated_ultra_area {
+            set_clock_gating_style -minimum_bitwidth 16 \
+                                   -positive_edge_logic {integrated} \
+                                   -control_point before
+            insert_clock_gating
+            set_max_area 0
+            compile_ultra -gate_clock
+        }
+        default {
+            error "Unsupported DIP_COMPILE_PROFILE '$dip_compile_profile' (expected gated_default, gated_area, or gated_ultra_area)"
+        }
+    }
+
+    report_clock_gating > $gate_path
+}
+
 proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constraint_mode clk_period result_group} {
     set cfg [arch_config $repo_root $arch_name]
     set top_name [dict get $cfg top]
@@ -308,12 +346,11 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
         compile_ultra -gate_clock -retime -timing_high_effort_script
         report_clock_gating > $gate_path
     } elseif {$run_mode eq "gated"} {
-        set_clock_gating_style -minimum_bitwidth 4 \
-                               -positive_edge_logic {integrated} \
-                               -control_point before
-        insert_clock_gating
-        compile
-        report_clock_gating > $gate_path
+        if {$arch_name eq "dip"} {
+            run_dip_gated_profile $gate_path
+        } else {
+            compile
+        }
     } elseif {$run_mode eq "base"} {
         compile
     } else {
@@ -405,6 +442,7 @@ set REPO_ROOT        [file normalize [file join $SCRIPT_DIR .. .. ..]]
 set ARCH_LIST        [split_arch_list [env_or_default ARCH_LIST "ws is os dip"]]
 set RUN_MODE         [string tolower [env_or_default RUN_MODE "base"]]
 set GATED_ARCH_LIST  [split_arch_list [env_or_default GATED_ARCH_LIST [expr {$RUN_MODE eq "mixed" ? "dip" : ""}]]]
+set DIP_COMPILE_PROFILE [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_area"]]
 set CONSTRAINT_MODE  [string tolower [env_or_default CONSTRAINT_MODE "uniform"]]
 set REPORT_ROOT      [file normalize [env_or_default REPORT_ROOT [file join $SYN_ROOT reports]]]
 set MAPPED_ROOT      [file normalize [env_or_default MAPPED_ROOT [file join $SYN_ROOT mapped]]]
@@ -438,6 +476,7 @@ if {$DRY_RUN eq "1"} {
     puts "  RUN_MODE        = $RUN_MODE"
     if {$RUN_MODE eq "mixed"} {
         puts "  GATED_ARCH_LIST = $GATED_ARCH_LIST"
+        puts "  DIP_COMPILE_PROFILE = $DIP_COMPILE_PROFILE"
     }
     puts "  ACTIVE_MODES    = $ACTIVE_RUN_MODES"
     puts "  CONSTRAINT_MODE = $CONSTRAINT_MODE"

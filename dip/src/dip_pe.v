@@ -20,21 +20,27 @@ module dip_pe #(
 );
 
     reg signed [WEIGHT_WIDTH-1:0] stored_weight;
+    reg                           stored_weight_nonzero;
     reg                           token_valid_reg;
     reg signed [DATA_WIDTH-1:0]   data_out_reg;
     reg signed [ACC_WIDTH-1:0]    psum_out_reg;
 
     wire signed [WEIGHT_WIDTH-1:0] active_weight;
+    wire                           active_weight_nonzero;
+    wire                           data_nonzero;
     wire                           mac_enable;
     wire signed [ACC_WIDTH-1:0]    mac_result;
 
     assign active_weight = weight_load ? weight_in : stored_weight;
-    assign mac_enable = token_valid_in && (data_in != 0) && (active_weight != 0);
-    assign mac_result = psum_in + (data_in * active_weight);
+    assign active_weight_nonzero = weight_load ? (weight_in != 0) : stored_weight_nonzero;
+    assign data_nonzero = (data_in != 0);
+    assign mac_enable = token_valid_in && data_nonzero && active_weight_nonzero;
+    assign mac_result = mac_enable ? (psum_in + (data_in * active_weight)) : psum_in;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             stored_weight <= {WEIGHT_WIDTH{1'b0}};
+            stored_weight_nonzero <= 1'b0;
             token_valid_reg <= 1'b0;
             data_out_reg <= {DATA_WIDTH{1'b0}};
             psum_out_reg <= {ACC_WIDTH{1'b0}};
@@ -45,15 +51,12 @@ module dip_pe #(
         end else if (clk_enable) begin
             if (weight_load) begin
                 stored_weight <= weight_in;
+                stored_weight_nonzero <= (weight_in != 0);
             end
 
             if (token_valid_in) begin
                 data_out_reg <= data_in;
-                if (mac_enable) begin
-                    psum_out_reg <= mac_result;
-                end else begin
-                    psum_out_reg <= psum_in;
-                end
+                psum_out_reg <= mac_result;
             end
             token_valid_reg <= token_valid_in;
         end

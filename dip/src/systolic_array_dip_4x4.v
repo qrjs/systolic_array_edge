@@ -35,9 +35,10 @@ module systolic_array_dip_4x4 #(
     wire [DATA_WIDTH-1:0] pe_data_out  [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     wire [ACC_WIDTH-1:0]  pe_psum_out  [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     wire                  pe_valid_out [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
-    wire [ARRAY_SIZE*ARRAY_SIZE-1:0] pe_valid_bitmap;
+    wire [ARRAY_SIZE-1:0] row_active;
     wire [ARRAY_SIZE-1:0] bottom_row_valid;
     wire                  row_ready;
+    reg  [ARRAY_SIZE-1:0] weight_load_row;
 
     reg                   row_capture_valid_reg;
     reg [ACC_WIDTH*ARRAY_SIZE-1:0] row_capture_data_reg;
@@ -49,10 +50,22 @@ module systolic_array_dip_4x4 #(
 
     genvar row_idx;
     genvar col_idx;
+    integer               load_row_idx;
 
     assign stream_input_row_valid = input_row_valid | drain_valid_reg;
     assign stream_input_row_data = input_row_valid ? input_row_data :
                                    {(DATA_WIDTH*ARRAY_SIZE){1'b0}};
+
+    always @(*) begin
+        weight_load_row = {ARRAY_SIZE{1'b0}};
+        if (weight_row_valid) begin
+            for (load_row_idx = 0; load_row_idx < ARRAY_SIZE; load_row_idx = load_row_idx + 1) begin
+                if (weight_row_idx == load_row_idx[$clog2(ARRAY_SIZE)-1:0]) begin
+                    weight_load_row[load_row_idx] = 1'b1;
+                end
+            end
+        end
+    end
 
     generate
         for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin : gen_rows
@@ -80,7 +93,7 @@ module systolic_array_dip_4x4 #(
                     .rst_n(rst_n),
                     .flush(flush),
                     .clk_enable(clk_enable),
-                    .weight_load(weight_row_valid && (weight_row_idx == row_idx)),
+                    .weight_load(weight_load_row[row_idx]),
                     .weight_in(weight_row_data[((col_idx + 1) * WEIGHT_WIDTH) - 1 -: WEIGHT_WIDTH]),
                     .token_valid_in(pe_valid_in[row_idx][col_idx]),
                     .data_in(pe_data_in[row_idx][col_idx]),
@@ -89,8 +102,6 @@ module systolic_array_dip_4x4 #(
                     .data_out(pe_data_out[row_idx][col_idx]),
                     .psum_out(pe_psum_out[row_idx][col_idx])
                 );
-
-                assign pe_valid_bitmap[row_idx*ARRAY_SIZE + col_idx] = pe_valid_out[row_idx][col_idx];
             end
         end
     endgenerate
@@ -101,12 +112,22 @@ module systolic_array_dip_4x4 #(
         end
     endgenerate
 
+    generate
+        for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin : gen_row_activity
+            wire [ARRAY_SIZE-1:0] row_valid_vec;
+            for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin : gen_row_activity_cols
+                assign row_valid_vec[col_idx] = pe_valid_out[row_idx][col_idx];
+            end
+            assign row_active[row_idx] = |row_valid_vec;
+        end
+    endgenerate
+
     // 当底部一整行的 valid 同时为 1 时，说明一整行输出已经准备好。
     assign row_ready = &bottom_row_valid;
     assign busy_comb = weight_row_valid | input_row_valid | drain_valid_reg |
                        row_capture_valid_reg |
                        output_row_valid_reg |
-                       (|pe_valid_bitmap);
+                       (|row_active);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin

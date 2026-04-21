@@ -23,6 +23,7 @@ Environment overrides:
   ULTRA_CLK_PERIOD=<ns>
   CLK_PERIOD=<ns>          # shared fallback for both modes
   GATED_ARCH_LIST=<archs>  # mixed mode only, default: dip
+  DIP_COMPILE_PROFILE=<profile> # gated_default|gated_area|gated_ultra_area
 EOF
 }
 
