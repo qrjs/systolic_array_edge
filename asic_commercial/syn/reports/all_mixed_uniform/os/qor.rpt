@@ -1,18 +1,17 @@
 Information: Updating design information... (UID-85)
-Warning: Design 'os_core_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
  
 ****************************************
 Report : qor
 Design : os_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Tue Apr 21 10:40:39 2026
+Date   : Tue Apr 21 11:57:23 2026
 ****************************************
 
 
   Timing Path Group 'clk'
   -----------------------------------
-  Levels of Logic:              37.00
-  Critical Path Length:          4.91
+  Levels of Logic:              28.00
+  Critical Path Length:          4.89
   Critical Path Slack:           0.00
   Critical Path Clk Period:      5.00
   Total Negative Slack:          0.00
@@ -25,36 +24,36 @@ Date   : Tue Apr 21 10:40:39 2026
 
   Cell Count
   -----------------------------------
-  Hierarchical Cell Count:         73
-  Hierarchical Port Count:       6867
-  Leaf Cell Count:              15840
-  Buf/Inv Cell Count:            1347
-  Buf Cell Count:                 274
-  Inv Cell Count:                1073
+  Hierarchical Cell Count:         65
+  Hierarchical Port Count:       5806
+  Leaf Cell Count:              17911
+  Buf/Inv Cell Count:            2179
+  Buf Cell Count:                 184
+  Inv Cell Count:                1995
   CT Buf/Inv Cell Count:            0
-  Combinational Cell Count:     14065
-  Sequential Cell Count:         1775
+  Combinational Cell Count:     16919
+  Sequential Cell Count:          992
   Macro Count:                      0
   -----------------------------------
 
 
   Area
   -----------------------------------
-  Combinational Area:   160766.728570
-  Noncombinational Area: 28642.421199
-  Buf/Inv Area:           3866.688099
-  Total Buffer Area:           853.07
-  Total Inverter Area:        3013.62
+  Combinational Area:   165502.010520
+  Noncombinational Area: 16751.649757
+  Buf/Inv Area:           5999.716939
+  Total Buffer Area:           568.71
+  Total Inverter Area:        5431.00
   Macro/Black Box Area:      0.000000
   Net Area:                  0.000000
   -----------------------------------
-  Cell Area:            189409.149769
-  Design Area:          189409.149769
+  Cell Area:            182253.660277
+  Design Area:          182253.660277
 
 
   Design Rules
   -----------------------------------
-  Total Number of Nets:         20500
+  Total Number of Nets:         21691
   Nets With Violations:             0
   Max Trans Violations:             0
   Max Cap Violations:               0
@@ -65,12 +64,12 @@ Date   : Tue Apr 21 10:40:39 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                    7.82
-  Logic Optimization:                  7.92
-  Mapping Optimization:               75.01
+  Resource Sharing:                    9.83
+  Logic Optimization:                 22.34
+  Mapping Optimization:               77.99
   -----------------------------------------
-  Overall Compile Time:               93.53
-  Overall Compile Wall Clock Time:    96.84
+  Overall Compile Time:              113.31
+  Overall Compile Wall Clock Time:   114.54
 
   --------------------------------------------------------------------
 

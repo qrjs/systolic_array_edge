@@ -6,17 +6,15 @@ Report : timing
         -max_paths 1
 Design : dip_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Tue Apr 21 10:42:01 2026
+Date   : Tue Apr 21 12:01:47 2026
 ****************************************
-
- # A fanout number of 1000 was used for high fanout net computations.
 
 Operating Conditions: slow   Library: slow
 Wire Load Model Mode: top
 
-  Startpoint: clk_r_REG866_S1
-              (rising edge-triggered flip-flop clocked by clk)
-  Endpoint: DP_OP_279J1_132_8326/clk_r_REG599_S2
+  Startpoint: weight_row_idx[0]
+              (input port clocked by clk)
+  Endpoint: u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/psum_out_reg_reg[30]
             (rising edge-triggered flip-flop clocked by clk)
   Path Group: clk
   Path Type: max
@@ -25,57 +23,130 @@ Wire Load Model Mode: top
   --------------------------------------------------------------------------
   clock clk (rise edge)                                   0.00       0.00
   clock network delay (ideal)                             0.00       0.00
-  clk_r_REG866_S1/CK (DFFRQX2)                            0.00       0.00 r
-  clk_r_REG866_S1/Q (DFFRQX2)                             0.30       0.30 f
-  U2709/Y (NOR4X4)                                        0.14       0.44 r
-  U10271/Y (NAND4X4)                                      0.10       0.55 f
-  U8146/Y (INVX6)                                         0.07       0.62 r
-  U10287/Y (NOR2X4)                                       0.07       0.69 f
-  U10288/Y (XNOR2X4)                                      0.16       0.85 r
-  U10289/Y (NAND2X4)                                      0.12       0.97 f
-  U5246/Y (OAI22XL)                                       0.11       1.08 r
-  U10492/S (ADDFXL)                                       0.31       1.39 f
-  U10496/CO (ADDFXL)                                      0.27       1.66 f
-  U10506/S (ADDFXL)                                       0.29       1.94 f
-  U5444/Y (OR2XL)                                         0.17       2.12 f
-  U10501/Y (AOI21X1)                                      0.08       2.20 r
-  U3500/Y (OAI21X2)                                       0.05       2.25 f
-  U3267/Y (AOI21X1)                                       0.08       2.34 r
-  U2876/Y (INVX1)                                         0.06       2.40 f
-  U5464/Y (AOI21X1)                                       0.09       2.48 r
-  U10640/Y (OAI21X1)                                      0.07       2.55 f
-  U10642/Y (XNOR2X1)                                      0.06       2.61 r
-  U10643/Y (NOR2BX2)                                      0.10       2.71 r
-  U5626/Y (INVXL)                                         0.05       2.77 f
-  U1591/S (ADDFX1)                                        0.25       3.01 f
-  U2004/S (ADDFXL)                                        0.26       3.28 f
-  U1993/S (ADDFX1)                                        0.26       3.54 f
-  U4863/S (ADDFHX2)                                       0.16       3.70 r
-  U2757/Y (NOR2X1)                                        0.04       3.74 f
-  U1953/Y (NOR2X1)                                        0.06       3.80 r
-  U1845/Y (NAND2XL)                                       0.06       3.87 f
-  U10815/Y (OAI21X1)                                      0.08       3.95 r
-  U1862/Y (AOI21X1)                                       0.10       4.05 f
-  U10875/Y (OAI21X2)                                      0.10       4.14 r
-  U10885/Y (AOI21X2)                                      0.06       4.20 f
-  U4920/Y (OAI21X1)                                       0.09       4.30 r
-  U5017/Y (AOI21X2)                                       0.07       4.36 f
-  U10898/Y (OAI21X2)                                      0.08       4.45 r
-  U1861/Y (AOI21X1)                                       0.09       4.54 f
-  U10903/Y (OAI21X2)                                      0.10       4.64 r
-  U10904/Y (AO21X4)                                       0.09       4.73 r
-  U10905/CO (ADDFX1)                                      0.12       4.85 r
-  DP_OP_279J1_132_8326/clk_r_REG599_S2/D (DFFRQXL)        0.00       4.85 r
-  data arrival time                                                  4.85
+  input external delay                                    1.00       1.00 f
+  weight_row_idx[0] (in)                                  0.00       1.00 f
+  u_dip_array/weight_row_idx[0] (systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4)
+                                                          0.00       1.00 f
+  u_dip_array/U28/Y (CLKINVX40)                           0.01       1.01 r
+  u_dip_array/U26/Y (NAND3X8)                             0.05       1.06 f
+  u_dip_array/U27/Y (CLKINVX20)                           0.05       1.11 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/weight_load (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8)
+                                                          0.00       1.11 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/U34/Y (INVX6)
+                                                          0.04       1.15 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/U3/Y (INVX20)
+                                                          0.06       1.21 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/U24/Y (MXI2X6)
+                                                          0.07       1.28 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/U13/Y (CLKINVX8)
+                                                          0.05       1.33 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/B[14] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW02_mult_0)
+                                                          0.00       1.33 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U241/Y (INVX12)
+                                                          0.04       1.38 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U113/Y (NOR2X6)
+                                                          0.03       1.40 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U4/Y (INVX6)
+                                                          0.04       1.44 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U269/Y (XNOR2X4)
+                                                          0.08       1.52 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_2_12/CO (ADDFHX4)
+                                                          0.14       1.66 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_3_12/CO (ADDFHX4)
+                                                          0.16       1.82 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_4_12/CO (ADDFHX4)
+                                                          0.16       1.99 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_5_12/CO (ADDFHX4)
+                                                          0.16       2.15 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_6_12/CO (ADDFHX4)
+                                                          0.16       2.32 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_7_12/CO (ADDFHX4)
+                                                          0.16       2.48 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_8_12/CO (ADDFHX4)
+                                                          0.16       2.65 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_9_12/CO (ADDFHX4)
+                                                          0.16       2.81 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_10_12/CO (ADDFHX4)
+                                                          0.16       2.97 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_11_12/CO (ADDFHX4)
+                                                          0.16       3.14 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_12_12/CO (ADDFHX4)
+                                                          0.16       3.30 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_13_12/S (ADDFHX4)
+                                                          0.15       3.45 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S2_14_11/S (ADDFHX4)
+                                                          0.14       3.60 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/S4_10/S (ADDFHX4)
+                                                          0.15       3.75 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U164/Y (INVX3)
+                                                          0.03       3.77 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U185/Y (CLKNAND2X4)
+                                                          0.03       3.80 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/U316/Y (NAND2X4)
+                                                          0.04       3.84 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/A[23] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW01_add_6)
+                                                          0.00       3.84 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U124/Y (OR2X8)
+                                                          0.09       3.93 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U6/Y (NAND2X6)
+                                                          0.04       3.97 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U88/Y (INVX4)
+                                                          0.02       3.99 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U43/Y (AND2X6)
+                                                          0.06       4.05 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U87/Y (AOI21X4)
+                                                          0.05       4.11 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U130/Y (NAND2X2)
+                                                          0.05       4.15 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U5/Y (CLKINVX4)
+                                                          0.03       4.18 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U66/Y (NAND3X4)
+                                                          0.05       4.23 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/U131/Y (XOR2X4)
+                                                          0.07       4.31 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/FS_1/SUM[25] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW01_add_6)
+                                                          0.00       4.31 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_33/PRODUCT[27] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW02_mult_0)
+                                                          0.00       4.31 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_add_33_aco/A[27] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW02_mult_1)
+                                                          0.00       4.31 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_add_33_aco/U35/Y (AND2X8)
+                                                          0.08       4.39 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/mult_add_33_aco/PRODUCT[27] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW02_mult_1)
+                                                          0.00       4.39 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/B[27] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW01_add_5)
+                                                          0.00       4.39 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U57/Y (INVX12)
+                                                          0.03       4.42 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U37/Y (NAND2X4)
+                                                          0.03       4.45 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U47/Y (CLKAND2X8)
+                                                          0.07       4.52 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U48/Y (AOI21X4)
+                                                          0.06       4.58 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U176/Y (OAI211X2)
+                                                          0.07       4.65 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U95/Y (OAI2BB1X4)
+                                                          0.09       4.74 f
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/U89/Y (XOR2X4)
+                                                          0.05       4.79 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/add_33_aco/SUM[30] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW01_add_5)
+                                                          0.00       4.79 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/U33/Y (NOR2BX4)
+                                                          0.08       4.87 r
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/psum_out_reg_reg[30]/D (DFFSRX4)
+                                                          0.00       4.87 r
+  data arrival time                                                  4.87
 
   clock clk (rise edge)                                   5.00       5.00
   clock network delay (ideal)                             0.00       5.00
-  DP_OP_279J1_132_8326/clk_r_REG599_S2/CK (DFFRQXL)       0.00       5.00 r
-  library setup time                                     -0.15       4.85
-  data required time                                                 4.85
+  u_dip_array/gen_rows[2].gen_cols[0].u_dip_pe/psum_out_reg_reg[30]/CK (DFFSRX4)
+                                                          0.00       5.00 r
+  library setup time                                     -0.13       4.87
+  data required time                                                 4.87
   --------------------------------------------------------------------------
-  data required time                                                 4.85
-  data arrival time                                                 -4.85
+  data required time                                                 4.87
+  data arrival time                                                 -4.87
   --------------------------------------------------------------------------
   slack (MET)                                                        0.00
 

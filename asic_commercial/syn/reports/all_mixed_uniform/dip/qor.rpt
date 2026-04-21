@@ -1,20 +1,19 @@
 Information: Updating design information... (UID-85)
-Warning: Design 'dip_core_top_4x4' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
 Warning: A non-unate path in clock network for clock 'clk'
- from pin 'clk_gate_u_dip_array/gen_rows[0].gen_cols[1].u_dip_pe/token_valid_reg_reg/latch/CKcheckpin1' is detected. (TIM-052)
+ from pin 'u_dip_array/gen_rows[0].gen_cols[0].u_dip_pe/clk_gate_stored_weight_reg/latch/CKcheckpin1' is detected. (TIM-052)
  
 ****************************************
 Report : qor
 Design : dip_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Tue Apr 21 10:42:00 2026
+Date   : Tue Apr 21 12:01:47 2026
 ****************************************
 
 
   Timing Path Group 'clk'
   -----------------------------------
-  Levels of Logic:              38.00
-  Critical Path Length:          4.85
+  Levels of Logic:              46.00
+  Critical Path Length:          3.87
   Critical Path Slack:           0.00
   Critical Path Clk Period:      5.00
   Total Negative Slack:          0.00
@@ -27,36 +26,36 @@ Date   : Tue Apr 21 10:42:00 2026
 
   Cell Count
   -----------------------------------
-  Hierarchical Cell Count:         14
-  Hierarchical Port Count:         56
-  Leaf Cell Count:              13503
-  Buf/Inv Cell Count:            1169
-  Buf Cell Count:                  60
-  Inv Cell Count:                1109
+  Hierarchical Cell Count:        116
+  Hierarchical Port Count:       7462
+  Leaf Cell Count:              23755
+  Buf/Inv Cell Count:            3466
+  Buf Cell Count:                 218
+  Inv Cell Count:                3248
   CT Buf/Inv Cell Count:            0
-  Combinational Cell Count:     12280
-  Sequential Cell Count:         1223
+  Combinational Cell Count:     22420
+  Sequential Cell Count:         1335
   Macro Count:                      0
   -----------------------------------
 
 
   Area
   -----------------------------------
-  Combinational Area:    76229.496243
-  Noncombinational Area: 18855.043283
-  Buf/Inv Area:           2631.182482
-  Total Buffer Area:           243.43
-  Total Inverter Area:        2387.75
+  Combinational Area:   207117.594226
+  Noncombinational Area: 21170.116884
+  Buf/Inv Area:           9823.363439
+  Total Buffer Area:           821.32
+  Total Inverter Area:        9002.05
   Macro/Black Box Area:      0.000000
   Net Area:                  0.000000
   -----------------------------------
-  Cell Area:             95084.539526
-  Design Area:           95084.539526
+  Cell Area:            228287.711110
+  Design Area:          228287.711110
 
 
   Design Rules
   -----------------------------------
-  Total Number of Nets:         15572
+  Total Number of Nets:         26925
   Nets With Violations:             0
   Max Trans Violations:             0
   Max Cap Violations:               0
@@ -67,12 +66,12 @@ Date   : Tue Apr 21 10:42:00 2026
 
   Compile CPU Statistics
   -----------------------------------------
-  Resource Sharing:                   20.14
-  Logic Optimization:                 10.54
-  Mapping Optimization:               24.24
+  Resource Sharing:                    9.33
+  Logic Optimization:                 37.44
+  Mapping Optimization:              207.64
   -----------------------------------------
-  Overall Compile Time:               75.65
-  Overall Compile Wall Clock Time:    76.36
+  Overall Compile Time:              257.52
+  Overall Compile Wall Clock Time:   258.45
 
   --------------------------------------------------------------------
 
