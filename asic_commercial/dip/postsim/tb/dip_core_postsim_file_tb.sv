@@ -33,8 +33,8 @@ module dip_core_postsim_file_tb;
     integer case_cycles;
     string input_path = "";
     string expected_path = "";
-    string sdf_path = "";
-    string vcd_path = "";
+    reg [1023:0] sdf_path;
+    reg [1023:0] vcd_path;
     bit soft_fail_mode;
 
     reg signed [DATA_WIDTH-1:0] a_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
@@ -91,6 +91,8 @@ module dip_core_postsim_file_tb;
     end
 
     initial begin
+        sdf_path = "";
+        vcd_path = "";
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
                 $sdf_annotate(sdf_path, dut, , , "MAXIMUM");

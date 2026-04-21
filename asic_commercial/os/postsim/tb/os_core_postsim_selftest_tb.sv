@@ -25,7 +25,7 @@ module os_core_postsim_selftest_tb;
 
     integer i;
     integer failures;
-    string sdf_path = "";
+    reg [1023:0] sdf_path;
 
     os_core_top_4x4 dut (
         .clk(clk),
@@ -49,6 +49,7 @@ module os_core_postsim_selftest_tb;
     always #5 clk = ~clk;
 
     initial begin
+        sdf_path = "";
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
                 $sdf_annotate(sdf_path, dut, , , "MAXIMUM");
