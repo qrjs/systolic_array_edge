@@ -2,7 +2,7 @@
 ****************************************
 check_design summary:
 Version:     O-2018.06-SP1
-Date:        Tue Apr 21 11:57:27 2026
+Date:        Tue Apr 21 12:53:08 2026
 ****************************************
 
                    Name                                            Total
@@ -16,7 +16,7 @@ Nets                                                               64
     Unloaded nets (LINT-2)                                         64
 --------------------------------------------------------------------------------
 
-Warning: In design 'dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32', cell 'I_3' does not drive any nets. (LINT-1)
+Warning: In design 'dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32', cell 'C573' does not drive any nets. (LINT-1)
 Warning: In design 'dip_core_top_4x4', net 'u_dip_array/pe_data_out[3][0][0]' driven by pin 'u_dip_array/gen_rows[3].gen_cols[0].u_dip_pe/data_out[0]' has no loads. (LINT-2)
 Warning: In design 'dip_core_top_4x4', net 'u_dip_array/pe_data_out[3][0][1]' driven by pin 'u_dip_array/gen_rows[3].gen_cols[0].u_dip_pe/data_out[1]' has no loads. (LINT-2)
 Warning: In design 'dip_core_top_4x4', net 'u_dip_array/pe_data_out[3][0][2]' driven by pin 'u_dip_array/gen_rows[3].gen_cols[0].u_dip_pe/data_out[2]' has no loads. (LINT-2)

@@ -4,9 +4,17 @@ Report : constraint
         -all_violators
 Design : dip_core_top_4x4
 Version: O-2018.06-SP1
-Date   : Tue Apr 21 12:01:49 2026
+Date   : Tue Apr 21 12:58:25 2026
 ****************************************
 
-This design has no violated constraints.
+
+   max_area
+
+                             Required        Actual
+   Design                      Area           Area           Slack
+   -----------------------------------------------------------------
+   dip_core_top_4x4             0.00       211480.31      -211480.31
+                                                                    (VIOLATED)
+
 
 1
