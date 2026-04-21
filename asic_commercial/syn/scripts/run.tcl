@@ -15,6 +15,7 @@
 #   DIP_COMPILE_PROFILE
 #                   gated_default | gated_area | gated_ultra_area | gated_auto
 #                   Default: gated_auto
+#   ARCH_IMPL_STYLE legacy | std. Default: legacy
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
 #   DC_LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
 #   DC_TARGET_LIBRARY  Default: slow.db
@@ -97,26 +98,51 @@ proc split_arch_list {raw_arch_list} {
 }
 
 proc arch_config {repo_root arch_name} {
+    set arch_impl_style [string tolower [env_or_default ARCH_IMPL_STYLE "legacy"]]
     switch -- $arch_name {
         ws {
+            if {$arch_impl_style eq "std"} {
+                return [dict create \
+                    top ws_core_std_top_4x4 \
+                    filelist [file join $repo_root asic ws filelist_std.f] \
+                    sdc [file join $repo_root asic ws constraints ws_core_std_top_4x4.sdc]]
+            }
             return [dict create \
                 top ws_core_top_4x4 \
                 filelist [file join $repo_root asic ws filelist.f] \
                 sdc [file join $repo_root asic ws constraints ws_core_top_4x4.sdc]]
         }
         is {
+            if {$arch_impl_style eq "std"} {
+                return [dict create \
+                    top is_core_std_top_4x4 \
+                    filelist [file join $repo_root asic is filelist_std.f] \
+                    sdc [file join $repo_root asic is constraints is_core_std_top_4x4.sdc]]
+            }
             return [dict create \
                 top is_core_top_4x4 \
                 filelist [file join $repo_root asic is filelist.f] \
                 sdc [file join $repo_root asic is constraints is_core_top_4x4.sdc]]
         }
         os {
+            if {$arch_impl_style eq "std"} {
+                return [dict create \
+                    top os_core_std_top_4x4 \
+                    filelist [file join $repo_root asic os filelist_std.f] \
+                    sdc [file join $repo_root asic os constraints os_core_std_top_4x4.sdc]]
+            }
             return [dict create \
                 top os_core_top_4x4 \
                 filelist [file join $repo_root asic os filelist.f] \
                 sdc [file join $repo_root asic os constraints os_core_top_4x4.sdc]]
         }
         dip {
+            if {$arch_impl_style eq "std"} {
+                return [dict create \
+                    top dip_core_std_top_4x4 \
+                    filelist [file join $repo_root asic dip filelist_std.f] \
+                    sdc [file join $repo_root asic dip constraints dip_core_std_top_4x4.sdc]]
+            }
             return [dict create \
                 top dip_core_top_4x4 \
                 filelist [file join $repo_root asic dip filelist.f] \
@@ -557,6 +583,7 @@ set ARCH_LIST        [split_arch_list [env_or_default ARCH_LIST "ws is os dip"]]
 set RUN_MODE         [string tolower [env_or_default RUN_MODE "base"]]
 set GATED_ARCH_LIST  [split_arch_list [env_or_default GATED_ARCH_LIST [expr {$RUN_MODE eq "mixed" ? "dip" : ""}]]]
 set DIP_COMPILE_PROFILE [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_auto"]]
+set ARCH_IMPL_STYLE [string tolower [env_or_default ARCH_IMPL_STYLE "legacy"]]
 set CONSTRAINT_MODE  [string tolower [env_or_default CONSTRAINT_MODE "uniform"]]
 set REPORT_ROOT      [file normalize [env_or_default REPORT_ROOT [file join $SYN_ROOT reports]]]
 set MAPPED_ROOT      [file normalize [env_or_default MAPPED_ROOT [file join $SYN_ROOT mapped]]]
@@ -593,6 +620,7 @@ if {$DRY_RUN eq "1"} {
         puts "  DIP_COMPILE_PROFILE = $DIP_COMPILE_PROFILE"
     }
     puts "  ACTIVE_MODES    = $ACTIVE_RUN_MODES"
+    puts "  ARCH_IMPL_STYLE = $ARCH_IMPL_STYLE"
     puts "  CONSTRAINT_MODE = $CONSTRAINT_MODE"
     puts "  LIB_SEARCH_PATH = $dryrun_lib_search_path"
     puts "  TARGET_LIBRARY  = $dryrun_target_library"
