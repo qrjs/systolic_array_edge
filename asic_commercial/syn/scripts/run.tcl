@@ -13,8 +13,8 @@
 #   RUN_MODE        base | ultra | compare | mixed. Default: base
 #   GATED_ARCH_LIST Only used by mixed mode. Default: dip
 #   DIP_COMPILE_PROFILE
-#                   gated_default | gated_area | gated_ultra_area
-#                   Default: gated_area
+#                   gated_default | gated_area | gated_ultra_area | gated_auto
+#                   Default: gated_auto
 #   CONSTRAINT_MODE uniform | sdc. Default: uniform
 #   DC_LIB_SEARCH_PATH Default: /home/ic_libs/TSMC.90/aci/sc-x/synopsys
 #   DC_TARGET_LIBRARY  Default: slow.db
@@ -230,6 +230,65 @@ proc apply_uniform_constraints {clk_name clk_period} {
     set_false_path -from [get_ports rst_n]
 }
 
+proc apply_constraints {constraint_mode sdc_path clk_period} {
+    if {$constraint_mode eq "sdc"} {
+        read_sdc $sdc_path
+    } elseif {$constraint_mode eq "uniform"} {
+        apply_uniform_constraints clk $clk_period
+    } else {
+        error "Unsupported CONSTRAINT_MODE '$constraint_mode'"
+    }
+}
+
+proc load_arch_design {top_name rtl_files check_path constraint_mode sdc_path clk_period} {
+    remove_design -all
+    configure_libraries
+    analyze -format sverilog $rtl_files
+    elaborate $top_name
+    current_design $top_name
+    link
+    check_design > $check_path
+    apply_constraints $constraint_mode $sdc_path $clk_period
+}
+
+proc numeric_metric_or_inf {value} {
+    if {[string is double -strict $value]} {
+        return $value
+    }
+    return 1.0e30
+}
+
+proc profile_beats_best {best_timing best_area best_dynamic candidate_timing candidate_area candidate_dynamic} {
+    if {$best_timing eq ""} {
+        return 1
+    }
+
+    set best_met [expr {$best_timing eq "MET"}]
+    set candidate_met [expr {$candidate_timing eq "MET"}]
+    if {$candidate_met && !$best_met} {
+        return 1
+    }
+    if {$best_met && !$candidate_met} {
+        return 0
+    }
+
+    set best_area_num [numeric_metric_or_inf $best_area]
+    set candidate_area_num [numeric_metric_or_inf $candidate_area]
+    if {$candidate_area_num < $best_area_num} {
+        return 1
+    }
+    if {$candidate_area_num > $best_area_num} {
+        return 0
+    }
+
+    set best_dynamic_num [numeric_metric_or_inf $best_dynamic]
+    set candidate_dynamic_num [numeric_metric_or_inf $candidate_dynamic]
+    if {$candidate_dynamic_num < $best_dynamic_num} {
+        return 1
+    }
+    return 0
+}
+
 proc resolve_clk_period {actual_run_mode} {
     set shared_clk_period [env_or_default CLK_PERIOD ""]
     if {$actual_run_mode eq "base"} {
@@ -254,9 +313,7 @@ proc resolve_arch_run_mode {global_run_mode gated_arch_list arch_name} {
     return $global_run_mode
 }
 
-proc run_dip_gated_profile {gate_path} {
-    set dip_compile_profile [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_area"]]
-
+proc compile_dip_gated_candidate {dip_compile_profile gate_path} {
     switch -- $dip_compile_profile {
         gated_default {
             set_clock_gating_style -minimum_bitwidth 4 \
@@ -282,11 +339,75 @@ proc run_dip_gated_profile {gate_path} {
             compile_ultra -gate_clock
         }
         default {
-            error "Unsupported DIP_COMPILE_PROFILE '$dip_compile_profile' (expected gated_default, gated_area, or gated_ultra_area)"
+            error "Unsupported DIP gated candidate '$dip_compile_profile' (expected gated_default, gated_area, or gated_ultra_area)"
         }
     }
 
     report_clock_gating > $gate_path
+}
+
+proc run_dip_gated_profile {top_name rtl_files arch_report_dir check_path constraint_mode sdc_path clk_period} {
+    set dip_compile_profile [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_auto"]]
+
+    if {$dip_compile_profile ne "gated_auto"} {
+        load_arch_design $top_name $rtl_files $check_path $constraint_mode $sdc_path $clk_period
+        compile_dip_gated_candidate $dip_compile_profile [file join $arch_report_dir gating_check.rpt]
+        return
+    }
+
+    set candidate_profiles {gated_area gated_ultra_area}
+    set best_profile ""
+    set best_timing ""
+    set best_area ""
+    set best_dynamic ""
+    set profile_trial_root [file join $arch_report_dir profile_trials]
+    file mkdir $profile_trial_root
+
+    foreach candidate_profile $candidate_profiles {
+        set candidate_dir [file join $profile_trial_root $candidate_profile]
+        file mkdir $candidate_dir
+
+        set candidate_check [file join $candidate_dir check_design.rpt]
+        set candidate_gate [file join $candidate_dir gating_check.rpt]
+        set candidate_area [file join $candidate_dir area.rpt]
+        set candidate_power [file join $candidate_dir power.rpt]
+        set candidate_timing [file join $candidate_dir timing.rpt]
+
+        load_arch_design $top_name $rtl_files $candidate_check $constraint_mode $sdc_path $clk_period
+        compile_dip_gated_candidate $candidate_profile $candidate_gate
+        report_area > $candidate_area
+        report_power > $candidate_power
+        report_timing > $candidate_timing
+
+        set candidate_area_value [parse_area_report $candidate_area]
+        set candidate_power_dict [parse_power_report $candidate_power]
+        set candidate_timing_dict [parse_timing_report $candidate_timing]
+        set candidate_dynamic_value [dict get $candidate_power_dict dynamic_mw]
+        set candidate_timing_status [dict get $candidate_timing_dict timing_status]
+
+        puts "DIP gated candidate $candidate_profile => timing=$candidate_timing_status area=$candidate_area_value dynamic=$candidate_dynamic_value"
+
+        if {[profile_beats_best \
+                $best_timing \
+                $best_area \
+                $best_dynamic \
+                $candidate_timing_status \
+                $candidate_area_value \
+                $candidate_dynamic_value]} {
+            set best_profile $candidate_profile
+            set best_timing $candidate_timing_status
+            set best_area $candidate_area_value
+            set best_dynamic $candidate_dynamic_value
+        }
+    }
+
+    if {$best_profile eq ""} {
+        error "Failed to select a DIP gated compile profile"
+    }
+
+    puts "Selected DIP compile profile: $best_profile (timing=$best_timing area=$best_area dynamic=$best_dynamic)"
+    load_arch_design $top_name $rtl_files $check_path $constraint_mode $sdc_path $clk_period
+    compile_dip_gated_candidate $best_profile [file join $arch_report_dir gating_check.rpt]
 }
 
 proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constraint_mode clk_period result_group} {
@@ -320,41 +441,34 @@ proc run_one_arch {repo_root report_root mapped_root arch_name run_mode constrai
     puts "    clk_period(ns) = $clk_period"
     puts "===================================================================="
 
-    remove_design -all
-    configure_libraries
-    analyze -format sverilog $rtl_files
-    elaborate $top_name
-    current_design $top_name
-    link
-    check_design > $check_path
-
-    if {$constraint_mode eq "sdc"} {
-        read_sdc [dict get $cfg sdc]
-    } elseif {$constraint_mode eq "uniform"} {
-        apply_uniform_constraints clk $clk_period
+    if {$run_mode eq "gated" && $arch_name eq "dip"} {
+        run_dip_gated_profile \
+            $top_name \
+            $rtl_files \
+            $arch_report_dir \
+            $check_path \
+            $constraint_mode \
+            [dict get $cfg sdc] \
+            $clk_period
     } else {
-        error "Unsupported CONSTRAINT_MODE '$constraint_mode'"
-    }
+        load_arch_design $top_name $rtl_files $check_path $constraint_mode [dict get $cfg sdc] $clk_period
 
-    if {$run_mode eq "ultra"} {
-        set_clock_gating_style -minimum_bitwidth 4 \
-                               -positive_edge_logic {integrated} \
-                               -control_point before
-        insert_clock_gating
-        set_optimize_registers true
-        set_max_area 0
-        compile_ultra -gate_clock -retime -timing_high_effort_script
-        report_clock_gating > $gate_path
-    } elseif {$run_mode eq "gated"} {
-        if {$arch_name eq "dip"} {
-            run_dip_gated_profile $gate_path
-        } else {
+        if {$run_mode eq "ultra"} {
+            set_clock_gating_style -minimum_bitwidth 4 \
+                                   -positive_edge_logic {integrated} \
+                                   -control_point before
+            insert_clock_gating
+            set_optimize_registers true
+            set_max_area 0
+            compile_ultra -gate_clock -retime -timing_high_effort_script
+            report_clock_gating > $gate_path
+        } elseif {$run_mode eq "gated"} {
             compile
+        } elseif {$run_mode eq "base"} {
+            compile
+        } else {
+            error "Unsupported RUN_MODE '$run_mode' (expected base, gated, or ultra)"
         }
-    } elseif {$run_mode eq "base"} {
-        compile
-    } else {
-        error "Unsupported RUN_MODE '$run_mode' (expected base, gated, or ultra)"
     }
 
     report_qor > $qor_path
@@ -442,7 +556,7 @@ set REPO_ROOT        [file normalize [file join $SCRIPT_DIR .. .. ..]]
 set ARCH_LIST        [split_arch_list [env_or_default ARCH_LIST "ws is os dip"]]
 set RUN_MODE         [string tolower [env_or_default RUN_MODE "base"]]
 set GATED_ARCH_LIST  [split_arch_list [env_or_default GATED_ARCH_LIST [expr {$RUN_MODE eq "mixed" ? "dip" : ""}]]]
-set DIP_COMPILE_PROFILE [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_area"]]
+set DIP_COMPILE_PROFILE [string tolower [env_or_default DIP_COMPILE_PROFILE "gated_auto"]]
 set CONSTRAINT_MODE  [string tolower [env_or_default CONSTRAINT_MODE "uniform"]]
 set REPORT_ROOT      [file normalize [env_or_default REPORT_ROOT [file join $SYN_ROOT reports]]]
 set MAPPED_ROOT      [file normalize [env_or_default MAPPED_ROOT [file join $SYN_ROOT mapped]]]

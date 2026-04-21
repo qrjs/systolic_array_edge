@@ -64,7 +64,8 @@ Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`
 Note on flow split:
 
 - `asic_commercial/syn/` remains the centralized four-architecture PPA comparison flow.
-- `asic_commercial/ws|is|os|dip/` use standard-API wrappers so `VCS` frontsim/postsim can run the same file-vector workload cleanly.
+- `asic_commercial/ws|is|os/` keep standard-API wrappers for clean file-vector frontsim/postsim reuse.
+- `asic_commercial/dip/` is centered on the core-top handoff wrapper `dip_core_top_4x4`, with dedicated file-vector TBs that collect row-stream outputs.
 
 ## Standardized multi-architecture synthesis
 
@@ -139,3 +140,10 @@ the compile strategy per architecture:
 
 This is useful for side-by-side comparisons such as `dip` with clock gating
 versus `ws/is/os` at normal synthesis under the same `200 MHz` target.
+
+For `dip`, the default `DIP_COMPILE_PROFILE=gated_auto` benchmarks `gated_area`
+and `gated_ultra_area` at the same constraint point, then prefers:
+
+- timing `MET`
+- lower total cell area
+- lower dynamic power as the tiebreaker

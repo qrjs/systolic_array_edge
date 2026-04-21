@@ -117,6 +117,7 @@ module standard_dip_file_tb;
             input_row_valid = 1'b0;
             input_row_data = '0;
             @(posedge clk);
+            @(negedge clk);
         end
 
         weight_row_idx = '0;
@@ -125,6 +126,7 @@ module standard_dip_file_tb;
         input_row_data = {a_matrix[0][3], a_matrix[0][2], a_matrix[0][1], a_matrix[0][0]};
         launch_cycle = cycle_count + 1;
         @(posedge clk);
+        @(negedge clk);
 
         weight_row_valid = 1'b0;
         weight_row_data = '0;
@@ -133,6 +135,7 @@ module standard_dip_file_tb;
             input_row_valid = 1'b1;
             input_row_data = {a_matrix[row_idx][3], a_matrix[row_idx][2], a_matrix[row_idx][1], a_matrix[row_idx][0]};
             @(posedge clk);
+            @(negedge clk);
         end
 
         input_row_valid = 1'b0;

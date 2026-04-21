@@ -5,6 +5,7 @@ module dip_core_postsim_file_tb;
     localparam integer WEIGHT_WIDTH = 16;
     localparam integer ACC_WIDTH = 32;
     localparam integer ARRAY_SIZE = 4;
+    localparam integer ROW_COUNT_WIDTH = $clog2(ARRAY_SIZE + 1);
 
     reg clk;
     reg rst_n;
@@ -16,12 +17,11 @@ module dip_core_postsim_file_tb;
     reg input_row_valid;
     reg [DATA_WIDTH*ARRAY_SIZE-1:0] input_row_data;
 
-    wire result_valid;
-    wire [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] result_matrix;
+    wire output_row_valid;
+    wire [ACC_WIDTH*ARRAY_SIZE-1:0] output_row_data;
     wire busy;
 
-    reg result_valid_q;
-    reg [ACC_WIDTH*ARRAY_SIZE*ARRAY_SIZE-1:0] result_matrix_q;
+    reg [ROW_COUNT_WIDTH-1:0] captured_rows;
 
     integer row_idx;
     integer col_idx;
@@ -41,10 +41,11 @@ module dip_core_postsim_file_tb;
     reg signed [WEIGHT_WIDTH-1:0] b_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     reg signed [WEIGHT_WIDTH-1:0] b_rot    [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
     reg signed [ACC_WIDTH-1:0] expected_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
+    reg signed [ACC_WIDTH-1:0] captured_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
 
     `include "tb/common/txt_matrix_tasks.svh"
 
-    dip_core_std_top_4x4 dut (
+    dip_core_top_4x4 dut (
         .clk(clk),
         .rst_n(rst_n),
         .flush(flush),
@@ -54,8 +55,8 @@ module dip_core_postsim_file_tb;
         .weight_row_data(weight_row_data),
         .input_row_valid(input_row_valid),
         .input_row_data(input_row_data),
-        .result_valid(result_valid),
-        .result_matrix(result_matrix),
+        .output_row_valid(output_row_valid),
+        .output_row_data(output_row_data),
         .busy(busy)
     );
 
@@ -63,13 +64,29 @@ module dip_core_postsim_file_tb;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            result_valid_q <= 1'b0;
-            result_matrix_q <= '0;
+            captured_rows <= '0;
             cycle_count <= 0;
+            for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
+                for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
+                    captured_matrix[row_idx][col_idx] <= '0;
+                end
+            end
         end else begin
-            result_valid_q <= result_valid;
-            result_matrix_q <= result_matrix;
             cycle_count <= cycle_count + 1;
+            if (flush) begin
+                captured_rows <= '0;
+                for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
+                    for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
+                        captured_matrix[row_idx][col_idx] <= '0;
+                    end
+                end
+            end else if (output_row_valid && (captured_rows < ARRAY_SIZE)) begin
+                for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
+                    captured_matrix[captured_rows][col_idx] <=
+                        $signed(output_row_data[((col_idx + 1) * ACC_WIDTH) - 1 -: ACC_WIDTH]);
+                end
+                captured_rows <= captured_rows + {{(ROW_COUNT_WIDTH-1){1'b0}}, 1'b1};
+            end
         end
     end
 
@@ -114,8 +131,8 @@ module dip_core_postsim_file_tb;
 
         read_input_txt(input_path);
         read_expected_txt(expected_path);
-        print_case_context("DIP_GATE", input_path, expected_path);
-        report_zero_skip_stats("DIP_GATE");
+        print_case_context("DIP_CORE", input_path, expected_path);
+        report_zero_skip_stats("DIP_CORE");
 
         for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
             for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
@@ -133,6 +150,7 @@ module dip_core_postsim_file_tb;
             input_row_valid = 1'b0;
             input_row_data = '0;
             @(posedge clk);
+            @(negedge clk);
         end
 
         weight_row_idx = '0;
@@ -141,6 +159,7 @@ module dip_core_postsim_file_tb;
         input_row_data = {a_matrix[0][3], a_matrix[0][2], a_matrix[0][1], a_matrix[0][0]};
         launch_cycle = cycle_count + 1;
         @(posedge clk);
+        @(negedge clk);
 
         weight_row_valid = 1'b0;
         weight_row_data = '0;
@@ -149,36 +168,37 @@ module dip_core_postsim_file_tb;
             input_row_valid = 1'b1;
             input_row_data = {a_matrix[row_idx][3], a_matrix[row_idx][2], a_matrix[row_idx][1], a_matrix[row_idx][0]};
             @(posedge clk);
+            @(negedge clk);
         end
 
         input_row_valid = 1'b0;
         input_row_data = '0;
 
-        while (!result_valid_q && (timeout < 256)) begin
+        while ((captured_rows < ARRAY_SIZE) && (timeout < 256)) begin
             @(posedge clk);
             timeout = timeout + 1;
         end
 
-        if (!result_valid_q) begin
+        if (captured_rows < ARRAY_SIZE) begin
             if (soft_fail_mode) begin
-                $display("[DIP_GATE][FAIL] %0s reason=timeout", input_path);
+                $display("[DIP_CORE][FAIL] %0s reason=timeout", input_path);
                 $finish;
             end else begin
-                $fatal(1, "[DIP_GATE] timed out waiting for result_valid");
+                $fatal(1, "[DIP_CORE] timed out waiting for output rows");
             end
         end
 
         done_cycle = cycle_count;
         case_cycles = done_cycle - launch_cycle;
-        $display("[DIP_GATE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
+        $display("[DIP_CORE][CASE_METRIC] launch_cycle=%0d done_cycle=%0d cycles=%0d", launch_cycle, done_cycle, case_cycles);
 
         @(posedge clk);
 
         for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
             for (col_idx = 0; col_idx < ARRAY_SIZE; col_idx = col_idx + 1) begin
                 reg signed [ACC_WIDTH-1:0] observed;
-                observed = result_matrix_q[((row_idx * ARRAY_SIZE + col_idx + 1) * ACC_WIDTH) - 1 -: ACC_WIDTH];
-                report_cell_compare("DIP_GATE", row_idx, col_idx, expected_matrix[row_idx][col_idx], observed);
+                observed = captured_matrix[row_idx][col_idx];
+                report_cell_compare("DIP_CORE", row_idx, col_idx, expected_matrix[row_idx][col_idx], observed);
                 if (observed !== expected_matrix[row_idx][col_idx]) begin
                     failures = failures + 1;
                 end
@@ -186,13 +206,13 @@ module dip_core_postsim_file_tb;
         end
 
         if (failures == 0) begin
-            $display("[DIP_GATE][PASS] %0s", input_path);
+            $display("[DIP_CORE][PASS] %0s", input_path);
             $finish;
         end else if (soft_fail_mode) begin
-            $display("[DIP_GATE][FAIL] %0s failures=%0d", input_path, failures);
+            $display("[DIP_CORE][FAIL] %0s failures=%0d", input_path, failures);
             $finish;
         end else begin
-            $fatal(1, "[DIP_GATE] failures=%0d", failures);
+            $fatal(1, "[DIP_CORE] failures=%0d", failures);
         end
     end
 endmodule

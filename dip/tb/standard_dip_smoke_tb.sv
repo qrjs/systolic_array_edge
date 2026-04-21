@@ -114,7 +114,7 @@ module standard_dip_smoke_tb;
         end
     endtask
 
-    task drive_case;
+    task drive_case_overlap;
         begin
             weight_row_valid = 1'b1;
             for (row_idx = ARRAY_SIZE - 1; row_idx > 0; row_idx = row_idx - 1) begin
@@ -123,6 +123,7 @@ module standard_dip_smoke_tb;
                 input_row_valid = 1'b0;
                 input_row_data = '0;
                 @(posedge clk);
+                @(negedge clk);
             end
 
             weight_row_idx = '0;
@@ -130,6 +131,7 @@ module standard_dip_smoke_tb;
             input_row_valid = 1'b1;
             input_row_data = {a_matrix[0][3], a_matrix[0][2], a_matrix[0][1], a_matrix[0][0]};
             @(posedge clk);
+            @(negedge clk);
 
             weight_row_valid = 1'b0;
             weight_row_data = '0;
@@ -138,6 +140,34 @@ module standard_dip_smoke_tb;
                 input_row_valid = 1'b1;
                 input_row_data = {a_matrix[row_idx][3], a_matrix[row_idx][2], a_matrix[row_idx][1], a_matrix[row_idx][0]};
                 @(posedge clk);
+                @(negedge clk);
+            end
+
+            input_row_valid = 1'b0;
+            input_row_data = '0;
+        end
+    endtask
+
+    task drive_case_no_overlap;
+        begin
+            weight_row_valid = 1'b1;
+            for (row_idx = ARRAY_SIZE - 1; row_idx >= 0; row_idx = row_idx - 1) begin
+                weight_row_idx = row_idx[$clog2(ARRAY_SIZE)-1:0];
+                weight_row_data = {b_rot[row_idx][3], b_rot[row_idx][2], b_rot[row_idx][1], b_rot[row_idx][0]};
+                input_row_valid = 1'b0;
+                input_row_data = '0;
+                @(posedge clk);
+                @(negedge clk);
+            end
+
+            weight_row_valid = 1'b0;
+            weight_row_data = '0;
+
+            for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
+                input_row_valid = 1'b1;
+                input_row_data = {a_matrix[row_idx][3], a_matrix[row_idx][2], a_matrix[row_idx][1], a_matrix[row_idx][0]};
+                @(posedge clk);
+                @(negedge clk);
             end
 
             input_row_valid = 1'b0;
@@ -208,6 +238,21 @@ module standard_dip_smoke_tb;
         end
     endtask
 
+    task load_case_sparse_signed;
+        begin
+            clear_matrices();
+            a_matrix[0][0] = 7;   a_matrix[0][1] = 0;   a_matrix[0][2] = 0;   a_matrix[0][3] = -1;
+            a_matrix[1][0] = 0;   a_matrix[1][1] = 0;   a_matrix[1][2] = 0;   a_matrix[1][3] = 0;
+            a_matrix[2][0] = -3;  a_matrix[2][1] = 0;   a_matrix[2][2] = 2;   a_matrix[2][3] = 0;
+            a_matrix[3][0] = 0;   a_matrix[3][1] = 5;   a_matrix[3][2] = 0;   a_matrix[3][3] = 0;
+
+            b_matrix[0][0] = 0;   b_matrix[0][1] = 4;   b_matrix[0][2] = 0;   b_matrix[0][3] = 0;
+            b_matrix[1][0] = 0;   b_matrix[1][1] = 0;   b_matrix[1][2] = 0;   b_matrix[1][3] = -2;
+            b_matrix[2][0] = 3;   b_matrix[2][1] = 0;   b_matrix[2][2] = 0;   b_matrix[2][3] = 0;
+            b_matrix[3][0] = 0;   b_matrix[3][1] = 0;   b_matrix[3][2] = 1;   b_matrix[3][3] = 0;
+        end
+    endtask
+
     initial begin
         clk = 1'b0;
         rst_n = 1'b0;
@@ -231,7 +276,7 @@ module standard_dip_smoke_tb;
         compute_rotated_weights();
         compute_expected();
         apply_flush();
-        drive_case();
+        drive_case_overlap();
         wait_and_check_result();
 
         case_id = 2;
@@ -239,7 +284,23 @@ module standard_dip_smoke_tb;
         compute_rotated_weights();
         compute_expected();
         apply_flush();
-        drive_case();
+        drive_case_overlap();
+        wait_and_check_result();
+
+        case_id = 3;
+        load_case_signed_mix();
+        compute_rotated_weights();
+        compute_expected();
+        apply_flush();
+        drive_case_no_overlap();
+        wait_and_check_result();
+
+        case_id = 4;
+        load_case_sparse_signed();
+        compute_rotated_weights();
+        compute_expected();
+        apply_flush();
+        drive_case_overlap();
         wait_and_check_result();
 
         if (total_failures == 0) begin

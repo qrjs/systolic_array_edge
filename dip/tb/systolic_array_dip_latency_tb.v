@@ -143,14 +143,17 @@ module systolic_array_dip_latency_tb;
         weight_row_idx = 3;
         weight_row_data = {16'd0, 16'd0, 16'd0, 16'd1};
         @(posedge clk);
+        @(negedge clk);
 
         weight_row_idx = 2;
         weight_row_data = {16'd0, 16'd0, 16'd1, 16'd0};
         @(posedge clk);
+        @(negedge clk);
 
         weight_row_idx = 1;
         weight_row_data = {16'd0, 16'd1, 16'd0, 16'd0};
         @(posedge clk);
+        @(negedge clk);
 
         weight_row_idx = 0;
         weight_row_data = {16'd1, 16'd0, 16'd0, 16'd0};
@@ -158,16 +161,20 @@ module systolic_array_dip_latency_tb;
         input_row_data = {16'd1, 16'd1, 16'd1, 16'd1};
         launch_cycle = cycle_count;
         @(posedge clk);
+        @(negedge clk);
 
         weight_row_valid = 1'b0;
         input_row_data = {16'd2, 16'd2, 16'd2, 16'd2};
         @(posedge clk);
+        @(negedge clk);
 
         input_row_data = {16'd3, 16'd3, 16'd3, 16'd3};
         @(posedge clk);
+        @(negedge clk);
 
         input_row_data = {16'd4, 16'd4, 16'd4, 16'd4};
         @(posedge clk);
+        @(negedge clk);
 
         input_row_valid = 1'b0;
         input_row_data = {(DATA_WIDTH*ARRAY_SIZE){1'b0}};

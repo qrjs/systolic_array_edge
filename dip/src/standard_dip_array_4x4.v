@@ -164,9 +164,9 @@ module standard_dip_array_4x4 #(
                 bins seen = {1'b1};
             }
 
-            cp_drain_pending: coverpoint drain_pending_reg {
+            cp_result_pending: coverpoint result_pending_reg {
                 bins idle = {1'b0};
-                bins armed = {1'b1};
+                bins pending = {1'b1};
             }
 
             cp_captured_rows: coverpoint captured_rows {

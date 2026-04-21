@@ -28,7 +28,7 @@
 - `scripts/run_virtuoso_layout.sh`
   - 把 GDS stream in 到 OA 后用 Virtuoso 打开 layout
 - `postsim/tb/dip_core_postsim_file_tb.sv`
-  - gate netlist 对应的 file-vector testbench
+  - `dip_core_top_4x4` 对应的 file-vector testbench，frontsim/postsim 共用同一套核心行流输出检查口径
 
 ## 另一台机器上的最小步骤
 
