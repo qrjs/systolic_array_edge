@@ -147,11 +147,35 @@ def run(cmd, cwd, env, check=True):
     return result
 
 
+def prepare_gate_netlist(netlist_path, output_dir):
+    text = netlist_path.read_text(encoding="utf-8", errors="ignore")
+    replacements = 0
+
+    def replace_icg_test_pin(match):
+        nonlocal replacements
+        replacements += 1
+        return ".SE(1'b0)"
+
+    prepared_text = re.sub(r"\.SE\s*\(\s*TE\s*\)", replace_icg_test_pin, text)
+    prepared_path = output_dir / "prepared_gate_netlist.v"
+    prepared_path.write_text(prepared_text, encoding="utf-8")
+
+    if replacements:
+        sys.stderr.write(
+            "INFO: tied {} unconnected clock-gating test-enable pins low in {}\n".format(
+                replacements, prepared_path
+            )
+        )
+
+    return prepared_path
+
+
 def compile_once(output_dir):
     vcs_bin = os.environ.get("VCS_BIN", "vcs")
     tb_top = env_or_die("POSTSIM_TB_TOP")
     tb_file = resolve_path(env_or_die("POSTSIM_TB_FILE"))
     netlist = resolve_path(env_or_die("POSTSIM_NETLIST"))
+    prepared_netlist = prepare_gate_netlist(netlist, output_dir)
     compile_log = output_dir / "compile.log"
     simv = output_dir / "build" / "{}.simv".format(tb_top)
     simv.parent.mkdir(parents=True, exist_ok=True)
@@ -176,7 +200,7 @@ def compile_once(output_dir):
     for raw in split_path_list(os.environ.get("ADDITIONAL_SIM_VERILOGS", "")):
         compile_cmd.append(str(resolve_path(raw)))
 
-    compile_cmd.extend([str(netlist), str(tb_file), "-o", str(simv)])
+    compile_cmd.extend([str(prepared_netlist), str(tb_file), "-o", str(simv)])
 
     sdf_path = os.environ.get("POSTSIM_SDF", "").strip()
     if sdf_path:
