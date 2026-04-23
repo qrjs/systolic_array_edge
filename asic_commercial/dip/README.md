@@ -39,10 +39,20 @@
 ```bash
 export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
-make thesis-dip
-make thesis-icc-probe
-make thesis-icc2-gui
+make thesis-synth
 ```
+
+当前仓库在 `SMIC40` 上的实测状态是：
+
+- `thesis-check` 已通过
+- `thesis-synth` 已通过
+- `ICC2 probe` 与 `ICC probe` 都已经尝试
+- 但当前 `SMIC40` 交付里没有发现可直接供 Synopsys 自动数字后端使用的有效 tech/RC 配套
+
+因此当前默认主线应理解为：
+
+- `DC` 是稳定可复现的正式结果
+- `ICC2 / ICC` 相关脚本保留为探测入口，不代表当前工艺包已支持自动布局布线
 
 说明：
 
@@ -168,21 +178,29 @@ POSTSIM_EXPECTED=/abs/path/to/expected.txt \
 - `results/icc2/dip_core_std_top_4x4.def`
 - `results/icc2/dip_core_std_top_4x4.gds`
 
-推荐的最小后端路径是：
+推荐的最小正式路径是：
 
 ```bash
 export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
-make thesis-dip
-make thesis-icc2-gui
+make thesis-synth
 ```
 
-其中 `make thesis-dip` 会默认：
+如果你要继续探索后端兼容性，再额外尝试：
+
+```bash
+make thesis-icc-probe
+./scripts/run_icc2_probe.sh
+```
+
+其中 `make thesis-dip` 会默认尝试：
 
 - 跑 `DiP std + gated_default + 5ns`
 - 跑完整 `test_vectors/txt` 门级后仿，不只是一条 `signed_mix`
 - 先跑 `dc sdf`，再跑 `icc2 sdf`
 - 不调用 `FM / Calibre / Virtuoso / 独立 STA`
+
+但对当前 `SMIC40` 目录来说，如果 `ICC/ICC2 probe` 失败，就不应把它继续当作正式主线。
 
 ### 5. 打开 ICC2 GUI
 

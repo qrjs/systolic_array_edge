@@ -71,6 +71,22 @@ make thesis-icc2-gui
 - `thesis-icc2-gui`
   打开 `ICC2 GUI` 看版图
 
+## Current Status
+
+截至 `2026-04-23`，`SMIC40` 在新服务器上的实测结论是：
+
+- `make thesis-check` 已通过
+- `make thesis-synth` 已通过，当前论文主表综合口径可复现
+- `run_icc2_probe.sh` 与 `make thesis-icc-probe` 都已实测，但当前这套 `SMIC40` 交付里只看到了 `OA/CDS` 风格的 `techfile.tf`
+- 现有 `SMIC40` 目录下没有发现可直接供 `ICC/ICC2` 使用的有效 Synopsys backend tech/RC 配套，因此自动数字后端暂不能作为默认主线继续推进
+
+因此当前仓库对 `SMIC40 thesis` 主线的正式建议是：
+
+- 把 `DC synthesis` 结果视为当前稳定可交付结果
+- 如果只做门级功能后仿，可继续基于 `dc` 产物推进
+- 如果要继续走自动布局布线，请先补齐 Synopsys backend deliverables，例如有效 `ICC/ICC2` tech file、`TLU+/ITF/map`、`NDM` 或工艺方提供的完整 backend 包
+- 如果只是想看库级版图，当前更适合走 `Virtuoso/OA` 浏览，不应把它等同于“设计级 P&R 已打通”
+
 Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.
 
 Note on flow split:

@@ -20,6 +20,22 @@
 - `asic_commercial/os`
 - `asic_commercial/dip`
 
+## 0. 当前实测状态
+
+截至 `2026-04-23`，针对当前仓库自带的 `SMIC40` 工艺包，已经实测得到：
+
+- `make thesis-check` 已通过
+- `make thesis-synth` 已通过
+- `SMIC40` 当前可稳定支撑论文主表的综合口径
+- `ICC2 probe` 与 `ICC probe` 都已尝试，但当前交付里只看到了 `OA/CDS` 风格的 `techfile.tf`
+- 现有目录下没有发现可直接供 `ICC/ICC2` 自动数字后端使用的有效 Synopsys tech/RC 配套
+
+因此本仓库当前对 `SMIC40 thesis` 主线的正式定义是：
+
+- 默认正式流程截止到 `DC`，必要时可继续做基于 `dc` 产物的门级后仿
+- `ICC2 / ICC` 自动布局布线不再作为“默认一定能跑通”的步骤
+- 如果后续补到有效 backend 包，再恢复 `ICC2 / ICC` 物理实现主线
+
 ## 1. 流程概览
 
 当前仓库里的商业流程按下面的顺序组织：
@@ -200,13 +216,11 @@ export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 
 ## 6. 推荐执行顺序
 
-如果你想用最短命令，推荐路径直接改成：
+如果你想用最短命令，当前推荐路径直接改成：
 
 ```bash
 make thesis-check
 make thesis-synth
-make thesis-dip
-make thesis-icc2-gui
 ```
 
 等价关系：
@@ -216,14 +230,19 @@ make thesis-icc2-gui
 - `thesis-synth`
   跑 `ws/is/os legacy FIFO` 和 `dip std + gated_default`
 - `thesis-dip`
-  跑 `DC -> 全量 gate postsim(dc) -> ICC2 -> 全量 gate postsim(icc2)`
+  仍然保留为完整脚本入口，但当前 `SMIC40` 默认不把它作为正式主线，因为后端库格式还未打通
 - `thesis-icc2-gui`
-  打开 `ICC2 GUI`
+  仅在你已经补齐有效 Synopsys backend 包后再使用
 
 如果 `run_icc2_probe.sh` 失败：
 
 - 把本轮正式流程定义为截止到 `POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh`
 - `ICC2 GUI` 标记为“待库格式适配”
+
+如果 `make thesis-icc-probe` 失败：
+
+- 这通常说明当前 `SMIC40` 目录里仍缺有效 `ICC` tech file，而不是 `Milkyway` 目录本身完全不存在
+- 本轮结论仍然定义为“综合已通，自动数字后端待补 Synopsys backend deliverables”
 
 如果只是先验证后仿环境有没有齐：
 
