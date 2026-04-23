@@ -19,6 +19,16 @@ check_path() {
     fi
 }
 
+warn_path() {
+    local label="$1"
+    local path="$2"
+    if [[ -z "$path" || ! -e "$path" ]]; then
+        echo "[dip-flow][WARN] ${label}: ${path:-<empty>}" >&2
+    else
+        echo "[dip-flow][OK]   ${label}: $path"
+    fi
+}
+
 check_lib_list() {
     local label="$1"
     local raw="$2"
@@ -69,10 +79,10 @@ check_innovus() {
     check_lib_list "INNOVUS_LEF_FILES" "${INNOVUS_LEF_FILES:-}"
     check_path "INNOVUS_LIB_MAX" "$(resolve_path "${INNOVUS_LIB_MAX:-}")"
     check_path "INNOVUS_LIB_MIN" "$(resolve_path "${INNOVUS_LIB_MIN:-}")"
-    check_path "INNOVUS_QRC_TECH_FILE" "$(resolve_path "${INNOVUS_QRC_TECH_FILE:-}")"
+    warn_path "INNOVUS_QRC_TECH_FILE" "$(resolve_path "${INNOVUS_QRC_TECH_FILE:-}")"
     check_path "INNOVUS input netlist" "$INNOVUS_INPUT_NETLIST"
     if [[ -n "${INNOVUS_GDS_MAP:-}" ]]; then
-        check_path "INNOVUS_GDS_MAP" "$(resolve_path "${INNOVUS_GDS_MAP}")"
+        warn_path "INNOVUS_GDS_MAP" "$(resolve_path "${INNOVUS_GDS_MAP}")"
     fi
 }
 

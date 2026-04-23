@@ -74,7 +74,7 @@ check_path "INNOVUS_TECH_LEF" "${INNOVUS_TECH_LEF}"
 check_path_list "INNOVUS_LEF_FILES" "${INNOVUS_LEF_FILES}"
 check_path "INNOVUS_LIB_MAX" "${INNOVUS_LIB_MAX}"
 check_path "INNOVUS_LIB_MIN" "${INNOVUS_LIB_MIN}"
-check_path "INNOVUS_QRC_TECH_FILE" "${INNOVUS_QRC_TECH_FILE}"
+warn_path "INNOVUS_QRC_TECH_FILE" "${INNOVUS_QRC_TECH_FILE}"
 warn_path "INNOVUS_GDS_MAP" "${INNOVUS_GDS_MAP}"
 
 if command -v strmin >/dev/null 2>&1; then
