@@ -20,6 +20,9 @@ echo "[dip-flow][INFO]   ICC_BIN  = ${ICC_BIN}"
 echo "[dip-flow][INFO]   TECH_FILE = ${ICC_PROBE_TECH_FILE}"
 echo "[dip-flow][INFO]   REF_LIBS  = ${ICC_PROBE_REF_LIBS}"
 
+[[ -n "${ICC_PROBE_TECH_FILE}" ]] || die "ICC_PROBE_TECH_FILE is empty; set ICC_TECH_FILE explicitly"
+[[ -f "${ICC_PROBE_TECH_FILE}" ]] || die "ICC_PROBE_TECH_FILE not found: ${ICC_PROBE_TECH_FILE}"
+
 if "$ICC_BIN" -f "${SCRIPT_DIR}/run_icc_probe.tcl" | tee "$probe_log"; then
     echo "[dip-flow][PASS] ICC probe succeeded"
     echo "[dip-flow][PASS] Probe log: ${probe_log}"
