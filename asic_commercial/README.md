@@ -61,7 +61,7 @@ make thesis-icc2-gui
 它们分别对应：
 
 - `thesis-check`
-  检查 `/opt` 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
+  检查 EDA 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
 - `thesis-synth`
   跑论文主表综合：
   `ws/is/os legacy FIFO` + `dip std + gated_default`

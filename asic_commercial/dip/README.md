@@ -32,7 +32,7 @@
 
 ## 最短用法
 
-如果你是在那台 `/opt` 机器上跑，最短命令就是：
+如果你是在另一台 EDA 服务器上跑，最短命令就是：
 
 ```bash
 export SMIC40_PDK_ROOT=/absolute/path/to/pdk
@@ -45,10 +45,12 @@ make thesis-icc2-gui
 
 - `SMIC40_PDK_ROOT`
   指向你用 U 盘拷过去、已经解压好的 PDK 根目录
-- 脚本会默认尝试 `source /opt/synopsys/snop18.sh`
-- 也会默认尝试 `source /opt/mentor/mentor.sh`
+- `SMIC40_PDK_ROOT` 不能包含空格
+  因为当前 DC / VCS / ICC2 库变量按空白分隔，带空格路径会被错误拆开
+- 脚本会优先尝试已有的环境脚本，并自动补常见安装目录到 `PATH`
+  例如 `/opt/synopsys`、`/home/synopsys`、`/home/mentor`、`/home/cadence`
 - 如果 `icc_shell` 不在 `PATH` 里，可以额外加：
-  `export ICC_SHELL_EXEC=/opt/synopsys/icc_2018.06/O-2018.06-SP1/bin/icc_shell`
+  `export ICC_SHELL_EXEC=/absolute/path/to/icc_shell`
 
 ## 另一台机器上的最小步骤
 

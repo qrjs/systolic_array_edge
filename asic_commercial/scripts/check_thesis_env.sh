@@ -20,10 +20,17 @@ require_tool() {
 
 check_icc_shell() {
     if command -v icc_shell >/dev/null 2>&1; then
+        echo "[thesis-check][OK]   icc_shell: $(command -v icc_shell)"
         return 0
     fi
-    [[ -n "${ICC_SHELL_EXEC:-}" && -x "${ICC_SHELL_EXEC}" ]] || \
-        die "icc_shell not found in PATH and ICC_SHELL_EXEC is not executable"
+    if [[ -n "${ICC_SHELL_EXEC:-}" && -x "${ICC_SHELL_EXEC}" ]]; then
+        echo "[thesis-check][OK]   ICC_SHELL_EXEC: ${ICC_SHELL_EXEC}"
+        return 0
+    fi
+
+    echo "[thesis-check][WARN] icc_shell not found in PATH and ICC_SHELL_EXEC is not executable" >&2
+    echo "[thesis-check][WARN] DC / VCS / static library checks can continue." >&2
+    echo "[thesis-check][WARN] ICC2 Milkyway import may fail later; verify with asic_commercial/dip/scripts/run_icc2_probe.sh." >&2
 }
 
 check_path() {

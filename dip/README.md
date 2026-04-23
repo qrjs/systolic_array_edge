@@ -83,5 +83,5 @@ make -C scripts clean
 
 - `.txt` 回归遵循论文导向的验证方式：不把延迟/flush 逻辑偷藏进 testbench 期望里
 - `make dip-cov` 会启用 `+define+FORMAL`、收集 `DiP` RTL 覆盖点，并用 `urg` 生成覆盖率报告
-- VCS 默认 license server 为 `5999@curry-GTR-Pro`，如需覆盖可在命令前设置 `VCS_LICENSE_FILE=<port@host>`
+- VCS 会优先继承当前 shell 里的 license 环境；如需手工指定，可在命令前设置 `VCS_LICENSE_FILE=<port@host>`
 - 更完整的仓库级使用方式见 `../docs/统一Makefile与仿真综合使用说明_CN.md`

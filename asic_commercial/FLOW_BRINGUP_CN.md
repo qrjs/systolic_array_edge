@@ -47,6 +47,12 @@ export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 能不能跑，不取决于机器上有没有哪个旧节点目录，而取决于你是否已经把
 `SMIC40_PDK_ROOT` 指到一套完整且解压好的 `SMIC40` 工艺库根目录。
 
+额外注意：
+
+- `SMIC40_PDK_ROOT` 不能包含空格
+- 当前这套脚本的库路径变量按空白分隔，带空格目录会让 `TARGET_LIBRARY` /
+  `SIM_LIBRARY_VERILOG` / `ICC2_REFERENCE_LIBS` 被错误拆开
+
 ### 2.1 DC 需要
 
 - 标准单元 `.db`
@@ -92,7 +98,7 @@ export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 注意：
 
 - 当前这条 `SMIC40` 流默认走 `tech.tf + Milkyway ref lib`
-- 你的 `/opt` 机器上有 `ICC`，因此会尝试通过 `icc_shell` 协助 `ICC2` 接受 Milkyway ref lib
+- 如果你的机器上同时装有 `ICC`，脚本会优先复用 `icc_shell` 协助 `ICC2` 接受 Milkyway ref lib
 - 如果 `icc_shell` 不在 `PATH` 里，请显式设置：
   `ICC_SHELL_EXEC=/absolute/path/to/icc_shell`
 - 如果 `probe` 失败，本轮流程正式停在 `DC / postsim`，不强行继续 `ICC2`
@@ -206,7 +212,7 @@ make thesis-icc2-gui
 等价关系：
 
 - `thesis-check`
-  检查 `/opt` 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
+  检查 EDA 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
 - `thesis-synth`
   跑 `ws/is/os legacy FIFO` 和 `dip std + gated_default`
 - `thesis-dip`

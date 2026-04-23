@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VCS_LICENSE_FILE = os.environ.get("VCS_LICENSE_FILE", "5999@curry-GTR-Pro")
+VCS_LICENSE_FILE = os.environ.get("VCS_LICENSE_FILE")
 DEFAULT_COVERAGE_METRICS = "line+tgl+cond+branch+assert"
 SUITE_INPUT_NAME = "suite_input.txt"
 SUITE_EXPECTED_NAME = "suite_expected.txt"
@@ -84,9 +84,10 @@ def run(
 
 def vcs_env() -> dict[str, str]:
     env = os.environ.copy()
-    env["SNPSLMD_LICENSE_FILE"] = VCS_LICENSE_FILE
-    env["SYNOPSYS_LICENSE_FILE"] = VCS_LICENSE_FILE
-    env["LM_LICENSE_FILE"] = VCS_LICENSE_FILE
+    if VCS_LICENSE_FILE:
+        env["SNPSLMD_LICENSE_FILE"] = VCS_LICENSE_FILE
+        env["SYNOPSYS_LICENSE_FILE"] = VCS_LICENSE_FILE
+        env["LM_LICENSE_FILE"] = VCS_LICENSE_FILE
     return env
 
 
