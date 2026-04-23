@@ -8,8 +8,8 @@ REPO_ROOT=$(cd "${FLOW_ROOT}/../.." && pwd)
 # shellcheck disable=SC1091
 source "${REPO_ROOT}/asic_commercial/scripts/source_eda_env.sh"
 
-[[ -n "${SMIC40_PDK_ROOT:-}" ]] || {
-    echo "[thesis-dip][ERROR] SMIC40_PDK_ROOT is not set" >&2
+[[ -n "${TSMC90_ROOT:-}" ]] || {
+    echo "[thesis-dip][ERROR] TSMC90_ROOT is not set" >&2
     exit 1
 }
 

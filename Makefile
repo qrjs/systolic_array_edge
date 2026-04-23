@@ -161,7 +161,7 @@ help:
 	@echo "  make open ARCH=ws      # 打开波形（默认 VIEWER=surfer）"
 	@echo "  make cov ARCH=dip      # 单架构 VCS 功能覆盖率"
 	@echo "  make dc-compare        # 商业综合：四架构 base+ultra 对比"
-	@echo "  make thesis-check      # SMIC40 thesis 主线环境检查"
+	@echo "  make thesis-check      # TSMC.90 thesis 主线环境检查"
 	@echo "  make thesis-synth      # 主表综合：ws/is/os legacy + dip gated"
 	@echo "  make thesis-dip        # DiP 主链：DC -> 全量门后仿 -> ICC2 -> 全量门后仿"
 	@echo "  make thesis-icc2-gui   # 打开 ICC2 GUI 看版图"
@@ -244,24 +244,24 @@ dc-compare:
 	$(call RUN_COMMERCIAL_SYN,compare)
 
 thesis-check:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC90_ROOT="$(TSMC90_ROOT)" \
 	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	"$(PROJECT_ROOT)/asic_commercial/scripts/check_thesis_env.sh"
 
 thesis-synth:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC90_ROOT="$(TSMC90_ROOT)" \
 	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	"$(PROJECT_ROOT)/asic_commercial/scripts/run_thesis_synth.sh"
 
 thesis-dip:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC90_ROOT="$(TSMC90_ROOT)" \
 	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
 	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_mainline.sh"
 
 thesis-icc2-gui:
 	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
-	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	TSMC90_ROOT="$(TSMC90_ROOT)" \
 	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	DESIGN_ENV=config/design.std.env \
 	LIBS_ENV=config/libs.env \
