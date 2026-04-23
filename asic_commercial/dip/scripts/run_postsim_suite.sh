@@ -27,18 +27,22 @@ for stage in "${stages[@]}"; do
         none)
             export POSTSIM_NETLIST_MODE="dc"
             export POSTSIM_SDF_MODE="none"
+            export POSTSIM_DISABLE_TIMING_CHECKS="1"
             ;;
         dc)
             export POSTSIM_NETLIST_MODE="dc"
             export POSTSIM_SDF_MODE="dc"
+            export POSTSIM_DISABLE_TIMING_CHECKS="0"
             ;;
         innovus)
             export POSTSIM_NETLIST_MODE="innovus"
             export POSTSIM_SDF_MODE="innovus"
+            export POSTSIM_DISABLE_TIMING_CHECKS="0"
             ;;
         custom)
             export POSTSIM_NETLIST_MODE="custom"
             export POSTSIM_SDF_MODE="custom"
+            export POSTSIM_DISABLE_TIMING_CHECKS="0"
             ;;
         *)
             die "unsupported gate postsim stage: $stage"

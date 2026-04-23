@@ -35,6 +35,9 @@ run_cmd=("$POSTSIM_SIMV" "+SOFT_FAIL" "+INPUT=${POSTSIM_VECTOR_INPUT}" "+EXPECTE
 if [[ -n "${POSTSIM_CASE:-}" ]]; then
     run_cmd+=("+CASE=${POSTSIM_CASE}")
 fi
+if [[ "${POSTSIM_DISABLE_TIMING_CHECKS:-0}" == "1" ]]; then
+    run_cmd+=("+notimingcheck" "+no_notifier" "+nospecify")
+fi
 if [[ -n "$POSTSIM_VCD_PATH" ]]; then
     mkdir -p "$(dirname "$POSTSIM_VCD_PATH")"
     run_cmd+=("+VCD=${POSTSIM_VCD_PATH}")

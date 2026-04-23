@@ -396,6 +396,8 @@ def main():
         run_log = output_dir / "logs" / "{}.run.log".format(case_name)
         vcd_path = (output_dir / "vcd" / "{}.vcd".format(case_name)) if args.dump_vcd else None
         cmd = [str(simv), "-l", str(run_log), "+SOFT_FAIL", "+CASE={}".format(case_name), "+INPUT={}".format(input_path), "+EXPECTED={}".format(expected_path)]
+        if os.environ.get("POSTSIM_DISABLE_TIMING_CHECKS", "0") == "1":
+            cmd.extend(["+notimingcheck", "+no_notifier", "+nospecify"])
         if vcd_path is not None:
             cmd.append("+VCD={}".format(vcd_path))
 
