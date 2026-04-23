@@ -57,11 +57,18 @@ for stage in "${stages[@]}"; do
     echo "[dip-flow][INFO]   sdf=${POSTSIM_SDF:-<none>}"
     echo "[dip-flow][INFO]   vector_dir=${POSTSIM_VECTOR_DIR}"
 
-    python3 "${REPO_ROOT}/utils/run_gate_vector_suite.py" \
-        --stage "$stage" \
-        --vector-dir "${POSTSIM_VECTOR_DIR}" \
-        --output-dir "${stage_output_dir}" \
-        "${dump_vcd_args[@]}"
+    if [[ "${#dump_vcd_args[@]}" -gt 0 ]]; then
+        python3 "${REPO_ROOT}/utils/run_gate_vector_suite.py" \
+            --stage "$stage" \
+            --vector-dir "${POSTSIM_VECTOR_DIR}" \
+            --output-dir "${stage_output_dir}" \
+            "${dump_vcd_args[@]}"
+    else
+        python3 "${REPO_ROOT}/utils/run_gate_vector_suite.py" \
+            --stage "$stage" \
+            --vector-dir "${POSTSIM_VECTOR_DIR}" \
+            --output-dir "${stage_output_dir}"
+    fi
 
     echo "[dip-flow][PASS] gate postsim stage=${stage} summary=${stage_output_dir}/summary.md"
 done
