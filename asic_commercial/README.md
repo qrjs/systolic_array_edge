@@ -48,16 +48,28 @@ teacher-provided synthesis script. It is intended for external RTL such as
 
 ## Recommended use
 
-1. Pick one flow directory such as `ws/`, `is/`, `os/`, or `dip/`
-2. Fill in `<flow>/config/libs.env` from `<flow>/config/libs.example.env`
-3. Run `<flow>/scripts/check_handoff.sh`
-4. Run `<flow>/scripts/run_frontsim.sh`
-5. Run `<flow>/scripts/run_dc.sh`
-6. Run `<flow>/scripts/run_fm.sh`
-7. Run `<flow>/scripts/run_postsim.sh`
-8. Run `<flow>/scripts/run_icc2.sh all`
-9. Run `<flow>/scripts/run_calibre_drc.sh`
-10. Run `<flow>/scripts/run_calibre_lvs.sh`
+对当前 `SMIC40 thesis` 主线，推荐只记下面几条命令：
+
+```bash
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
+make thesis-check
+make thesis-synth
+make thesis-dip
+make thesis-icc2-gui
+```
+
+它们分别对应：
+
+- `thesis-check`
+  检查 `/opt` 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
+- `thesis-synth`
+  跑论文主表综合：
+  `ws/is/os legacy FIFO` + `dip std + gated_default`
+- `thesis-dip`
+  跑 `DiP` 主链：
+  `DC -> 全量 gate postsim(dc) -> ICC2 -> 全量 gate postsim(icc2)`
+- `thesis-icc2-gui`
+  打开 `ICC2 GUI` 看版图
 
 Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.
 
@@ -65,7 +77,7 @@ Note on flow split:
 
 - `asic_commercial/syn/` remains the centralized four-architecture PPA comparison flow.
 - `asic_commercial/ws|is|os/` keep standard-API wrappers for clean file-vector frontsim/postsim reuse.
-- `asic_commercial/dip/` is centered on the core-top handoff wrapper `dip_core_top_4x4`, with dedicated file-vector TBs that collect row-stream outputs.
+- `asic_commercial/dip/` is centered on the thesis mainline `dip_core_std_top_4x4` wrapper for short-command runs, while still preserving the legacy handoff path in separate config files.
 
 ## Standardized multi-architecture synthesis
 
@@ -146,9 +158,16 @@ the compile strategy per architecture:
 This is useful for side-by-side comparisons such as `dip` with clock gating
 versus `ws/is/os` at normal synthesis under the same `200 MHz` target.
 
-For thesis-style apples-to-apples dataflow comparisons, prefer a pure `base`
-tag for all four architectures and keep `mixed` results for DiP ablation or
-engineering-best appendices. See `../docs/论文综合实验口径说明_CN.md`.
+For the current thesis mainline, the recommended short command is:
+
+```bash
+make thesis-synth
+```
+
+Internally this runs:
+
+- `ws/is/os` with `ARCH_IMPL_STYLE=legacy`
+- `dip` with `ARCH_IMPL_STYLE=std` and `DIP_COMPILE_PROFILE=gated_default`
 
 For `dip`, the default `DIP_COMPILE_PROFILE=gated_auto` benchmarks `gated_area`
 and `gated_ultra_area` at the same constraint point, then prefers:

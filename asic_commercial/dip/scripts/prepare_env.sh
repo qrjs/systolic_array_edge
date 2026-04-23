@@ -5,8 +5,10 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 export FLOW_ROOT="${FLOW_ROOT:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
 export REPO_ROOT=$(cd "${FLOW_ROOT}/../.." && pwd)
 export CONFIG_DIR="${FLOW_ROOT}/config"
-export DESIGN_ENV="${CONFIG_DIR}/design.env"
-export LIBS_ENV="${LIBS_ENV:-${CONFIG_DIR}/libs.env}"
+EDA_ENV_SCRIPT="${FLOW_ROOT}/../scripts/source_eda_env.sh"
+[[ -f "${EDA_ENV_SCRIPT}" ]] && source "${EDA_ENV_SCRIPT}"
+DESIGN_ENV_INPUT="${DESIGN_ENV:-${CONFIG_DIR}/design.env}"
+LIBS_ENV_INPUT="${LIBS_ENV:-${CONFIG_DIR}/libs.env}"
 
 die() {
     echo "[dip-flow][ERROR] $*" >&2
@@ -56,9 +58,11 @@ split_path_list() {
     eval "$out_name=()"
     [[ -z "$raw" ]] && return 0
     local item
+    set -f
     for item in $raw; do
         eval "$out_name+=(\"\$item\")"
     done
+    set +f
 }
 
 choose_netlist() {
@@ -101,6 +105,9 @@ choose_calibre_source() {
         *) die "unsupported Calibre source mode: $mode" ;;
     esac
 }
+
+export DESIGN_ENV="$(resolve_repo_or_flow_path "$DESIGN_ENV_INPUT")"
+export LIBS_ENV="$(resolve_repo_or_flow_path "$LIBS_ENV_INPUT")"
 
 require_file "design env" "$DESIGN_ENV"
 require_file "libs env" "$LIBS_ENV"
@@ -161,6 +168,7 @@ export DC_TIMING_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_timing.rpt"
 export DC_QOR_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_qor.rpt"
 export DC_CHECK_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_check_design.rpt"
 export DC_VIOLATORS_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_violators.rpt"
+export DC_GATING_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_gating_check.rpt"
 export DC_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_dc.log"
 
 export FRONTSIM_SIMV="${FRONTSIM_WORK_DIR}/${DESIGN_NAME}_rtl.simv"

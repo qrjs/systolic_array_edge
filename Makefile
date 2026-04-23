@@ -13,6 +13,7 @@ COMM_SYN_CLK_PERIOD ?=
 COMM_SYN_BASE_CLK_PERIOD ?= 5.0
 COMM_SYN_ULTRA_CLK_PERIOD ?= 1.0
 COMM_SYN_DRY_RUN ?= 0
+THESIS_VECTOR_DIR ?= $(PROJECT_ROOT)/test_vectors/txt
 
 ARCHES := ws is os dip
 
@@ -46,7 +47,7 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
-.PHONY: dc dc-base dc-ultra dc-compare
+.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-icc2-gui
 .PHONY: \
 	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
@@ -160,6 +161,10 @@ help:
 	@echo "  make open ARCH=ws      # 打开波形（默认 VIEWER=surfer）"
 	@echo "  make cov ARCH=dip      # 单架构 VCS 功能覆盖率"
 	@echo "  make dc-compare        # 商业综合：四架构 base+ultra 对比"
+	@echo "  make thesis-check      # SMIC40 thesis 主线环境检查"
+	@echo "  make thesis-synth      # 主表综合：ws/is/os legacy + dip gated"
+	@echo "  make thesis-dip        # DiP 主链：DC -> 全量门后仿 -> ICC2 -> 全量门后仿"
+	@echo "  make thesis-icc2-gui   # 打开 ICC2 GUI 看版图"
 	@echo ""
 	@echo "说明："
 	@echo "  txt / random / cov 属于正式验证"
@@ -205,6 +210,10 @@ help-all:
 	@echo "  make dc-base"
 	@echo "  make dc-ultra"
 	@echo "  make dc-compare"
+	@echo "  make thesis-check"
+	@echo "  make thesis-synth"
+	@echo "  make thesis-dip"
+	@echo "  make thesis-icc2-gui"
 	@echo ""
 	@echo "兼容别名："
 	@echo "  make regress"
@@ -233,6 +242,31 @@ dc-ultra:
 
 dc-compare:
 	$(call RUN_COMMERCIAL_SYN,compare)
+
+thesis-check:
+	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
+	"$(PROJECT_ROOT)/asic_commercial/scripts/check_thesis_env.sh"
+
+thesis-synth:
+	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
+	"$(PROJECT_ROOT)/asic_commercial/scripts/run_thesis_synth.sh"
+
+thesis-dip:
+	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
+	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
+	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_mainline.sh"
+
+thesis-icc2-gui:
+	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
+	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
+	DESIGN_ENV=config/design.std.env \
+	LIBS_ENV=config/libs.env \
+	DIP_COMPILE_PROFILE=gated_default \
+	./scripts/run_iccw.sh
 
 validate-arch:
 	@case "$(ARCH)" in \

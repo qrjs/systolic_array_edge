@@ -60,6 +60,10 @@ alib*/
 # (e.g. if a .txt file is generated in the root, exclude it explicitly if needed)
 # But generated folders like reports/ are already excluded.
 !*.py
+!asic_commercial/dip/config/design.legacy.env
+!asic_commercial/dip/config/design.std.env
+!asic_commercial/dip/config/libs.env
+!asic_commercial/dip/config/libs.smic40.env
 
 # 6. Ignore specific binary artifacts/files that shouldn't be tracked
 sim

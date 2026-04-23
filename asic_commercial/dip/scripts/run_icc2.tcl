@@ -5,6 +5,22 @@ proc require_env {name} {
     return $::env($name)
 }
 
+proc maybe_configure_icc_shell_exec {} {
+    set icc_shell_exec ""
+    if {[info exists ::env(ICC_SHELL_EXEC)] && $::env(ICC_SHELL_EXEC) ne ""} {
+        set icc_shell_exec $::env(ICC_SHELL_EXEC)
+    } else {
+        catch {set icc_shell_exec [exec which icc_shell]}
+    }
+
+    if {$icc_shell_exec ne ""} {
+        puts "  icc_shell_exec = $icc_shell_exec"
+        catch {set_app_options -name lib.configuration.icc_shell_exec -value $icc_shell_exec}
+    } else {
+        puts "  icc_shell_exec = <not found>"
+    }
+}
+
 set step [string tolower [require_env ICC2_STEP]]
 set design_name [require_env DESIGN_NAME]
 set design_lib [require_env ICC2_DESIGN_LIB]
@@ -17,6 +33,7 @@ puts "ICC2 setup:"
 puts "  design_lib = $design_lib"
 puts "  tech_file  = $tech_file"
 puts "  ref_libs   = $ref_libs"
+maybe_configure_icc_shell_exec
 
 if {($step eq "all" || $step eq "init") && (![file exists $design_lib] || [require_env ICC2_OVERWRITE_LIB] eq "1")} {
     file delete -force $design_lib

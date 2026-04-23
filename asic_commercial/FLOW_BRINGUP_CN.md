@@ -1,12 +1,15 @@
 # 商业 ASIC 流程上机说明
 
 这份文档整理了 `asic_commercial/` 目录在另一台服务器上跑通
-`VCS -> DC -> FM -> ICC2 -> Calibre`
-所需要的环境、后仿必需输入，以及工艺库检查方法。
+当前 `SMIC40 thesis` 主线所需要的环境、后仿必需输入，以及工艺库检查方法。
 
 说明：
 
-- 本文档面向商业 ASIC 后端与 gate-level 后仿流程
+- 本文档主推短命令入口：
+  `make thesis-check`
+  `make thesis-synth`
+  `make thesis-dip`
+  `make thesis-icc2-gui`
 - 仓库里的前端正式功能验证口径已经统一为 `.txt` 输入 / `.txt` 标准答案比对
 - 前端验证说明见 [前端验证口径统一说明_CN.md](/home/jrq/systolic_array_edge/docs/前端验证口径统一说明_CN.md)
 
@@ -35,10 +38,14 @@
 
 ## 2. 另一台服务器最少要有什么
 
-能不能跑，不取决于你机器上有没有名为 `TSMC_013`、`TSMC_65NM_OA`、
-`TSMC.90` 的目录，而取决于你是否为某一个确定工艺节点准备齐了下面这些视图。
+先设：
 
-不能把 `0.13um / 90nm / 65nm` 的文件混在一条 flow 里使用。
+```bash
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
+```
+
+能不能跑，不取决于机器上有没有哪个旧节点目录，而取决于你是否已经把
+`SMIC40_PDK_ROOT` 指到一套完整且解压好的 `SMIC40` 工艺库根目录。
 
 ### 2.1 DC 需要
 
@@ -84,10 +91,11 @@
 
 注意：
 
-- 当前仓库原始脚本默认更偏向 `*.ndm`
-- 但你这台 `TSMC.90/sc-x` 服务器没有 `NDM`，只有 `astro/FRAM + tech.tf`
-- 因此当前接入方式改成：先用 `run_icc2_probe.sh` 探测 `ICC2` 能不能直接接受 `astro/tsmc090g_fram`
-- 如果 `probe` 失败，本轮流程正式停在 `DC / FM / postsim`，不强行继续 `ICC2`
+- 当前这条 `SMIC40` 流默认走 `tech.tf + Milkyway ref lib`
+- 你的 `/opt` 机器上有 `ICC`，因此会尝试通过 `icc_shell` 协助 `ICC2` 接受 Milkyway ref lib
+- 如果 `icc_shell` 不在 `PATH` 里，请显式设置：
+  `ICC_SHELL_EXEC=/absolute/path/to/icc_shell`
+- 如果 `probe` 失败，本轮流程正式停在 `DC / postsim`，不强行继续 `ICC2`
 
 ### 2.4 Calibre 需要
 
@@ -140,17 +148,9 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 - `dc` 表示使用综合后 `SDF`
 - `icc2` 表示使用布局布线后 `SDF`
 
-## 4. 如何判断另一台机器上的 TSMC 工艺包够不够
+## 4. 如何判断 `SMIC40_PDK_ROOT` 指向的工艺库够不够
 
-如果你只知道服务器上有：
-
-- `TSMC_013`
-- `TSMC_65NM_OA`
-- `TSMC.90`
-
-这还不足以判断是否可用。
-
-真正要确认的是，某一个节点下是否至少能找到这些文件：
+真正要确认的是，`$SMIC40_PDK_ROOT` 下是否至少能找到这些文件：
 
 - `*.db`
 - `*.v`
@@ -171,14 +171,13 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 
 ## 5. 上机前推荐检查
 
-进入某一套 flow，例如：
+先设：
 
 ```bash
-cd asic_commercial/dip
-cp config/libs.example.env config/libs.env
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 ```
 
-先填 `config/libs.env`，再执行：
+然后直接执行：
 
 ```bash
 ./scripts/check_handoff.sh
@@ -190,32 +189,35 @@ cp config/libs.example.env config/libs.env
 
 说明：
 
-- 如果 `DC` 还没跑，`FM/postsim/ICC2/Calibre` 对综合网表、SDF、GDS 的缺失提示是正常的
+- 如果 `DC` 还没跑，`postsim/ICC2/Calibre` 对综合网表、SDF、GDS 的缺失提示是正常的
 - 真正必须优先补齐的是库、tech、runset 这些静态输入
 
 ## 6. 推荐执行顺序
 
-下面是单套 flow 的推荐顺序。
-
-如果你这轮不做 `Calibre DRC/LVS`，也不做独立 `STA`，推荐路径改成：
+如果你想用最短命令，推荐路径直接改成：
 
 ```bash
-./scripts/check_handoff.sh
-./scripts/check_backend_inputs.sh dc
-./scripts/run_dc.sh
-./scripts/run_fm.sh
-POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh
-./scripts/run_icc2_probe.sh
-./scripts/run_icc2.sh all
-POSTSIM_NETLIST_MODE=icc2 POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
-FM_IMPLEMENTATION_MODE=icc2 ./scripts/run_fm.sh
-VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
+make thesis-check
+make thesis-synth
+make thesis-dip
+make thesis-icc2-gui
 ```
+
+等价关系：
+
+- `thesis-check`
+  检查 `/opt` 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
+- `thesis-synth`
+  跑 `ws/is/os legacy FIFO` 和 `dip std + gated_default`
+- `thesis-dip`
+  跑 `DC -> 全量 gate postsim(dc) -> ICC2 -> 全量 gate postsim(icc2)`
+- `thesis-icc2-gui`
+  打开 `ICC2 GUI`
 
 如果 `run_icc2_probe.sh` 失败：
 
 - 把本轮正式流程定义为截止到 `POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh`
-- `ICC2 / Virtuoso` 标记为“待库格式适配”
+- `ICC2 GUI` 标记为“待库格式适配”
 
 如果只是先验证后仿环境有没有齐：
 

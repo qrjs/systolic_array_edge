@@ -27,39 +27,49 @@
   - 打开 ICC2 GUI
 - `scripts/run_virtuoso_layout.sh`
   - 把 GDS stream in 到 OA 后用 Virtuoso 打开 layout
-- `postsim/tb/dip_core_postsim_file_tb.sv`
-  - `dip_core_top_4x4` 对应的 file-vector testbench，frontsim/postsim 共用同一套核心行流输出检查口径
+- `postsim/tb/dip_core_std_postsim_file_tb.sv`
+  - `dip_core_std_top_4x4` 对应的 gate-level file-vector testbench
+
+## 最短用法
+
+如果你是在那台 `/opt` 机器上跑，最短命令就是：
+
+```bash
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
+make thesis-check
+make thesis-dip
+make thesis-icc2-gui
+```
+
+说明：
+
+- `SMIC40_PDK_ROOT`
+  指向你用 U 盘拷过去、已经解压好的 PDK 根目录
+- 脚本会默认尝试 `source /opt/synopsys/snop18.sh`
+- 也会默认尝试 `source /opt/mentor/mentor.sh`
+- 如果 `icc_shell` 不在 `PATH` 里，可以额外加：
+  `export ICC_SHELL_EXEC=/opt/synopsys/icc_2018.06/O-2018.06-SP1/bin/icc_shell`
 
 ## 另一台机器上的最小步骤
 
 ```bash
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 cd asic_commercial/dip
-cp config/libs.example.env config/libs.env
 ```
 
-先把这些路径填好：
+当前这套 `SMIC40` 流的默认假设是：
 
-- `TARGET_LIBRARY`
-- `LINK_LIBRARY`
-- `SIM_LIBRARY_VERILOG`
-- `ICC2_TECH_FILE`
-- `ICC2_REFERENCE_LIBS`
-- `GDS_STREAM_OUT_MAP`
-- `VIRTUOSO_TECH_LIB`
-
-当前仓库对你这台 `TSMC.90/sc-x` 服务器的默认假设是：
-
-- `TARGET_LIBRARY=/home/ic_libs/TSMC.90/aci/sc-x/synopsys/slow.db`
-- `SIM_LIBRARY_VERILOG=/home/ic_libs/TSMC.90/aci/sc-x/verilog/tsmc090.v`
-- `ICC2_TECH_FILE=/home/ic_libs/TSMC.90/aci/sc-x/astro/tf/tsmc090_6lm_1thick.tf`
-- `ICC2_REFERENCE_LIBS=/home/ic_libs/TSMC.90/aci/sc-x/astro/tsmc090g_fram`
-- `GDS_STREAM_OUT_MAP=/home/ic_libs/TSMC.90/aci/sc-x/astro/gds2OutLayer.map`
-- `VIRTUOSO_TECH_LIB=tsmc090`
+- `TARGET_LIBRARY=$SMIC40_PDK_ROOT/sc9mc_base_rvt_c40/r1p1/db/sc9mc_logic0040ll_base_rvt_c40_tt_typical_max_1p10v_25c.db`
+- `SIM_LIBRARY_VERILOG=$SMIC40_PDK_ROOT/sc9mc_base_rvt_c40/r1p1/verilog/sc9mc_logic0040ll_base_rvt_c40.v`
+- `ICC2_TECH_FILE=$SMIC40_PDK_ROOT/smic40ll/techfile.tf`
+- `ICC2_REFERENCE_LIBS=$SMIC40_PDK_ROOT/sc9mc_base_rvt_c40/r1p1/milkyway/1P9M_1TM/sc9mc_logic0040ll_base_rvt_c40`
+- `GDS_STREAM_OUT_MAP=$SMIC40_PDK_ROOT/.../Smic_Virtuoso_0040_LogicLL_TF.map`
+- `VIRTUOSO_TECH_LIB=smic40ll`
 
 注意：
 
-- 这台机器没有 `NDM` 和库转换工具，因此 `ICC2` 先走 `probe` 探测
-- 如果 `probe` 失败，说明当前库格式与现有 `ICC2` 流不兼容，本轮流程就应停在 `DC / FM / postsim`
+- `ICC2` 先走 `probe` 探测
+- 如果 `probe` 失败，说明 `Milkyway -> ICC2` 转换链仍有问题，本轮流程就应停在 `DC / postsim`
 
 然后按顺序检查：
 
@@ -96,36 +106,22 @@ FRONTSIM_CASE=case_003 \
 
 产物默认在：
 
-- `results/dip_core_top_4x4_dc.v`
-- `results/dip_core_top_4x4_dc.sdf`
-- `results/dip_core_top_4x4_dc.ddc`
-- `reports/dip_core_top_4x4_dc_*.rpt`
+- `results/dip_core_std_top_4x4_dc.v`
+- `results/dip_core_std_top_4x4_dc.sdf`
+- `results/dip_core_std_top_4x4_dc.ddc`
+- `reports/dip_core_std_top_4x4_dc_*.rpt`
 
 ### 3. Gate-level 后仿
 
-默认会跑一个 file-vector case。  
-可以直接指定输入文件：
+当前 thesis 主链默认不只跑一个 case，而是直接把 `test_vectors/txt`
+整套文本向量都跑一遍。
+
+如果你只是想手工单独跑一个 case，仍然可以用：
 
 ```bash
 POSTSIM_INPUT=/abs/path/to/input.txt \
 POSTSIM_EXPECTED=/abs/path/to/expected.txt \
 ./scripts/run_postsim.sh
-```
-
-如果输入文件是 `suite_input.txt / suite_expected.txt` 这种 suite，也可以指定：
-
-```bash
-POSTSIM_INPUT=/abs/path/to/suite_input.txt \
-POSTSIM_EXPECTED=/abs/path/to/suite_expected.txt \
-POSTSIM_CASE=case_003 \
-./scripts/run_postsim.sh
-```
-
-如果要回标 SDF：
-
-```bash
-POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh
-POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 ```
 
 ### 4. ICC2 布局布线
@@ -156,26 +152,26 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 
 默认导出：
 
-- `results/icc2/dip_core_top_4x4_icc2.v`
-- `results/icc2/dip_core_top_4x4_icc2.sdf`
-- `results/icc2/dip_core_top_4x4.def`
-- `results/icc2/dip_core_top_4x4.gds`
+- `results/icc2/dip_core_std_top_4x4_icc2.v`
+- `results/icc2/dip_core_std_top_4x4_icc2.sdf`
+- `results/icc2/dip_core_std_top_4x4.def`
+- `results/icc2/dip_core_std_top_4x4.gds`
 
 推荐的最小后端路径是：
 
 ```bash
-./scripts/run_frontsim.sh
-./scripts/run_dc.sh
-./scripts/run_fm.sh
-POSTSIM_SDF_MODE=dc ./scripts/run_postsim.sh
-./scripts/run_icc2_probe.sh
-./scripts/run_icc2.sh all
-POSTSIM_NETLIST_MODE=icc2 POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
-FM_IMPLEMENTATION_MODE=icc2 ./scripts/run_fm.sh
-VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
+make thesis-check
+make thesis-dip
+make thesis-icc2-gui
 ```
 
-如果你这轮明确不做 `Calibre` 和独立 `STA`，那上面这条就是正式流程终点。
+其中 `make thesis-dip` 会默认：
+
+- 跑 `DiP std + gated_default + 5ns`
+- 跑完整 `test_vectors/txt` 门级后仿，不只是一条 `signed_mix`
+- 先跑 `dc sdf`，再跑 `icc2 sdf`
+- 不调用 `FM / Calibre / Virtuoso / 独立 STA`
 
 ### 5. 打开 ICC2 GUI
 
@@ -183,7 +179,7 @@ VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
 ./scripts/run_iccw.sh
 ```
 
-### 6. 用 Virtuoso 看版图
+### 6. 用 Virtuoso 看版图（可选）
 
 如果你有 `virtuoso` 和 `strmin`，并且知道 tech lib 名字：
 
@@ -191,17 +187,17 @@ VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
 VIRTUOSO_TECH_LIB=<oa_tech_lib_name> ./scripts/run_virtuoso_layout.sh
 ```
 
-对当前这台服务器，建议先直接试：
+对当前这条 `SMIC40` 流，如果后面换到有 Cadence 的机器，再试：
 
 ```bash
-VIRTUOSO_TECH_LIB=tsmc090 ./scripts/run_virtuoso_layout.sh
+VIRTUOSO_TECH_LIB=smic40ll ./scripts/run_virtuoso_layout.sh
 ```
 
-如果 `strmin` 拒绝 `tsmc090` 这个 tech lib 名字，就保留 `results/icc2/*.gds` 作为正式交付，再改为手工 attach 工艺库的方式打开版图。
+如果 `strmin` 拒绝 `smic40ll` 这个 tech lib 名字，就保留 `results/icc2/*.gds` 作为正式交付，再改为手工 attach 工艺库的方式打开版图。
 
 默认会：
 
-- 取 `results/icc2/dip_core_top_4x4.gds`
+- 取 `results/icc2/dip_core_std_top_4x4.gds`
 - stream in 到 OA library
 - 打开 `layout` 视图
 
