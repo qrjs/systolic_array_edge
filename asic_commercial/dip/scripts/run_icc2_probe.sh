@@ -14,10 +14,12 @@ probe_log="${LOGS_DIR}/${DESIGN_NAME}_icc2_probe.log"
 export ICC2_PROBE_LIB="$probe_lib"
 export ICC2_PROBE_TECH_FILE="$ICC2_TECH_FILE"
 export ICC2_PROBE_REF_LIBS="$ICC2_REFERENCE_LIBS"
+export ICC2_CREATE_LIB_MODE="${ICC2_CREATE_LIB_MODE:-tech_and_ref}"
 
 echo "[dip-flow][INFO] Running ICC2 library probe"
 echo "[dip-flow][INFO]   TECH_FILE = ${ICC2_TECH_FILE}"
 echo "[dip-flow][INFO]   REF_LIBS  = ${ICC2_REFERENCE_LIBS}"
+echo "[dip-flow][INFO]   CREATE_LIB_MODE = ${ICC2_CREATE_LIB_MODE}"
 
 if "$ICC2_BIN" -f "${SCRIPT_DIR}/run_icc2_probe.tcl" | tee "$probe_log"; then
     echo "[dip-flow][PASS] ICC2 probe succeeded"
