@@ -23,6 +23,8 @@
   - 跑 gate-level file-vector 后仿
 - `scripts/run_icc2.sh`
   - 跑 ICC2 布局布线
+- `scripts/run_icc_probe.sh`
+  - 用 ICC 探测 SMIC40 Milkyway 建库兼容性
 - `scripts/run_iccw.sh`
   - 打开 ICC2 GUI
 - `scripts/run_virtuoso_layout.sh`
@@ -38,6 +40,7 @@
 export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-dip
+make thesis-icc-probe
 make thesis-icc2-gui
 ```
 
@@ -132,6 +135,12 @@ POSTSIM_EXPECTED=/abs/path/to/expected.txt \
 
 ```bash
 ./scripts/run_icc2_probe.sh
+```
+
+如果机器上有 `icc_shell`，对当前 `SMIC40` 库更值得先做一次：
+
+```bash
+./scripts/run_icc_probe.sh
 ```
 
 只有 `probe` 成功后，再进入正式布局布线。

@@ -142,6 +142,9 @@ export ICC2_WORK_DIR="${FLOW_ROOT}/icc2/work"
 export ICC2_LIB_DIR="${FLOW_ROOT}/icc2/lib"
 export ICC2_REPORT_DIR="${REPORTS_DIR}/icc2"
 export ICC2_RESULTS_DIR="${RESULTS_DIR}/icc2"
+export ICC_WORK_DIR="${FLOW_ROOT}/icc/work"
+export ICC_LIB_DIR="${FLOW_ROOT}/icc/lib"
+export ICC_REPORT_DIR="${REPORTS_DIR}/icc"
 export FM_WORK_DIR="${FLOW_ROOT}/fm/work"
 export FM_REPORT_DIR="${REPORTS_DIR}/fm"
 export CALIBRE_WORK_DIR="${FLOW_ROOT}/calibre/work"
@@ -153,6 +156,7 @@ mkdir -p \
     "$DC_WORK_DIR" "$FRONTSIM_WORK_DIR" "$FRONTSIM_LOG_DIR" \
     "$POSTSIM_WORK_DIR" "$POSTSIM_LOG_DIR" \
     "$ICC2_WORK_DIR" "$ICC2_LIB_DIR" "$ICC2_REPORT_DIR" "$ICC2_RESULTS_DIR" \
+    "$ICC_WORK_DIR" "$ICC_LIB_DIR" "$ICC_REPORT_DIR" \
     "$FM_WORK_DIR" "$FM_REPORT_DIR" \
     "$CALIBRE_WORK_DIR" "$CALIBRE_REPORT_DIR" \
     "$VIRTUOSO_WORK_DIR"
@@ -200,6 +204,7 @@ export ICC2_NETLIST="${ICC2_RESULTS_DIR}/${DESIGN_NAME}_icc2.v"
 export ICC2_SDF="${ICC2_RESULTS_DIR}/${DESIGN_NAME}_icc2.sdf"
 export ICC2_DEF="${ICC2_RESULTS_DIR}/${DESIGN_NAME}.def"
 export ICC2_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_icc2.log"
+export ICC_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_icc.log"
 
 export CALIBRE_GDS="$(choose_calibre_gds "${CALIBRE_LAYOUT_MODE:-icc2}")"
 export CALIBRE_SOURCE_NETLIST="$(choose_calibre_source "${CALIBRE_SOURCE_MODE:-icc2}")"

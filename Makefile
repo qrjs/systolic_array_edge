@@ -47,7 +47,7 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
-.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-icc2-gui
+.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-icc-probe thesis-icc2-gui
 .PHONY: \
 	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
@@ -164,6 +164,7 @@ help:
 	@echo "  make thesis-check      # SMIC40 thesis 主线环境检查"
 	@echo "  make thesis-synth      # 主表综合：ws/is/os legacy + dip gated"
 	@echo "  make thesis-dip        # DiP 主链：DC -> 全量门后仿 -> ICC2 -> 全量门后仿"
+	@echo "  make thesis-icc-probe  # 用 ICC 探测 SMIC40 Milkyway 建库"
 	@echo "  make thesis-icc2-gui   # 打开 ICC2 GUI 看版图"
 	@echo ""
 	@echo "说明："
@@ -258,6 +259,14 @@ thesis-dip:
 	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
 	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_mainline.sh"
+
+thesis-icc-probe:
+	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
+	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
+	DESIGN_ENV=config/design.std.env \
+	LIBS_ENV=config/libs.env \
+	./scripts/run_icc_probe.sh
 
 thesis-icc2-gui:
 	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
