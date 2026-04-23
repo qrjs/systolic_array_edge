@@ -12,7 +12,7 @@ probe_lib="${ICC_LIB_DIR}/${DESIGN_NAME}_probe.mwlib"
 probe_log="${LOGS_DIR}/${DESIGN_NAME}_icc_probe.log"
 
 export ICC_PROBE_LIB="$probe_lib"
-export ICC_PROBE_TECH_FILE="${ICC_TECH_FILE:-$ICC2_TECH_FILE}"
+export ICC_PROBE_TECH_FILE="${ICC_TECH_FILE:-}"
 export ICC_PROBE_REF_LIBS="${ICC_REFERENCE_LIBS:-$ICC2_REFERENCE_LIBS}"
 
 echo "[dip-flow][INFO] Running ICC library probe"
@@ -23,7 +23,13 @@ echo "[dip-flow][INFO]   REF_LIBS  = ${ICC_PROBE_REF_LIBS}"
 [[ -n "${ICC_PROBE_TECH_FILE}" ]] || die "ICC_PROBE_TECH_FILE is empty; set ICC_TECH_FILE explicitly"
 [[ -f "${ICC_PROBE_TECH_FILE}" ]] || die "ICC_PROBE_TECH_FILE not found: ${ICC_PROBE_TECH_FILE}"
 
-if ! "$ICC_BIN" -f "${SCRIPT_DIR}/run_icc_probe.tcl" | tee "$probe_log"; then
+case "${ICC_PROBE_TECH_FILE}" in
+    *OA_CDS*/*techfile.tf)
+        die "ICC_PROBE_TECH_FILE points to an OA/CDS techfile.tf, which is not valid for ICC create_mw_lib: ${ICC_PROBE_TECH_FILE}"
+        ;;
+esac
+
+if ! "$ICC_BIN" -f "${SCRIPT_DIR}/run_icc_probe.tcl" 2>&1 | tee "$probe_log"; then
     echo "[dip-flow][ERROR] ICC probe failed. Current library format is not compatible with the ICC flow yet." >&2
     echo "[dip-flow][ERROR] Probe log: ${probe_log}" >&2
     exit 1
