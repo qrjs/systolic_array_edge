@@ -35,7 +35,7 @@
 如果你是在另一台 EDA 服务器上跑，最短命令就是：
 
 ```bash
-export TSMC90_ROOT=/home/ic_libs/TSMC.90
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-dip
 make thesis-icc2-gui
@@ -43,9 +43,9 @@ make thesis-icc2-gui
 
 说明：
 
-- `TSMC90_ROOT`
-  指向 `TSMC.90` 工艺库根目录
-- `TSMC90_ROOT` 不能包含空格
+- `SMIC40_PDK_ROOT`
+  指向你用 U 盘拷过去、已经解压好的 PDK 根目录
+- `SMIC40_PDK_ROOT` 不能包含空格
   因为当前 DC / VCS / ICC2 库变量按空白分隔，带空格路径会被错误拆开
 - 脚本会优先尝试已有的环境脚本，并自动补常见安装目录到 `PATH`
   例如 `/opt/synopsys`、`/home/synopsys`、`/home/mentor`、`/home/cadence`
@@ -55,18 +55,18 @@ make thesis-icc2-gui
 ## 另一台机器上的最小步骤
 
 ```bash
-export TSMC90_ROOT=/home/ic_libs/TSMC.90
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 cd asic_commercial/dip
 ```
 
-当前这套 `TSMC.90` 流的默认假设是：
+当前这套 `SMIC40` 流的默认假设是：
 
-- `TARGET_LIBRARY=$TSMC90_ROOT/fe_TSMCHOME_tpdn90g3_130a/digital/Front_End/timing_power/tpdn90g3_130a/tpdn90g3tc.db`
-- `SIM_LIBRARY_VERILOG=$TSMC90_ROOT/fe_TSMCHOME_tpdn90g3_130a/digital/Front_End/verilog/tpdn90g3_130a/tpdn90g3.v`
-- `ICC2_TECH_FILE=$TSMC90_ROOT/aci/sc-x/astro/tf/tsmc090_6lm_1thick.tf`
-- `ICC2_REFERENCE_LIBS=$TSMC90_ROOT/fe_TSMCHOME_tpdn90g3_130a/digital/Back_End/milkyway/tpdn90g3_130a/6lm/frame_only/tpdn90g3`
-- `GDS_STREAM_OUT_MAP=$TSMC90_ROOT/fe_TSMCHOME_tpdn90g3_130a/digital/Back_End/milkyway/tpdn90g3_130a/6lm/gdsout.map`
-- `ICC2_CREATE_LIB_MODE=ref_only`
+- `TARGET_LIBRARY=$SMIC40_PDK_ROOT/sc9mc_base_rvt_c40/r1p1/db/sc9mc_logic0040ll_base_rvt_c40_tt_typical_max_1p10v_25c.db`
+- `SIM_LIBRARY_VERILOG=$SMIC40_PDK_ROOT/sc9mc_base_rvt_c40/r1p1/verilog/sc9mc_logic0040ll_base_rvt_c40.v`
+- `ICC2_TECH_FILE=$SMIC40_PDK_ROOT/smic40ll/techfile.tf`
+- `ICC2_REFERENCE_LIBS=$SMIC40_PDK_ROOT/sc9mc_base_rvt_c40/r1p1/milkyway/1P9M_1TM/sc9mc_logic0040ll_base_rvt_c40`
+- `GDS_STREAM_OUT_MAP=$SMIC40_PDK_ROOT/.../Smic_Virtuoso_0040_LogicLL_TF.map`
+- `VIRTUOSO_TECH_LIB=smic40ll`
 
 注意：
 
@@ -162,7 +162,7 @@ POSTSIM_EXPECTED=/abs/path/to/expected.txt \
 推荐的最小后端路径是：
 
 ```bash
-export TSMC90_ROOT=/home/ic_libs/TSMC.90
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-dip
 make thesis-icc2-gui
@@ -189,13 +189,13 @@ make thesis-icc2-gui
 VIRTUOSO_TECH_LIB=<oa_tech_lib_name> ./scripts/run_virtuoso_layout.sh
 ```
 
-对当前这条 `TSMC.90` 流，如果后面换到有 Cadence 的机器，再试：
+对当前这条 `SMIC40` 流，如果后面换到有 Cadence 的机器，再试：
 
 ```bash
-VIRTUOSO_TECH_LIB=<oa_tech_lib_name> ./scripts/run_virtuoso_layout.sh
+VIRTUOSO_TECH_LIB=smic40ll ./scripts/run_virtuoso_layout.sh
 ```
 
-如果 `strmin` 拒绝你指定的 tech lib 名字，就保留 `results/icc2/*.gds` 作为正式交付，再改为手工 attach 工艺库的方式打开版图。
+如果 `strmin` 拒绝 `smic40ll` 这个 tech lib 名字，就保留 `results/icc2/*.gds` 作为正式交付，再改为手工 attach 工艺库的方式打开版图。
 
 默认会：
 

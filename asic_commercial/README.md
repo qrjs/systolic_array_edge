@@ -48,10 +48,10 @@ teacher-provided synthesis script. It is intended for external RTL such as
 
 ## Recommended use
 
-对当前 `TSMC.90 thesis` 主线，推荐只记下面几条命令：
+对当前 `SMIC40 thesis` 主线，推荐只记下面几条命令：
 
 ```bash
-export TSMC90_ROOT=/home/ic_libs/TSMC.90
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-synth
 make thesis-dip
@@ -61,7 +61,7 @@ make thesis-icc2-gui
 它们分别对应：
 
 - `thesis-check`
-  检查 EDA 工具环境、`TSMC90_ROOT`、`DiP` 静态输入
+  检查 EDA 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
 - `thesis-synth`
   跑论文主表综合：
   `ws/is/os legacy FIFO` + `dip std + gated_default`

@@ -42,8 +42,8 @@ check_path() {
     echo "[thesis-check][OK]   ${label}: $path"
 }
 
-[[ -n "${TSMC90_ROOT:-}" ]] || die "TSMC90_ROOT is not set"
-[[ -d "${TSMC90_ROOT}" ]] || die "TSMC90_ROOT is not a directory: ${TSMC90_ROOT}"
+[[ -n "${SMIC40_PDK_ROOT:-}" ]] || die "SMIC40_PDK_ROOT is not set"
+[[ -d "${SMIC40_PDK_ROOT}" ]] || die "SMIC40_PDK_ROOT is not a directory: ${SMIC40_PDK_ROOT}"
 
 require_tool dc_shell
 check_icc_shell

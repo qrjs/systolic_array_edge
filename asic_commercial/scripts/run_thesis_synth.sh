@@ -17,14 +17,14 @@ require_tool() {
     command -v "$tool" >/dev/null 2>&1 || die "required tool not found in PATH: $tool"
 }
 
-[[ -n "${TSMC90_ROOT:-}" ]] || die "TSMC90_ROOT is not set"
-[[ -d "${TSMC90_ROOT}" ]] || die "TSMC90_ROOT is not a directory: ${TSMC90_ROOT}"
+[[ -n "${SMIC40_PDK_ROOT:-}" ]] || die "SMIC40_PDK_ROOT is not set"
+[[ -d "${SMIC40_PDK_ROOT}" ]] || die "SMIC40_PDK_ROOT is not a directory: ${SMIC40_PDK_ROOT}"
 
 require_tool dc_shell
 
 export REPO_ROOT
 # shellcheck disable=SC1091
-source "${REPO_ROOT}/asic_commercial/dip/config/libs.tsmc90.env"
+source "${REPO_ROOT}/asic_commercial/dip/config/libs.smic40.env"
 
 target_db_name="$(basename "${TARGET_LIBRARY}")"
 target_db_dir="$(dirname "${TARGET_LIBRARY}")"

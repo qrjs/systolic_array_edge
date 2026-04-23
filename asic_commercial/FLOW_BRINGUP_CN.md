@@ -1,7 +1,7 @@
 # 商业 ASIC 流程上机说明
 
 这份文档整理了 `asic_commercial/` 目录在另一台服务器上跑通
-当前 `TSMC.90 thesis` 主线所需要的环境、后仿必需输入，以及工艺库检查方法。
+当前 `SMIC40 thesis` 主线所需要的环境、后仿必需输入，以及工艺库检查方法。
 
 说明：
 
@@ -41,15 +41,15 @@
 先设：
 
 ```bash
-export TSMC90_ROOT=/home/ic_libs/TSMC.90
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 ```
 
 能不能跑，不取决于机器上有没有哪个旧节点目录，而取决于你是否已经把
-`TSMC90_ROOT` 指到一套完整且可读的 `TSMC.90` 工艺库根目录。
+`SMIC40_PDK_ROOT` 指到一套完整且解压好的 `SMIC40` 工艺库根目录。
 
 额外注意：
 
-- `TSMC90_ROOT` 不能包含空格
+- `SMIC40_PDK_ROOT` 不能包含空格
 - 当前这套脚本的库路径变量按空白分隔，带空格目录会让 `TARGET_LIBRARY` /
   `SIM_LIBRARY_VERILOG` / `ICC2_REFERENCE_LIBS` 被错误拆开
 
@@ -97,7 +97,7 @@ export TSMC90_ROOT=/home/ic_libs/TSMC.90
 
 注意：
 
-- 当前这条 `TSMC.90` 流默认走 `Astro tf + Milkyway ref lib`
+- 当前这条 `SMIC40` 流默认走 `tech.tf + Milkyway ref lib`
 - 如果你的机器上同时装有 `ICC`，脚本会优先复用 `icc_shell` 协助 `ICC2` 接受 Milkyway ref lib
 - 如果 `icc_shell` 不在 `PATH` 里，请显式设置：
   `ICC_SHELL_EXEC=/absolute/path/to/icc_shell`
@@ -154,9 +154,9 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 - `dc` 表示使用综合后 `SDF`
 - `icc2` 表示使用布局布线后 `SDF`
 
-## 4. 如何判断 `TSMC90_ROOT` 指向的工艺库够不够
+## 4. 如何判断 `SMIC40_PDK_ROOT` 指向的工艺库够不够
 
-真正要确认的是，`$TSMC90_ROOT` 下是否至少能找到这些文件：
+真正要确认的是，`$SMIC40_PDK_ROOT` 下是否至少能找到这些文件：
 
 - `*.db`
 - `*.v`
@@ -180,7 +180,7 @@ POSTSIM_SDF_MODE=icc2 ./scripts/run_postsim.sh
 先设：
 
 ```bash
-export TSMC90_ROOT=/home/ic_libs/TSMC.90
+export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 ```
 
 然后直接执行：
@@ -212,7 +212,7 @@ make thesis-icc2-gui
 等价关系：
 
 - `thesis-check`
-  检查 EDA 工具环境、`TSMC90_ROOT`、`DiP` 静态输入
+  检查 EDA 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
 - `thesis-synth`
   跑 `ws/is/os legacy FIFO` 和 `dip std + gated_default`
 - `thesis-dip`
