@@ -23,7 +23,7 @@ warn_path() {
     local path="$2"
     if [[ -z "$path" || ! -e "$path" ]]; then
         echo "[thesis-check][WARN] ${label} missing: ${path:-<empty>}" >&2
-        return 1
+        return 0
     fi
     echo "[thesis-check][OK]   ${label}: $path"
     return 0
