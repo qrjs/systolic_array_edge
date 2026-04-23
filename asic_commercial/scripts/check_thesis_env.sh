@@ -69,7 +69,7 @@ source "${FLOW_ROOT}/scripts/prepare_env.sh"
 "${FLOW_ROOT}/scripts/check_handoff.sh"
 "${FLOW_ROOT}/scripts/check_backend_inputs.sh" dc
 
-check_path "SIM_LIBRARY_VERILOG" "${SIM_LIBRARY_VERILOG}"
+check_path_list "SIM_LIBRARY_VERILOG" "${SIM_LIBRARY_VERILOG}"
 check_path "INNOVUS_TECH_LEF" "${INNOVUS_TECH_LEF}"
 check_path_list "INNOVUS_LEF_FILES" "${INNOVUS_LEF_FILES}"
 check_path "INNOVUS_LIB_MAX" "${INNOVUS_LIB_MAX}"
