@@ -345,6 +345,28 @@ def write_summary(path, rows, stage, vector_dir, compile_log):
                 handle.write("- `{}`: `{}`\n".format(row.case, row.run_log))
 
 
+def print_failed_case_log_tail(rows):
+    failed_rows = [row for row in rows if row.status != "PASS"]
+    if not failed_rows:
+        return
+
+    first_failed = failed_rows[0]
+    run_log = Path(first_failed.run_log)
+    if not run_log.exists():
+        return
+
+    try:
+        lines = run_log.read_text(errors="ignore").splitlines()
+        tail = "\n".join(lines[-120:])
+        if tail:
+            sys.stderr.write("==== gate suite first failed case log (tail) ====\n")
+            sys.stderr.write("case={}\n".format(first_failed.case))
+            sys.stderr.write(tail + "\n")
+            sys.stderr.write("==== end failed case log tail ====\n")
+    except Exception:
+        pass
+
+
 def main():
     parser = argparse.ArgumentParser(description="Compile once and run a full gate-level txt vector suite.")
     parser.add_argument("--stage", required=True, help="Logical stage label such as none, dc, or innovus.")
@@ -401,6 +423,8 @@ def main():
 
     write_csv(output_dir / "gate_case_metrics.csv", results)
     write_summary(output_dir / "summary.md", results, args.stage, vector_dir, compile_log)
+    if failures:
+        print_failed_case_log_tail(results)
 
     print("")
     print(
