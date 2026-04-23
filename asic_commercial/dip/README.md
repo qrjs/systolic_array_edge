@@ -1,10 +1,13 @@
 # DiP Commercial Flow
 
-`asic_commercial/dip/` 现在承载 `DIP std + gated_default` 的正式商业主线。
+`asic_commercial/dip/` 现在承载 `DIP` 的双轨商业主线。
 
 当前主线固定为：
 
-- `DC` 综合继续沿用现有脚本
+- `functional backend track`
+  使用 `plain` DC 网表推进 `gate postsim -> Innovus -> Virtuoso`
+- `gated debug track`
+  使用 `gated_default` DC 网表推进 `FM + 定向 gate debug`
 - `Innovus` 负责布局布线与 post-route 导出
 - `Virtuoso` 负责把 `Innovus` 导出的 `GDS` 导入 `OA` 并打开 `layout`
 - `gate postsim` 固定跑三阶段：`none -> dc -> innovus`
@@ -25,11 +28,13 @@
 - `scripts/prepare_env.sh`
   统一解析设计与工艺配置，导出 `DC / postsim / Innovus / Virtuoso` 路径
 - `scripts/run_dc.sh`
-  跑 `DIP std + gated_default` 商业综合
+  跑 `DIP` 商业综合；通过 `DC_OUTPUT_FLAVOR=plain|gated` 选择输出家族
 - `scripts/run_postsim.sh`
   单 case gate postsim 调试入口
 - `scripts/run_postsim_suite.sh`
   正式 gate suite 入口，按 stage 批量跑完整 `txt` 向量
+- `scripts/run_thesis_gated_debug.sh`
+  gated 偏差定位入口：`gated DC -> FM -> batch_000 + signed_mix`
 - `scripts/run_innovus.sh`
   Cadence `Innovus` 主入口，支持 `init/place/cts/route/export/all`
 - `scripts/run_innovus_gui.sh`
@@ -46,6 +51,7 @@ export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-synth
 make thesis-dip
+make thesis-dip-gated-debug
 ```
 
 其中：
@@ -56,8 +62,11 @@ make thesis-dip
   跑论文主表综合：
   `ws/is/os legacy FIFO` + `dip std + gated_default`
 - `thesis-dip`
-  跑 `DIP` Cadence 主链：
-  `DC -> gate suite(none) -> gate suite(dc) -> Innovus -> gate suite(innovus) -> Virtuoso`
+  跑 `DIP` functional backend track：
+  `plain DC -> gate suite(none) -> gate suite(dc) -> Innovus -> gate suite(innovus) -> Virtuoso`
+- `thesis-dip-gated-debug`
+  跑 `DIP` gated debug track：
+  `gated DC -> FM -> batch_000 + signed_mix`
 
 ## 推荐执行顺序
 
@@ -82,11 +91,17 @@ make thesis-dip
 ./scripts/run_dc.sh
 ```
 
-默认产物：
+`plain` 主线默认产物：
 
-- `results/dip_core_std_top_4x4_dc.v`
-- `results/dip_core_std_top_4x4_dc.sdf`
-- `reports/dip_core_std_top_4x4_dc_*.rpt`
+- `results/dip_core_std_top_4x4_dc_plain.v`
+- `results/dip_core_std_top_4x4_dc_plain.sdf`
+- `reports/dip_core_std_top_4x4_dc_plain_*.rpt`
+
+gated debug 产物默认在：
+
+- `results/dip_core_std_top_4x4_dc_gated.v`
+- `results/dip_core_std_top_4x4_dc_gated.sdf`
+- `reports/dip_core_std_top_4x4_dc_gated_*.rpt`
 
 ### 4. Gate-level 后仿
 
@@ -108,6 +123,11 @@ make thesis-dip
 - `summary.md`
 - `logs/<case>.run.log`
 - `vcd/<case>.vcd`（仅在 `POSTSIM_DUMP_VCD=1` 时）
+
+注意：
+
+- `thesis-dip` 固定使用 `POSTSIM_FLAVOR=plain`
+- `gated` 网表不再参与默认全量 gate suite
 
 如果只想跑某一阶段：
 
@@ -195,6 +215,8 @@ VIRTUOSO_TECH_LIB=smic40ll ./scripts/run_virtuoso_layout.sh
 
 ## 当前结论
 
-- 仓库已经提供 `DIP` 的 Cadence 主线脚本与入口
+- 仓库已经提供 `DIP` 的双轨 Cadence 主线脚本与入口
+- `thesis-dip` 现在代表 functional backend track，而不是 gated netlist 主线
+- `thesis-dip-gated-debug` 单独负责定位 gated_default 的功能偏差
 - 旧的 Synopsys 数字后端链不再属于 `DIP` 正式主线
 - 由于当前工作区没有真实 Cadence 工具环境，这些脚本只做了静态落地与语法检查，端到端结果要以目标服务器实测为准

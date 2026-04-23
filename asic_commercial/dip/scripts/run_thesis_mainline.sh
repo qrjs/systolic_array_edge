@@ -20,7 +20,11 @@ export FLOW_ROOT
 export REPO_ROOT
 export DESIGN_ENV="${FLOW_ROOT}/config/design.std.env"
 export LIBS_ENV="${FLOW_ROOT}/config/libs.env"
-export DIP_COMPILE_PROFILE="${DIP_COMPILE_PROFILE:-gated_default}"
+export DC_OUTPUT_FLAVOR="plain"
+export POSTSIM_FLAVOR="plain"
+export INNOVUS_INPUT_FLAVOR="plain"
+export FM_FLAVOR="plain"
+export DIP_COMPILE_PROFILE="${DIP_COMPILE_PROFILE:-plain}"
 
 "${REPO_ROOT}/asic_commercial/scripts/check_thesis_env.sh"
 
@@ -39,8 +43,8 @@ source "${SCRIPT_DIR}/prepare_env.sh"
 
 cat <<EOF
 [thesis-dip][PASS] DiP thesis mainline completed
-[thesis-dip][INFO] DC netlist       : ${DC_NETLIST}
-[thesis-dip][INFO] DC sdf           : ${DC_SDF}
+[thesis-dip][INFO] Functional DC netlist : ${DC_NETLIST}
+[thesis-dip][INFO] Functional DC sdf     : ${DC_SDF}
 [thesis-dip][INFO] Innovus netlist  : ${INNOVUS_NETLIST}
 [thesis-dip][INFO] Innovus sdf      : ${INNOVUS_SDF}
 [thesis-dip][INFO] Innovus def      : ${INNOVUS_DEF}
@@ -48,6 +52,7 @@ cat <<EOF
 [thesis-dip][INFO] no-sdf suite     : ${THESIS_POSTSIM_DIR}/none/summary.md
 [thesis-dip][INFO] dc-sdf suite     : ${THESIS_POSTSIM_DIR}/dc/summary.md
 [thesis-dip][INFO] innovus-sdf suite: ${THESIS_POSTSIM_DIR}/innovus/summary.md
+[thesis-dip][INFO] Gated debug flow : make thesis-dip-gated-debug
 [thesis-dip][INFO] Virtuoso lib     : ${VIRTUOSO_LAYOUT_LIB}
 [thesis-dip][INFO] Next step        : make thesis-innovus-gui
 EOF

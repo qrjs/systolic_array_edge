@@ -65,10 +65,50 @@ split_path_list() {
     set +f
 }
 
+normalize_flavor() {
+    local raw="${1:-default}"
+    case "$raw" in
+        "" | default | legacy) printf '%s\n' "default" ;;
+        plain | gated) printf '%s\n' "$raw" ;;
+        *) die "unsupported flavor: $raw" ;;
+    esac
+}
+
+dc_basename_for_flavor() {
+    local flavor
+    flavor="$(normalize_flavor "$1")"
+    case "$flavor" in
+        default) printf '%s\n' "${DESIGN_NAME}_dc" ;;
+        plain) printf '%s\n' "${DESIGN_NAME}_dc_plain" ;;
+        gated) printf '%s\n' "${DESIGN_NAME}_dc_gated" ;;
+    esac
+}
+
+choose_dc_netlist_by_flavor() {
+    local flavor
+    flavor="$(normalize_flavor "$1")"
+    case "$flavor" in
+        default) printf '%s\n' "$DEFAULT_DC_NETLIST" ;;
+        plain) printf '%s\n' "$PLAIN_DC_NETLIST" ;;
+        gated) printf '%s\n' "$GATED_DC_NETLIST" ;;
+    esac
+}
+
+choose_dc_sdf_by_flavor() {
+    local flavor
+    flavor="$(normalize_flavor "$1")"
+    case "$flavor" in
+        default) printf '%s\n' "$DEFAULT_DC_SDF" ;;
+        plain) printf '%s\n' "$PLAIN_DC_SDF" ;;
+        gated) printf '%s\n' "$GATED_DC_SDF" ;;
+    esac
+}
+
 choose_netlist() {
     local mode="$1"
+    local flavor="${2:-default}"
     case "$mode" in
-        dc) printf '%s\n' "$DC_NETLIST" ;;
+        dc) choose_dc_netlist_by_flavor "$flavor" ;;
         innovus | icc2) printf '%s\n' "$INNOVUS_NETLIST" ;;
         custom) printf '%s\n' "$(resolve_path "${CUSTOM_NETLIST:-}")" ;;
         open_source) printf '%s\n' "$OPEN_SOURCE_NETLIST" ;;
@@ -78,9 +118,10 @@ choose_netlist() {
 
 choose_sdf() {
     local mode="$1"
+    local flavor="${2:-default}"
     case "$mode" in
         none) printf '%s\n' "" ;;
-        dc) printf '%s\n' "$DC_SDF" ;;
+        dc) choose_dc_sdf_by_flavor "$flavor" ;;
         innovus | icc2) printf '%s\n' "$INNOVUS_SDF" ;;
         custom) printf '%s\n' "$(resolve_path "${CUSTOM_SDF:-}")" ;;
         *) die "unsupported SDF mode: $mode" ;;
@@ -98,8 +139,9 @@ choose_calibre_gds() {
 
 choose_calibre_source() {
     local mode="$1"
+    local flavor="${2:-default}"
     case "$mode" in
-        dc) printf '%s\n' "$DC_NETLIST" ;;
+        dc) choose_dc_netlist_by_flavor "$flavor" ;;
         innovus | icc2) printf '%s\n' "$INNOVUS_NETLIST" ;;
         custom) printf '%s\n' "$(resolve_path "${CALIBRE_CUSTOM_SOURCE_NETLIST:-}")" ;;
         *) die "unsupported Calibre source mode: $mode" ;;
@@ -153,9 +195,14 @@ export STRIPE_SPACING="${STRIPE_SPACING:-}"
 export STRIPE_SET_TO_SET_DISTANCE="${STRIPE_SET_TO_SET_DISTANCE:-}"
 export CTS_BUFFER_LIST="${CTS_BUFFER_LIST:-}"
 export FM_IMPLEMENTATION_MODE="${FM_IMPLEMENTATION_MODE:-dc}"
+export FM_FLAVOR="$(normalize_flavor "${FM_FLAVOR:-default}")"
 export POSTSIM_NETLIST_MODE="${POSTSIM_NETLIST_MODE:-dc}"
+export POSTSIM_FLAVOR="$(normalize_flavor "${POSTSIM_FLAVOR:-default}")"
 export POSTSIM_SDF_MODE="${POSTSIM_SDF_MODE:-dc}"
 export INNOVUS_NETLIST_MODE="${INNOVUS_NETLIST_MODE:-dc}"
+export INNOVUS_INPUT_FLAVOR="$(normalize_flavor "${INNOVUS_INPUT_FLAVOR:-default}")"
+export DC_OUTPUT_FLAVOR="$(normalize_flavor "${DC_OUTPUT_FLAVOR:-default}")"
+export CALIBRE_SOURCE_FLAVOR="$(normalize_flavor "${CALIBRE_SOURCE_FLAVOR:-default}")"
 export CUSTOM_NETLIST="${CUSTOM_NETLIST:-}"
 export CUSTOM_SDF="${CUSTOM_SDF:-}"
 
@@ -208,19 +255,42 @@ mkdir -p \
     "$CALIBRE_WORK_DIR" "$CALIBRE_REPORT_DIR" \
     "$VIRTUOSO_WORK_DIR"
 
-export DC_NETLIST="${RESULTS_DIR}/${DESIGN_NAME}_dc.v"
-export DC_SDF="${RESULTS_DIR}/${DESIGN_NAME}_dc.sdf"
-export DC_DDC="${RESULTS_DIR}/${DESIGN_NAME}_dc.ddc"
-export DC_SVF="${RESULTS_DIR}/${DESIGN_NAME}_dc.svf"
-export DC_EXPORTED_SDC="${RESULTS_DIR}/${DESIGN_NAME}_dc.sdc"
-export DC_AREA_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_area.rpt"
-export DC_POWER_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_power.rpt"
-export DC_TIMING_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_timing.rpt"
-export DC_QOR_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_qor.rpt"
-export DC_CHECK_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_check_design.rpt"
-export DC_VIOLATORS_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_violators.rpt"
-export DC_GATING_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_gating_check.rpt"
-export DC_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_dc.log"
+default_dc_basename="$(dc_basename_for_flavor default)"
+plain_dc_basename="$(dc_basename_for_flavor plain)"
+gated_dc_basename="$(dc_basename_for_flavor gated)"
+selected_dc_basename="$(dc_basename_for_flavor "${DC_OUTPUT_FLAVOR}")"
+
+export DEFAULT_DC_NETLIST="${RESULTS_DIR}/${default_dc_basename}.v"
+export DEFAULT_DC_SDF="${RESULTS_DIR}/${default_dc_basename}.sdf"
+export DEFAULT_DC_DDC="${RESULTS_DIR}/${default_dc_basename}.ddc"
+export DEFAULT_DC_SVF="${RESULTS_DIR}/${default_dc_basename}.svf"
+export DEFAULT_DC_EXPORTED_SDC="${RESULTS_DIR}/${default_dc_basename}.sdc"
+
+export PLAIN_DC_NETLIST="${RESULTS_DIR}/${plain_dc_basename}.v"
+export PLAIN_DC_SDF="${RESULTS_DIR}/${plain_dc_basename}.sdf"
+export PLAIN_DC_DDC="${RESULTS_DIR}/${plain_dc_basename}.ddc"
+export PLAIN_DC_SVF="${RESULTS_DIR}/${plain_dc_basename}.svf"
+export PLAIN_DC_EXPORTED_SDC="${RESULTS_DIR}/${plain_dc_basename}.sdc"
+
+export GATED_DC_NETLIST="${RESULTS_DIR}/${gated_dc_basename}.v"
+export GATED_DC_SDF="${RESULTS_DIR}/${gated_dc_basename}.sdf"
+export GATED_DC_DDC="${RESULTS_DIR}/${gated_dc_basename}.ddc"
+export GATED_DC_SVF="${RESULTS_DIR}/${gated_dc_basename}.svf"
+export GATED_DC_EXPORTED_SDC="${RESULTS_DIR}/${gated_dc_basename}.sdc"
+
+export DC_NETLIST="${RESULTS_DIR}/${selected_dc_basename}.v"
+export DC_SDF="${RESULTS_DIR}/${selected_dc_basename}.sdf"
+export DC_DDC="${RESULTS_DIR}/${selected_dc_basename}.ddc"
+export DC_SVF="${RESULTS_DIR}/${selected_dc_basename}.svf"
+export DC_EXPORTED_SDC="${RESULTS_DIR}/${selected_dc_basename}.sdc"
+export DC_AREA_RPT="${REPORTS_DIR}/${selected_dc_basename}_area.rpt"
+export DC_POWER_RPT="${REPORTS_DIR}/${selected_dc_basename}_power.rpt"
+export DC_TIMING_RPT="${REPORTS_DIR}/${selected_dc_basename}_timing.rpt"
+export DC_QOR_RPT="${REPORTS_DIR}/${selected_dc_basename}_qor.rpt"
+export DC_CHECK_RPT="${REPORTS_DIR}/${selected_dc_basename}_check_design.rpt"
+export DC_VIOLATORS_RPT="${REPORTS_DIR}/${selected_dc_basename}_violators.rpt"
+export DC_GATING_RPT="${REPORTS_DIR}/${selected_dc_basename}_gating_check.rpt"
+export DC_LOG_FILE="${LOGS_DIR}/${selected_dc_basename}.log"
 
 export INNOVUS_INPUT_NETLIST="${INNOVUS_INPUT_NETLIST:-$DC_NETLIST}"
 export INNOVUS_NETLIST="${INNOVUS_RESULTS_DIR}/${DESIGN_NAME}_innovus.v"
@@ -250,8 +320,8 @@ export FRONTSIM_VECTOR_EXPECTED="${FRONTSIM_EXPECTED:-${REPO_ROOT}/test_vectors/
 export FRONTSIM_CASE="${FRONTSIM_CASE:-${CASE:-}}"
 export FRONTSIM_VCD_PATH="${FRONTSIM_VCD_PATH:-}"
 
-export POSTSIM_NETLIST="$(choose_netlist "${POSTSIM_NETLIST_MODE:-dc}")"
-export POSTSIM_SDF="$(choose_sdf "${POSTSIM_SDF_MODE:-dc}")"
+export POSTSIM_NETLIST="$(choose_netlist "${POSTSIM_NETLIST_MODE:-dc}" "${POSTSIM_FLAVOR}")"
+export POSTSIM_SDF="$(choose_sdf "${POSTSIM_SDF_MODE:-dc}" "${POSTSIM_FLAVOR}")"
 export POSTSIM_SIMV="${POSTSIM_WORK_DIR}/${DESIGN_NAME}_gate.simv"
 export POSTSIM_COMPILE_LOG="${POSTSIM_LOG_DIR}/${DESIGN_NAME}_compile.log"
 export POSTSIM_RUN_LOG="${POSTSIM_LOG_DIR}/${DESIGN_NAME}_run.log"
@@ -263,16 +333,16 @@ export POSTSIM_VECTOR_EXPECTED="${POSTSIM_EXPECTED:-${REPO_ROOT}/test_vectors/tx
 export POSTSIM_CASE="${POSTSIM_CASE:-${CASE:-}}"
 export POSTSIM_VCD_PATH="${POSTSIM_VCD_PATH:-}"
 
-export FM_IMPL_NETLIST="$(choose_netlist "${FM_IMPLEMENTATION_MODE:-dc}")"
+export FM_IMPL_NETLIST="$(choose_netlist "${FM_IMPLEMENTATION_MODE:-dc}" "${FM_FLAVOR}")"
 export FM_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_fm.log"
 export FM_SUMMARY_RPT="${FM_REPORT_DIR}/${DESIGN_NAME}_fm_summary.rpt"
 
-export INNOVUS_INPUT_NETLIST="$(choose_netlist "${INNOVUS_NETLIST_MODE:-dc}")"
-export ICC2_INPUT_NETLIST="$(choose_netlist "${ICC2_NETLIST_MODE:-${INNOVUS_NETLIST_MODE:-dc}}")"
+export INNOVUS_INPUT_NETLIST="$(choose_netlist "${INNOVUS_NETLIST_MODE:-dc}" "${INNOVUS_INPUT_FLAVOR}")"
+export ICC2_INPUT_NETLIST="$(choose_netlist "${ICC2_NETLIST_MODE:-${INNOVUS_NETLIST_MODE:-dc}}" "${INNOVUS_INPUT_FLAVOR}")"
 export ICC_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_icc.log"
 
 export CALIBRE_GDS="$(choose_calibre_gds "${CALIBRE_LAYOUT_MODE:-innovus}")"
-export CALIBRE_SOURCE_NETLIST="$(choose_calibre_source "${CALIBRE_SOURCE_MODE:-innovus}")"
+export CALIBRE_SOURCE_NETLIST="$(choose_calibre_source "${CALIBRE_SOURCE_MODE:-innovus}" "${CALIBRE_SOURCE_FLAVOR}")"
 
 export VIRTUOSO_LAYOUT_GDS="${VIRTUOSO_LAYOUT_GDS:-$INNOVUS_GDS}"
 export VIRTUOSO_LAYOUT_LIB="${VIRTUOSO_LAYOUT_LIB:-${DESIGN_NICKNAME}_layout}"

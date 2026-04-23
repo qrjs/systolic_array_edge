@@ -47,7 +47,7 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
-.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-innovus-gui thesis-virtuoso
+.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-dip-gated-debug thesis-innovus-gui thesis-virtuoso
 .PHONY: \
 	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
@@ -163,7 +163,8 @@ help:
 	@echo "  make dc-compare        # 商业综合：四架构 base+ultra 对比"
 	@echo "  make thesis-check      # SMIC40 thesis 主线环境检查"
 	@echo "  make thesis-synth      # 主表综合：ws/is/os legacy + dip gated"
-	@echo "  make thesis-dip        # DiP 主链：DC -> gate suite(none/dc) -> Innovus -> gate suite(innovus) -> Virtuoso"
+	@echo "  make thesis-dip        # DiP functional 主链：plain DC -> gate suite -> Innovus -> Virtuoso"
+	@echo "  make thesis-dip-gated-debug # DiP gated 调试：gated DC -> FM -> 定向 gate case"
 	@echo "  make thesis-innovus-gui # 打开 Innovus GUI 看版图"
 	@echo "  make thesis-virtuoso   # 导入 Innovus GDS 并打开 Virtuoso layout"
 	@echo ""
@@ -214,6 +215,7 @@ help-all:
 	@echo "  make thesis-check"
 	@echo "  make thesis-synth"
 	@echo "  make thesis-dip"
+	@echo "  make thesis-dip-gated-debug"
 	@echo "  make thesis-innovus-gui"
 	@echo "  make thesis-virtuoso"
 	@echo ""
@@ -258,12 +260,18 @@ thesis-dip:
 	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
 	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_mainline.sh"
 
+thesis-dip-gated-debug:
+	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
+	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_gated_debug.sh"
+
 thesis-innovus-gui:
 	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
 	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
 	DESIGN_ENV=config/design.std.env \
 	LIBS_ENV=config/libs.env \
-	DIP_COMPILE_PROFILE=gated_default \
+	INNOVUS_INPUT_FLAVOR=plain \
+	DC_OUTPUT_FLAVOR=plain \
 	./scripts/run_innovus_gui.sh
 
 thesis-virtuoso:
@@ -271,7 +279,8 @@ thesis-virtuoso:
 	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
 	DESIGN_ENV=config/design.std.env \
 	LIBS_ENV=config/libs.env \
-	DIP_COMPILE_PROFILE=gated_default \
+	INNOVUS_INPUT_FLAVOR=plain \
+	DC_OUTPUT_FLAVOR=plain \
 	./scripts/run_virtuoso_layout.sh
 
 thesis-icc-probe:

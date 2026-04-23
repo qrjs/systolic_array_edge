@@ -55,6 +55,7 @@ export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-synth
 make thesis-dip
+make thesis-dip-gated-debug
 make thesis-innovus-gui
 make thesis-virtuoso
 ```
@@ -67,8 +68,11 @@ make thesis-virtuoso
   跑论文主表综合：
   `ws/is/os legacy FIFO` + `dip std + gated_default`
 - `thesis-dip`
-  跑 `DiP` 主链：
-  `DC -> gate suite(none) -> gate suite(dc) -> Innovus -> gate suite(innovus) -> Virtuoso`
+  跑 `DiP` functional backend track：
+  `plain DC -> gate suite(none) -> gate suite(dc) -> Innovus -> gate suite(innovus) -> Virtuoso`
+- `thesis-dip-gated-debug`
+  跑 `DiP` gated debug track：
+  `gated DC -> FM -> batch_000 + signed_mix`
 - `thesis-innovus-gui`
   打开 `Innovus GUI` 看版图
 - `thesis-virtuoso`
@@ -81,7 +85,8 @@ make thesis-virtuoso
 需要注意：
 
 - `make thesis-check` 与 `make thesis-synth` 仍然是最先执行的两步
-- `make thesis-dip` 现在走 Cadence 主链，而不是旧的 Synopsys 后端主链
+- `make thesis-dip` 现在走 functional backend track
+- `make thesis-dip-gated-debug` 单独承担 gated 功能偏差定位
 - 当前工作区没有真实 `dc_shell / innovus / virtuoso` 环境，因此这次改动只能做静态落地与脚本验证，端到端结论仍要以目标服务器实测为准
 
 Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.

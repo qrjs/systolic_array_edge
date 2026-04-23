@@ -1,9 +1,11 @@
 # 商业 ASIC 流程上机说明
 
-这份文档对应当前仓库的 Cadence 主线 bring-up，重点是：
+这份文档对应当前仓库的 Cadence 双轨 bring-up，重点是：
 
-- `DIP std + gated_default`
-- `DC -> gate postsim -> Innovus -> Virtuoso`
+- functional backend track：
+  `plain DC -> gate postsim -> Innovus -> Virtuoso`
+- gated debug track：
+  `gated_default DC -> FM -> 定向 gate debug`
 - `SMIC40` PDK 的数字后端交付与 `OA` 资源分开检查
 
 ## 1. 当前主线
@@ -15,6 +17,7 @@ export SMIC40_PDK_ROOT=/absolute/path/to/pdk
 make thesis-check
 make thesis-synth
 make thesis-dip
+make thesis-dip-gated-debug
 make thesis-innovus-gui
 make thesis-virtuoso
 ```
@@ -26,7 +29,9 @@ make thesis-virtuoso
 - `thesis-synth`
   跑论文主表综合
 - `thesis-dip`
-  跑 `DIP` 完整 Cadence 主链
+  跑 `DIP` functional backend track
+- `thesis-dip-gated-debug`
+  跑 `DIP` gated 功能偏差定位入口
 - `thesis-innovus-gui`
   打开 `Innovus` GUI
 - `thesis-virtuoso`
@@ -129,7 +134,7 @@ POSTSIM_EXPECTED=/abs/path/to/expected.txt \
 ./scripts/run_postsim.sh
 ```
 
-正式全量回归：
+functional 主线正式全量回归：
 
 ```bash
 ./scripts/run_postsim_suite.sh
@@ -142,6 +147,11 @@ POSTSIM_EXPECTED=/abs/path/to/expected.txt \
 3. `innovus`
 
 如果上一阶段失败，脚本会立刻停住，不继续后面的阶段。
+
+gated debug 默认不跑全量 gate suite，而是只跑：
+
+- `batch_000`
+- `signed_mix`
 
 ## 5. Innovus 怎么跑
 
@@ -190,6 +200,8 @@ VIRTUOSO_WAIT=1 ./scripts/run_virtuoso_layout.sh
 
 截至当前代码状态：
 
-- `DIP` 的 Cadence 主线脚本已经切换完成
+- `DIP` 的 Cadence 双轨脚本已经切换完成
+- `plain` 网表是后端主线输入
+- `gated_default` 网表单独用于 FM 与功能偏差定位
 - 旧的 Synopsys 数字后端链不再是 `DIP` 正式主线
 - 当前本机没有真实 Cadence 工具和 PDK 环境，所以这里只能做静态检查，不能替代目标服务器实跑
