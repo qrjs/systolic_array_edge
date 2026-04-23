@@ -190,6 +190,16 @@ def compile_once(output_dir):
             previous = compile_log.read_text(errors="ignore")
         compile_log.write_text(previous + compile_text, encoding="utf-8")
     if result.returncode != 0:
+        if compile_log.exists():
+            try:
+                lines = compile_log.read_text(errors="ignore").splitlines()
+                tail = "\n".join(lines[-120:])
+                if tail:
+                    sys.stderr.write("==== gate suite compile.log (tail) ====\n")
+                    sys.stderr.write(tail + "\n")
+                    sys.stderr.write("==== end compile.log tail ====\n")
+            except Exception:
+                pass
         raise SystemExit("VCS compile failed for gate suite. See {}".format(compile_log))
 
     simv.chmod(simv.stat().st_mode | 0o111)
