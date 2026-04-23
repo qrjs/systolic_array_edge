@@ -30,5 +30,14 @@ let(()
 )
 EOF
 
-"$VIRTUOSO_BIN" -replay "$open_il"
+if [[ "${VIRTUOSO_WAIT:-0}" == "1" ]]; then
+    exec "$VIRTUOSO_BIN" -replay "$open_il"
+fi
 
+"$VIRTUOSO_BIN" -replay "$open_il" >/dev/null 2>&1 &
+virt_pid=$!
+disown "$virt_pid" 2>/dev/null || true
+echo "[dip-flow][PASS] Virtuoso import completed"
+echo "[dip-flow][PASS]   layout_lib = ${VIRTUOSO_LAYOUT_LIB}"
+echo "[dip-flow][PASS]   gds = ${VIRTUOSO_LAYOUT_GDS}"
+echo "[dip-flow][PASS]   virtuoso_pid = ${virt_pid}"

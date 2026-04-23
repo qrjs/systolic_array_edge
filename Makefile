@@ -47,7 +47,7 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
-.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-icc-probe thesis-icc2-gui
+.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-innovus-gui thesis-virtuoso
 .PHONY: \
 	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
@@ -163,9 +163,9 @@ help:
 	@echo "  make dc-compare        # 商业综合：四架构 base+ultra 对比"
 	@echo "  make thesis-check      # SMIC40 thesis 主线环境检查"
 	@echo "  make thesis-synth      # 主表综合：ws/is/os legacy + dip gated"
-	@echo "  make thesis-dip        # DiP 主链：DC -> 全量门后仿 -> ICC2 -> 全量门后仿"
-	@echo "  make thesis-icc-probe  # 用 ICC 探测 SMIC40 Milkyway 建库"
-	@echo "  make thesis-icc2-gui   # 打开 ICC2 GUI 看版图"
+	@echo "  make thesis-dip        # DiP 主链：DC -> gate suite(none/dc) -> Innovus -> gate suite(innovus) -> Virtuoso"
+	@echo "  make thesis-innovus-gui # 打开 Innovus GUI 看版图"
+	@echo "  make thesis-virtuoso   # 导入 Innovus GDS 并打开 Virtuoso layout"
 	@echo ""
 	@echo "说明："
 	@echo "  txt / random / cov 属于正式验证"
@@ -214,7 +214,8 @@ help-all:
 	@echo "  make thesis-check"
 	@echo "  make thesis-synth"
 	@echo "  make thesis-dip"
-	@echo "  make thesis-icc2-gui"
+	@echo "  make thesis-innovus-gui"
+	@echo "  make thesis-virtuoso"
 	@echo ""
 	@echo "兼容别名："
 	@echo "  make regress"
@@ -246,36 +247,42 @@ dc-compare:
 
 thesis-check:
 	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	"$(PROJECT_ROOT)/asic_commercial/scripts/check_thesis_env.sh"
 
 thesis-synth:
 	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	"$(PROJECT_ROOT)/asic_commercial/scripts/run_thesis_synth.sh"
 
 thesis-dip:
 	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
 	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_mainline.sh"
 
-thesis-icc-probe:
+thesis-innovus-gui:
 	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
 	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
-	DESIGN_ENV=config/design.std.env \
-	LIBS_ENV=config/libs.env \
-	./scripts/run_icc_probe.sh
-
-thesis-icc2-gui:
-	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
-	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	ICC_SHELL_EXEC="$(ICC_SHELL_EXEC)" \
 	DESIGN_ENV=config/design.std.env \
 	LIBS_ENV=config/libs.env \
 	DIP_COMPILE_PROFILE=gated_default \
-	./scripts/run_iccw.sh
+	./scripts/run_innovus_gui.sh
+
+thesis-virtuoso:
+	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
+	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	DESIGN_ENV=config/design.std.env \
+	LIBS_ENV=config/libs.env \
+	DIP_COMPILE_PROFILE=gated_default \
+	./scripts/run_virtuoso_layout.sh
+
+thesis-icc-probe:
+	@echo "Deprecated: ICC probe is no longer part of the DIP mainline." >&2
+	@echo "Use 'make thesis-innovus-gui' or 'make thesis-virtuoso' on the Cadence server instead." >&2
+	@exit 1
+
+thesis-icc2-gui:
+	@echo "Deprecated: ICC2 GUI is no longer part of the DIP mainline." >&2
+	@echo "Use 'make thesis-innovus-gui' instead." >&2
+	@exit 1
 
 validate-arch:
 	@case "$(ARCH)" in \

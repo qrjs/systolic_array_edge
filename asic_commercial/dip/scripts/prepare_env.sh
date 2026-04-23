@@ -69,7 +69,7 @@ choose_netlist() {
     local mode="$1"
     case "$mode" in
         dc) printf '%s\n' "$DC_NETLIST" ;;
-        icc2) printf '%s\n' "$ICC2_NETLIST" ;;
+        innovus | icc2) printf '%s\n' "$INNOVUS_NETLIST" ;;
         custom) printf '%s\n' "$(resolve_path "${CUSTOM_NETLIST:-}")" ;;
         open_source) printf '%s\n' "$OPEN_SOURCE_NETLIST" ;;
         *) die "unsupported netlist mode: $mode" ;;
@@ -81,7 +81,7 @@ choose_sdf() {
     case "$mode" in
         none) printf '%s\n' "" ;;
         dc) printf '%s\n' "$DC_SDF" ;;
-        icc2) printf '%s\n' "$ICC2_SDF" ;;
+        innovus | icc2) printf '%s\n' "$INNOVUS_SDF" ;;
         custom) printf '%s\n' "$(resolve_path "${CUSTOM_SDF:-}")" ;;
         *) die "unsupported SDF mode: $mode" ;;
     esac
@@ -90,7 +90,7 @@ choose_sdf() {
 choose_calibre_gds() {
     local mode="$1"
     case "$mode" in
-        icc2) printf '%s\n' "$ICC2_GDS" ;;
+        innovus | icc2) printf '%s\n' "$INNOVUS_GDS" ;;
         custom) printf '%s\n' "$(resolve_path "${CALIBRE_CUSTOM_GDS:-}")" ;;
         *) die "unsupported Calibre layout mode: $mode" ;;
     esac
@@ -100,7 +100,7 @@ choose_calibre_source() {
     local mode="$1"
     case "$mode" in
         dc) printf '%s\n' "$DC_NETLIST" ;;
-        icc2) printf '%s\n' "$ICC2_NETLIST" ;;
+        innovus | icc2) printf '%s\n' "$INNOVUS_NETLIST" ;;
         custom) printf '%s\n' "$(resolve_path "${CALIBRE_CUSTOM_SOURCE_NETLIST:-}")" ;;
         *) die "unsupported Calibre source mode: $mode" ;;
     esac
@@ -138,10 +138,14 @@ export FRONTSIM_WORK_DIR="${FLOW_ROOT}/frontsim/work"
 export FRONTSIM_LOG_DIR="${FLOW_ROOT}/frontsim/logs"
 export POSTSIM_WORK_DIR="${FLOW_ROOT}/postsim/work"
 export POSTSIM_LOG_DIR="${FLOW_ROOT}/postsim/logs"
-export ICC2_WORK_DIR="${FLOW_ROOT}/icc2/work"
-export ICC2_LIB_DIR="${FLOW_ROOT}/icc2/lib"
-export ICC2_REPORT_DIR="${REPORTS_DIR}/icc2"
-export ICC2_RESULTS_DIR="${RESULTS_DIR}/icc2"
+export POSTSIM_SUITE_DIR="${POSTSIM_SUITE_DIR:-${FLOW_ROOT}/postsim/suites}"
+export INNOVUS_WORK_DIR="${FLOW_ROOT}/innovus/work"
+export INNOVUS_REPORT_DIR="${REPORTS_DIR}/innovus"
+export INNOVUS_RESULTS_DIR="${RESULTS_DIR}/innovus"
+export ICC2_WORK_DIR="${ICC2_WORK_DIR:-${INNOVUS_WORK_DIR}}"
+export ICC2_LIB_DIR="${ICC2_LIB_DIR:-${FLOW_ROOT}/icc2/lib}"
+export ICC2_REPORT_DIR="${ICC2_REPORT_DIR:-${INNOVUS_REPORT_DIR}}"
+export ICC2_RESULTS_DIR="${ICC2_RESULTS_DIR:-${INNOVUS_RESULTS_DIR}}"
 export ICC_WORK_DIR="${FLOW_ROOT}/icc/work"
 export ICC_LIB_DIR="${FLOW_ROOT}/icc/lib"
 export ICC_REPORT_DIR="${REPORTS_DIR}/icc"
@@ -154,8 +158,9 @@ export VIRTUOSO_WORK_DIR="${FLOW_ROOT}/virtuoso"
 mkdir -p \
     "$RESULTS_DIR" "$REPORTS_DIR" "$LOGS_DIR" \
     "$DC_WORK_DIR" "$FRONTSIM_WORK_DIR" "$FRONTSIM_LOG_DIR" \
-    "$POSTSIM_WORK_DIR" "$POSTSIM_LOG_DIR" \
-    "$ICC2_WORK_DIR" "$ICC2_LIB_DIR" "$ICC2_REPORT_DIR" "$ICC2_RESULTS_DIR" \
+    "$POSTSIM_WORK_DIR" "$POSTSIM_LOG_DIR" "$POSTSIM_SUITE_DIR" \
+    "$INNOVUS_WORK_DIR" "$INNOVUS_REPORT_DIR" "$INNOVUS_RESULTS_DIR" \
+    "$ICC2_LIB_DIR" \
     "$ICC_WORK_DIR" "$ICC_LIB_DIR" "$ICC_REPORT_DIR" \
     "$FM_WORK_DIR" "$FM_REPORT_DIR" \
     "$CALIBRE_WORK_DIR" "$CALIBRE_REPORT_DIR" \
@@ -175,6 +180,26 @@ export DC_VIOLATORS_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_violators.rpt"
 export DC_GATING_RPT="${REPORTS_DIR}/${DESIGN_NAME}_dc_gating_check.rpt"
 export DC_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_dc.log"
 
+export INNOVUS_INPUT_NETLIST="${INNOVUS_INPUT_NETLIST:-$DC_NETLIST}"
+export INNOVUS_NETLIST="${INNOVUS_RESULTS_DIR}/${DESIGN_NAME}_innovus.v"
+export INNOVUS_SDF="${INNOVUS_RESULTS_DIR}/${DESIGN_NAME}_innovus.sdf"
+export INNOVUS_DEF="${INNOVUS_RESULTS_DIR}/${DESIGN_NAME}.def"
+export INNOVUS_GDS="${INNOVUS_RESULTS_DIR}/${DESIGN_NAME}.gds"
+export INNOVUS_MMMC_FILE="${INNOVUS_WORK_DIR}/${DESIGN_NAME}_view_definition.tcl"
+export INNOVUS_CHECKPOINT_PREFIX="${INNOVUS_WORK_DIR}/${DESIGN_NAME}"
+export INNOVUS_TIMING_RPT="${INNOVUS_REPORT_DIR}/${DESIGN_NAME}_timing.rpt"
+export INNOVUS_POWER_RPT="${INNOVUS_REPORT_DIR}/${DESIGN_NAME}_power.rpt"
+export INNOVUS_AREA_RPT="${INNOVUS_REPORT_DIR}/${DESIGN_NAME}_area.rpt"
+export INNOVUS_QOR_RPT="${INNOVUS_REPORT_DIR}/${DESIGN_NAME}_qor.rpt"
+export INNOVUS_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_innovus.log"
+export ICC2_INPUT_NETLIST="${ICC2_INPUT_NETLIST:-${INNOVUS_INPUT_NETLIST}}"
+export ICC2_DESIGN_LIB="${ICC2_DESIGN_LIB:-${ICC2_LIB_DIR}/${DESIGN_NAME}.dlib}"
+export ICC2_GDS="${ICC2_GDS:-${INNOVUS_GDS}}"
+export ICC2_NETLIST="${ICC2_NETLIST:-${INNOVUS_NETLIST}}"
+export ICC2_SDF="${ICC2_SDF:-${INNOVUS_SDF}}"
+export ICC2_DEF="${ICC2_DEF:-${INNOVUS_DEF}}"
+export ICC2_LOG_FILE="${ICC2_LOG_FILE:-${INNOVUS_LOG_FILE}}"
+
 export FRONTSIM_SIMV="${FRONTSIM_WORK_DIR}/${DESIGN_NAME}_rtl.simv"
 export FRONTSIM_COMPILE_LOG="${FRONTSIM_LOG_DIR}/${DESIGN_NAME}_rtl_compile.log"
 export FRONTSIM_RUN_LOG="${FRONTSIM_LOG_DIR}/${DESIGN_NAME}_rtl_run.log"
@@ -188,6 +213,8 @@ export POSTSIM_SDF="$(choose_sdf "${POSTSIM_SDF_MODE:-dc}")"
 export POSTSIM_SIMV="${POSTSIM_WORK_DIR}/${DESIGN_NAME}_gate.simv"
 export POSTSIM_COMPILE_LOG="${POSTSIM_LOG_DIR}/${DESIGN_NAME}_compile.log"
 export POSTSIM_RUN_LOG="${POSTSIM_LOG_DIR}/${DESIGN_NAME}_run.log"
+export POSTSIM_VECTOR_DIR="${POSTSIM_VECTOR_DIR:-${REPO_ROOT}/test_vectors/txt}"
+export POSTSIM_STAGES="${POSTSIM_STAGES:-none dc innovus}"
 export POSTSIM_VECTOR_INPUT="${POSTSIM_INPUT:-${REPO_ROOT}/test_vectors/txt/signed_mix_input.txt}"
 export POSTSIM_VECTOR_EXPECTED="${POSTSIM_EXPECTED:-${REPO_ROOT}/test_vectors/txt/signed_mix_expected.txt}"
 export POSTSIM_CASE="${POSTSIM_CASE:-${CASE:-}}"
@@ -197,18 +224,13 @@ export FM_IMPL_NETLIST="$(choose_netlist "${FM_IMPLEMENTATION_MODE:-dc}")"
 export FM_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_fm.log"
 export FM_SUMMARY_RPT="${FM_REPORT_DIR}/${DESIGN_NAME}_fm_summary.rpt"
 
-export ICC2_INPUT_NETLIST="$(choose_netlist "${ICC2_NETLIST_MODE:-dc}")"
-export ICC2_DESIGN_LIB="${ICC2_LIB_DIR}/${DESIGN_NAME}.dlib"
-export ICC2_GDS="${ICC2_RESULTS_DIR}/${DESIGN_NAME}.gds"
-export ICC2_NETLIST="${ICC2_RESULTS_DIR}/${DESIGN_NAME}_icc2.v"
-export ICC2_SDF="${ICC2_RESULTS_DIR}/${DESIGN_NAME}_icc2.sdf"
-export ICC2_DEF="${ICC2_RESULTS_DIR}/${DESIGN_NAME}.def"
-export ICC2_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_icc2.log"
+export INNOVUS_INPUT_NETLIST="$(choose_netlist "${INNOVUS_NETLIST_MODE:-dc}")"
+export ICC2_INPUT_NETLIST="$(choose_netlist "${ICC2_NETLIST_MODE:-${INNOVUS_NETLIST_MODE:-dc}}")"
 export ICC_LOG_FILE="${LOGS_DIR}/${DESIGN_NAME}_icc.log"
 
-export CALIBRE_GDS="$(choose_calibre_gds "${CALIBRE_LAYOUT_MODE:-icc2}")"
-export CALIBRE_SOURCE_NETLIST="$(choose_calibre_source "${CALIBRE_SOURCE_MODE:-icc2}")"
+export CALIBRE_GDS="$(choose_calibre_gds "${CALIBRE_LAYOUT_MODE:-innovus}")"
+export CALIBRE_SOURCE_NETLIST="$(choose_calibre_source "${CALIBRE_SOURCE_MODE:-innovus}")"
 
-export VIRTUOSO_LAYOUT_GDS="${VIRTUOSO_LAYOUT_GDS:-$ICC2_GDS}"
+export VIRTUOSO_LAYOUT_GDS="${VIRTUOSO_LAYOUT_GDS:-$INNOVUS_GDS}"
 export VIRTUOSO_LAYOUT_LIB="${VIRTUOSO_LAYOUT_LIB:-${DESIGN_NICKNAME}_layout}"
 export VIRTUOSO_TECH_LIB="${VIRTUOSO_TECH_LIB:-}"

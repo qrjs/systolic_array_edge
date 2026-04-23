@@ -14,8 +14,7 @@ source "${REPO_ROOT}/asic_commercial/scripts/source_eda_env.sh"
 }
 
 THESIS_VECTOR_DIR="${THESIS_VECTOR_DIR:-${REPO_ROOT}/test_vectors/txt}"
-THESIS_POSTSIM_DC_DIR="${THESIS_POSTSIM_DC_DIR:-${FLOW_ROOT}/postsim/thesis_dc}"
-THESIS_POSTSIM_ICC2_DIR="${THESIS_POSTSIM_ICC2_DIR:-${FLOW_ROOT}/postsim/thesis_icc2}"
+THESIS_POSTSIM_DIR="${THESIS_POSTSIM_DIR:-${FLOW_ROOT}/postsim/thesis}"
 
 export FLOW_ROOT
 export REPO_ROOT
@@ -26,32 +25,29 @@ export DIP_COMPILE_PROFILE="${DIP_COMPILE_PROFILE:-gated_default}"
 "${REPO_ROOT}/asic_commercial/scripts/check_thesis_env.sh"
 
 "${SCRIPT_DIR}/run_dc.sh"
-python3 "${REPO_ROOT}/utils/run_gate_power_compare.py" \
-    --arch dip \
-    --vector-dir "${THESIS_VECTOR_DIR}" \
-    --output-dir "${THESIS_POSTSIM_DC_DIR}" \
-    --sdf-mode dc
-"${SCRIPT_DIR}/run_icc2_probe.sh"
-"${SCRIPT_DIR}/run_icc2.sh" all
-POSTSIM_NETLIST_MODE=icc2 POSTSIM_SDF_MODE=icc2 \
-python3 "${REPO_ROOT}/utils/run_gate_power_compare.py" \
-    --arch dip \
-    --vector-dir "${THESIS_VECTOR_DIR}" \
-    --output-dir "${THESIS_POSTSIM_ICC2_DIR}" \
-    --sdf-mode icc2
+POSTSIM_VECTOR_DIR="${THESIS_VECTOR_DIR}" POSTSIM_SUITE_DIR="${THESIS_POSTSIM_DIR}" \
+    "${SCRIPT_DIR}/run_postsim_suite.sh" none
+POSTSIM_VECTOR_DIR="${THESIS_VECTOR_DIR}" POSTSIM_SUITE_DIR="${THESIS_POSTSIM_DIR}" \
+    "${SCRIPT_DIR}/run_postsim_suite.sh" dc
+"${SCRIPT_DIR}/run_innovus.sh" all
+POSTSIM_VECTOR_DIR="${THESIS_VECTOR_DIR}" POSTSIM_SUITE_DIR="${THESIS_POSTSIM_DIR}" \
+    "${SCRIPT_DIR}/run_postsim_suite.sh" innovus
+"${SCRIPT_DIR}/run_virtuoso_layout.sh"
 
 # shellcheck disable=SC1091
 source "${SCRIPT_DIR}/prepare_env.sh"
 
 cat <<EOF
 [thesis-dip][PASS] DiP thesis mainline completed
-[thesis-dip][INFO] DC netlist  : ${DC_NETLIST}
-[thesis-dip][INFO] DC sdf      : ${DC_SDF}
-[thesis-dip][INFO] ICC2 netlist: ${ICC2_NETLIST}
-[thesis-dip][INFO] ICC2 sdf    : ${ICC2_SDF}
-[thesis-dip][INFO] ICC2 def    : ${ICC2_DEF}
-[thesis-dip][INFO] ICC2 gds    : ${ICC2_GDS}
-[thesis-dip][INFO] DC suite    : ${THESIS_POSTSIM_DC_DIR}/summary.md
-[thesis-dip][INFO] ICC2 suite  : ${THESIS_POSTSIM_ICC2_DIR}/summary.md
-[thesis-dip][INFO] Next step   : make thesis-icc2-gui
+[thesis-dip][INFO] DC netlist       : ${DC_NETLIST}
+[thesis-dip][INFO] DC sdf           : ${DC_SDF}
+[thesis-dip][INFO] Innovus netlist  : ${INNOVUS_NETLIST}
+[thesis-dip][INFO] Innovus sdf      : ${INNOVUS_SDF}
+[thesis-dip][INFO] Innovus def      : ${INNOVUS_DEF}
+[thesis-dip][INFO] Innovus gds      : ${INNOVUS_GDS}
+[thesis-dip][INFO] no-sdf suite     : ${THESIS_POSTSIM_DIR}/none/summary.md
+[thesis-dip][INFO] dc-sdf suite     : ${THESIS_POSTSIM_DIR}/dc/summary.md
+[thesis-dip][INFO] innovus-sdf suite: ${THESIS_POSTSIM_DIR}/innovus/summary.md
+[thesis-dip][INFO] Virtuoso lib     : ${VIRTUOSO_LAYOUT_LIB}
+[thesis-dip][INFO] Next step        : make thesis-innovus-gui
 EOF
