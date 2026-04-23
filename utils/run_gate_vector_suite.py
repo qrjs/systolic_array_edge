@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import annotations
 
 import argparse
 import csv
@@ -8,7 +7,6 @@ import re
 import shutil
 import subprocess
 import sys
-from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,37 +22,57 @@ PASS_RE = re.compile(r"\[[A-Z_]+\]\[PASS\]\s+(\S+)")
 FAIL_RE = re.compile(r"\[[A-Z_]+\]\[FAIL\]\s+(\S+)")
 
 
-@dataclass
-class GateCaseResult:
-    stage: str
-    case: str
-    status: str
-    input_path: str
-    expected_path: str
-    launch_cycle: int | None
-    done_cycle: int | None
-    cycles: int | None
-    a_nz: int | None
-    a_total: int | None
-    b_nz: int | None
-    b_total: int | None
-    active_mac: int | None
-    total_mac: int | None
-    zero_gated: int | None
-    skip_ratio_pct: float | None
-    run_log: str
-    vcd_path: str
+class GateCaseResult(object):
+    def __init__(
+        self,
+        stage,
+        case,
+        status,
+        input_path,
+        expected_path,
+        launch_cycle,
+        done_cycle,
+        cycles,
+        a_nz,
+        a_total,
+        b_nz,
+        b_total,
+        active_mac,
+        total_mac,
+        zero_gated,
+        skip_ratio_pct,
+        run_log,
+        vcd_path,
+    ):
+        self.stage = stage
+        self.case = case
+        self.status = status
+        self.input_path = input_path
+        self.expected_path = expected_path
+        self.launch_cycle = launch_cycle
+        self.done_cycle = done_cycle
+        self.cycles = cycles
+        self.a_nz = a_nz
+        self.a_total = a_total
+        self.b_nz = b_nz
+        self.b_total = b_total
+        self.active_mac = active_mac
+        self.total_mac = total_mac
+        self.zero_gated = zero_gated
+        self.skip_ratio_pct = skip_ratio_pct
+        self.run_log = run_log
+        self.vcd_path = vcd_path
 
 
-def die(message: str) -> "NoReturn":
+def die(message):
     raise SystemExit(message)
 
 
-def use_color() -> bool:
+def use_color():
     return sys.stdout.isatty() and os.environ.get("TERM", "") not in {"", "dumb"}
 
 
-class Color:
+class Color(object):
     if use_color():
         BOLD = "\033[1m"
         GREEN = "\033[32m"
@@ -64,30 +82,30 @@ class Color:
         BOLD = GREEN = RED = RESET = ""
 
 
-def color_status(ok: bool) -> str:
+def color_status(ok):
     if ok:
-        return f"{Color.BOLD}{Color.GREEN}PASS{Color.RESET}"
-    return f"{Color.BOLD}{Color.RED}FAIL{Color.RESET}"
+        return "{}{}PASS{}".format(Color.BOLD, Color.GREEN, Color.RESET)
+    return "{}{}FAIL{}".format(Color.BOLD, Color.RED, Color.RESET)
 
 
-def env_or_die(name: str) -> str:
+def env_or_die(name):
     value = os.environ.get(name, "").strip()
     if not value:
-        die(f"Missing required environment variable: {name}")
+        die("Missing required environment variable: {}".format(name))
     return value
 
 
-def resolve_path(raw: str) -> Path:
+def resolve_path(raw):
     path = Path(raw)
     return path if path.is_absolute() else (ROOT / path).resolve()
 
 
-def split_path_list(raw: str) -> list[str]:
+def split_path_list(raw):
     return [item for item in raw.split() if item]
 
 
-def parse_suite_case_names(path: Path) -> list[str]:
-    case_names: list[str] = []
+def parse_suite_case_names(path):
+    case_names = []
     for raw_line in path.read_text(encoding="utf-8").splitlines():
         line = raw_line.strip()
         if not line or line.startswith("#"):
@@ -98,21 +116,21 @@ def parse_suite_case_names(path: Path) -> list[str]:
     return case_names
 
 
-def discover_cases(vector_dir: Path) -> list[tuple[str, Path, Path]]:
+def discover_cases(vector_dir):
     suite_input = vector_dir / SUITE_INPUT_NAME
     suite_expected = vector_dir / SUITE_EXPECTED_NAME
     if suite_input.exists() and suite_expected.exists():
         return [(case_name, suite_input.resolve(), suite_expected.resolve()) for case_name in parse_suite_case_names(suite_input)]
 
-    cases: list[tuple[str, Path, Path]] = []
+    cases = []
     for input_path in sorted(vector_dir.glob("*_input.txt")):
         case_name = input_path.stem[:-6]
-        expected_path = vector_dir / f"{case_name}_expected.txt"
+        expected_path = vector_dir / "{}_expected.txt".format(case_name)
         cases.append((case_name, input_path.resolve(), expected_path.resolve()))
     return cases
 
 
-def vcs_env() -> dict[str, str]:
+def vcs_env():
     env = os.environ.copy()
     license_file = env.get("VCS_LICENSE_FILE")
     if license_file:
@@ -122,20 +140,20 @@ def vcs_env() -> dict[str, str]:
     return env
 
 
-def run(cmd: list[str], cwd: Path, *, env: dict[str, str], check: bool = True) -> subprocess.CompletedProcess[str]:
-    result = subprocess.run(cmd, cwd=cwd, text=True, capture_output=True, env=env)
+def run(cmd, cwd, env, check=True):
+    result = subprocess.run(cmd, cwd=str(cwd), universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
     if check and result.returncode != 0:
         raise subprocess.CalledProcessError(result.returncode, cmd, output=result.stdout, stderr=result.stderr)
     return result
 
 
-def compile_once(output_dir: Path) -> tuple[Path, Path]:
+def compile_once(output_dir):
     vcs_bin = os.environ.get("VCS_BIN", "vcs")
     tb_top = env_or_die("POSTSIM_TB_TOP")
     tb_file = resolve_path(env_or_die("POSTSIM_TB_FILE"))
     netlist = resolve_path(env_or_die("POSTSIM_NETLIST"))
     compile_log = output_dir / "compile.log"
-    simv = output_dir / "build" / f"{tb_top}.simv"
+    simv = output_dir / "build" / "{}.simv".format(tb_top)
     simv.parent.mkdir(parents=True, exist_ok=True)
 
     compile_cmd = [
@@ -143,7 +161,7 @@ def compile_once(output_dir: Path) -> tuple[Path, Path]:
         "-full64",
         "-sverilog",
         "+define+TB_SKIP_SDF_ANNOTATE",
-        f"+incdir+{ROOT}",
+        "+incdir+{}".format(ROOT),
         "-timescale=1ns/1ps",
         "-debug_access+all",
         "-kdb",
@@ -162,29 +180,23 @@ def compile_once(output_dir: Path) -> tuple[Path, Path]:
 
     sdf_path = os.environ.get("POSTSIM_SDF", "").strip()
     if sdf_path:
-        compile_cmd.extend(["-sdf", f"max:{tb_top}.dut:{resolve_path(sdf_path)}"])
+        compile_cmd.extend(["-sdf", "max:{}.dut:{}".format(tb_top, resolve_path(sdf_path))])
 
     result = run(compile_cmd, ROOT, env=vcs_env(), check=False)
     compile_text = (result.stdout or "") + (result.stderr or "")
     if compile_text:
-        compile_log.write_text((compile_log.read_text(errors="ignore") if compile_log.exists() else "") + compile_text, encoding="utf-8")
+        previous = ""
+        if compile_log.exists():
+            previous = compile_log.read_text(errors="ignore")
+        compile_log.write_text(previous + compile_text, encoding="utf-8")
     if result.returncode != 0:
-        raise SystemExit(f"VCS compile failed for gate suite. See {compile_log}")
+        raise SystemExit("VCS compile failed for gate suite. See {}".format(compile_log))
 
     simv.chmod(simv.stat().st_mode | 0o111)
     return simv, compile_log
 
 
-def parse_case_output(
-    *,
-    stage: str,
-    case_name: str,
-    input_path: Path,
-    expected_path: Path,
-    run_log: Path,
-    vcd_path: Path | None,
-    text: str,
-) -> GateCaseResult:
+def parse_case_output(stage, case_name, input_path, expected_path, run_log, vcd_path, text):
     metric_match = CASE_METRIC_RE.search(text)
     power_match = POWER_RE.search(text)
 
@@ -216,7 +228,7 @@ def parse_case_output(
     )
 
 
-def write_csv(path: Path, rows: list[GateCaseResult]) -> None:
+def write_csv(path, rows):
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
@@ -267,37 +279,39 @@ def write_csv(path: Path, rows: list[GateCaseResult]) -> None:
             )
 
 
-def write_summary(path: Path, rows: list[GateCaseResult], *, stage: str, vector_dir: Path, compile_log: Path) -> None:
+def write_summary(path, rows, stage, vector_dir, compile_log):
     total = len(rows)
     passed = [row for row in rows if row.status == "PASS"]
     failed = [row for row in rows if row.status != "PASS"]
-    avg_cycles = sum(row.cycles or 0 for row in passed) / len(passed) if passed else 0.0
-    total_mac = sum(row.total_mac or 0 for row in passed)
-    zero_gated = sum(row.zero_gated or 0 for row in passed)
-    active_mac = sum(row.active_mac or 0 for row in passed)
+    avg_cycles = sum((row.cycles or 0) for row in passed) / float(len(passed)) if passed else 0.0
+    total_mac = sum((row.total_mac or 0) for row in passed)
+    zero_gated = sum((row.zero_gated or 0) for row in passed)
+    active_mac = sum((row.active_mac or 0) for row in passed)
     avg_skip = (100.0 * zero_gated / total_mac) if total_mac else 0.0
 
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         handle.write("# Gate Post-Sim Suite Summary\n\n")
-        handle.write(f"- Stage: `{stage}`\n")
-        handle.write(f"- Vector dir: `{vector_dir}`\n")
-        handle.write(f"- Netlist: `{os.environ.get('POSTSIM_NETLIST', '')}`\n")
-        handle.write(f"- SDF: `{os.environ.get('POSTSIM_SDF', '<none>') or '<none>'}`\n")
-        handle.write(f"- Compile log: `{compile_log}`\n\n")
+        handle.write("- Stage: `{}`\n".format(stage))
+        handle.write("- Vector dir: `{}`\n".format(vector_dir))
+        handle.write("- Netlist: `{}`\n".format(os.environ.get("POSTSIM_NETLIST", "")))
+        handle.write("- SDF: `{}`\n".format(os.environ.get("POSTSIM_SDF", "<none>") or "<none>"))
+        handle.write("- Compile log: `{}`\n\n".format(compile_log))
         handle.write("| Total | Pass | Fail | Avg Cycles | Active MAC | Zero Gated | Avg Skip (%) |\n")
         handle.write("| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n")
         handle.write(
-            f"| {total} | {len(passed)} | {len(failed)} | {avg_cycles:.2f} | {active_mac} | {zero_gated} | {avg_skip:.2f} |\n"
+            "| {} | {} | {} | {:.2f} | {} | {} | {:.2f} |\n".format(
+                total, len(passed), len(failed), avg_cycles, active_mac, zero_gated, avg_skip
+            )
         )
         handle.write("\n")
         if failed:
             handle.write("## Failed Cases\n\n")
             for row in failed:
-                handle.write(f"- `{row.case}`: `{row.run_log}`\n")
+                handle.write("- `{}`: `{}`\n".format(row.case, row.run_log))
 
 
-def main() -> int:
+def main():
     parser = argparse.ArgumentParser(description="Compile once and run a full gate-level txt vector suite.")
     parser.add_argument("--stage", required=True, help="Logical stage label such as none, dc, or innovus.")
     parser.add_argument("--vector-dir", required=True)
@@ -308,26 +322,26 @@ def main() -> int:
     vector_dir = Path(args.vector_dir).resolve()
     output_dir = Path(args.output_dir).resolve()
     if output_dir.exists():
-        shutil.rmtree(output_dir)
+        shutil.rmtree(str(output_dir))
     (output_dir / "logs").mkdir(parents=True, exist_ok=True)
     if args.dump_vcd:
         (output_dir / "vcd").mkdir(parents=True, exist_ok=True)
 
     cases = discover_cases(vector_dir)
     if not cases:
-        die(f"No txt vector cases found in {vector_dir}")
+        die("No txt vector cases found in {}".format(vector_dir))
 
     simv, compile_log = compile_once(output_dir)
     pass_marker = env_or_die("POSTSIM_PASS_MARKER")
-    results: list[GateCaseResult] = []
+    results = []
     failures = 0
 
     for case_name, input_path, expected_path in cases:
-        run_log = output_dir / "logs" / f"{case_name}.run.log"
-        vcd_path = (output_dir / "vcd" / f"{case_name}.vcd") if args.dump_vcd else None
-        cmd = [str(simv), "-l", str(run_log), "+SOFT_FAIL", f"+CASE={case_name}", f"+INPUT={input_path}", f"+EXPECTED={expected_path}"]
+        run_log = output_dir / "logs" / "{}.run.log".format(case_name)
+        vcd_path = (output_dir / "vcd" / "{}.vcd".format(case_name)) if args.dump_vcd else None
+        cmd = [str(simv), "-l", str(run_log), "+SOFT_FAIL", "+CASE={}".format(case_name), "+INPUT={}".format(input_path), "+EXPECTED={}".format(expected_path)]
         if vcd_path is not None:
-            cmd.append(f"+VCD={vcd_path}")
+            cmd.append("+VCD={}".format(vcd_path))
 
         result = run(cmd, output_dir, env=vcs_env(), check=False)
         combined = (result.stdout or "") + (result.stderr or "")
@@ -336,15 +350,7 @@ def main() -> int:
         if combined and not run_log.exists():
             run_log.write_text(combined, encoding="utf-8")
 
-        parsed = parse_case_output(
-            stage=args.stage,
-            case_name=case_name,
-            input_path=input_path,
-            expected_path=expected_path,
-            run_log=run_log,
-            vcd_path=vcd_path,
-            text=combined,
-        )
+        parsed = parse_case_output(args.stage, case_name, input_path, expected_path, run_log, vcd_path, combined)
 
         ok = parsed.status == "PASS" and (pass_marker in combined)
         if parsed.status == "UNKNOWN" and result.returncode == 0 and pass_marker in combined:
@@ -356,18 +362,19 @@ def main() -> int:
 
         results.append(parsed)
         failures += 0 if ok else 1
-        print(f"GATE_CASE stage={args.stage} case={case_name} status={'PASS' if ok else 'FAIL'}")
-        print(f"GATE_TXT_CASE stage={args.stage} case={case_name} status={color_status(ok)}")
+        print("GATE_CASE stage={} case={} status={}".format(args.stage, case_name, "PASS" if ok else "FAIL"))
+        print("GATE_TXT_CASE stage={} case={} status={}".format(args.stage, case_name, color_status(ok)))
 
     write_csv(output_dir / "gate_case_metrics.csv", results)
-    write_summary(output_dir / "summary.md", results, stage=args.stage, vector_dir=vector_dir, compile_log=compile_log)
+    write_summary(output_dir / "summary.md", results, args.stage, vector_dir, compile_log)
 
-    print()
+    print("")
     print(
-        f"GATE_SUITE stage={args.stage} status={'PASS' if failures == 0 else 'FAIL'} "
-        f"total={len(results)} pass={len(results) - failures} fail={failures}"
+        "GATE_SUITE stage={} status={} total={} pass={} fail={}".format(
+            args.stage, "PASS" if failures == 0 else "FAIL", len(results), len(results) - failures, failures
+        )
     )
-    print(f"GATE_SUMMARY summary={output_dir / 'summary.md'}")
+    print("GATE_SUMMARY summary={}".format(output_dir / "summary.md"))
     return 0 if failures == 0 else 1
 
 
