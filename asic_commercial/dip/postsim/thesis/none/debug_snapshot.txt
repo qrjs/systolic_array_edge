@@ -1,0 +1,210 @@
+# Gate Debug Snapshot
+
+stage=none
+suite_status=FAIL
+vector_dir=/home/host_1/systolic_array_edge/test_vectors/txt
+output_dir=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none
+netlist=/home/host_1/systolic_array_edge/asic_commercial/dip/results/dip_core_std_top_4x4_dc_plain.v
+prepared_netlist=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/prepared_gate_netlist.v
+sdf=<none>
+tb_top=dip_core_std_postsim_file_tb
+tb_file=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/tb/dip_core_std_postsim_file_tb.sv
+sim_library_verilog=/home/host_1/systolic_array_edge/SMIC40/pdk/sc9mc_base_rvt_c40/r1p1/verilog/sc9mc_logic0040ll_base_rvt_c40.v
+additional_sim_verilogs=
+disable_timing_checks=1
+compile_rc=0
+compile_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/compile.log
+compile_cmd=vcs -full64 -sverilog +define+TB_SKIP_SDF_ANNOTATE +incdir+/home/host_1/systolic_array_edge -timescale=1ns/1ps -debug_access+all -kdb -l /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/compile.log -top dip_core_std_postsim_file_tb /home/host_1/systolic_array_edge/SMIC40/pdk/sc9mc_base_rvt_c40/r1p1/verilog/sc9mc_logic0040ll_base_rvt_c40.v /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/prepared_gate_netlist.v /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/tb/dip_core_std_postsim_file_tb.sv -o /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/build/dip_core_std_postsim_file_tb.simv
+total_cases=268
+pass_cases=0
+fail_cases=268
+first_failed_case=batch_000
+first_failed_input=/home/host_1/systolic_array_edge/test_vectors/txt/batch_000_input.txt
+first_failed_expected=/home/host_1/systolic_array_edge/test_vectors/txt/batch_000_expected.txt
+first_failed_run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_000.run.log
+first_failed_cycles=None
+first_failed_skip_ratio_pct=56.2
+
+## Compile Log Tail
+
+recompiling module BUF_X2M_A9TR40
+recompiling module BUF_X3P5M_A9TR40
+recompiling module DFFRPQN_X0P5M_A9TR40
+recompiling module DFFRPQN_X1M_A9TR40
+recompiling module DFFRPQ_X1M_A9TR40
+recompiling module INV_X0P5B_A9TR40
+recompiling module INV_X0P6B_A9TR40
+recompiling module INV_X0P6M_A9TR40
+recompiling module INV_X0P7M_A9TR40
+recompiling module INV_X0P8M_A9TR40
+recompiling module INV_X11M_A9TR40
+recompiling module INV_X1B_A9TR40
+recompiling module INV_X1M_A9TR40
+recompiling module INV_X1P4M_A9TR40
+recompiling module INV_X1P7M_A9TR40
+recompiling module INV_X2M_A9TR40
+recompiling module INV_X3B_A9TR40
+recompiling module INV_X3P5B_A9TR40
+recompiling module INV_X3P5M_A9TR40
+recompiling module INV_X4M_A9TR40
+recompiling module INV_X5M_A9TR40
+recompiling module INV_X6B_A9TR40
+recompiling module INV_X6M_A9TR40
+recompiling module NAND2B_X0P5M_A9TR40
+recompiling module NAND2_X0P5A_A9TR40
+recompiling module NAND2_X0P7A_A9TR40
+recompiling module NAND2_X1B_A9TR40
+50 of 130 modules done
+recompiling module NAND2_X1M_A9TR40
+recompiling module NAND2_X2A_A9TR40
+recompiling module NAND2_X2B_A9TR40
+recompiling module NAND2_X2M_A9TR40
+recompiling module NAND3B_X1M_A9TR40
+recompiling module NAND3_X0P5M_A9TR40
+recompiling module NAND3_X1A_A9TR40
+recompiling module NAND4BB_X1M_A9TR40
+recompiling module NAND4_X1A_A9TR40
+recompiling module NOR2B_X0P5M_A9TR40
+recompiling module NOR2B_X1M_A9TR40
+recompiling module NOR2_X0P5A_A9TR40
+recompiling module NOR2_X0P5B_A9TR40
+recompiling module NOR2_X0P5M_A9TR40
+recompiling module NOR2_X0P7A_A9TR40
+recompiling module NOR2_X0P7B_A9TR40
+recompiling module NOR2_X0P7M_A9TR40
+recompiling module NOR2_X1A_A9TR40
+recompiling module NOR2_X1M_A9TR40
+recompiling module NOR2_X1P4B_A9TR40
+recompiling module NOR2_X2M_A9TR40
+recompiling module NOR2_X3B_A9TR40
+recompiling module NOR2_X4B_A9TR40
+recompiling module NOR3_X1A_A9TR40
+recompiling module NOR4BB_X0P5M_A9TR40
+recompiling module NOR4BB_X1M_A9TR40
+recompiling module OA1B2_X1M_A9TR40
+recompiling module OAI211_X1M_A9TR40
+recompiling module OAI21_X0P5M_A9TR40
+recompiling module OAI21_X1M_A9TR40
+recompiling module OAI22BB_X1M_A9TR40
+recompiling module OAI22_X0P5M_A9TR40
+recompiling module OAI22_X1M_A9TR40
+recompiling module OAI22_X1P4M_A9TR40
+recompiling module OAI22_X2M_A9TR40
+recompiling module OAI31_X1M_A9TR40
+recompiling module OR2_X1M_A9TR40
+recompiling module OR2_X1P4M_A9TR40
+recompiling module OR4_X1M_A9TR40
+recompiling module TIEHI_X1M_A9TR40
+recompiling module TIELO_X1M_A9TR40
+recompiling module XNOR2_X0P7M_A9TR40
+recompiling module XOR2_X0P5M_A9TR40
+recompiling module XOR2_X0P7M_A9TR40
+recompiling module XOR2_X1M_A9TR40
+recompiling module XOR2_X1P4M_A9TR40
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_15_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_15
+100 of 130 modules done
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_14_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_14
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_13_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_13
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_12_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_12
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_11_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_11
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_10_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_10
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_9_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_9
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_8
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_7_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_7
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_6_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_6
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_5_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_5
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_4_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_4
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_2_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_2
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_1_DW01_add_1
+recompiling module dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_1
+recompiling module systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4
+recompiling module dip_core_std_postsim_file_tb
+All of 130 modules done
+make[1]: Entering directory '/home/host_1/systolic_array_edge/csrc'
+make[1]: Leaving directory '/home/host_1/systolic_array_edge/csrc'
+make[1]: Entering directory '/home/host_1/systolic_array_edge/csrc'
+rm -f _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/build/dip_core_std_postsim_file_tb.simv ]; then chmod -x /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/build/dip_core_std_postsim_file_tb.simv; fi
+g++  -o /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/build/dip_core_std_postsim_file_tb.simv    -Wl,-rpath-link=./ -Wl,-rpath='$ORIGIN'/dip_core_std_postsim_file_tb.simv.daidir/ -Wl,-rpath=./dip_core_std_postsim_file_tb.simv.daidir/ -Wl,-rpath='$ORIGIN'/dip_core_std_postsim_file_tb.simv.daidir//scsim.db.dir  -rdynamic  -Wl,-rpath=/home/synopsys/vcs-mx/O-2018.09-1/linux64/lib -L/home/synopsys/vcs-mx/O-2018.09-1/linux64/lib   objs/amcQw_d.o   _27447_archive_1.so objs/udps/FLi3i.o  SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o          -lzerosoft_rt_stubs -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /home/synopsys/vcs-mx/O-2018.09-1/linux64/lib/vcs_tls.o   -Wl,-whole-archive -lvcsucli -Wl,-no-whole-archive        _vcs_pli_stub_.o   /home/synopsys/vcs-mx/O-2018.09-1/linux64/lib/vcs_save_restore_new.o /home/synopsys/verdi/Verdi_O-2018.09-SP2/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/build/dip_core_std_postsim_file_tb.simv up to date
+make[1]: Leaving directory '/home/host_1/systolic_array_edge/csrc'
+CPU time: 7.728 seconds to compile + 1.068 seconds to elab + .333 seconds to link
+Verdi KDB elaboration done and the database successfully generated: 0 error(s), 0 warning(s)
+
+## First Failed Run Log Tail
+
+Command: /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/build/dip_core_std_postsim_file_tb.simv -l /home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_000.run.log +SOFT_FAIL +CASE=batch_000 +INPUT=/home/host_1/systolic_array_edge/test_vectors/txt/batch_000_input.txt +EXPECTED=/home/host_1/systolic_array_edge/test_vectors/txt/batch_000_expected.txt +notimingcheck +no_notifier +nospecify
+Chronologic VCS simulator copyright 1991-2018
+Contains Synopsys proprietary information.
+Compiler version O-2018.09-1_Full64; Runtime version O-2018.09-1_Full64;  Apr 24 11:42 2026
+[36m[DIP_CORE][CASE][0m input=/home/host_1/systolic_array_edge/test_vectors/txt/batch_000_input.txt expected=/home/host_1/systolic_array_edge/test_vectors/txt/batch_000_expected.txt
+[36m[DIP_CORE][MATRIX_A][0m
+            c0          c1          c2          c3
+  --------------------------------------------------------
+  row0             -47          45         -55          13
+  row1               0           0          39           0
+  row2              50           0          47          24
+  row3               0         -21          47         -31
+[36m[DIP_CORE][MATRIX_B][0m
+            c0          c1          c2          c3
+  --------------------------------------------------------
+  row0              32           3         -29           0
+  row1               0         -47           0          -3
+  row2             -42           8           0         -40
+  row3               0          22           0         -54
+[36m[DIP_CORE][EXPECTED_C][0m
+            c0          c1          c2          c3
+  --------------------------------------------------------
+  row0             806       -2410        1363        1363
+  row1           -1638         312           0       -1560
+  row2            -374        1054       -1450       -3176
+  row3           -1974         681           0        -143
+[36m[DIP_CORE][POWER][0m A_nz=11/16 B_nz=10/16 active_mac=28/64 zero_gated=36 skip_ratio=56.2%
+[DIP_CORE][FAIL] /home/host_1/systolic_array_edge/test_vectors/txt/batch_000_input.txt reason=timeout
+$finish called from file "/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/tb/dip_core_std_postsim_file_tb.sv", line 170.
+$finish at simulation time              2665000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 2665000 ps
+CPU Time:      0.300 seconds;       Data structure size:   7.0Mb
+Fri Apr 24 11:42:22 2026
+
+## First 20 Failed Cases
+
+- case=batch_000 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_000.run.log
+- case=batch_001 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_001.run.log
+- case=batch_002 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_002.run.log
+- case=batch_003 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_003.run.log
+- case=batch_004 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_004.run.log
+- case=batch_005 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_005.run.log
+- case=batch_006 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_006.run.log
+- case=batch_007 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_007.run.log
+- case=batch_008 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_008.run.log
+- case=batch_009 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_009.run.log
+- case=batch_010 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_010.run.log
+- case=batch_011 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_011.run.log
+- case=batch_012 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_012.run.log
+- case=batch_013 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_013.run.log
+- case=batch_014 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_014.run.log
+- case=batch_015 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_015.run.log
+- case=batch_016 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_016.run.log
+- case=batch_017 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_017.run.log
+- case=batch_018 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_018.run.log
+- case=batch_019 status=FAIL cycles=None run_log=/home/host_1/systolic_array_edge/asic_commercial/dip/postsim/thesis/none/logs/batch_019.run.log
+
