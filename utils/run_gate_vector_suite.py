@@ -185,7 +185,6 @@ def compile_once(output_dir):
         "-full64",
         "-sverilog",
         "+define+TB_SKIP_SDF_ANNOTATE",
-        "+define+TB_GATE_MODE",
         "+incdir+{}".format(ROOT),
         "-timescale=1ns/1ps",
         "-debug_access+all",

@@ -112,6 +112,8 @@ redirect -file [require_env DC_AREA_RPT] {report_area}
 redirect -file [require_env DC_POWER_RPT] {report_power}
 redirect -file [require_env DC_VIOLATORS_RPT] {report_constraint -all_violators}
 
+set_fix_multiple_port_nets -all -buffer_constants [current_design]
+set_app_var verilogout_no_tri true
 change_names -rules verilog -hierarchy
 write -format verilog -hierarchy -output [require_env DC_NETLIST]
 write_sdf [require_env DC_SDF]
