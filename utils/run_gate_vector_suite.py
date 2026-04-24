@@ -363,6 +363,30 @@ def print_failed_case_log_tail(rows):
         pass
 
 
+def rerun_first_failed_with_trace(rows, simv, output_dir):
+    failed_rows = [row for row in rows if row.status != "PASS"]
+    if not failed_rows:
+        return None
+
+    first_failed = failed_rows[0]
+    trace_path = output_dir / "first_failed_trace.log"
+    rerun_log = output_dir / "logs" / "{}.trace_rerun.log".format(first_failed.case)
+    cmd = [
+        str(simv),
+        "-l",
+        str(rerun_log),
+        "+SOFT_FAIL",
+        "+CASE={}".format(first_failed.case),
+        "+INPUT={}".format(first_failed.input_path),
+        "+EXPECTED={}".format(first_failed.expected_path),
+        "+TRACE={}".format(trace_path),
+    ]
+    if os.environ.get("POSTSIM_DISABLE_TIMING_CHECKS", "0") == "1":
+        cmd.extend(["+notimingcheck", "+no_notifier", "+nospecify"])
+    run(cmd, output_dir, env=vcs_env(), check=False)
+    return trace_path
+
+
 def read_log_tail(path, max_lines):
     file_path = Path(path)
     if not file_path.exists():
@@ -376,7 +400,7 @@ def read_log_tail(path, max_lines):
         return "<unreadable: {}>".format(exc)
 
 
-def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows, suite_status, extra_note):
+def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows, suite_status, extra_note, trace_path):
     total = len(rows)
     passed = len([row for row in rows if row.status == "PASS"])
     failed_rows = [row for row in rows if row.status != "PASS"]
@@ -411,6 +435,7 @@ def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows
         lines.append("first_failed_input={}".format(first_failed.input_path))
         lines.append("first_failed_expected={}".format(first_failed.expected_path))
         lines.append("first_failed_run_log={}".format(first_failed.run_log))
+        lines.append("first_failed_trace={}".format(trace_path if trace_path else ""))
         lines.append("first_failed_cycles={}".format(first_failed.cycles))
         lines.append("first_failed_skip_ratio_pct={}".format(first_failed.skip_ratio_pct))
 
@@ -424,6 +449,12 @@ def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows
         lines.append("## First Failed Run Log Tail")
         lines.append("")
         lines.append(read_log_tail(first_failed.run_log, 160))
+        lines.append("")
+
+    if trace_path is not None:
+        lines.append("## First Failed Trace Tail")
+        lines.append("")
+        lines.append(read_log_tail(trace_path, 200))
         lines.append("")
 
     if failed_rows:
@@ -461,6 +492,7 @@ def main():
         die("No txt vector cases found in {}".format(vector_dir))
 
     debug_snapshot_path = output_dir / "debug_snapshot.txt"
+    trace_path = None
     compile_info = compile_once(output_dir)
     compile_log = compile_info["compile_log"]
     if compile_info["compile_rc"] != 0:
@@ -473,6 +505,7 @@ def main():
             [],
             "COMPILE_FAIL",
             "VCS compile failed before any case ran",
+            trace_path,
         )
         sys.stderr.write("GATE_DEBUG_SNAPSHOT path={}\n".format(debug_snapshot_path))
         if compile_log.exists():
@@ -525,6 +558,8 @@ def main():
 
     write_csv(output_dir / "gate_case_metrics.csv", results)
     write_summary(output_dir / "summary.md", results, args.stage, vector_dir, compile_log)
+    if failures:
+        trace_path = rerun_first_failed_with_trace(results, simv, output_dir)
     write_debug_snapshot(
         debug_snapshot_path,
         args.stage,
@@ -534,6 +569,7 @@ def main():
         results,
         "PASS" if failures == 0 else "FAIL",
         "",
+        trace_path,
     )
     print("GATE_DEBUG_SNAPSHOT path={}".format(debug_snapshot_path))
     if failures:

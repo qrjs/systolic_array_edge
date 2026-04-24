@@ -35,6 +35,8 @@ module dip_core_std_postsim_file_tb;
     string expected_path = "";
     reg [1023:0] sdf_path;
     reg [1023:0] vcd_path;
+    reg [1023:0] trace_path;
+    integer trace_fd;
     bit soft_fail_mode;
 
     reg signed [DATA_WIDTH-1:0] a_matrix [0:ARRAY_SIZE-1][0:ARRAY_SIZE-1];
@@ -74,6 +76,7 @@ module dip_core_std_postsim_file_tb;
     end
 
     initial begin
+        trace_fd = 0;
 `ifndef TB_SKIP_SDF_ANNOTATE
         if ($value$plusargs("SDF=%s", sdf_path)) begin
             if (sdf_path != "") begin
@@ -86,6 +89,45 @@ module dip_core_std_postsim_file_tb;
                 $dumpfile(vcd_path);
                 $dumpvars(0, dip_core_std_postsim_file_tb);
             end
+        end
+        if ($value$plusargs("TRACE=%s", trace_path)) begin
+            if (trace_path != "") begin
+                trace_fd = $fopen(trace_path, "w");
+                if (trace_fd != 0) begin
+                    $fdisplay(trace_fd, "cycle rst_n flush wv iv rv rv_q busy wrapper_ov wrapper_stream_busy wrapper_captured_rows wrapper_result_pending wrapper_started stream_row_ready stream_bottom_valid stream_staged_input stream_drain accepted_rows completed_rows stream_output_valid stream_output_data result_matrix_q");
+                end
+            end
+        end
+    end
+
+    always @(posedge clk) begin
+        if (trace_fd != 0) begin
+            $fdisplay(
+                trace_fd,
+                "%0d %0b %0b %0b %0b %0b %0b %0b %0b %0b %0d %0b %0b %0b %0b %0b %0b %0d %0d %0b %h %h",
+                cycle_count,
+                rst_n,
+                flush,
+                weight_row_valid,
+                input_row_valid,
+                result_valid,
+                result_valid_q,
+                busy,
+                dut.u_dip_std_array.output_row_valid,
+                dut.u_dip_std_array.stream_busy,
+                dut.u_dip_std_array.captured_rows,
+                dut.u_dip_std_array.result_pending_reg,
+                dut.u_dip_std_array.started_reg,
+                dut.u_dip_std_array.u_stream_dip.row_ready,
+                dut.u_dip_std_array.u_stream_dip.bottom_row_valid,
+                dut.u_dip_std_array.u_stream_dip.staged_input_valid,
+                dut.u_dip_std_array.u_stream_dip.drain_issued_reg,
+                dut.u_dip_std_array.u_stream_dip.accepted_input_rows,
+                dut.u_dip_std_array.u_stream_dip.completed_output_rows,
+                dut.u_dip_std_array.u_stream_dip.output_row_valid,
+                dut.u_dip_std_array.output_row_data,
+                result_matrix_q
+            );
         end
     end
 
