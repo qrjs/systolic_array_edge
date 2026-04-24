@@ -126,7 +126,19 @@ module dip_core_std_postsim_file_tb;
         end
 
         repeat (4) @(posedge clk);
+`ifdef TB_GATE_MODE
+        @(negedge clk);
         rst_n = 1'b1;
+        weight_row_valid = 1'b0;
+        weight_row_idx = '0;
+        weight_row_data = '0;
+        input_row_valid = 1'b0;
+        input_row_data = '0;
+        @(posedge clk);
+        @(negedge clk);
+`else
+        rst_n = 1'b1;
+`endif
 
         weight_row_valid = 1'b1;
         for (row_idx = ARRAY_SIZE - 1; row_idx > 0; row_idx = row_idx - 1) begin

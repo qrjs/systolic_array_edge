@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/prepare_env.sh"
 VCS_BIN="${VCS_BIN:-vcs}"
 require_tool "$VCS_BIN"
 
-compile_cmd=("$VCS_BIN" -full64 -sverilog +define+TB_SKIP_SDF_ANNOTATE "+incdir+${REPO_ROOT}" -timescale=1ns/1ps -debug_access+all -kdb -l "$POSTSIM_COMPILE_LOG" -top "$POSTSIM_TB_TOP")
+compile_cmd=("$VCS_BIN" -full64 -sverilog +define+TB_SKIP_SDF_ANNOTATE +define+TB_GATE_MODE "+incdir+${REPO_ROOT}" -timescale=1ns/1ps -debug_access+all -kdb -l "$POSTSIM_COMPILE_LOG" -top "$POSTSIM_TB_TOP")
 
 sim_libs=()
 split_path_list "${SIM_LIBRARY_VERILOG:-}" sim_libs
