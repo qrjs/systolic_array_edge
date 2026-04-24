@@ -4,6 +4,7 @@ import argparse
 import csv
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -206,6 +207,7 @@ def compile_once(output_dir):
     if sdf_path:
         compile_cmd.extend(["-sdf", "max:{}.dut:{}".format(tb_top, resolve_path(sdf_path))])
 
+    compile_cmd_text = " ".join(shlex.quote(part) for part in compile_cmd)
     result = run(compile_cmd, ROOT, env=vcs_env(), check=False)
     compile_text = (result.stdout or "") + (result.stderr or "")
     if compile_text:
@@ -213,21 +215,15 @@ def compile_once(output_dir):
         if compile_log.exists():
             previous = compile_log.read_text(errors="ignore")
         compile_log.write_text(previous + compile_text, encoding="utf-8")
-    if result.returncode != 0:
-        if compile_log.exists():
-            try:
-                lines = compile_log.read_text(errors="ignore").splitlines()
-                tail = "\n".join(lines[-120:])
-                if tail:
-                    sys.stderr.write("==== gate suite compile.log (tail) ====\n")
-                    sys.stderr.write(tail + "\n")
-                    sys.stderr.write("==== end compile.log tail ====\n")
-            except Exception:
-                pass
-        raise SystemExit("VCS compile failed for gate suite. See {}".format(compile_log))
-
-    simv.chmod(simv.stat().st_mode | 0o111)
-    return simv, compile_log
+    if result.returncode == 0:
+        simv.chmod(simv.stat().st_mode | 0o111)
+    return {
+        "simv": simv,
+        "compile_log": compile_log,
+        "prepared_netlist": prepared_netlist,
+        "compile_cmd": compile_cmd_text,
+        "compile_rc": result.returncode,
+    }
 
 
 def parse_case_output(stage, case_name, input_path, expected_path, run_log, vcd_path, text):
@@ -367,6 +363,83 @@ def print_failed_case_log_tail(rows):
         pass
 
 
+def read_log_tail(path, max_lines):
+    file_path = Path(path)
+    if not file_path.exists():
+        return "<missing>"
+    try:
+        lines = file_path.read_text(errors="ignore").splitlines()
+        if not lines:
+            return "<empty>"
+        return "\n".join(lines[-max_lines:])
+    except Exception as exc:
+        return "<unreadable: {}>".format(exc)
+
+
+def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows, suite_status, extra_note):
+    total = len(rows)
+    passed = len([row for row in rows if row.status == "PASS"])
+    failed_rows = [row for row in rows if row.status != "PASS"]
+    first_failed = failed_rows[0] if failed_rows else None
+
+    lines = []
+    lines.append("# Gate Debug Snapshot")
+    lines.append("")
+    lines.append("stage={}".format(stage))
+    lines.append("suite_status={}".format(suite_status))
+    lines.append("vector_dir={}".format(vector_dir))
+    lines.append("output_dir={}".format(output_dir))
+    lines.append("netlist={}".format(os.environ.get("POSTSIM_NETLIST", "")))
+    lines.append("prepared_netlist={}".format(compile_info.get("prepared_netlist", "")))
+    lines.append("sdf={}".format(os.environ.get("POSTSIM_SDF", "<none>") or "<none>"))
+    lines.append("tb_top={}".format(os.environ.get("POSTSIM_TB_TOP", "")))
+    lines.append("tb_file={}".format(os.environ.get("POSTSIM_TB_FILE", "")))
+    lines.append("sim_library_verilog={}".format(os.environ.get("SIM_LIBRARY_VERILOG", "")))
+    lines.append("additional_sim_verilogs={}".format(os.environ.get("ADDITIONAL_SIM_VERILOGS", "")))
+    lines.append("disable_timing_checks={}".format(os.environ.get("POSTSIM_DISABLE_TIMING_CHECKS", "0")))
+    lines.append("compile_rc={}".format(compile_info.get("compile_rc", "")))
+    lines.append("compile_log={}".format(compile_info.get("compile_log", "")))
+    lines.append("compile_cmd={}".format(compile_info.get("compile_cmd", "")))
+    lines.append("total_cases={}".format(total))
+    lines.append("pass_cases={}".format(passed))
+    lines.append("fail_cases={}".format(len(failed_rows)))
+    if extra_note:
+        lines.append("note={}".format(extra_note))
+
+    if first_failed is not None:
+        lines.append("first_failed_case={}".format(first_failed.case))
+        lines.append("first_failed_input={}".format(first_failed.input_path))
+        lines.append("first_failed_expected={}".format(first_failed.expected_path))
+        lines.append("first_failed_run_log={}".format(first_failed.run_log))
+        lines.append("first_failed_cycles={}".format(first_failed.cycles))
+        lines.append("first_failed_skip_ratio_pct={}".format(first_failed.skip_ratio_pct))
+
+    lines.append("")
+    lines.append("## Compile Log Tail")
+    lines.append("")
+    lines.append(read_log_tail(compile_info.get("compile_log", ""), 120))
+    lines.append("")
+
+    if first_failed is not None:
+        lines.append("## First Failed Run Log Tail")
+        lines.append("")
+        lines.append(read_log_tail(first_failed.run_log, 160))
+        lines.append("")
+
+    if failed_rows:
+        lines.append("## First 20 Failed Cases")
+        lines.append("")
+        for row in failed_rows[:20]:
+            lines.append(
+                "- case={} status={} cycles={} run_log={}".format(
+                    row.case, row.status, row.cycles, row.run_log
+                )
+            )
+        lines.append("")
+
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Compile once and run a full gate-level txt vector suite.")
     parser.add_argument("--stage", required=True, help="Logical stage label such as none, dc, or innovus.")
@@ -387,7 +460,34 @@ def main():
     if not cases:
         die("No txt vector cases found in {}".format(vector_dir))
 
-    simv, compile_log = compile_once(output_dir)
+    debug_snapshot_path = output_dir / "debug_snapshot.txt"
+    compile_info = compile_once(output_dir)
+    compile_log = compile_info["compile_log"]
+    if compile_info["compile_rc"] != 0:
+        write_debug_snapshot(
+            debug_snapshot_path,
+            args.stage,
+            vector_dir,
+            output_dir,
+            compile_info,
+            [],
+            "COMPILE_FAIL",
+            "VCS compile failed before any case ran",
+        )
+        sys.stderr.write("GATE_DEBUG_SNAPSHOT path={}\n".format(debug_snapshot_path))
+        if compile_log.exists():
+            try:
+                lines = compile_log.read_text(errors="ignore").splitlines()
+                tail = "\n".join(lines[-120:])
+                if tail:
+                    sys.stderr.write("==== gate suite compile.log (tail) ====\n")
+                    sys.stderr.write(tail + "\n")
+                    sys.stderr.write("==== end compile.log tail ====\n")
+            except Exception:
+                pass
+        raise SystemExit("VCS compile failed for gate suite. See {}".format(compile_log))
+
+    simv = compile_info["simv"]
     pass_marker = env_or_die("POSTSIM_PASS_MARKER")
     results = []
     failures = 0
@@ -425,6 +525,17 @@ def main():
 
     write_csv(output_dir / "gate_case_metrics.csv", results)
     write_summary(output_dir / "summary.md", results, args.stage, vector_dir, compile_log)
+    write_debug_snapshot(
+        debug_snapshot_path,
+        args.stage,
+        vector_dir,
+        output_dir,
+        compile_info,
+        results,
+        "PASS" if failures == 0 else "FAIL",
+        "",
+    )
+    print("GATE_DEBUG_SNAPSHOT path={}".format(debug_snapshot_path))
     if failures:
         print_failed_case_log_tail(results)
 

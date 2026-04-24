@@ -75,4 +75,5 @@ for stage in "${stages[@]}"; do
     fi
 
     echo "[dip-flow][PASS] gate postsim stage=${stage} summary=${stage_output_dir}/summary.md"
+    echo "[dip-flow][PASS] gate postsim stage=${stage} debug_snapshot=${stage_output_dir}/debug_snapshot.txt"
 done
