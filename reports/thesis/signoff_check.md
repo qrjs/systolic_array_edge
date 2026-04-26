@@ -11,12 +11,12 @@
 | WS | fm_innovus | PASS | PASS |
 | WS | innovus_drc | PASS | PASS |
 | WS | innovus_connectivity | PASS | PASS |
-| WS | postroute_setup_slack | PASS | 5.845 ns |
+| WS | postroute_setup_slack | PASS | 2.192 ns |
 | WS | gds_status | PASS | PRESENT |
 | WS | def_status | PASS | PRESENT |
 | WS | sdf_status | PASS | PRESENT |
 | WS | netlist_status | PASS | PRESENT |
-| WS | ppa_numbers_present | PASS | dc_area=21392.447753 dc_dyn=0.668412 innovus_area=21254.52 innovus_total=3.691488 |
+| WS | ppa_numbers_present | PASS | dc_area=21392.447753 dc_dyn=1.336800 innovus_area=21254.352 innovus_total=7.364365 |
 | WS | non_dip_clock_gating_disabled | PASS | flavor=plain clock_gates=0 |
 | OS | summary_row_present | PASS | present |
 | OS | rtl_frontsim_baseline | PASS | 268/268 fail=0 status=PASS |
@@ -62,10 +62,10 @@
 | DIP | dip_clock_gating_enabled | PASS | flavor=gated clock_gates=15 |
 | ALL | extended_validation_clean | PASS | rows=56 cases=4768 failed=none |
 | WS | layout_row_present | PASS | present |
-| WS | block_layout_complete | PASS | status=PASS gds=PRESENT def=PRESENT components=34311 |
+| WS | block_layout_complete | PASS | status=PASS gds=PRESENT def=PRESENT components=34044 |
 | WS | top_pins_legal | PASS | legal=653/653 illegal=0 unplaced=0 |
 | WS | pg_vdd_vss_specialnets | PASS | specialnets=2 VDD=YES use_power=YES VSS=YES use_ground=YES |
-| WS | innovus_layout_clean | PASS | conn=0v/0w drc=0 route=18676/55378 |
+| WS | innovus_layout_clean | PASS | conn=0v/0w drc=0 route=18678/55382 |
 | WS | block_level_io_scope_declared | PASS | io_pad_ring=NO pads=0 status=BLOCK_ONLY_NO_PAD_RING |
 | OS | layout_row_present | PASS | present |
 | OS | block_layout_complete | PASS | status=PASS gds=PRESENT def=PRESENT components=33053 |

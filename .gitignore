@@ -25,6 +25,7 @@ alib*/
 /asic_commercial/*/frontsim/
 /asic_commercial/*/postsim/suites/
 /asic_commercial/*/results/
+/formality_svf/
 /asic_commercial/*/formality_svf/
 /asic_commercial/*/gated_opt/
 /asic_commercial/*/icc_output.txt
@@ -74,6 +75,9 @@ alib*/
 !asic_commercial/dip/config/design.std.env
 !asic_commercial/dip/config/libs.env
 !asic_commercial/dip/config/libs.smic40.env
+!asic_commercial/os/config/*.env
+!asic_commercial/is/config/*.env
+!asic_commercial/ws/config/*.env
 
 # Thesis evidence summaries are small and useful for writing/review.
 !reports/thesis/

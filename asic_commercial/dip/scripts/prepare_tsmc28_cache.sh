@@ -116,7 +116,6 @@ TCL
 }
 
 [[ -d "$TSMC28_ROOT" ]] || die "TSMC28_ROOT not found: $TSMC28_ROOT"
-[[ -d "$TSMC28_12T_RELEASE" ]] || die "12T release directory not found: $TSMC28_12T_RELEASE"
 
 mkdir -p "${TSMC28_CACHE_ROOT}/logic"
 
@@ -132,6 +131,54 @@ PRTF_CAD_ZIP="${TSMC28_ROOT}/TF/tn28clpr002e1_1_5a.zip"
 TLUPLUS_ARCHIVE="${TSMC28_ROOT}/TF/RC_TLUplus_cln28hpc+_1p9m_4x2y2r_ut-alrdl_9corners_1.3a.tar.gz"
 QRC_10M5X2Y2Z_ARCHIVE="${TSMC28_ROOT}/TF/RC_QRC_cln28hpc+_1p10m_5x2y2z_ut-alrdl_9corners_1.3a.tar.gz"
 STARRC_10M5X2Y2Z_ARCHIVE="${TSMC28_ROOT}/TF/RC_Star-RCXT_cln28hpc+_1p10m_5x2y2z_ut-alrdl_9corners_1.3a.tar.gz"
+
+TARGET_LIB="${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.lib"
+TARGET_DB="${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.db"
+PRTF_ROOT="${TSMC28_CACHE_ROOT}/prtf"
+PRTF_SYN_ROOT="${PRTF_ROOT}/N28_PRTF_Syn_v1d5a"
+PRTF_CAD_ROOT="${PRTF_ROOT}/N28_PRTF_Cad_v1d5a"
+ICC_TECH_FILE="${PRTF_SYN_ROOT}/tsmcn28_${TSMC28_STACK}.tf"
+INNOVUS_TECH_LEF="${PRTF_CAD_ROOT}/tsmcn28_${TSMC28_STACK}.tlef"
+TLUPLUS_DIR="${TSMC28_CACHE_ROOT}/rc/tluplus/1p9m_4x2y2r/typical"
+QRC_10M5X2Y2Z_DIR="${TSMC28_CACHE_ROOT}/rc/qrc/1p10m_5x2y2z/typical"
+STARRC_10M5X2Y2Z_DIR="${TSMC28_CACHE_ROOT}/rc/starrc/1p10m_5x2y2z/typical"
+TLUPLUS_10M5X2Y2Z="${STARRC_10M5X2Y2Z_DIR}/cln28hpc+_1p10m+ut-alrdl_5x2y2z_typical.tluplus"
+
+cache_ready() {
+    [[ -f "$TARGET_LIB" ]] &&
+    [[ -f "$TARGET_DB" ]] &&
+    [[ -f "${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/verilog/tcbn28hpcplusbwp12t40p140_170a/tcbn28hpcplusbwp12t40p140.v" ]] &&
+    [[ -f "${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Back_End/spice/tcbn28hpcplusbwp12t40p140_170a/tcbn28hpcplusbwp12t40p140_170a.spi" ]] &&
+    [[ -f "${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Back_End/gds/tcbn28hpcplusbwp12t40p140_170a/tcbn28hpcplusbwp12t40p140.gds" ]] &&
+    [[ -f "${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Back_End/lef/tcbn28hpcplusbwp12t40p140_170a/lef/tcbn28hpcplusbwp12t40p140.lef" ]] &&
+    [[ -f "$ICC_TECH_FILE" ]] &&
+    [[ -f "$INNOVUS_TECH_LEF" ]] &&
+    [[ -f "${TLUPLUS_DIR}/cln28hpc+_1p09m+ut-alrdl_4x2y2r_typical.tluplus" ]] &&
+    [[ -f "${QRC_10M5X2Y2Z_DIR}/qrcTechFile" ]]
+}
+
+if [[ "${TSMC28_FORCE_PREPARE:-0}" != "1" ]] && cache_ready; then
+    cat <<EOF
+[dip-flow][PASS] TSMC28 cache is ready
+[dip-flow][INFO] cache root       : ${TSMC28_CACHE_ROOT}
+[dip-flow][INFO] metal stack      : ${TSMC28_STACK} (${TSMC28_STACK_DIRECTION})
+[dip-flow][INFO] target db        : ${TARGET_DB}
+[dip-flow][INFO] sim verilog      : ${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/verilog/tcbn28hpcplusbwp12t40p140_170a/tcbn28hpcplusbwp12t40p140.v
+[dip-flow][INFO] cell spice       : ${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Back_End/spice/tcbn28hpcplusbwp12t40p140_170a/tcbn28hpcplusbwp12t40p140_170a.spi
+[dip-flow][INFO] cell gds         : ${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Back_End/gds/tcbn28hpcplusbwp12t40p140_170a/tcbn28hpcplusbwp12t40p140.gds
+[dip-flow][INFO] cell lef         : ${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Back_End/lef/tcbn28hpcplusbwp12t40p140_170a/lef/tcbn28hpcplusbwp12t40p140.lef
+[dip-flow][INFO] synopsys tech    : ${ICC_TECH_FILE}
+[dip-flow][INFO] innovus tech lef : ${INNOVUS_TECH_LEF}
+[dip-flow][INFO] tluplus 9m       : ${TLUPLUS_DIR}/cln28hpc+_1p09m+ut-alrdl_4x2y2r_typical.tluplus
+[dip-flow][INFO] innovus qrc hint : ${QRC_10M5X2Y2Z_DIR}/qrcTechFile
+EOF
+    if [[ -f "$TLUPLUS_10M5X2Y2Z" ]]; then
+        echo "[dip-flow][INFO] tluplus 10m      : ${TLUPLUS_10M5X2Y2Z}"
+    fi
+    exit 0
+fi
+
+[[ -d "$TSMC28_12T_RELEASE" ]] || die "12T release directory not found: $TSMC28_12T_RELEASE"
 
 require_file "$APT_ARCHIVE"
 require_file "$APF_ARCHIVE"
@@ -169,18 +216,6 @@ extract_if_missing \
 extract_if_missing \
     "$NLDM_ARCHIVE" \
     "${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.lib"
-
-TARGET_LIB="${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.lib"
-TARGET_DB="${TSMC28_CACHE_ROOT}/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.db"
-PRTF_ROOT="${TSMC28_CACHE_ROOT}/prtf"
-PRTF_SYN_ROOT="${PRTF_ROOT}/N28_PRTF_Syn_v1d5a"
-PRTF_CAD_ROOT="${PRTF_ROOT}/N28_PRTF_Cad_v1d5a"
-ICC_TECH_FILE="${PRTF_SYN_ROOT}/tsmcn28_${TSMC28_STACK}.tf"
-INNOVUS_TECH_LEF="${PRTF_CAD_ROOT}/tsmcn28_${TSMC28_STACK}.tlef"
-TLUPLUS_DIR="${TSMC28_CACHE_ROOT}/rc/tluplus/1p9m_4x2y2r/typical"
-QRC_10M5X2Y2Z_DIR="${TSMC28_CACHE_ROOT}/rc/qrc/1p10m_5x2y2z/typical"
-STARRC_10M5X2Y2Z_DIR="${TSMC28_CACHE_ROOT}/rc/starrc/1p10m_5x2y2z/typical"
-TLUPLUS_10M5X2Y2Z="${STARRC_10M5X2Y2Z_DIR}/cln28hpc+_1p10m+ut-alrdl_5x2y2z_typical.tluplus"
 
 require_file "$TARGET_LIB"
 compile_db_if_missing "$TARGET_LIB" "$TARGET_DB"

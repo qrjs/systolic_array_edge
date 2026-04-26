@@ -10,7 +10,7 @@
 | WS | implemented_flow | fm_innovus | PASS | PASS | `NA` |
 | WS | implemented_flow | innovus_drc | PASS | PASS | `NA` |
 | WS | implemented_flow | innovus_connectivity | PASS | PASS | `NA` |
-| WS | implemented_flow | postroute_setup_slack | PASS | 5.845 ns | `NA` |
+| WS | implemented_flow | postroute_setup_slack | PASS | 2.192 ns | `NA` |
 | WS | implemented_flow | gds_def_sdf_netlist | PASS | gds=PRESENT def=PRESENT sdf=PRESENT netlist=PRESENT | `NA` |
 | WS | tapeout_gap | calibre_foundry_drc | CHECK_REQUIRED | results=8720 | `/home/host_1/systolic_array_edge/asic_commercial/ws/reports/calibre/ws_core_std_top_4x4_drc_backend_datatype_preserve_patch.rep` |
 | WS | tapeout_gap | calibre_lvs | CHECK_REQUIRED | result=INCORRECT | `/home/host_1/systolic_array_edge/asic_commercial/ws/reports/calibre/ws_core_std_top_4x4_lvs.rep` |

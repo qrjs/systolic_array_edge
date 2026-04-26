@@ -6,7 +6,7 @@
 
 | Arch | Block Layout | IO Pad Ring | Top Pins | Pads | VDD/VSS | Specialnets | Components | Die um | Core um | Route | Innovus Conn/DRC | Antenna/Data Issues |
 | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | --- | --- | ---: |
-| WS | PASS | NO | 653/653 legal | 0 | PASS VDD=YES VSS=YES | 2 | 34311 | 213.920 x 212.800 | 197.680 x 196.800 | 18676 nets / 55378 terms | 0v/0w / 0drc | 0 |
+| WS | PASS | NO | 653/653 legal | 0 | PASS VDD=YES VSS=YES | 2 | 34044 | 213.920 x 212.800 | 197.680 x 196.800 | 18678 nets / 55382 terms | 0v/0w / 0drc | 1 |
 | OS | PASS | NO | 654/654 legal | 0 | PASS VDD=YES VSS=YES | 2 | 33053 | 208.880 x 208.000 | 192.640 x 192.000 | 18323 nets / 53741 terms | 0v/0w / 0drc | 0 |
 | IS | PASS | NO | 653/653 legal | 0 | PASS VDD=YES VSS=YES | 2 | 33145 | 214.200 x 212.800 | 197.960 x 196.800 | 18727 nets / 55628 terms | 0v/0w / 0drc | 3 |
 | DIP | PASS | NO | 650/650 legal | 0 | PASS VDD=YES VSS=YES | 2 | 25751 | 194.180 x 193.600 | 177.940 x 177.600 | 15301 nets / 53169 terms | 0v/0w / 0drc | 5 |
@@ -15,7 +15,7 @@
 
 | Arch | Status | GDS | DEF | Notes |
 | --- | --- | --- | --- | --- |
-| WS | BLOCK_ONLY_NO_PAD_RING | PRESENT bytes=16902144 | PRESENT | block-level hard macro; no IO pad ring/ESD/seal ring; VDD/VSS DEF SPECIALNETS present; strict Calibre DRC/LVS tracked separately |
+| WS | BLOCK_ONLY_NO_PAD_RING | PRESENT bytes=16869376 | PRESENT | block-level hard macro; no IO pad ring/ESD/seal ring; VDD/VSS DEF SPECIALNETS present; strict Calibre DRC/LVS tracked separately |
 | OS | BLOCK_ONLY_NO_PAD_RING | PRESENT bytes=16633856 | PRESENT | block-level hard macro; no IO pad ring/ESD/seal ring; VDD/VSS DEF SPECIALNETS present; strict Calibre DRC/LVS tracked separately |
 | IS | BLOCK_ONLY_NO_PAD_RING | PRESENT bytes=17385472 | PRESENT | block-level hard macro; no IO pad ring/ESD/seal ring; VDD/VSS DEF SPECIALNETS present; strict Calibre DRC/LVS tracked separately |
 | DIP | BLOCK_ONLY_NO_PAD_RING | PRESENT bytes=18403328 | PRESENT | block-level hard macro; no IO pad ring/ESD/seal ring; VDD/VSS DEF SPECIALNETS present; strict Calibre DRC/LVS tracked separately |

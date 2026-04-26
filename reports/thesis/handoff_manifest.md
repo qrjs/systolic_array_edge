@@ -4,11 +4,11 @@
 
 | Arch | Kind | Status | Bytes | SHA256 | Path |
 | --- | --- | --- | ---: | --- | --- |
-| WS | gds | PRESENT | 16902144 | 59050bf094feda2c | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4.gds` |
-| WS | def | PRESENT | 3251031 | 183c3cbb0d548816 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4.def` |
-| WS | sdf | PRESENT | 15040914 | 1059504bd763f9c0 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus.sdf` |
-| WS | netlist | PRESENT | 1756502 | 425242b58204e857 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus.v` |
-| WS | lvs_netlist | PRESENT | 3514047 | e288c0bbfa508380 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus_lvs.v` |
+| WS | gds | PRESENT | 16869376 | 8a19cfceb187f1ae | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4.gds` |
+| WS | def | PRESENT | 3228355 | f6e2102793826440 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4.def` |
+| WS | sdf | PRESENT | 15041717 | 8a6806f4fc1e0d68 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus.sdf` |
+| WS | netlist | PRESENT | 1757074 | 3fbf9ba2470c2df0 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus.v` |
+| WS | lvs_netlist | PRESENT | 3496158 | bbc746dd8b23ecc1 | `/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus_lvs.v` |
 | WS | view_layout_script | PRESENT | 1627 | 27cf27ff7c4c945b | `/home/host_1/systolic_array_edge/asic_commercial/ws/scripts/view_layout.sh` |
 | WS | innovus_gui_script | PRESENT | 427 | 33464eca6544a619 | `/home/host_1/systolic_array_edge/asic_commercial/ws/scripts/run_innovus_gui.sh` |
 | WS | virtuoso_layout_script | PRESENT | 309 | 762f5dfca5a8176a | `/home/host_1/systolic_array_edge/asic_commercial/ws/scripts/run_virtuoso_layout.sh` |
