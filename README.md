@@ -27,6 +27,36 @@
 低层 `systolic_array_*.v` 和 `*_pe.v` 仍然保留，用于理解内部传播结构以及兼容
 现有 ASIC handoff，但不再是仓库级的首选学习入口。
 
+## 目录怎么读
+
+如果你只是想快速上手，不要从一堆脚本目录开始翻。先记住下面这张图：
+
+- `Makefile`
+  仓库唯一推荐总入口。日常仿真、回归、综合、论文主线都从这里进。
+- `ws/` `is/` `os/` `dip/`
+  四种数据流的前端 RTL、约束、测试平台和各自的轻量脚本。
+- `tb/` `test_vectors/` `utils/`
+  公共测试平台、文本向量和回归辅助脚本。
+- `asic/`
+  开源 ASIC handoff 和 OpenROAD 相关目录。
+- `asic_commercial/`
+  商业工具 runset。这里脚本最多，但属于“低层实现细节”，通常通过根目录 `make` 间接调用。
+- `docs/`
+  中文导读、实验口径、论文材料说明。目录地图见 `docs/PROJECT_LAYOUT_CN.md`。
+- `slides/`
+  组会材料和渲染产物。
+- `TSMC28/`
+  本地工艺库投放目录，不属于仓库主源码。
+- `work/`
+  本地整理后的工作区。`make tidy-workspace` 会把根目录误落下来的生成物收拢到这里。
+
+如果你发现根目录开始出现 `*.mr`、`*-verilog.syn`、`innovus.log`、`icc2_output.txt`
+这类工具产物，可以直接执行：
+
+```bash
+make tidy-workspace
+```
+
 ## 快速开始
 
 最常用命令都在仓库根目录执行。建议先按这 5 类理解：
@@ -128,3 +158,4 @@ ASIC handoff 骨架见：
 - `asic/README.md:1`
 - `asic/flows/openroad/README.md:1`
 - `asic_commercial/README.md:1`
+- `docs/PROJECT_LAYOUT_CN.md:1`

@@ -21,6 +21,9 @@ POWER_RE = re.compile(
 )
 PASS_RE = re.compile(r"\[[A-Z_]+\]\[PASS\]\s+(\S+)")
 FAIL_RE = re.compile(r"\[[A-Z_]+\]\[FAIL\]\s+(\S+)")
+CHECK_FAIL_RE = re.compile(
+    r"\[[A-Z_]+\]\[CHECK\]\s+row=\s*(-?\d+)\s+col=\s*(-?\d+)\s+expected=\s*(-?\d+)\s+actual=\s*([^\s]+)\s+=>.*FAIL"
+)
 
 
 class GateCaseResult(object):
@@ -44,6 +47,10 @@ class GateCaseResult(object):
         skip_ratio_pct,
         run_log,
         vcd_path,
+        first_mismatch_row,
+        first_mismatch_col,
+        first_mismatch_expected,
+        first_mismatch_actual,
     ):
         self.stage = stage
         self.case = case
@@ -63,6 +70,10 @@ class GateCaseResult(object):
         self.skip_ratio_pct = skip_ratio_pct
         self.run_log = run_log
         self.vcd_path = vcd_path
+        self.first_mismatch_row = first_mismatch_row
+        self.first_mismatch_col = first_mismatch_col
+        self.first_mismatch_expected = first_mismatch_expected
+        self.first_mismatch_actual = first_mismatch_actual
 
 
 def die(message):
@@ -131,14 +142,55 @@ def discover_cases(vector_dir):
     return cases
 
 
+def required_min_cases():
+    raw = os.environ.get("POSTSIM_MIN_CASES", "").strip() or os.environ.get("MIN_GATE_CASES", "").strip()
+    if not raw:
+        return 0
+    try:
+        value = int(raw)
+    except ValueError:
+        die("POSTSIM_MIN_CASES/MIN_GATE_CASES must be an integer, got '{}'".format(raw))
+    return max(0, value)
+
+
 def vcs_env():
     env = os.environ.copy()
-    license_file = env.get("VCS_LICENSE_FILE")
+    license_file = (
+        env.get("VCS_LICENSE_FILE")
+        or env.get("SNPSLMD_LICENSE_FILE")
+        or env.get("SYNOPSYS_LICENSE_FILE")
+        or env.get("LM_LICENSE_FILE")
+    )
     if license_file:
+        env["VCS_LICENSE_FILE"] = license_file
         env["SNPSLMD_LICENSE_FILE"] = license_file
         env["SYNOPSYS_LICENSE_FILE"] = license_file
         env["LM_LICENSE_FILE"] = license_file
     return env
+
+
+def compile_failure_note(compile_log):
+    compile_text = read_log_tail(compile_log, 200)
+    if compile_text in {"<missing>", "<empty>"}:
+        return "VCS compile failed before any case ran"
+
+    lower_text = compile_text.lower()
+    if (
+        "failed to obtain license" in lower_text
+        or "cannot connect to the license server" in lower_text
+        or "license server" in lower_text
+    ):
+        license_file = (
+            os.environ.get("VCS_LICENSE_FILE", "").strip()
+            or os.environ.get("SNPSLMD_LICENSE_FILE", "").strip()
+            or os.environ.get("SYNOPSYS_LICENSE_FILE", "").strip()
+            or os.environ.get("LM_LICENSE_FILE", "").strip()
+        )
+        if license_file:
+            return "Synopsys license checkout failed during VCS compile (license={})".format(license_file)
+        return "Synopsys license checkout failed during VCS compile"
+
+    return "VCS compile failed before any case ran"
 
 
 def run(cmd, cwd, env, check=True):
@@ -158,6 +210,12 @@ def prepare_gate_netlist(netlist_path, output_dir):
         return ".SE(1'b0)"
 
     prepared_text = re.sub(r"\.SE\s*\(\s*TE\s*\)", replace_icg_test_pin, text)
+    if os.environ.get("POSTSIM_FORCE_CLOCK_GATES_OPEN", "0") == "1":
+        prepared_text = re.sub(
+            r"(module\s+SNPS_CLOCK_GATE_HIGH[\s\S]*?output\s+ENCLK;\s*)[\s\S]*?endmodule",
+            r"\1\n  assign ENCLK = CLK;\nendmodule",
+            prepared_text,
+        )
     prepared_path = output_dir / "prepared_gate_netlist.v"
     prepared_path.write_text(prepared_text, encoding="utf-8")
 
@@ -171,6 +229,23 @@ def prepare_gate_netlist(netlist_path, output_dir):
     return prepared_path
 
 
+def artifact_note():
+    missing = []
+    netlist = resolve_path(env_or_die("POSTSIM_NETLIST"))
+    if not netlist.exists():
+        missing.append("netlist={}".format(netlist))
+
+    sdf_raw = os.environ.get("POSTSIM_SDF", "").strip()
+    if sdf_raw:
+        sdf_path = resolve_path(sdf_raw)
+        if not sdf_path.exists():
+            missing.append("sdf={}".format(sdf_path))
+
+    if not missing:
+        return ""
+    return "Missing required artifacts: {}".format(", ".join(missing))
+
+
 def compile_once(output_dir):
     vcs_bin = os.environ.get("VCS_BIN", "vcs")
     tb_top = env_or_die("POSTSIM_TB_TOP")
@@ -178,23 +253,32 @@ def compile_once(output_dir):
     netlist = resolve_path(env_or_die("POSTSIM_NETLIST"))
     prepared_netlist = prepare_gate_netlist(netlist, output_dir)
     compile_log = output_dir / "compile.log"
-    simv = output_dir / "build" / "{}.simv".format(tb_top)
-    simv.parent.mkdir(parents=True, exist_ok=True)
+    build_dir = output_dir / "build"
+    simv = build_dir / "{}.simv".format(tb_top)
+    shutil.rmtree(build_dir, ignore_errors=True)
+    build_dir.mkdir(parents=True, exist_ok=True)
 
     compile_cmd = [
         vcs_bin,
         "-full64",
         "-sverilog",
-        "+define+TB_SKIP_SDF_ANNOTATE",
+            "+define+TB_SKIP_SDF_ANNOTATE",
+            "+define+TB_GATE_SAFE_INPUT_LAUNCH",
         "+incdir+{}".format(ROOT),
         "-timescale=1ns/1ps",
         "-debug_access+all",
         "-kdb",
+        "-Mdir={}".format(build_dir / "csrc"),
         "-l",
         str(compile_log),
         "-top",
         tb_top,
     ]
+    if os.environ.get("POSTSIM_DIP_STREAM_CAPTURE", "0") == "1":
+        compile_cmd.append("+define+TB_DIP_STREAM_CAPTURE")
+    license_wait = os.environ.get("VCS_LICENSE_WAIT_MINUTES", "0").strip()
+    if license_wait.isdigit() and int(license_wait) > 0:
+        compile_cmd.extend(["-licwait", license_wait])
 
     for raw in split_path_list(os.environ.get("SIM_LIBRARY_VERILOG", "")):
         compile_cmd.append(str(resolve_path(raw)))
@@ -205,10 +289,12 @@ def compile_once(output_dir):
 
     sdf_path = os.environ.get("POSTSIM_SDF", "").strip()
     if sdf_path:
+        if os.environ.get("POSTSIM_NEG_TCHK", "1") != "0":
+            compile_cmd.append("+neg_tchk")
         compile_cmd.extend(["-sdf", "max:{}.dut:{}".format(tb_top, resolve_path(sdf_path))])
 
     compile_cmd_text = " ".join(shlex.quote(part) for part in compile_cmd)
-    result = run(compile_cmd, ROOT, env=vcs_env(), check=False)
+    result = run(compile_cmd, build_dir, env=vcs_env(), check=False)
     compile_text = (result.stdout or "") + (result.stderr or "")
     if compile_text:
         previous = ""
@@ -229,6 +315,7 @@ def compile_once(output_dir):
 def parse_case_output(stage, case_name, input_path, expected_path, run_log, vcd_path, text):
     metric_match = CASE_METRIC_RE.search(text)
     power_match = POWER_RE.search(text)
+    mismatch_match = CHECK_FAIL_RE.search(text)
 
     status = "UNKNOWN"
     if FAIL_RE.search(text):
@@ -255,13 +342,17 @@ def parse_case_output(stage, case_name, input_path, expected_path, run_log, vcd_
         skip_ratio_pct=float(power_match.group(8)) if power_match else None,
         run_log=str(run_log),
         vcd_path=str(vcd_path) if vcd_path else DEFAULT_COVERAGE_SKIP,
+        first_mismatch_row=int(mismatch_match.group(1)) if mismatch_match else None,
+        first_mismatch_col=int(mismatch_match.group(2)) if mismatch_match else None,
+        first_mismatch_expected=int(mismatch_match.group(3)) if mismatch_match else None,
+        first_mismatch_actual=mismatch_match.group(4) if mismatch_match else "",
     )
 
 
 def write_csv(path, rows):
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "stage",
@@ -282,6 +373,10 @@ def write_csv(path, rows):
                 "skip_ratio_pct",
                 "run_log",
                 "vcd_path",
+                "first_mismatch_row",
+                "first_mismatch_col",
+                "first_mismatch_expected",
+                "first_mismatch_actual",
             ]
         )
         for row in rows:
@@ -305,11 +400,15 @@ def write_csv(path, rows):
                     row.skip_ratio_pct,
                     row.run_log,
                     row.vcd_path,
+                    row.first_mismatch_row,
+                    row.first_mismatch_col,
+                    row.first_mismatch_expected,
+                    row.first_mismatch_actual,
                 ]
             )
 
 
-def write_summary(path, rows, stage, vector_dir, compile_log):
+def write_summary(path, rows, stage, vector_dir, compile_log, suite_status, note):
     total = len(rows)
     passed = [row for row in rows if row.status == "PASS"]
     failed = [row for row in rows if row.status != "PASS"]
@@ -326,7 +425,10 @@ def write_summary(path, rows, stage, vector_dir, compile_log):
         handle.write("- Vector dir: `{}`\n".format(vector_dir))
         handle.write("- Netlist: `{}`\n".format(os.environ.get("POSTSIM_NETLIST", "")))
         handle.write("- SDF: `{}`\n".format(os.environ.get("POSTSIM_SDF", "<none>") or "<none>"))
+        handle.write("- Suite status: `{}`\n".format(suite_status))
         handle.write("- Compile log: `{}`\n\n".format(compile_log))
+        if note:
+            handle.write("- Note: `{}`\n\n".format(note))
         handle.write("| Total | Pass | Fail | Avg Cycles | Active MAC | Zero Gated | Avg Skip (%) |\n")
         handle.write("| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n")
         handle.write(
@@ -338,7 +440,15 @@ def write_summary(path, rows, stage, vector_dir, compile_log):
         if failed:
             handle.write("## Failed Cases\n\n")
             for row in failed:
-                handle.write("- `{}`: `{}`\n".format(row.case, row.run_log))
+                detail = ""
+                if row.first_mismatch_row is not None:
+                    detail = " first_mismatch=row:{} col:{} expected:{} actual:{}".format(
+                        row.first_mismatch_row,
+                        row.first_mismatch_col,
+                        row.first_mismatch_expected,
+                        row.first_mismatch_actual,
+                    )
+                handle.write("- `{}`: `{}`{}\n".format(row.case, row.run_log, detail))
 
 
 def print_failed_case_log_tail(rows):
@@ -383,6 +493,8 @@ def rerun_first_failed_with_trace(rows, simv, output_dir):
     ]
     if os.environ.get("POSTSIM_DISABLE_TIMING_CHECKS", "0") == "1":
         cmd.extend(["+notimingcheck", "+no_notifier", "+nospecify"])
+    if os.environ.get("POSTSIM_SDF", "").strip() and os.environ.get("POSTSIM_NEG_TCHK", "1") != "0":
+        cmd.append("+neg_tchk")
     run(cmd, output_dir, env=vcs_env(), check=False)
     return trace_path
 
@@ -421,6 +533,9 @@ def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows
     lines.append("sim_library_verilog={}".format(os.environ.get("SIM_LIBRARY_VERILOG", "")))
     lines.append("additional_sim_verilogs={}".format(os.environ.get("ADDITIONAL_SIM_VERILOGS", "")))
     lines.append("disable_timing_checks={}".format(os.environ.get("POSTSIM_DISABLE_TIMING_CHECKS", "0")))
+    lines.append("dip_stream_capture={}".format(os.environ.get("POSTSIM_DIP_STREAM_CAPTURE", "0")))
+    lines.append("neg_tchk={}".format(os.environ.get("POSTSIM_NEG_TCHK", "1")))
+    lines.append("force_clock_gates_open={}".format(os.environ.get("POSTSIM_FORCE_CLOCK_GATES_OPEN", "0")))
     lines.append("compile_rc={}".format(compile_info.get("compile_rc", "")))
     lines.append("compile_log={}".format(compile_info.get("compile_log", "")))
     lines.append("compile_cmd={}".format(compile_info.get("compile_cmd", "")))
@@ -438,6 +553,10 @@ def write_debug_snapshot(path, stage, vector_dir, output_dir, compile_info, rows
         lines.append("first_failed_trace={}".format(trace_path if trace_path else ""))
         lines.append("first_failed_cycles={}".format(first_failed.cycles))
         lines.append("first_failed_skip_ratio_pct={}".format(first_failed.skip_ratio_pct))
+        lines.append("first_failed_mismatch_row={}".format(first_failed.first_mismatch_row))
+        lines.append("first_failed_mismatch_col={}".format(first_failed.first_mismatch_col))
+        lines.append("first_failed_mismatch_expected={}".format(first_failed.first_mismatch_expected))
+        lines.append("first_failed_mismatch_actual={}".format(first_failed.first_mismatch_actual))
 
     lines.append("")
     lines.append("## Compile Log Tail")
@@ -490,12 +609,31 @@ def main():
     cases = discover_cases(vector_dir)
     if not cases:
         die("No txt vector cases found in {}".format(vector_dir))
+    min_cases = required_min_cases()
+    if min_cases and len(cases) < min_cases:
+        die("Gate suite found {} cases in {}, below required minimum {}".format(len(cases), vector_dir, min_cases))
 
     debug_snapshot_path = output_dir / "debug_snapshot.txt"
     trace_path = None
-    compile_info = compile_once(output_dir)
-    compile_log = compile_info["compile_log"]
-    if compile_info["compile_rc"] != 0:
+    compile_log = output_dir / "compile.log"
+    missing_note = artifact_note()
+    if missing_note:
+        compile_info = {
+            "prepared_netlist": "",
+            "compile_log": compile_log,
+            "compile_cmd": "",
+            "compile_rc": "SKIPPED",
+        }
+        write_csv(output_dir / "gate_case_metrics.csv", [])
+        write_summary(
+            output_dir / "summary.md",
+            [],
+            args.stage,
+            vector_dir,
+            compile_log,
+            "MISSING_ARTIFACT",
+            missing_note,
+        )
         write_debug_snapshot(
             debug_snapshot_path,
             args.stage,
@@ -503,8 +641,40 @@ def main():
             output_dir,
             compile_info,
             [],
-            "COMPILE_FAIL",
-            "VCS compile failed before any case ran",
+            "MISSING_ARTIFACT",
+            missing_note,
+            trace_path,
+        )
+        print("GATE_DEBUG_SNAPSHOT path={}".format(debug_snapshot_path))
+        print("")
+        print("GATE_SUITE stage={} status=MISSING_ARTIFACT total=0 pass=0 fail=0".format(args.stage))
+        print("GATE_SUMMARY summary={}".format(output_dir / "summary.md"))
+        return 2
+
+    compile_info = compile_once(output_dir)
+    compile_log = compile_info["compile_log"]
+    if compile_info["compile_rc"] != 0:
+        compile_note = compile_failure_note(compile_log)
+        compile_status = "LICENSE_BLOCKED" if "license" in compile_note.lower() else "COMPILE_FAIL"
+        write_csv(output_dir / "gate_case_metrics.csv", [])
+        write_summary(
+            output_dir / "summary.md",
+            [],
+            args.stage,
+            vector_dir,
+            compile_log,
+            compile_status,
+            compile_note,
+        )
+        write_debug_snapshot(
+            debug_snapshot_path,
+            args.stage,
+            vector_dir,
+            output_dir,
+            compile_info,
+            [],
+            compile_status,
+            compile_note,
             trace_path,
         )
         sys.stderr.write("GATE_DEBUG_SNAPSHOT path={}\n".format(debug_snapshot_path))
@@ -531,6 +701,8 @@ def main():
         cmd = [str(simv), "-l", str(run_log), "+SOFT_FAIL", "+CASE={}".format(case_name), "+INPUT={}".format(input_path), "+EXPECTED={}".format(expected_path)]
         if os.environ.get("POSTSIM_DISABLE_TIMING_CHECKS", "0") == "1":
             cmd.extend(["+notimingcheck", "+no_notifier", "+nospecify"])
+        if os.environ.get("POSTSIM_SDF", "").strip() and os.environ.get("POSTSIM_NEG_TCHK", "1") != "0":
+            cmd.append("+neg_tchk")
         if vcd_path is not None:
             cmd.append("+VCD={}".format(vcd_path))
 
@@ -557,7 +729,8 @@ def main():
         print("GATE_TXT_CASE stage={} case={} status={}".format(args.stage, case_name, color_status(ok)))
 
     write_csv(output_dir / "gate_case_metrics.csv", results)
-    write_summary(output_dir / "summary.md", results, args.stage, vector_dir, compile_log)
+    suite_status = "PASS" if failures == 0 else "FUNCTIONAL_FAIL"
+    write_summary(output_dir / "summary.md", results, args.stage, vector_dir, compile_log, suite_status, "")
     if failures:
         trace_path = rerun_first_failed_with_trace(results, simv, output_dir)
     write_debug_snapshot(
@@ -567,7 +740,7 @@ def main():
         output_dir,
         compile_info,
         results,
-        "PASS" if failures == 0 else "FAIL",
+        suite_status,
         "",
         trace_path,
     )
@@ -578,7 +751,7 @@ def main():
     print("")
     print(
         "GATE_SUITE stage={} status={} total={} pass={} fail={}".format(
-            args.stage, "PASS" if failures == 0 else "FAIL", len(results), len(results) - failures, failures
+            args.stage, suite_status, len(results), len(results) - failures, failures
         )
     )
     print("GATE_SUMMARY summary={}".format(output_dir / "summary.md"))

@@ -155,6 +155,35 @@ module dip_core_postsim_file_tb;
             @(negedge clk);
         end
 
+`ifdef TB_GATE_SAFE_INPUT_LAUNCH
+        // Gate-level VCS needs extra slack before the first input row, but the
+        // DiP burst itself must stay contiguous. Bubbles between input rows
+        // break the diagonal wavefront alignment and corrupt the matrix result.
+        weight_row_idx = '0;
+        weight_row_data = {b_rot[0][3], b_rot[0][2], b_rot[0][1], b_rot[0][0]};
+        input_row_valid = 1'b0;
+        input_row_data = '0;
+        @(posedge clk);
+        @(negedge clk);
+
+        weight_row_valid = 1'b0;
+        weight_row_data = '0;
+        input_row_valid = 1'b0;
+        input_row_data = '0;
+        @(posedge clk);
+        @(negedge clk);
+
+        input_row_valid = 1'b0;
+        input_row_data = '0;
+        @(posedge clk);
+        @(negedge clk);
+
+        input_row_valid = 1'b1;
+        input_row_data = {a_matrix[0][3], a_matrix[0][2], a_matrix[0][1], a_matrix[0][0]};
+        launch_cycle = cycle_count + 1;
+        @(posedge clk);
+        @(negedge clk);
+`else
         weight_row_idx = '0;
         weight_row_data = {b_rot[0][3], b_rot[0][2], b_rot[0][1], b_rot[0][0]};
         input_row_valid = 1'b1;
@@ -165,6 +194,7 @@ module dip_core_postsim_file_tb;
 
         weight_row_valid = 1'b0;
         weight_row_data = '0;
+`endif
 
         for (row_idx = 1; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
             input_row_valid = 1'b1;

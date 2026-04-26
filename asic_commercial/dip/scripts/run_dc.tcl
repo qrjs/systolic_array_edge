@@ -42,7 +42,7 @@ set target_library_raw [require_env TARGET_LIBRARY]
 set link_library_raw   [require_env LINK_LIBRARY]
 set max_cores_raw      [expr {[info exists ::env(MAX_CORES)] ? $::env(MAX_CORES) : "8"}]
 set use_ultra_raw      [expr {[info exists ::env(DC_USE_ULTRA)] ? $::env(DC_USE_ULTRA) : "0"}]
-set dip_compile_profile [string tolower [env_or_default DIP_COMPILE_PROFILE "plain"]]
+set compile_profile [string tolower [env_or_default DC_COMPILE_PROFILE [env_or_default DIP_COMPILE_PROFILE "plain"]]]
 
 set_app_var target_library [split $target_library_raw]
 set_app_var link_library [split $link_library_raw]
@@ -64,11 +64,11 @@ if {$use_ultra_raw eq "1"} {
     set default_compile_profile "plain"
 }
 
-if {$dip_compile_profile eq "plain" || $dip_compile_profile eq "default"} {
-    set dip_compile_profile $default_compile_profile
+if {$compile_profile eq "plain" || $compile_profile eq "default"} {
+    set compile_profile $default_compile_profile
 }
 
-switch -- $dip_compile_profile {
+switch -- $compile_profile {
     plain {
         compile
     }
@@ -101,8 +101,44 @@ switch -- $dip_compile_profile {
         compile_ultra -gate_clock
         redirect -file [require_env DC_GATING_RPT] {report_clock_gating}
     }
+    gated_ultra_mbw4 {
+        set_clock_gating_style -minimum_bitwidth 4 \
+                               -positive_edge_logic {integrated} \
+                               -control_point before
+        insert_clock_gating
+        set_max_area 0
+        compile_ultra -gate_clock
+        redirect -file [require_env DC_GATING_RPT] {report_clock_gating}
+    }
+    gated_ultra_mbw8 {
+        set_clock_gating_style -minimum_bitwidth 8 \
+                               -positive_edge_logic {integrated} \
+                               -control_point before
+        insert_clock_gating
+        set_max_area 0
+        compile_ultra -gate_clock
+        redirect -file [require_env DC_GATING_RPT] {report_clock_gating}
+    }
+    gated_ultra_mbw16 {
+        set_clock_gating_style -minimum_bitwidth 16 \
+                               -positive_edge_logic {integrated} \
+                               -control_point before
+        insert_clock_gating
+        set_max_area 0
+        compile_ultra -gate_clock
+        redirect -file [require_env DC_GATING_RPT] {report_clock_gating}
+    }
+    gated_ultra_mbw32 {
+        set_clock_gating_style -minimum_bitwidth 32 \
+                               -positive_edge_logic {integrated} \
+                               -control_point before
+        insert_clock_gating
+        set_max_area 0
+        compile_ultra -gate_clock
+        redirect -file [require_env DC_GATING_RPT] {report_clock_gating}
+    }
     default {
-        error "Unsupported DIP_COMPILE_PROFILE '$dip_compile_profile' (expected plain, ultra, gated_default, gated_area, or gated_ultra_area)"
+        error "Unsupported DC_COMPILE_PROFILE '$compile_profile' (expected plain, ultra, gated_default, gated_area, gated_ultra_area, gated_ultra_mbw4, gated_ultra_mbw8, gated_ultra_mbw16, or gated_ultra_mbw32)"
     }
 }
 

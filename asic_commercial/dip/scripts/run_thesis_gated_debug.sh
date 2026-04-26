@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-FLOW_ROOT=$(cd "${SCRIPT_DIR}/.." && pwd)
-REPO_ROOT=$(cd "${FLOW_ROOT}/../.." && pwd)
+SCRIPT_DIR=$(builtin cd "$(dirname "${BASH_SOURCE[0]}")" && /bin/pwd -P)
+FLOW_ROOT=$(builtin cd "${SCRIPT_DIR}/.." && /bin/pwd -P)
+REPO_ROOT=$(builtin cd "${FLOW_ROOT}/../.." && /bin/pwd -P)
 
 # shellcheck disable=SC1091
 source "${REPO_ROOT}/asic_commercial/scripts/source_eda_env.sh"
 
-[[ -n "${SMIC40_PDK_ROOT:-}" ]] || {
-    echo "[thesis-dip-gated][ERROR] SMIC40_PDK_ROOT is not set" >&2
+export TSMC28_ROOT="${TSMC28_ROOT:-/opt/eda_tools/TSMC28}"
+[[ -d "${TSMC28_ROOT}" ]] || {
+    echo "[thesis-dip-gated][ERROR] TSMC28_ROOT not found: ${TSMC28_ROOT}" >&2
     exit 1
 }
 
@@ -19,7 +20,7 @@ THESIS_GATED_DEBUG_CASES="${THESIS_GATED_DEBUG_CASES:-batch_000 signed_mix}"
 
 export FLOW_ROOT
 export REPO_ROOT
-export DESIGN_ENV="${FLOW_ROOT}/config/design.std.env"
+export DESIGN_ENV="${FLOW_ROOT}/config/design.env"
 export LIBS_ENV="${FLOW_ROOT}/config/libs.env"
 export DC_OUTPUT_FLAVOR="gated"
 export FM_FLAVOR="gated"
@@ -27,7 +28,8 @@ export POSTSIM_FLAVOR="gated"
 export DIP_GATED_COMPILE_PROFILE="${DIP_GATED_COMPILE_PROFILE:-gated_default}"
 export DIP_COMPILE_PROFILE="${DIP_COMPILE_PROFILE:-gated_default}"
 
-"${REPO_ROOT}/asic_commercial/scripts/check_thesis_env.sh"
+"${SCRIPT_DIR}/check_handoff.sh"
+"${SCRIPT_DIR}/check_backend_inputs.sh" dc
 "${SCRIPT_DIR}/run_dc.sh"
 "${SCRIPT_DIR}/run_fm.sh"
 

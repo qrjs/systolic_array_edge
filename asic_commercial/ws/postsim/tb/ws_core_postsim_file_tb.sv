@@ -61,6 +61,10 @@ module ws_core_postsim_file_tb;
 
     always #5 clk = ~clk;
 
+    task automatic wait_tb_drive_edge;
+        @(negedge clk);
+    endtask
+
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             result_valid_q <= 1'b0;
@@ -120,6 +124,7 @@ module ws_core_postsim_file_tb;
         report_zero_skip_stats("WS_GATE");
 
         repeat (4) @(posedge clk);
+        wait_tb_drive_edge();
         rst_n = 1'b1;
 
         for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
@@ -127,12 +132,14 @@ module ws_core_postsim_file_tb;
             weight_row_idx = row_idx[$clog2(ARRAY_SIZE)-1:0];
             weight_row_data = {b_matrix[row_idx][3], b_matrix[row_idx][2], b_matrix[row_idx][1], b_matrix[row_idx][0]};
             @(posedge clk);
+            wait_tb_drive_edge();
         end
         weight_row_valid = 1'b0;
         weight_row_data = '0;
 
         @(posedge clk);
         launch_cycle = cycle_count + 1;
+        wait_tb_drive_edge();
         for (t = 0; t < (2 * ARRAY_SIZE) - 1; t = t + 1) begin
             reg [ARRAY_SIZE-1:0] valid_tmp;
             reg [DATA_WIDTH*ARRAY_SIZE-1:0] data_tmp;
@@ -149,6 +156,7 @@ module ws_core_postsim_file_tb;
             input_valid_vec = valid_tmp;
             input_data_vec = data_tmp;
             @(posedge clk);
+            wait_tb_drive_edge();
         end
         input_valid_vec = '0;
         input_data_vec = '0;

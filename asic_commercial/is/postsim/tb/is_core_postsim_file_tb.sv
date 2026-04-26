@@ -120,6 +120,7 @@ module is_core_postsim_file_tb;
         report_zero_skip_stats("IS_GATE");
 
         repeat (4) @(posedge clk);
+        @(negedge clk);
         rst_n = 1'b1;
 
         for (row_idx = 0; row_idx < ARRAY_SIZE; row_idx = row_idx + 1) begin
@@ -127,11 +128,13 @@ module is_core_postsim_file_tb;
             input_load_row_idx = row_idx[$clog2(ARRAY_SIZE)-1:0];
             input_load_row_data = {a_matrix[row_idx][3], a_matrix[row_idx][2], a_matrix[row_idx][1], a_matrix[row_idx][0]};
             @(posedge clk);
+            @(negedge clk);
         end
         input_load_valid = 1'b0;
         input_load_row_data = '0;
 
         @(posedge clk);
+        @(negedge clk);
         launch_cycle = cycle_count + 1;
         for (t = 0; t < (2 * ARRAY_SIZE) - 1; t = t + 1) begin
             reg [ARRAY_SIZE-1:0] valid_tmp;
@@ -149,6 +152,7 @@ module is_core_postsim_file_tb;
             weight_valid_vec = valid_tmp;
             weight_data_vec = data_tmp;
             @(posedge clk);
+            @(negedge clk);
         end
         weight_valid_vec = '0;
         weight_data_vec = '0;

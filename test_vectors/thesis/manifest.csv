@@ -1,0 +1,12 @@
+group,kind,vector_dir,cases,seed,sparse_prob,value_min,value_max
+directed,directed,/home/host_1/systolic_array_edge/test_vectors/thesis/directed,20,,,,
+random_seed_2026042601,random,/home/host_1/systolic_array_edge/test_vectors/thesis/random_seed_2026042601,128,2026042601,0.3,-64,64
+random_seed_2026042602,random,/home/host_1/systolic_array_edge/test_vectors/thesis/random_seed_2026042602,128,2026042602,0.3,-64,64
+random_seed_2026042603,random,/home/host_1/systolic_array_edge/test_vectors/thesis/random_seed_2026042603,128,2026042603,0.3,-64,64
+random_seed_2026042604,random,/home/host_1/systolic_array_edge/test_vectors/thesis/random_seed_2026042604,128,2026042604,0.3,-64,64
+random_seed_2026042605,random,/home/host_1/systolic_array_edge/test_vectors/thesis/random_seed_2026042605,128,2026042605,0.3,-64,64
+sparse_00,sparse,/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_00,64,2026042600,0.0,-64,64
+sparse_25,sparse,/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_25,64,2026042625,0.25,-64,64
+sparse_50,sparse,/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_50,64,2026042650,0.5,-64,64
+sparse_75,sparse,/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_75,64,2026042675,0.75,-64,64
+sparse_90,sparse,/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_90,64,2026042690,0.9,-64,64

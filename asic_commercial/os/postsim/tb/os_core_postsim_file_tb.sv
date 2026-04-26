@@ -117,6 +117,7 @@ module os_core_postsim_file_tb;
         report_zero_skip_stats("OS_GATE");
 
         repeat (4) @(posedge clk);
+        @(negedge clk);
         rst_n = 1'b1;
 
         launch_cycle = cycle_count + 1;
@@ -150,6 +151,7 @@ module os_core_postsim_file_tb;
             b_valid = b_valid_tmp;
             b_data = b_data_tmp;
             @(posedge clk);
+            @(negedge clk);
         end
         a_valid = '0;
         a_data = '0;

@@ -1,222 +1,77 @@
 # DiP Commercial Flow
 
-`asic_commercial/dip/` 现在承载 `DIP` 的双轨商业主线。
+`asic_commercial/dip/` is the TSMC28 commercial backend mainline for the
+standard DiP 4x4 core.
 
-当前主线固定为：
-
-- `functional backend track`
-  使用 `plain` DC 网表推进 `gate postsim -> Innovus -> Virtuoso`
-- `gated debug track`
-  使用 `gated_default` DC 网表推进 `FM + 定向 gate debug`
-- `Innovus` 负责布局布线与 post-route 导出
-- `Virtuoso` 负责把 `Innovus` 导出的 `GDS` 导入 `OA` 并打开 `layout`
-- `gate postsim` 固定跑三阶段：`none -> dc -> innovus`
-
-说明：
-
-- `ws/is/os` 仍然可以继续复用这里的公共脚本层
-- 这次不改 RTL、filelist、SDC 语义
-- 当前仓库本机没有暴露 `dc_shell / innovus / virtuoso`，所以端到端验证要在 Cadence 服务器上做
-
-## 目录作用
-
-- `config/design.std.env`
-  `DIP` 主线设计入口，固定为 `dip_core_std_top_4x4`
-- `config/libs.smic40.env`
-  `SMIC40` PDK 双探测模板：
-  `Innovus` 查 `techLEF/LEF/Liberty/QRC`，`Virtuoso` 查 `OA/stream map`
-- `scripts/prepare_env.sh`
-  统一解析设计与工艺配置，导出 `DC / postsim / Innovus / Virtuoso` 路径
-- `scripts/run_dc.sh`
-  跑 `DIP` 商业综合；通过 `DC_OUTPUT_FLAVOR=plain|gated` 选择输出家族
-- `scripts/run_postsim.sh`
-  单 case gate postsim 调试入口
-- `scripts/run_postsim_suite.sh`
-  正式 gate suite 入口，按 stage 批量跑完整 `txt` 向量
-- `scripts/run_thesis_gated_debug.sh`
-  gated 偏差定位入口：`gated DC -> FM -> batch_000 + signed_mix`
-- `scripts/run_innovus.sh`
-  Cadence `Innovus` 主入口，支持 `init/place/cts/route/export/all`
-- `scripts/run_innovus_gui.sh`
-  打开 `Innovus` GUI
-- `scripts/run_virtuoso_layout.sh`
-  将 `Innovus GDS` 导入 `OA` 并打开 `layout`
-- `postsim/tb/dip_core_std_postsim_file_tb.sv`
-  `dip_core_std_top_4x4` 对应的 gate-level file-vector TB
-
-## 最短用法
+The default thesis path is clock-gated:
 
 ```bash
-export SMIC40_PDK_ROOT=/absolute/path/to/pdk
-make thesis-check
-make thesis-synth
+cd /home/host_1/systolic_array_edge
+export TSMC28_ROOT=/opt/eda_tools/TSMC28
+
+make thesis-dip-gated-opt
 make thesis-dip
-make thesis-dip-gated-debug
 ```
 
-其中：
+## Mainline
 
-- `thesis-check`
-  检查 `DC / VCS / Innovus` 主线输入，并单独提示 `Virtuoso` 资源是否缺失
-- `thesis-synth`
-  跑论文主表综合：
-  `ws/is/os legacy FIFO` + `dip std + gated_default`
-- `thesis-dip`
-  跑 `DIP` functional backend track：
-  `plain DC -> gate suite(none) -> gate suite(dc) -> Innovus -> gate suite(innovus) -> Virtuoso`
-- `thesis-dip-gated-debug`
-  跑 `DIP` gated debug track：
-  `gated DC -> FM -> batch_000 + signed_mix`
+`make thesis-dip` runs:
 
-## 推荐执行顺序
+1. prepare the local TSMC28 cache
+2. RTL VCS file-vector suite
+3. DiP gated DC profile sweep
+4. DC Formality
+5. gate suite `none`
+6. gate suite `dc`
+7. Innovus `all`
+8. post-route Formality
+9. gate suite `innovus`
 
-### 1. 环境检查
+Calibre DRC/LVS and Virtuoso import are explicit debug/signoff steps:
+
+```bash
+RUN_CALIBRE_DRC=1 RUN_CALIBRE_LVS=1 ./scripts/run_full_flow.sh
+RUN_VIRTUOSO=1 VIRTUOSO_TECH_LIB=<oa_tech_lib_name> ./scripts/run_full_flow.sh
+```
+
+The current Calibre TSMC28 DRC/LVS entry points run, but their reports are not
+yet signoff clean. Innovus internal connectivity/route/drc, post-route gate sim,
+and Formality are the current default backend pass criteria.
+
+The gated profile sweep tries:
+
+- `gated_default`
+- `gated_area`
+- `gated_ultra_area`
+
+Only candidates that pass DC, FM, and the full `none/dc` gate suite are
+eligible. The selected candidate is the lowest parsed DC power result, then
+lowest parsed cell area as the tie breaker.
+
+## Vector Requirement
+
+Gate suites default to `MIN_GATE_CASES=268`. The runner discovers all
+`*_input.txt` / `*_expected.txt` pairs under `test_vectors/txt`; if more cases
+are present, it runs them all.
+
+## Useful Entrypoints
 
 ```bash
 ./scripts/check_handoff.sh
-./scripts/check_backend_inputs.sh dc
-./scripts/check_backend_inputs.sh innovus
-./scripts/check_backend_inputs.sh virtuoso
-```
-
-### 2. RTL 前仿
-
-```bash
-./scripts/run_frontsim.sh
-```
-
-### 3. DC 综合
-
-```bash
-./scripts/run_dc.sh
-```
-
-`plain` 主线默认产物：
-
-- `results/dip_core_std_top_4x4_dc_plain.v`
-- `results/dip_core_std_top_4x4_dc_plain.sdf`
-- `reports/dip_core_std_top_4x4_dc_plain_*.rpt`
-
-gated debug 产物默认在：
-
-- `results/dip_core_std_top_4x4_dc_gated.v`
-- `results/dip_core_std_top_4x4_dc_gated.sdf`
-- `reports/dip_core_std_top_4x4_dc_gated_*.rpt`
-
-### 4. Gate-level 后仿
-
-正式入口：
-
-```bash
-./scripts/run_postsim_suite.sh
-```
-
-默认按 `POSTSIM_STAGES="none dc innovus"` 依次运行，输出到：
-
-- `postsim/suites/none/`
-- `postsim/suites/dc/`
-- `postsim/suites/innovus/`
-
-每个 stage 都会生成：
-
-- `gate_case_metrics.csv`
-- `summary.md`
-- `logs/<case>.run.log`
-- `vcd/<case>.vcd`（仅在 `POSTSIM_DUMP_VCD=1` 时）
-
-注意：
-
-- `thesis-dip` 固定使用 `POSTSIM_FLAVOR=plain`
-- `gated` 网表不再参与默认全量 gate suite
-
-如果只想跑某一阶段：
-
-```bash
-./scripts/run_postsim_suite.sh none
-./scripts/run_postsim_suite.sh dc
-./scripts/run_postsim_suite.sh innovus
-```
-
-如果只想调单个 case，仍然用旧入口：
-
-```bash
-POSTSIM_INPUT=/abs/path/to/input.txt \
-POSTSIM_EXPECTED=/abs/path/to/expected.txt \
-POSTSIM_SDF_MODE=dc \
-./scripts/run_postsim.sh
-```
-
-### 5. Innovus 布局布线
-
-```bash
+./scripts/run_frontsim_suite.sh
+./scripts/run_dip_gated_opt.sh
+./scripts/run_full_flow.sh
+./scripts/run_postsim_suite.sh none dc innovus
 ./scripts/run_innovus.sh all
+./scripts/run_calibre_drc.sh
+./scripts/run_calibre_lvs.sh
+./scripts/run_virtuoso_layout.sh
 ```
 
-也支持阶段入口：
+For IS/OS full flows, use:
 
 ```bash
-./scripts/run_innovus.sh init
-./scripts/run_innovus.sh place
-./scripts/run_innovus.sh cts
-./scripts/run_innovus.sh route
-./scripts/run_innovus.sh export
+make thesis-is
+make thesis-os
+make thesis-dio
 ```
-
-默认导出：
-
-- `results/innovus/dip_core_std_top_4x4_innovus.v`
-- `results/innovus/dip_core_std_top_4x4_innovus.sdf`
-- `results/innovus/dip_core_std_top_4x4.def`
-- `results/innovus/dip_core_std_top_4x4.gds`
-
-### 6. 打开 Innovus GUI
-
-```bash
-./scripts/run_innovus_gui.sh
-```
-
-或：
-
-```bash
-make thesis-innovus-gui
-```
-
-### 7. 导入 Virtuoso 版图
-
-```bash
-VIRTUOSO_TECH_LIB=smic40ll ./scripts/run_virtuoso_layout.sh
-```
-
-默认行为：
-
-- 取 `results/innovus/*.gds`
-- `strmin` stream-in 到 `OA`
-- 打开 `layout` 视图
-
-常用变量：
-
-- `VIRTUOSO_LAYOUT_GDS`
-- `VIRTUOSO_LAYOUT_LIB`
-- `VIRTUOSO_TECH_LIB`
-- `VIRTUOSO_WAIT=1`
-  设为 `1` 时以前台方式打开 Virtuoso；默认后台拉起 GUI 以免阻塞主链
-
-## 关键变量
-
-- `INNOVUS_TECH_LEF`
-- `INNOVUS_LEF_FILES`
-- `INNOVUS_LIB_MAX`
-- `INNOVUS_LIB_MIN`
-- `INNOVUS_QRC_TECH_FILE`
-- `INNOVUS_GDS_MAP`
-- `POSTSIM_VECTOR_DIR`
-- `POSTSIM_STAGES`
-- `VIRTUOSO_TECH_LIB`
-
-## 当前结论
-
-- 仓库已经提供 `DIP` 的双轨 Cadence 主线脚本与入口
-- `thesis-dip` 现在代表 functional backend track，而不是 gated netlist 主线
-- `thesis-dip-gated-debug` 单独负责定位 gated_default 的功能偏差
-- 旧的 Synopsys 数字后端链不再属于 `DIP` 正式主线
-- 由于当前工作区没有真实 Cadence 工具环境，这些脚本只做了静态落地与语法检查，端到端结果要以目标服务器实测为准

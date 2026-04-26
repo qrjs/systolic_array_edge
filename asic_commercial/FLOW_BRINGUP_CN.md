@@ -1,207 +1,105 @@
 # 商业 ASIC 流程上机说明
 
-这份文档对应当前仓库的 Cadence 双轨 bring-up，重点是：
+当前 thesis 主线使用 `TSMC28`，默认后端为 `Innovus`。三条数据流
+`DIP/IS/OS` 都要完成：
 
-- functional backend track：
-  `plain DC -> gate postsim -> Innovus -> Virtuoso`
-- gated debug track：
-  `gated_default DC -> FM -> 定向 gate debug`
-- `SMIC40` PDK 的数字后端交付与 `OA` 资源分开检查
+```text
+RTL VCS suite
+-> DC
+-> Formality
+-> gate suite none/dc
+-> Innovus
+-> post-route Formality
+-> gate suite innovus
+-> optional Calibre DRC/LVS
+-> optional Virtuoso GDS import
+```
 
-## 1. 当前主线
+DiP 主线额外开启 clock gating，并在 `gated_default/gated_area/gated_ultra_area`
+里选择同时通过 FM 和全量 gate suite 的低功耗、低面积候选。
 
-当前推荐记住这几条命令：
+## 1. 推荐入口
 
 ```bash
-export SMIC40_PDK_ROOT=/absolute/path/to/pdk
+export TSMC28_ROOT=/opt/eda_tools/TSMC28
+
 make thesis-check
-make thesis-synth
+make thesis-dip-gated-opt
 make thesis-dip
-make thesis-dip-gated-debug
-make thesis-innovus-gui
-make thesis-virtuoso
+make thesis-is
+make thesis-os
+make thesis-dio
 ```
 
-含义：
+## 2. 工具和资源
 
-- `thesis-check`
-  检查 `DC / VCS / Innovus` 主线输入，并明确提示 `Virtuoso` 资源是否缺失
-- `thesis-synth`
-  跑论文主表综合
-- `thesis-dip`
-  跑 `DIP` functional backend track
-- `thesis-dip-gated-debug`
-  跑 `DIP` gated 功能偏差定位入口
-- `thesis-innovus-gui`
-  打开 `Innovus` GUI
-- `thesis-virtuoso`
-  导入 `Innovus GDS` 并打开 `Virtuoso layout`
+默认主线需要：
 
-## 2. 最少要准备什么
+- `dc_shell`
+- `fm_shell`
+- `vcs`
+- `innovus`
+- TSMC28 12T 标准单元 `.db/.lib/.v/.lef/.gds/.spi`
+- TSMC28 tech LEF、QRC
 
-先设：
+可选 signoff/view 需要：
 
-```bash
-export SMIC40_PDK_ROOT=/absolute/path/to/pdk
-```
-
-注意：
-
-- `SMIC40_PDK_ROOT` 不能包含空格
-- 当前脚本的库路径变量按空白分隔，带空格目录会被拆坏
-
-### 2.1 DC 需要
-
-- 标准单元 `.db`
-- 可能的宏 `.db`
-
-关键变量：
-
-- `TARGET_LIBRARY`
-- `LINK_LIBRARY`
-
-### 2.2 Gate postsim 需要
-
-- 门级网表
-- 标准单元仿真模型 `*.v`
-- 时序后仿需要 `SDF`
-
-关键变量：
-
-- `SIM_LIBRARY_VERILOG`
-- `ADDITIONAL_SIM_VERILOGS`
-- `POSTSIM_NETLIST_MODE`
-- `POSTSIM_SDF_MODE`
-- `CUSTOM_NETLIST`
-- `CUSTOM_SDF`
-
-### 2.3 Innovus 需要
-
-- `techLEF`
-- 标准单元和宏 `LEF`
-- setup/hold `Liberty` 或 `db` 对应时序库
-- `QRC/Quantus` 技术文件
-- 可选 `GDS map`
-
-关键变量：
-
-- `INNOVUS_TECH_LEF`
-- `INNOVUS_LEF_FILES`
-- `INNOVUS_LIB_MAX`
-- `INNOVUS_LIB_MIN`
-- `INNOVUS_QRC_TECH_FILE`
-- `INNOVUS_GDS_MAP`
-
-### 2.4 Virtuoso 需要
-
-- `OA` 工艺库或可 attach 的 tech lib
+- `calibre`
+- `v2lvs`
 - `strmin`
-- `Innovus` 导出的 `GDS`
+- `virtuoso`
+- TSMC28 Calibre DRC/LVS runset
+- 可 attach 的 Virtuoso OA tech lib，变量为 `VIRTUOSO_TECH_LIB`，只在 `RUN_VIRTUOSO=1` 时需要
 
-关键变量：
-
-- `VIRTUOSO_TECH_LIB`
-- `VIRTUOSO_LAYOUT_GDS`
-
-## 3. 上机前先做什么检查
+如果本地还没有 cache，先跑：
 
 ```bash
+./asic_commercial/dip/scripts/prepare_tsmc28_cache.sh
+```
+
+## 3. 单数据流调试
+
+进入任意 flow 目录，例如：
+
+```bash
+cd asic_commercial/is
 ./scripts/check_handoff.sh
-./scripts/check_backend_inputs.sh dc
-./scripts/check_backend_inputs.sh innovus
-./scripts/check_backend_inputs.sh virtuoso
-```
-
-建议再跑：
-
-```bash
-make thesis-check
-```
-
-它会把两类问题分开报：
-
-- `Innovus` 数字后端交付缺失
-- `Virtuoso/OA` 浏览资源缺失
-
-## 4. Gate postsim 怎么跑
-
-单 case 调试：
-
-```bash
-POSTSIM_SDF_MODE=dc \
-POSTSIM_INPUT=/abs/path/to/input.txt \
-POSTSIM_EXPECTED=/abs/path/to/expected.txt \
-./scripts/run_postsim.sh
-```
-
-functional 主线正式全量回归：
-
-```bash
-./scripts/run_postsim_suite.sh
-```
-
-默认会按三阶段顺序跑：
-
-1. `none`
-2. `dc`
-3. `innovus`
-
-如果上一阶段失败，脚本会立刻停住，不继续后面的阶段。
-
-gated debug 默认不跑全量 gate suite，而是只跑：
-
-- `batch_000`
-- `signed_mix`
-
-## 5. Innovus 怎么跑
-
-完整流程：
-
-```bash
+./scripts/run_frontsim_suite.sh
+./scripts/run_dc.sh
+./scripts/run_fm.sh
+./scripts/run_postsim_suite.sh none dc
 ./scripts/run_innovus.sh all
+FM_IMPLEMENTATION_MODE=innovus ./scripts/run_fm.sh
+./scripts/run_postsim_suite.sh innovus
 ```
 
-阶段入口：
+Signoff 调试入口单独跑：
 
 ```bash
-./scripts/run_innovus.sh init
-./scripts/run_innovus.sh place
-./scripts/run_innovus.sh cts
-./scripts/run_innovus.sh route
-./scripts/run_innovus.sh export
+RUN_CALIBRE_DRC=1 RUN_CALIBRE_LVS=1 ./scripts/run_full_flow.sh
+RUN_VIRTUOSO=1 VIRTUOSO_TECH_LIB=<oa_tech_lib_name> ./scripts/run_full_flow.sh
+./scripts/run_calibre_drc.sh
+./scripts/run_calibre_lvs.sh
 ```
 
-默认导出：
+当前状态：Innovus 内部 connectivity/route/drc 检查可 clean，post-route 门仿和 Formality 可跑；Calibre signoff DRC/LVS 可启动但 report 尚未 clean，不能当作最终 tapeout signoff 结论。
 
-- `results/innovus/*.v`
-- `results/innovus/*.sdf`
-- `results/innovus/*.def`
-- `results/innovus/*.gds`
+Gate suite 默认要求至少 `268` 个 case。当前 `test_vectors/txt` 正好有
+268 对 `*_input.txt` / `*_expected.txt`，如果之后增加向量，脚本会全部跑。
 
-## 6. Virtuoso 怎么看版图
+## 4. DiP Clock Gating
+
+DiP gated profile sweep:
 
 ```bash
-VIRTUOSO_TECH_LIB=smic40ll ./scripts/run_virtuoso_layout.sh
+./asic_commercial/dip/scripts/run_dip_gated_opt.sh
 ```
 
-默认会：
+输出：
 
-- 从 `results/innovus/*.gds` 取输入
-- `strmin` 导入到 `OA`
-- 打开 `layout`
+- `asic_commercial/dip/gated_opt/summary.csv`
+- `asic_commercial/dip/gated_opt/selected.env`
+- `asic_commercial/dip/results/dip_core_std_top_4x4_dc_gated.v`
+- `asic_commercial/dip/results/dip_core_std_top_4x4_dc_gated.sdf`
 
-如果你希望命令前台等待 Virtuoso 退出，再加：
-
-```bash
-VIRTUOSO_WAIT=1 ./scripts/run_virtuoso_layout.sh
-```
-
-## 7. 当前状态说明
-
-截至当前代码状态：
-
-- `DIP` 的 Cadence 双轨脚本已经切换完成
-- `plain` 网表是后端主线输入
-- `gated_default` 网表单独用于 FM 与功能偏差定位
-- 旧的 Synopsys 数字后端链不再是 `DIP` 正式主线
-- 当前本机没有真实 Cadence 工具和 PDK 环境，所以这里只能做静态检查，不能替代目标服务器实跑
+只有 DC、FM、`none/dc` gate suite 都通过的 profile 会被选择。

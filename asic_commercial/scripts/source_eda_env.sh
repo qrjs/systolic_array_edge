@@ -92,6 +92,24 @@ first_executable_path() {
     return 1
 }
 
+normalize_license_env_family() {
+    local primary_name="$1"
+    shift
+    local current_name
+    local primary_value=""
+
+    for current_name in "$primary_name" "$@"; do
+        primary_value="${!current_name:-}"
+        [[ -n "$primary_value" ]] && break
+    done
+
+    [[ -n "$primary_value" ]] || return 0
+
+    for current_name in "$primary_name" "$@"; do
+        export "$current_name=$primary_value"
+    done
+}
+
 if [[ -z "${SYNOPSYS_ENV_SH:-}" ]]; then
     SYNOPSYS_ENV_SH="$(
         first_existing_path \
@@ -145,6 +163,8 @@ add_path_globs \
     /home/gtkwave \
     /home/gtkwave/* \
     /home/gtkwave/*/bin
+
+normalize_license_env_family SNPSLMD_LICENSE_FILE SYNOPSYS_LICENSE_FILE LM_LICENSE_FILE VCS_LICENSE_FILE
 
 if [[ -z "${ICC_SHELL_EXEC:-}" ]] && command -v icc_shell >/dev/null 2>&1; then
     export ICC_SHELL_EXEC

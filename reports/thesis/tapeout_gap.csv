@@ -1,0 +1,41 @@
+arch,domain,item,status,detail,path
+WS,implemented_flow,rtl_frontsim_268,PASS,PASS 268/268,
+WS,implemented_flow,innovus_gate_sim_268,PASS,PASS 268/268,
+WS,implemented_flow,fm_dc,PASS,PASS,
+WS,implemented_flow,fm_innovus,PASS,PASS,
+WS,implemented_flow,innovus_drc,PASS,PASS,
+WS,implemented_flow,innovus_connectivity,PASS,PASS,
+WS,implemented_flow,postroute_setup_slack,PASS,5.845 ns,
+WS,implemented_flow,gds_def_sdf_netlist,PASS,gds=PRESENT def=PRESENT sdf=PRESENT netlist=PRESENT,
+WS,tapeout_gap,calibre_foundry_drc,CHECK_REQUIRED,results=8720,/home/host_1/systolic_array_edge/asic_commercial/ws/reports/calibre/ws_core_std_top_4x4_drc_backend_datatype_preserve_patch.rep
+WS,tapeout_gap,calibre_lvs,CHECK_REQUIRED,result=INCORRECT,/home/host_1/systolic_array_edge/asic_commercial/ws/reports/calibre/ws_core_std_top_4x4_lvs.rep
+OS,implemented_flow,rtl_frontsim_268,PASS,PASS 268/268,
+OS,implemented_flow,innovus_gate_sim_268,PASS,PASS 268/268,
+OS,implemented_flow,fm_dc,PASS,PASS,
+OS,implemented_flow,fm_innovus,PASS,PASS,
+OS,implemented_flow,innovus_drc,PASS,PASS,
+OS,implemented_flow,innovus_connectivity,PASS,PASS,
+OS,implemented_flow,postroute_setup_slack,PASS,2.196 ns,
+OS,implemented_flow,gds_def_sdf_netlist,PASS,gds=PRESENT def=PRESENT sdf=PRESENT netlist=PRESENT,
+OS,tapeout_gap,calibre_foundry_drc,CHECK_REQUIRED,results=8758,/home/host_1/systolic_array_edge/asic_commercial/os/reports/calibre/os_core_std_top_4x4_drc_backend.rep
+OS,tapeout_gap,calibre_lvs,CHECK_REQUIRED,result=INCORRECT,/home/host_1/systolic_array_edge/asic_commercial/os/reports/calibre/os_core_std_top_4x4_lvs.rep
+IS,implemented_flow,rtl_frontsim_268,PASS,PASS 268/268,
+IS,implemented_flow,innovus_gate_sim_268,PASS,PASS 268/268,
+IS,implemented_flow,fm_dc,PASS,PASS,
+IS,implemented_flow,fm_innovus,PASS,PASS,
+IS,implemented_flow,innovus_drc,PASS,PASS,
+IS,implemented_flow,innovus_connectivity,PASS,PASS,
+IS,implemented_flow,postroute_setup_slack,PASS,2.141 ns,
+IS,implemented_flow,gds_def_sdf_netlist,PASS,gds=PRESENT def=PRESENT sdf=PRESENT netlist=PRESENT,
+IS,tapeout_gap,calibre_foundry_drc,CHECK_REQUIRED,results=8964,/home/host_1/systolic_array_edge/asic_commercial/is/reports/calibre/is_core_std_top_4x4_drc_backend.rep
+IS,tapeout_gap,calibre_lvs,CHECK_REQUIRED,result=INCORRECT,/home/host_1/systolic_array_edge/asic_commercial/is/reports/calibre/is_core_std_top_4x4_lvs.rep
+DIP,implemented_flow,rtl_frontsim_268,PASS,PASS 268/268,
+DIP,implemented_flow,innovus_gate_sim_268,PASS,PASS 268/268,
+DIP,implemented_flow,fm_dc,PASS,PASS,
+DIP,implemented_flow,fm_innovus,PASS,PASS,
+DIP,implemented_flow,innovus_drc,PASS,PASS,
+DIP,implemented_flow,innovus_connectivity,PASS,PASS,
+DIP,implemented_flow,postroute_setup_slack,PASS,2.038 ns,
+DIP,implemented_flow,gds_def_sdf_netlist,PASS,gds=PRESENT def=PRESENT sdf=PRESENT netlist=PRESENT,
+DIP,tapeout_gap,calibre_foundry_drc,CHECK_REQUIRED,results=8773,/home/host_1/systolic_array_edge/asic_commercial/dip/reports/calibre/dip_core_std_top_4x4_drc_backend.rep
+DIP,tapeout_gap,calibre_lvs,CHECK_REQUIRED,result=INCORRECT,/home/host_1/systolic_array_edge/asic_commercial/dip/reports/calibre/dip_core_std_top_4x4_lvs.rep

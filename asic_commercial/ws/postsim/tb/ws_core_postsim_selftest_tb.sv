@@ -51,6 +51,10 @@ module ws_core_postsim_selftest_tb;
 
     always #5 clk = ~clk;
 
+    task automatic wait_tb_drive_edge;
+        @(negedge clk);
+    endtask
+
     initial begin
 `ifndef TB_SKIP_SDF_ANNOTATE
         if ($value$plusargs("SDF=%s", sdf_path)) begin
@@ -78,29 +82,32 @@ module ws_core_postsim_selftest_tb;
         timeout = 0;
 
         repeat (5) @(posedge clk);
+        wait_tb_drive_edge();
         rst_n = 1'b1;
         repeat (2) @(posedge clk);
+        wait_tb_drive_edge();
 
         weight_load = 1'b1;
         for (i = 0; i < 16; i = i + 1) begin
-            @(posedge clk);
             weight_in = 16'd1;
             weight_valid = 1'b1;
             weight_addr = i[3:0];
+            @(posedge clk);
+            wait_tb_drive_edge();
         end
-        @(posedge clk);
         weight_valid = 1'b0;
         weight_load = 1'b0;
 
         repeat (10) @(posedge clk);
+        wait_tb_drive_edge();
 
         input_valid = 1'b1;
         for (i = 0; i < 16; i = i + 1) begin
-            @(posedge clk);
             input_data = 16'd1;
             input_row_sel = (i / 4);
+            @(posedge clk);
+            wait_tb_drive_edge();
         end
-        @(posedge clk);
         input_valid = 1'b0;
         input_data = '0;
 

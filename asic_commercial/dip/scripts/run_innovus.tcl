@@ -56,6 +56,174 @@ proc report_innovus {timing_rpt power_rpt area_rpt qor_rpt} {
     }
 }
 
+proc dbget_terms_by_direction {direction} {
+    set terms [dbGet top.terms.direction $direction -p]
+    if {$terms eq "0x0" || $terms eq ""} {
+        return {}
+    }
+    return [dbGet $terms.name]
+}
+
+proc remove_from_list {items remove_items} {
+    set filtered {}
+    foreach item $items {
+        if {[lsearch -exact $remove_items $item] < 0} {
+            lappend filtered $item
+        }
+    }
+    return $filtered
+}
+
+proc assign_top_io_pins {input_layer output_layer top_layer clock_pins pin_offset} {
+    set input_pins [dbget_terms_by_direction input]
+    set output_pins [dbget_terms_by_direction output]
+    set inout_pins [dbget_terms_by_direction inout]
+    set clock_pins_present {}
+    set top_status_pins {}
+    array set io_edge {
+        LEFT 0
+        TOP 1
+        RIGHT 2
+        BOTTOM 3
+    }
+
+    foreach pin $clock_pins {
+        if {[lsearch -exact $input_pins $pin] >= 0} {
+            lappend clock_pins_present $pin
+        }
+    }
+    set input_pins [remove_from_list $input_pins $clock_pins_present]
+
+    foreach pin {result_valid busy} {
+        if {[lsearch -exact $output_pins $pin] >= 0} {
+            lappend top_status_pins $pin
+        }
+    }
+    set output_pins [remove_from_list $output_pins $top_status_pins]
+
+    puts "Assigning top IO pins:"
+    puts "  clock pins  = [llength $clock_pins_present]"
+    puts "  input pins  = [llength $input_pins]"
+    puts "  output pins = [llength $output_pins]"
+    puts "  status pins = [llength $top_status_pins]"
+    puts "  inout pins  = [llength $inout_pins]"
+
+    run_or_warn "setPinAssignMode" {setPinAssignMode -pinEditInBatch true}
+    if {[llength $clock_pins_present] > 0} {
+        editPin -pin $clock_pins_present -edge $io_edge(BOTTOM) -layer $top_layer -spreadType CENTER -offsetStart $pin_offset -offsetEnd $pin_offset -fixedPin -fixOverlap 1 -snap TRACK -use CLOCK
+    }
+    if {[llength $input_pins] > 0} {
+        editPin -pin $input_pins -edge $io_edge(LEFT) -layer $input_layer -spreadType SIDE -offsetStart $pin_offset -offsetEnd $pin_offset -fixedPin -fixOverlap 1 -snap TRACK -use SIGNAL
+    }
+    if {[llength $output_pins] > 0} {
+        editPin -pin $output_pins -edge $io_edge(RIGHT) -layer $output_layer -spreadType SIDE -offsetStart $pin_offset -offsetEnd $pin_offset -fixedPin -fixOverlap 1 -snap TRACK -use SIGNAL
+    }
+    if {[llength $top_status_pins] > 0} {
+        editPin -pin $top_status_pins -edge $io_edge(TOP) -layer $top_layer -spreadType CENTER -spacing 2 -offsetStart $pin_offset -offsetEnd $pin_offset -fixedPin -fixOverlap 1 -snap TRACK -use SIGNAL
+    }
+    if {[llength $inout_pins] > 0} {
+        editPin -pin $inout_pins -edge $io_edge(TOP) -layer $top_layer -spreadType SIDE -offsetStart $pin_offset -offsetEnd $pin_offset -fixedPin -fixOverlap 1 -snap TRACK -use SIGNAL
+    }
+    run_or_warn "setPinAssignMode" {setPinAssignMode -pinEditInBatch false}
+}
+
+proc apply_lvs_pin_patch_shapes {raw_patches} {
+    set count 0
+    foreach raw [split $raw_patches ";"] {
+        set spec [string trim $raw]
+        if {$spec eq ""} {
+            continue
+        }
+        set fields [split $spec]
+        if {[llength $fields] != 7} {
+            error "Invalid INNOVUS_LVS_PIN_PATCH_SHAPES item '$spec' (expected: net layer x1 y1 x2 y2 width)"
+        }
+        set net [lindex $fields 0]
+        set layer [lindex $fields 1]
+        set x1 [lindex $fields 2]
+        set y1 [lindex $fields 3]
+        set x2 [lindex $fields 4]
+        set y2 [lindex $fields 5]
+        set width [lindex $fields 6]
+        puts "  patch_shape net=$net layer=$layer path=($x1,$y1)-($x2,$y2) width=$width"
+        if {[catch {add_shape -net $net -layer $layer -status ROUTED -shape COREWIRE -pathSeg [list $x1 $y1 $x2 $y2] -width $width} result]} {
+            error "Failed to add LVS pin patch shape '$spec': $result"
+        }
+        incr count
+    }
+    return $count
+}
+
+proc apply_lvs_pin_patch_vias {raw_patches} {
+    set count 0
+    foreach raw [split $raw_patches ";"] {
+        set spec [string trim $raw]
+        if {$spec eq ""} {
+            continue
+        }
+        set fields [split $spec]
+        if {[llength $fields] != 4} {
+            error "Invalid INNOVUS_LVS_PIN_PATCH_VIAS item '$spec' (expected: net via x y)"
+        }
+        set net [lindex $fields 0]
+        set via [lindex $fields 1]
+        set x [lindex $fields 2]
+        set y [lindex $fields 3]
+        puts "  patch_via net=$net via=$via pt=($x,$y)"
+        if {[catch {add_via -net $net -via $via -pt [list $x $y]} result]} {
+            error "Failed to add LVS pin patch via '$spec': $result"
+        }
+        incr count
+    }
+    return $count
+}
+
+proc apply_lvs_pin_patch_labels {raw_patches} {
+    set count 0
+    foreach raw [split $raw_patches ";"] {
+        set spec [string trim $raw]
+        if {$spec eq ""} {
+            continue
+        }
+        set fields [split $spec]
+        if {[llength $fields] < 4 || [llength $fields] > 5} {
+            error "Invalid INNOVUS_LVS_PIN_PATCH_LABELS item '$spec' (expected: label layer x y [height])"
+        }
+        set label [lindex $fields 0]
+        set layer [lindex $fields 1]
+        set x [lindex $fields 2]
+        set y [lindex $fields 3]
+        set height "0.08"
+        if {[llength $fields] == 5} {
+            set height [lindex $fields 4]
+        }
+        puts "  patch_label label=$label layer=$layer pt=($x,$y) height=$height"
+        if {[catch {add_text -label $label -layer $layer -pt [list $x $y] -height $height} result]} {
+            error "Failed to add LVS pin patch label '$spec': $result"
+        }
+        incr count
+    }
+    return $count
+}
+
+proc apply_lvs_pin_patches {shape_specs via_specs label_specs} {
+    if {$shape_specs eq "" && $via_specs eq "" && $label_specs eq ""} {
+        return
+    }
+
+    puts "Applying LVS pin-access patches:"
+    set shape_count [apply_lvs_pin_patch_shapes $shape_specs]
+    set via_count [apply_lvs_pin_patch_vias $via_specs]
+    set label_count [apply_lvs_pin_patch_labels $label_specs]
+    puts "  patch_shapes = $shape_count"
+    puts "  patch_vias   = $via_count"
+    puts "  patch_labels = $label_count"
+
+    run_or_warn "verifyConnectivity-lvs-pin-patches" [list redirect -file [require_env INNOVUS_CONNECTIVITY_RPT] {verifyConnectivity}]
+    run_or_warn "verify_drc-lvs-pin-patches" [list redirect -file [require_env INNOVUS_DRC_RPT] {verify_drc}]
+    run_or_warn "extractRC-lvs-pin-patches" {extractRC}
+}
+
 set step [string tolower [require_env INNOVUS_STEP]]
 set gui_mode [expr {[env_or_default INNOVUS_GUI "0"] eq "1"}]
 set design_name [require_env DESIGN_NAME]
@@ -81,6 +249,32 @@ set stripe_width [env_or_default STRIPE_WIDTH "0.0"]
 set stripe_spacing [env_or_default STRIPE_SPACING "0.0"]
 set stripe_distance [env_or_default STRIPE_SET_TO_SET_DISTANCE "0.0"]
 set gds_map [env_or_default INNOVUS_GDS_MAP ""]
+set gds_units [env_or_default INNOVUS_GDS_UNITS "1000"]
+set gds_snap_to_mgrid [env_or_default INNOVUS_GDS_SNAP_TO_MGRID "0"]
+set gds_support_path_type4 [env_or_default INNOVUS_GDS_SUPPORT_PATH_TYPE4 ""]
+set gds_label_all_pin_shapes [env_or_default INNOVUS_GDS_LABEL_ALL_PIN_SHAPES "0"]
+set gds_attach_net_name [env_or_default INNOVUS_GDS_ATTACH_NET_NAME ""]
+set gds_attach_instance_name [env_or_default INNOVUS_GDS_ATTACH_INSTANCE_NAME ""]
+set gds_merge_files [split [env_or_default INNOVUS_GDS_MERGE_FILES ""]]
+set process_node [env_or_default INNOVUS_PROCESS_NODE "28"]
+set io_input_layer [env_or_default INNOVUS_IO_INPUT_LAYER "M2"]
+set io_output_layer [env_or_default INNOVUS_IO_OUTPUT_LAYER "M2"]
+set io_top_layer [env_or_default INNOVUS_IO_TOP_LAYER "M3"]
+set clock_pin_list [split_paths [env_or_default INNOVUS_CLOCK_PINS "clk"]]
+set io_pin_offset [env_or_default INNOVUS_IO_PIN_OFFSET "5.0"]
+set add_well_taps [env_or_default INNOVUS_ADD_WELL_TAPS "0"]
+set tap_cell [env_or_default INNOVUS_TAP_CELL ""]
+set tap_cell_interval [env_or_default INNOVUS_TAP_CELL_INTERVAL "20"]
+set tap_in_row_offset [env_or_default INNOVUS_TAP_IN_ROW_OFFSET "10"]
+set add_endcaps [env_or_default INNOVUS_ADD_ENDCAPS "0"]
+set endcap_left_cell [env_or_default INNOVUS_ENDCAP_LEFT_CELL ""]
+set endcap_right_cell [env_or_default INNOVUS_ENDCAP_RIGHT_CELL ""]
+set add_fillers [env_or_default INNOVUS_ADD_FILLERS "0"]
+set filler_cells [split_paths [env_or_default INNOVUS_FILLER_CELLS ""]]
+set nanoroute_via_weight [env_or_default INNOVUS_NANOROUTE_VIA_WEIGHT ""]
+set lvs_pin_patch_shapes [env_or_default INNOVUS_LVS_PIN_PATCH_SHAPES ""]
+set lvs_pin_patch_vias [env_or_default INNOVUS_LVS_PIN_PATCH_VIAS ""]
+set lvs_pin_patch_labels [env_or_default INNOVUS_LVS_PIN_PATCH_LABELS ""]
 
 switch -- $step {
     init {
@@ -89,6 +283,7 @@ switch -- $step {
         set run_cts 0
         set run_route 0
         set run_export 0
+        set restore_route_checkpoint 0
     }
     place {
         set run_init 1
@@ -96,6 +291,7 @@ switch -- $step {
         set run_cts 0
         set run_route 0
         set run_export 0
+        set restore_route_checkpoint 0
     }
     cts {
         set run_init 1
@@ -103,6 +299,7 @@ switch -- $step {
         set run_cts 1
         set run_route 0
         set run_export 0
+        set restore_route_checkpoint 0
     }
     route {
         set run_init 1
@@ -110,14 +307,23 @@ switch -- $step {
         set run_cts 1
         set run_route 1
         set run_export 0
+        set restore_route_checkpoint 0
     }
-    export -
+    export {
+        set run_init 0
+        set run_place 0
+        set run_cts 0
+        set run_route 0
+        set run_export 1
+        set restore_route_checkpoint 1
+    }
     all {
         set run_init 1
         set run_place 1
         set run_cts 1
         set run_route 1
         set run_export 1
+        set restore_route_checkpoint 0
     }
     default {
         error "Unsupported INNOVUS_STEP '$step' (expected init, place, cts, route, export, or all)"
@@ -142,8 +348,38 @@ puts "  tech_lef = $tech_lef"
 puts "  lef_files = $lef_files"
 puts "  mmmc_file = $mmmc_file"
 puts "  step = $step"
+puts "  gds_map = $gds_map"
+puts "  gds_units = $gds_units"
+puts "  gds_snap_to_mgrid = $gds_snap_to_mgrid"
+puts "  gds_support_path_type4 = $gds_support_path_type4"
+puts "  gds_label_all_pin_shapes = $gds_label_all_pin_shapes"
+puts "  gds_attach_net_name = $gds_attach_net_name"
+puts "  gds_attach_instance_name = $gds_attach_instance_name"
+puts "  gds_merge_files = $gds_merge_files"
+puts "  tap_cell = $tap_cell"
+puts "  endcap_cells = $endcap_left_cell $endcap_right_cell"
+puts "  filler_cells = $filler_cells"
+puts "  nanoroute_via_weight = $nanoroute_via_weight"
+puts "  lvs_pin_patch_shapes = $lvs_pin_patch_shapes"
+puts "  lvs_pin_patch_vias = $lvs_pin_patch_vias"
+puts "  lvs_pin_patch_labels = $lvs_pin_patch_labels"
 
-init_design
+if {$restore_route_checkpoint} {
+    set route_checkpoint "${checkpoint_prefix}_route.enc.dat"
+    if {![file exists $route_checkpoint]} {
+        set route_checkpoint "${checkpoint_prefix}_route.enc"
+    }
+    if {![file exists $route_checkpoint]} {
+        error "Innovus route checkpoint not found for export: ${checkpoint_prefix}_route.enc.dat"
+    }
+    puts "Restoring route checkpoint for export:"
+    puts "  checkpoint = $route_checkpoint"
+    restoreDesign $route_checkpoint $design_name
+} else {
+    init_design
+    run_or_warn "setDesignMode-process" [list setDesignMode -process $process_node]
+    run_or_warn "setDelayCalMode-siAware" {setDelayCalMode -siAware false}
+}
 
 if {$run_init} {
     floorPlan \
@@ -154,11 +390,28 @@ if {$run_init} {
         [require_env CORE_MARGIN_RIGHT] \
         [require_env CORE_MARGIN_TOP]
 
+    assign_top_io_pins $io_input_layer $io_output_layer $io_top_layer $clock_pin_list $io_pin_offset
+    run_or_warn "checkPinAssignment" [list redirect -file [require_env INNOVUS_PIN_ASSIGN_RPT] {checkPinAssignment -report_violating_pin}]
+
     run_or_warn "clearGlobalNets" {clearGlobalNets}
     run_or_warn "globalNetConnect-power" [list globalNetConnect $power_net -type pgpin -pin $power_net -all]
     run_or_warn "globalNetConnect-ground" [list globalNetConnect $ground_net -type pgpin -pin $ground_net -all]
     run_or_warn "globalNetConnect-tiehi" [list globalNetConnect $power_net -type tiehi -all]
     run_or_warn "globalNetConnect-tielo" [list globalNetConnect $ground_net -type tielo -all]
+
+    if {$add_endcaps eq "1" && $endcap_left_cell ne "" && $endcap_right_cell ne ""} {
+        run_or_warn "setEndCapMode-reset" {setEndCapMode -reset}
+        run_or_warn "setEndCapMode" [list setEndCapMode -leftEdge $endcap_left_cell -rightEdge $endcap_right_cell -prefix ENDCAP]
+        run_or_warn "addEndCap" {addEndCap -prefix ENDCAP}
+    }
+
+    if {$add_well_taps eq "1" && $tap_cell ne ""} {
+        run_or_warn "addWellTap" [list addWellTap \
+            -cell $tap_cell \
+            -cellInterval $tap_cell_interval \
+            -inRowOffset $tap_in_row_offset \
+            -prefix WELLTAP]
+    }
 
     run_or_warn "addRing" [list addRing \
         -nets [list $power_net $ground_net] \
@@ -200,22 +453,71 @@ if {$run_cts} {
 }
 
 if {$run_route} {
+    if {$nanoroute_via_weight ne ""} {
+        run_or_warn "setNanoRouteMode-dfm-via-weight" [list setNanoRouteMode -dbViaWeight $nanoroute_via_weight]
+    }
+    run_or_warn "setNanoRouteMode-spread" {setNanoRouteMode -droutePostRouteSpreadWire false}
     routeDesign
+    run_or_warn "verifyConnectivity-route" [list redirect -file [require_env INNOVUS_CONNECTIVITY_RPT] {verifyConnectivity}]
+    run_or_warn "verify_drc-route" [list redirect -file [require_env INNOVUS_DRC_RPT] {verify_drc}]
+    run_or_warn "checkRoute-route" [list redirect -file [require_env INNOVUS_ROUTE_RPT] {checkRoute}]
+    run_or_warn "setDelayCalMode-siAware" {setDelayCalMode -siAware false}
     run_or_warn "optDesign-postRoute" {optDesign -postRoute}
     run_or_warn "extractRC" {extractRC}
+
+    if {$add_fillers eq "1" && [llength $filler_cells] > 0} {
+        run_or_warn "addFiller" [list addFiller \
+            -cell $filler_cells \
+            -prefix FILLER \
+            -fitGap \
+            -markFixed]
+        run_or_warn "verifyConnectivity-postfill" [list redirect -file [require_env INNOVUS_CONNECTIVITY_RPT] {verifyConnectivity}]
+        run_or_warn "verify_drc-postfill" [list redirect -file [require_env INNOVUS_DRC_RPT] {verify_drc}]
+        run_or_warn "checkRoute-postfill" [list redirect -file [require_env INNOVUS_ROUTE_RPT] {checkRoute}]
+        run_or_warn "extractRC-postfill" {extractRC}
+    }
+
     run_or_warn "saveDesign-route" [list saveDesign "${checkpoint_prefix}_route.enc"]
 }
 
 report_innovus [require_env INNOVUS_TIMING_RPT] [require_env INNOVUS_POWER_RPT] [require_env INNOVUS_AREA_RPT] [require_env INNOVUS_QOR_RPT]
 
 if {$run_export} {
+    apply_lvs_pin_patches $lvs_pin_patch_shapes $lvs_pin_patch_vias $lvs_pin_patch_labels
     saveNetlist [require_env INNOVUS_NETLIST]
+    saveNetlist [require_env INNOVUS_LVS_NETLIST] -phys -excludeLeafCell
     write_sdf [require_env INNOVUS_SDF]
     defOut [require_env INNOVUS_DEF]
+    if {$gds_snap_to_mgrid eq "1" || [string tolower $gds_snap_to_mgrid] eq "true"} {
+        run_or_warn "setStreamOutMode-snapToMGrid" {setStreamOutMode -snapToMGrid true}
+    }
+    if {$gds_support_path_type4 ne ""} {
+        run_or_warn "setStreamOutMode-supportPathType4" [list setStreamOutMode -supportPathType4 $gds_support_path_type4]
+    }
+    if {$gds_label_all_pin_shapes eq "1" || [string tolower $gds_label_all_pin_shapes] eq "true"} {
+        run_or_warn "setStreamOutMode-labelAllPinShape" {setStreamOutMode -labelAllPinShape true}
+    }
+    set stream_args [list [require_env INNOVUS_GDS] -units $gds_units -mode ALL]
     if {$gds_map ne ""} {
-        streamOut [require_env INNOVUS_GDS] -mapFile $gds_map -mode ALL
+        lappend stream_args -mapFile $gds_map
+    }
+    if {$gds_attach_net_name ne ""} {
+        lappend stream_args -attachNetName $gds_attach_net_name
+    }
+    if {$gds_attach_instance_name ne ""} {
+        lappend stream_args -attachInstanceName $gds_attach_instance_name
+    }
+    if {[llength $gds_merge_files] > 0} {
+        lappend stream_args -merge $gds_merge_files
+    }
+    if {[llength $gds_merge_files] > 0 && $gds_map ne ""} {
+        streamOut {*}$stream_args
+    } elseif {[llength $gds_merge_files] > 0} {
+        streamOut {*}$stream_args
+    } elseif {$gds_map ne ""} {
+        streamOut {*}$stream_args
     } else {
-        streamOut [require_env INNOVUS_GDS] -mode ALL
+        streamOut {*}$stream_args
     }
     run_or_warn "saveDesign-export" [list saveDesign "${checkpoint_prefix}_export.enc"]
 }

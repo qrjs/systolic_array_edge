@@ -26,7 +26,7 @@ For each dataflow under `ws/`, `is/`, `os/`, and `dip/`, this directory now cont
 - VCS RTL file-vector front-simulation run script
 - VCS gate-level post-simulation run script and testbench
 - Synopsys Formality equivalence-check run script
-- Cadence Innovus back-end run script and staged Tcl flow for the `dip` mainline
+- Cadence Innovus back-end run script and staged Tcl flow
 - Calibre DRC/LVS wrapper scripts
 - environment checking scripts
 - a Chinese tutorial for bring-up and execution order
@@ -48,14 +48,17 @@ teacher-provided synthesis script. It is intended for external RTL such as
 
 ## Recommended use
 
-对当前 `SMIC40 thesis` 主线，推荐只记下面几条命令：
+对当前 `TSMC28 thesis` 主线，推荐只记下面几条命令：
 
 ```bash
-export SMIC40_PDK_ROOT=/absolute/path/to/pdk
+export TSMC28_ROOT=/opt/eda_tools/TSMC28
 make thesis-check
 make thesis-synth
+make thesis-dip-gated-opt
 make thesis-dip
-make thesis-dip-gated-debug
+make thesis-is
+make thesis-os
+make thesis-dio
 make thesis-innovus-gui
 make thesis-virtuoso
 ```
@@ -63,31 +66,42 @@ make thesis-virtuoso
 它们分别对应：
 
 - `thesis-check`
-  检查 EDA 工具环境、`SMIC40_PDK_ROOT`、`DiP` 静态输入
+  检查 EDA 工具环境、`TSMC28_ROOT`、`DIP/IS/OS` 静态输入和后端库资源
 - `thesis-synth`
   跑论文主表综合：
   `ws/is/os legacy FIFO` + `dip std + gated_default`
+- `thesis-dip-gated-opt`
+  对 DiP 跑 `gated_default/gated_area/gated_ultra_area`，以通过 FM 和全量 gate suite 的最低功耗、最低面积候选作为主线网表
 - `thesis-dip`
-  跑 `DiP` functional backend track：
-  `plain DC -> gate suite(none) -> gate suite(dc) -> Innovus -> gate suite(innovus) -> Virtuoso`
-- `thesis-dip-gated-debug`
-  跑 `DiP` gated debug track：
-  `gated DC -> FM -> batch_000 + signed_mix`
+  跑 `DiP` gated full backend track：
+  `gated DC/FM/gate -> Innovus -> post-route FM/gate`
+- `thesis-is` / `thesis-os`
+  跑对应数据流的 full backend track
+- `thesis-dio`
+  顺序跑 `DIP/IS/OS` 三条 full backend track
 - `thesis-innovus-gui`
   打开 `Innovus GUI` 看版图
 - `thesis-virtuoso`
   导入 `Innovus GDS` 并打开 `Virtuoso layout`
 
+Calibre/Virtuoso 默认不作为一键主线的 pass/fail 门槛；需要调试 signoff 时显式打开：
+
+```bash
+RUN_CALIBRE_DRC=1 RUN_CALIBRE_LVS=1 make thesis-dip
+RUN_VIRTUOSO=1 VIRTUOSO_TECH_LIB=<oa_tech_lib_name> make thesis-dip
+```
+
 ## Current Status
 
-截至当前代码状态，仓库已经把 `dip` 的正式后端主线切到 `Cadence Innovus + Virtuoso`。
+截至当前代码状态，仓库已经把 `ws/dip/is/os` 的正式后端主线切到 `TSMC28 + Cadence Innovus`。
 
 需要注意：
 
 - `make thesis-check` 与 `make thesis-synth` 仍然是最先执行的两步
-- `make thesis-dip` 现在走 functional backend track
-- `make thesis-dip-gated-debug` 单独承担 gated 功能偏差定位
-- 当前工作区没有真实 `dc_shell / innovus / virtuoso` 环境，因此这次改动只能做静态落地与脚本验证，端到端结论仍要以目标服务器实测为准
+- `make thesis-dip` 现在走 DiP clock-gated backend track
+- `make thesis-is` 和 `make thesis-os` 也会跑 FM、Innovus、post-route gate suite
+- `Calibre DRC/LVS` 脚本可运行，但当前 TSMC28 signoff report 仍未 clean；默认不阻断主线
+- `Virtuoso` GDS import 需要有效 OA tech lib，默认关闭，使用 `RUN_VIRTUOSO=1 VIRTUOSO_TECH_LIB=...` 打开
 
 Detailed instructions are in `dip/README.md`, and `ws/README.md`, `is/README.md`, `os/README.md` are thin flow-specific entry notes.
 

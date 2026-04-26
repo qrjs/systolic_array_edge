@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "${SCRIPT_DIR}/../.." && pwd)
+SCRIPT_DIR=$(builtin cd "$(dirname "${BASH_SOURCE[0]}")" && /bin/pwd -P)
+REPO_ROOT=$(builtin cd "${SCRIPT_DIR}/../.." && /bin/pwd -P)
 
 # shellcheck disable=SC1091
 source "${SCRIPT_DIR}/source_eda_env.sh"
@@ -17,14 +17,14 @@ require_tool() {
     command -v "$tool" >/dev/null 2>&1 || die "required tool not found in PATH: $tool"
 }
 
-[[ -n "${SMIC40_PDK_ROOT:-}" ]] || die "SMIC40_PDK_ROOT is not set"
-[[ -d "${SMIC40_PDK_ROOT}" ]] || die "SMIC40_PDK_ROOT is not a directory: ${SMIC40_PDK_ROOT}"
+export TSMC28_ROOT="${TSMC28_ROOT:-/opt/eda_tools/TSMC28}"
+[[ -d "${TSMC28_ROOT}" ]] || die "TSMC28_ROOT is not a directory: ${TSMC28_ROOT}"
 
 require_tool dc_shell
 
 export REPO_ROOT
 # shellcheck disable=SC1091
-source "${REPO_ROOT}/asic_commercial/dip/config/libs.smic40.env"
+source "${REPO_ROOT}/asic_commercial/dip/config/libs.tsmc28.env"
 
 target_db_name="$(basename "${TARGET_LIBRARY}")"
 target_db_dir="$(dirname "${TARGET_LIBRARY}")"

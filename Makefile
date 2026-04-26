@@ -14,6 +14,29 @@ COMM_SYN_BASE_CLK_PERIOD ?= 5.0
 COMM_SYN_ULTRA_CLK_PERIOD ?= 1.0
 COMM_SYN_DRY_RUN ?= 0
 THESIS_VECTOR_DIR ?= $(PROJECT_ROOT)/test_vectors/txt
+THESIS_VECTOR_ROOT ?= $(PROJECT_ROOT)/test_vectors/thesis
+THESIS_REPORT_DIR ?= $(PROJECT_ROOT)/reports/thesis
+THESIS_WORK_DIR ?= $(PROJECT_ROOT)/work/thesis_materials/latest
+THESIS_RANDOM_SEEDS ?= 2026042601,2026042602,2026042603,2026042604,2026042605
+THESIS_RANDOM_COUNT ?= 128
+THESIS_RANDOM_SPARSE ?= 0.30
+THESIS_SPARSE_LEVELS ?= 0,25,50,75,90
+THESIS_SPARSE_COUNT ?= 64
+THESIS_VALUE_MIN ?= -64
+THESIS_VALUE_MAX ?= 64
+THESIS_VALIDATE_ARCHES ?= ws,os,is,dip
+THESIS_FRONT_GROUPS ?= baseline_268,directed,random,sparse
+THESIS_GATE_GROUPS ?= baseline_268,directed,sparse
+THESIS_GATE_STAGE ?= innovus
+THESIS_SMOKE_FRONT_GROUPS ?= directed,sparse_90
+THESIS_SMOKE_GATE_GROUPS ?= directed
+THESIS_COVERAGE_ARCHES ?= dip
+THESIS_COVERAGE_GROUPS ?= directed,sparse_90
+THESIS_DIP_SWEEP_GROUPS ?= sparse
+THESIS_RANDOM_SAMPLE_GROUPS ?= random_seed_2026042601
+THESIS_LVS_ARCHES ?= ws,os,is,dip
+THESIS_LVS_PROFILES ?= ports_only_nostdlib
+THESIS_LVS_STOP_ON_FAIL ?= 0
 
 ARCHES := ws is os dip
 
@@ -47,7 +70,7 @@ LEGACY_TARGETS := \
 	txt-ws txt-is txt-os txt-dip \
 	txt-random txt-random-iverilog txt-random-vcs
 
-.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-dip-gated-debug thesis-innovus-gui thesis-virtuoso
+.PHONY: dc dc-base dc-ultra dc-compare thesis-check thesis-synth thesis-dip thesis-is thesis-os thesis-dio thesis-dip-gated-opt thesis-dip-gated-debug thesis-innovus-gui thesis-virtuoso thesis-vectors thesis-validate thesis-report thesis-signoff thesis-foundry-signoff thesis-workspace thesis-smoke thesis-random-sample thesis-sparse-sweep thesis-dip-sparse-sweep thesis-sparse-gate thesis-coverage thesis-calibre-lvs-sweep thesis-evidence-plus thesis-full tidy-workspace
 .PHONY: \
 	help help-all run open regress front-verify frontend-verify backend report verify \
 	impl impl-all impl-summary \
@@ -161,12 +184,32 @@ help:
 	@echo "  make open ARCH=ws      # 打开波形（默认 VIEWER=surfer）"
 	@echo "  make cov ARCH=dip      # 单架构 VCS 功能覆盖率"
 	@echo "  make dc-compare        # 商业综合：四架构 base+ultra 对比"
-	@echo "  make thesis-check      # SMIC40 thesis 主线环境检查"
+	@echo "  make thesis-check      # TSMC28 thesis 主线环境检查"
 	@echo "  make thesis-synth      # 主表综合：ws/is/os legacy + dip gated"
-	@echo "  make thesis-dip        # DiP functional 主链：plain DC -> gate suite -> Innovus -> Virtuoso"
+	@echo "  make thesis-dip        # DiP gated 主链：gated DC/FM/gate -> Innovus/FM/gate"
+	@echo "  make thesis-is         # IS full backend 主链"
+	@echo "  make thesis-os         # OS full backend 主链"
+	@echo "  make thesis-dio        # 顺序运行 DIP/IS/OS full backend 主链"
+	@echo "  make thesis-dip-gated-opt # DiP gated profile sweep + FM + 全量 gate suite"
 	@echo "  make thesis-dip-gated-debug # DiP gated 调试：gated DC -> FM -> 定向 gate case"
+	@echo "  make thesis-vectors   # 生成论文 directed/random/sparse sweep 向量"
+	@echo "  make thesis-validate  # 跑论文验证包：前仿 + Innovus 门仿"
+	@echo "  make thesis-report    # 汇总论文验证/PPA/后端/GDS 报告"
+	@echo "  make thesis-signoff   # 检查前仿/门仿/FM/Innovus/GDS 证据是否全 PASS"
+	@echo "  make thesis-foundry-signoff # 严格 Calibre DRC/LVS foundry 签核检查"
+	@echo "  make thesis-workspace # 生成论文写作材料工作区 work/thesis_materials/latest"
+	@echo "  make thesis-smoke     # 轻量论文回归：directed + sparse_90 前仿，directed 门仿"
+	@echo "  make thesis-random-sample # 四数据流随机样本前仿"
+	@echo "  make thesis-sparse-sweep # 四数据流稀疏度 sweep 前仿"
+	@echo "  make thesis-dip-sparse-sweep # DiP 稀疏度 sweep 前仿"
+	@echo "  make thesis-sparse-gate # 四数据流 sparse_90 Innovus SDF 门仿"
+	@echo "  make thesis-coverage  # DiP directed+sparse_90 VCS/URG 覆盖率"
+	@echo "  make thesis-calibre-lvs-sweep # Calibre LVS 多 profile 调试 sweep"
+	@echo "  make thesis-evidence-plus # 论文增强证据链：随机、稀疏、覆盖率、签核"
+	@echo "  make thesis-full      # thesis-vectors + thesis-validate + thesis-report"
 	@echo "  make thesis-innovus-gui # 打开 Innovus GUI 看版图"
 	@echo "  make thesis-virtuoso   # 导入 Innovus GDS 并打开 Virtuoso layout"
+	@echo "  make tidy-workspace    # 收拢根目录生成物到 work/root_artifacts/"
 	@echo ""
 	@echo "说明："
 	@echo "  txt / random / cov 属于正式验证"
@@ -215,9 +258,29 @@ help-all:
 	@echo "  make thesis-check"
 	@echo "  make thesis-synth"
 	@echo "  make thesis-dip"
+	@echo "  make thesis-is"
+	@echo "  make thesis-os"
+	@echo "  make thesis-dio"
+	@echo "  make thesis-dip-gated-opt"
 	@echo "  make thesis-dip-gated-debug"
+	@echo "  make thesis-vectors"
+	@echo "  make thesis-validate"
+	@echo "  make thesis-report"
+	@echo "  make thesis-signoff"
+	@echo "  make thesis-foundry-signoff"
+	@echo "  make thesis-workspace"
+	@echo "  make thesis-smoke"
+	@echo "  make thesis-random-sample"
+	@echo "  make thesis-sparse-sweep"
+	@echo "  make thesis-dip-sparse-sweep"
+	@echo "  make thesis-sparse-gate"
+	@echo "  make thesis-coverage"
+	@echo "  make thesis-calibre-lvs-sweep"
+	@echo "  make thesis-evidence-plus"
+	@echo "  make thesis-full"
 	@echo "  make thesis-innovus-gui"
 	@echo "  make thesis-virtuoso"
+	@echo "  make tidy-workspace"
 	@echo ""
 	@echo "兼容别名："
 	@echo "  make regress"
@@ -248,50 +311,217 @@ dc-compare:
 	$(call RUN_COMMERCIAL_SYN,compare)
 
 thesis-check:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
 	"$(PROJECT_ROOT)/asic_commercial/scripts/check_thesis_env.sh"
 
 thesis-synth:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
 	"$(PROJECT_ROOT)/asic_commercial/scripts/run_thesis_synth.sh"
 
 thesis-dip:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
 	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
-	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_mainline.sh"
+	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_full_flow.sh"
+
+thesis-is:
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
+	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
+	"$(PROJECT_ROOT)/asic_commercial/is/scripts/run_full_flow.sh"
+
+thesis-os:
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
+	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
+	"$(PROJECT_ROOT)/asic_commercial/os/scripts/run_full_flow.sh"
+
+thesis-dio:
+	@$(MAKE) thesis-dip TSMC28_ROOT="$(TSMC28_ROOT)" THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)"
+	@$(MAKE) thesis-is TSMC28_ROOT="$(TSMC28_ROOT)" THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)"
+	@$(MAKE) thesis-os TSMC28_ROOT="$(TSMC28_ROOT)" THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)"
+
+thesis-dip-gated-opt:
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
+	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
+	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_dip_gated_opt.sh"
 
 thesis-dip-gated-debug:
-	@SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
+	@TSMC28_ROOT="$(TSMC28_ROOT)" \
 	THESIS_VECTOR_DIR="$(THESIS_VECTOR_DIR)" \
 	"$(PROJECT_ROOT)/asic_commercial/dip/scripts/run_thesis_gated_debug.sh"
 
+thesis-vectors:
+	@python3 "$(PROJECT_ROOT)/utils/generate_thesis_vectors.py" \
+		--output-root "$(THESIS_VECTOR_ROOT)" \
+		--random-seeds "$(THESIS_RANDOM_SEEDS)" \
+		--random-count "$(THESIS_RANDOM_COUNT)" \
+		--random-sparse-prob "$(THESIS_RANDOM_SPARSE)" \
+		--sparse-levels "$(THESIS_SPARSE_LEVELS)" \
+		--sparse-count "$(THESIS_SPARSE_COUNT)" \
+		--value-min "$(THESIS_VALUE_MIN)" \
+		--value-max "$(THESIS_VALUE_MAX)" \
+		--clean
+
+thesis-validate:
+	@python3 "$(PROJECT_ROOT)/utils/run_thesis_validation.py" \
+		--repo-root "$(PROJECT_ROOT)" \
+		--vector-root "$(THESIS_VECTOR_ROOT)" \
+		--output-root "$(THESIS_REPORT_DIR)/runs" \
+		--arches "$(THESIS_VALIDATE_ARCHES)" \
+		--front-groups "$(THESIS_FRONT_GROUPS)" \
+		--gate-groups "$(THESIS_GATE_GROUPS)" \
+		--gate-stage "$(THESIS_GATE_STAGE)"
+
+thesis-report:
+	@python3 "$(PROJECT_ROOT)/utils/collect_thesis_reports.py" \
+		--repo-root "$(PROJECT_ROOT)" \
+		--output-dir "$(THESIS_REPORT_DIR)"
+
+thesis-signoff: thesis-report
+	@python3 "$(PROJECT_ROOT)/utils/check_thesis_signoff.py" \
+		--report-dir "$(THESIS_REPORT_DIR)"
+
+thesis-foundry-signoff: thesis-report
+	@python3 "$(PROJECT_ROOT)/utils/check_foundry_signoff.py" \
+		--report-dir "$(THESIS_REPORT_DIR)"
+
+thesis-workspace: thesis-signoff
+	@python3 "$(PROJECT_ROOT)/utils/check_foundry_signoff.py" \
+		--report-dir "$(THESIS_REPORT_DIR)" || true
+	@python3 "$(PROJECT_ROOT)/utils/package_thesis_workspace.py" \
+		--repo-root "$(PROJECT_ROOT)" \
+		--report-dir "$(THESIS_REPORT_DIR)" \
+		--output-dir "$(THESIS_WORK_DIR)"
+
+thesis-smoke:
+	@$(MAKE) thesis-vectors THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)"
+	@$(MAKE) thesis-validate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="$(THESIS_VALIDATE_ARCHES)" \
+		THESIS_FRONT_GROUPS="$(THESIS_SMOKE_FRONT_GROUPS)" \
+		THESIS_GATE_GROUPS="$(THESIS_SMOKE_GATE_GROUPS)" \
+		THESIS_GATE_STAGE="$(THESIS_GATE_STAGE)"
+	@$(MAKE) thesis-signoff \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-random-sample:
+	@$(MAKE) thesis-vectors THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)"
+	@$(MAKE) thesis-validate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="$(THESIS_VALIDATE_ARCHES)" \
+		THESIS_FRONT_GROUPS="$(THESIS_RANDOM_SAMPLE_GROUPS)" \
+		THESIS_GATE_GROUPS="" \
+		THESIS_GATE_STAGE="$(THESIS_GATE_STAGE)"
+	@$(MAKE) thesis-report THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-sparse-sweep:
+	@$(MAKE) thesis-vectors THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)"
+	@$(MAKE) thesis-validate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="$(THESIS_VALIDATE_ARCHES)" \
+		THESIS_FRONT_GROUPS="sparse" \
+		THESIS_GATE_GROUPS="" \
+		THESIS_GATE_STAGE="$(THESIS_GATE_STAGE)"
+	@$(MAKE) thesis-report THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-dip-sparse-sweep:
+	@$(MAKE) thesis-vectors THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)"
+	@$(MAKE) thesis-validate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="dip" \
+		THESIS_FRONT_GROUPS="$(THESIS_DIP_SWEEP_GROUPS)" \
+		THESIS_GATE_GROUPS="" \
+		THESIS_GATE_STAGE="$(THESIS_GATE_STAGE)"
+	@$(MAKE) thesis-report THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-sparse-gate:
+	@$(MAKE) thesis-validate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="$(THESIS_VALIDATE_ARCHES)" \
+		THESIS_FRONT_GROUPS="" \
+		THESIS_GATE_GROUPS="sparse_90" \
+		THESIS_GATE_STAGE="$(THESIS_GATE_STAGE)"
+	@$(MAKE) thesis-report THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-coverage:
+	@python3 "$(PROJECT_ROOT)/utils/run_thesis_validation.py" \
+		--repo-root "$(PROJECT_ROOT)" \
+		--vector-root "$(THESIS_VECTOR_ROOT)" \
+		--output-root "$(THESIS_REPORT_DIR)/runs" \
+		--arches "$(THESIS_COVERAGE_ARCHES)" \
+		--front-groups "$(THESIS_COVERAGE_GROUPS)" \
+		--gate-groups "" \
+		--frontsim-coverage \
+		--frontsim-coverage-strict
+	@$(MAKE) thesis-report THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-calibre-lvs-sweep:
+	@if [[ "$(THESIS_LVS_STOP_ON_FAIL)" == "1" ]]; then stop_arg="--stop-on-fail"; else stop_arg=""; fi; \
+	TSMC28_ROOT="$(TSMC28_ROOT)" python3 "$(PROJECT_ROOT)/utils/run_calibre_lvs_sweep.py" \
+		--repo-root "$(PROJECT_ROOT)" \
+		--arches "$(THESIS_LVS_ARCHES)" \
+		--profiles "$(THESIS_LVS_PROFILES)" \
+		$$stop_arg
+	@$(MAKE) thesis-report THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-evidence-plus:
+	@$(MAKE) thesis-random-sample \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_RANDOM_SAMPLE_GROUPS="$(THESIS_RANDOM_SAMPLE_GROUPS)"
+	@$(MAKE) thesis-sparse-sweep \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="$(THESIS_VALIDATE_ARCHES)"
+	@$(MAKE) thesis-sparse-gate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+	@$(MAKE) thesis-coverage \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_COVERAGE_ARCHES="$(THESIS_COVERAGE_ARCHES)" \
+		THESIS_COVERAGE_GROUPS="$(THESIS_COVERAGE_GROUPS)"
+	@$(MAKE) thesis-signoff \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
+thesis-full:
+	@$(MAKE) thesis-vectors THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)"
+	@$(MAKE) thesis-validate \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)" \
+		THESIS_VALIDATE_ARCHES="$(THESIS_VALIDATE_ARCHES)" \
+		THESIS_FRONT_GROUPS="$(THESIS_FRONT_GROUPS)" \
+		THESIS_GATE_GROUPS="$(THESIS_GATE_GROUPS)" \
+		THESIS_GATE_STAGE="$(THESIS_GATE_STAGE)"
+	@$(MAKE) thesis-signoff \
+		THESIS_VECTOR_ROOT="$(THESIS_VECTOR_ROOT)" \
+		THESIS_REPORT_DIR="$(THESIS_REPORT_DIR)"
+
 thesis-innovus-gui:
 	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
-	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	DESIGN_ENV=config/design.std.env \
+	TSMC28_ROOT="$(TSMC28_ROOT)" \
+	DESIGN_ENV=config/design.env \
 	LIBS_ENV=config/libs.env \
-	INNOVUS_INPUT_FLAVOR=plain \
-	DC_OUTPUT_FLAVOR=plain \
+	INNOVUS_INPUT_FLAVOR=gated \
+	DC_OUTPUT_FLAVOR=gated \
 	./scripts/run_innovus_gui.sh
 
 thesis-virtuoso:
 	@cd "$(PROJECT_ROOT)/asic_commercial/dip" && \
-	SMIC40_PDK_ROOT="$(SMIC40_PDK_ROOT)" \
-	DESIGN_ENV=config/design.std.env \
+	TSMC28_ROOT="$(TSMC28_ROOT)" \
+	DESIGN_ENV=config/design.env \
 	LIBS_ENV=config/libs.env \
-	INNOVUS_INPUT_FLAVOR=plain \
-	DC_OUTPUT_FLAVOR=plain \
+	INNOVUS_INPUT_FLAVOR=gated \
+	DC_OUTPUT_FLAVOR=gated \
 	./scripts/run_virtuoso_layout.sh
 
-thesis-icc-probe:
-	@echo "Deprecated: ICC probe is no longer part of the DIP mainline." >&2
-	@echo "Use 'make thesis-innovus-gui' or 'make thesis-virtuoso' on the Cadence server instead." >&2
-	@exit 1
-
-thesis-icc2-gui:
-	@echo "Deprecated: ICC2 GUI is no longer part of the DIP mainline." >&2
-	@echo "Use 'make thesis-innovus-gui' instead." >&2
-	@exit 1
+tidy-workspace:
+	@"$(PROJECT_ROOT)/scripts/tidy_workspace.sh"
 
 validate-arch:
 	@case "$(ARCH)" in \

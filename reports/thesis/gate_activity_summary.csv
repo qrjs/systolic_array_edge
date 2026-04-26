@@ -1,0 +1,13 @@
+arch,group,stage,cases,pass,avg_cycles,avg_active_mac,avg_zero_gated,avg_skip_ratio_pct,total_active_mac,total_zero_gated
+WS,directed,innovus,20,20,11.00,28.35,35.65,55.68,567,713
+WS,random_seed_2026042601,innovus,128,128,11.00,31.15,32.85,51.29,3987,4205
+WS,sparse_90,innovus,64,64,11.00,0.52,63.48,99.18,33,4063
+OS,directed,innovus,20,20,10.00,28.35,35.65,55.68,567,713
+OS,random_seed_2026042601,innovus,128,128,10.00,31.15,32.85,51.29,3987,4205
+OS,sparse_90,innovus,64,64,10.00,0.52,63.48,99.18,33,4063
+IS,directed,innovus,20,20,10.00,28.35,35.65,55.68,567,713
+IS,random_seed_2026042601,innovus,128,128,10.00,31.15,32.85,51.29,3987,4205
+IS,sparse_90,innovus,64,64,10.00,0.52,63.48,99.18,33,4063
+DIP,directed,innovus,20,20,10.00,28.35,35.65,55.68,567,713
+DIP,random_seed_2026042601,innovus,128,128,10.00,31.15,32.85,51.29,3987,4205
+DIP,sparse_90,innovus,64,64,10.00,0.52,63.48,99.18,33,4063

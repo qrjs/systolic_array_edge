@@ -1,0 +1,82 @@
+arch,item,status,detail
+WS,summary_row_present,PASS,present
+WS,rtl_frontsim_baseline,PASS,268/268 fail=0 status=PASS
+WS,innovus_gate_sim_baseline,PASS,268/268 fail=0 status=PASS
+WS,fm_dc,PASS,PASS
+WS,fm_innovus,PASS,PASS
+WS,innovus_drc,PASS,PASS
+WS,innovus_connectivity,PASS,PASS
+WS,postroute_setup_slack,PASS,5.845 ns
+WS,gds_status,PASS,PRESENT
+WS,def_status,PASS,PRESENT
+WS,sdf_status,PASS,PRESENT
+WS,netlist_status,PASS,PRESENT
+WS,ppa_numbers_present,PASS,dc_area=21392.447753 dc_dyn=0.668412 innovus_area=21254.52 innovus_total=3.691488
+WS,non_dip_clock_gating_disabled,PASS,flavor=plain clock_gates=0
+OS,summary_row_present,PASS,present
+OS,rtl_frontsim_baseline,PASS,268/268 fail=0 status=PASS
+OS,innovus_gate_sim_baseline,PASS,268/268 fail=0 status=PASS
+OS,fm_dc,PASS,PASS
+OS,fm_innovus,PASS,PASS
+OS,innovus_drc,PASS,PASS
+OS,innovus_connectivity,PASS,PASS
+OS,postroute_setup_slack,PASS,2.196 ns
+OS,gds_status,PASS,PRESENT
+OS,def_status,PASS,PRESENT
+OS,sdf_status,PASS,PRESENT
+OS,netlist_status,PASS,PRESENT
+OS,ppa_numbers_present,PASS,dc_area=20334.047722 dc_dyn=1.172700 innovus_area=20107.92 innovus_total=7.471194
+OS,non_dip_clock_gating_disabled,PASS,flavor=plain clock_gates=0
+IS,summary_row_present,PASS,present
+IS,rtl_frontsim_baseline,PASS,268/268 fail=0 status=PASS
+IS,innovus_gate_sim_baseline,PASS,268/268 fail=0 status=PASS
+IS,fm_dc,PASS,PASS
+IS,fm_innovus,PASS,PASS
+IS,innovus_drc,PASS,PASS
+IS,innovus_connectivity,PASS,PASS
+IS,postroute_setup_slack,PASS,2.141 ns
+IS,gds_status,PASS,PRESENT
+IS,def_status,PASS,PRESENT
+IS,sdf_status,PASS,PRESENT
+IS,netlist_status,PASS,PRESENT
+IS,ppa_numbers_present,PASS,dc_area=21419.663744 dc_dyn=1.357000 innovus_area=21263.928 innovus_total=7.363685
+IS,non_dip_clock_gating_disabled,PASS,flavor=plain clock_gates=0
+DIP,summary_row_present,PASS,present
+DIP,rtl_frontsim_baseline,PASS,268/268 fail=0 status=PASS
+DIP,innovus_gate_sim_baseline,PASS,268/268 fail=0 status=PASS
+DIP,fm_dc,PASS,PASS
+DIP,fm_innovus,PASS,PASS
+DIP,innovus_drc,PASS,PASS
+DIP,innovus_connectivity,PASS,PASS
+DIP,postroute_setup_slack,PASS,2.038 ns
+DIP,gds_status,PASS,PRESENT
+DIP,def_status,PASS,PRESENT
+DIP,sdf_status,PASS,PRESENT
+DIP,netlist_status,PASS,PRESENT
+DIP,ppa_numbers_present,PASS,dc_area=17367.671666 dc_dyn=0.962882 innovus_area=17480.736 innovus_total=4.117761
+DIP,dip_clock_gating_enabled,PASS,flavor=gated clock_gates=15
+ALL,extended_validation_clean,PASS,rows=56 cases=4768 failed=none
+WS,layout_row_present,PASS,present
+WS,block_layout_complete,PASS,status=PASS gds=PRESENT def=PRESENT components=34311
+WS,top_pins_legal,PASS,legal=653/653 illegal=0 unplaced=0
+WS,pg_vdd_vss_specialnets,PASS,specialnets=2 VDD=YES use_power=YES VSS=YES use_ground=YES
+WS,innovus_layout_clean,PASS,conn=0v/0w drc=0 route=18676/55378
+WS,block_level_io_scope_declared,PASS,io_pad_ring=NO pads=0 status=BLOCK_ONLY_NO_PAD_RING
+OS,layout_row_present,PASS,present
+OS,block_layout_complete,PASS,status=PASS gds=PRESENT def=PRESENT components=33053
+OS,top_pins_legal,PASS,legal=654/654 illegal=0 unplaced=0
+OS,pg_vdd_vss_specialnets,PASS,specialnets=2 VDD=YES use_power=YES VSS=YES use_ground=YES
+OS,innovus_layout_clean,PASS,conn=0v/0w drc=0 route=18323/53741
+OS,block_level_io_scope_declared,PASS,io_pad_ring=NO pads=0 status=BLOCK_ONLY_NO_PAD_RING
+IS,layout_row_present,PASS,present
+IS,block_layout_complete,PASS,status=PASS gds=PRESENT def=PRESENT components=33145
+IS,top_pins_legal,PASS,legal=653/653 illegal=0 unplaced=0
+IS,pg_vdd_vss_specialnets,PASS,specialnets=2 VDD=YES use_power=YES VSS=YES use_ground=YES
+IS,innovus_layout_clean,PASS,conn=0v/0w drc=0 route=18727/55628
+IS,block_level_io_scope_declared,PASS,io_pad_ring=NO pads=0 status=BLOCK_ONLY_NO_PAD_RING
+DIP,layout_row_present,PASS,present
+DIP,block_layout_complete,PASS,status=PASS gds=PRESENT def=PRESENT components=25751
+DIP,top_pins_legal,PASS,legal=650/650 illegal=0 unplaced=0
+DIP,pg_vdd_vss_specialnets,PASS,specialnets=2 VDD=YES use_power=YES VSS=YES use_ground=YES
+DIP,innovus_layout_clean,PASS,conn=0v/0w drc=0 route=15301/53169
+DIP,block_level_io_scope_declared,PASS,io_pad_ring=NO pads=0 status=BLOCK_ONLY_NO_PAD_RING

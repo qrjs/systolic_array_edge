@@ -1,20 +1,17 @@
 # IS Commercial Flow
 
-`is` uses the same commercial flow skeleton as `dip`, but with the IS standard-API wrapper and IS-specific VCS file-vector benches.
-
-Quick start:
+`asic_commercial/is/` uses the shared TSMC28 commercial flow with the IS
+standard-API wrapper and IS-specific file-vector bench.
 
 ```bash
-cd asic_commercial/is
-cp config/libs.example.env config/libs.env
-./scripts/check_handoff.sh
-./scripts/run_frontsim.sh
-./scripts/run_dc.sh
-./scripts/run_fm.sh
-./scripts/run_postsim.sh
-./scripts/run_icc2.sh all
-./scripts/run_calibre_drc.sh
-./scripts/run_calibre_lvs.sh
+cd /home/host_1/systolic_array_edge
+export TSMC28_ROOT=/opt/eda_tools/TSMC28
+
+make thesis-is
 ```
 
-For detailed variable descriptions, see `../dip/README.md`.
+The flow runs RTL VCS suite, DC, FM, gate suites `none/dc`, Innovus, post-route
+FM, and gate suite `innovus`. Calibre DRC/LVS and Virtuoso import are explicit
+debug/signoff steps using `RUN_CALIBRE_DRC=1 RUN_CALIBRE_LVS=1` or
+`RUN_VIRTUOSO=1 VIRTUOSO_TECH_LIB=<oa_tech_lib_name>`. Gate suites require at
+least 268 cases by default.
