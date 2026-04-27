@@ -1,0 +1,30 @@
+$ bash /home/host_1/systolic_array_edge/asic_commercial/dip/scripts/run_frontsim_suite.sh
+
+[dip-flow][INFO] Running RTL frontsim suite
+[dip-flow][INFO]   design=dip_core_std_top_4x4
+[dip-flow][INFO]   vector_dir=/home/host_1/systolic_array_edge/test_vectors/thesis/directed
+[dip-flow][INFO]   output_dir=/home/host_1/systolic_array_edge/reports/thesis/runs/dip/front/directed
+FRONT_CASE case=zero status=PASS
+FRONT_CASE case=identity_left status=PASS
+FRONT_CASE case=identity_right status=PASS
+FRONT_CASE case=neg_identity status=PASS
+FRONT_CASE case=dense_small status=PASS
+FRONT_CASE case=signed_mix status=PASS
+FRONT_CASE case=sparse_signed status=PASS
+FRONT_CASE case=permutation status=PASS
+FRONT_CASE case=rank1_outer status=PASS
+FRONT_CASE case=triangular_mix status=PASS
+FRONT_CASE case=row_sparse status=PASS
+FRONT_CASE case=col_sparse status=PASS
+FRONT_CASE case=wide_range status=PASS
+FRONT_CASE case=boundary_mix status=PASS
+FRONT_CASE case=cancellation status=PASS
+FRONT_CASE case=single_a_nonzero status=PASS
+FRONT_CASE case=single_b_nonzero status=PASS
+FRONT_CASE case=diagonal_weight status=PASS
+FRONT_CASE case=alternating_signs status=PASS
+FRONT_CASE case=lower_upper status=PASS
+
+FRONT_SUITE status=PASS total=20 pass=20 fail=0
+FRONT_COVERAGE status=PASS report=/home/host_1/systolic_array_edge/reports/thesis/runs/dip/front/directed/coverage/urg_report
+FRONT_SUMMARY summary=/home/host_1/systolic_array_edge/reports/thesis/runs/dip/front/directed/summary.md

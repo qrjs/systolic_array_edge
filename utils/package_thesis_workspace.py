@@ -14,6 +14,12 @@ DESIGN = {
     "is": "is_core_std_top_4x4",
     "dip": "dip_core_std_top_4x4",
 }
+DC_FLAVOR = {
+    "ws": "plain",
+    "os": "plain",
+    "is": "plain",
+    "dip": "gated",
+}
 
 
 DOCS = [
@@ -31,6 +37,33 @@ LAYOUT_KINDS = [
     ("netlist", "{}_innovus.v"),
     ("lvs_netlist", "{}_innovus_lvs.v"),
     ("sdf", "{}_innovus.sdf"),
+]
+
+
+DC_REPORTS = [
+    "check_design",
+    "qor",
+    "timing",
+    "area",
+    "power",
+    "violators",
+]
+
+INNOVUS_REPORTS = [
+    "pin_assignment",
+    "connectivity",
+    "drc",
+    "route",
+    "timing",
+    "power",
+    "area",
+    "qor",
+]
+
+VALIDATION_CASES = [
+    "directed",
+    "sparse_90",
+    "random_seed_2026042601",
 ]
 
 
@@ -106,6 +139,76 @@ def collect_layout_rows(repo_root, out_dir, copy_artifacts):
     return rows
 
 
+def collect_evidence_rows(repo_root, out_dir):
+    rows = []
+    for arch in ARCHES:
+        design = DESIGN[arch]
+        dc_flavor = DC_FLAVOR[arch]
+        dst_root = out_dir / "evidence" / arch
+
+        for case in VALIDATION_CASES:
+            for stage in ["front", "gate_innovus"]:
+                src = repo_root / "reports" / "thesis" / "runs" / "logs" / "{}_{}_{}.log".format(arch, stage, case)
+                dst = dst_root / "validation" / src.name
+                rows.append({
+                    "arch": arch.upper(),
+                    "step": stage,
+                    "kind": case,
+                    "status": link_or_copy(src, dst, copy_artifacts=False),
+                    "workspace_path": str(dst),
+                    "source_path": str(src),
+                })
+
+        for report in DC_REPORTS:
+            src = repo_root / "asic_commercial" / arch / "reports" / "{}_dc_{}_{}.rpt".format(design, dc_flavor, report)
+            dst = dst_root / "dc" / src.name
+            rows.append({
+                "arch": arch.upper(),
+                "step": "dc",
+                "kind": report,
+                "status": link_or_copy(src, dst, copy_artifacts=False),
+                "workspace_path": str(dst),
+                "source_path": str(src),
+            })
+
+        for fm_mode in ["dc", "innovus"]:
+            src = repo_root / "asic_commercial" / arch / "reports" / "fm" / "{}_fm_{}_{}_summary.rpt".format(design, fm_mode, dc_flavor)
+            dst = dst_root / "fm" / src.name
+            rows.append({
+                "arch": arch.upper(),
+                "step": "fm",
+                "kind": fm_mode,
+                "status": link_or_copy(src, dst, copy_artifacts=False),
+                "workspace_path": str(dst),
+                "source_path": str(src),
+            })
+
+        for report in INNOVUS_REPORTS:
+            src = repo_root / "asic_commercial" / arch / "reports" / "innovus" / "{}_{}.rpt".format(design, report)
+            dst = dst_root / "innovus" / src.name
+            rows.append({
+                "arch": arch.upper(),
+                "step": "innovus",
+                "kind": report,
+                "status": link_or_copy(src, dst, copy_artifacts=False),
+                "workspace_path": str(dst),
+                "source_path": str(src),
+            })
+
+        for suffix in ["drc_backend.rep", "drc_backend.results", "lvs_ports_only_nostdlib.rep", "lvs_ports_only_nostdlib.rep.ext"]:
+            src = repo_root / "asic_commercial" / arch / "reports" / "calibre" / "{}_{}".format(design, suffix)
+            dst = dst_root / "calibre" / src.name
+            rows.append({
+                "arch": arch.upper(),
+                "step": "calibre",
+                "kind": suffix,
+                "status": link_or_copy(src, dst, copy_artifacts=False),
+                "workspace_path": str(dst),
+                "source_path": str(src),
+            })
+    return rows
+
+
 def write_layout_index(path, rows):
     ensure_dir(path.parent)
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -115,7 +218,20 @@ def write_layout_index(path, rows):
             writer.writerow(row)
 
 
-def write_readme(path, repo_root, report_dir, layout_rows):
+def write_evidence_index(path, rows):
+    ensure_dir(path.parent)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["arch", "step", "kind", "status", "workspace_path", "source_path"],
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
+
+
+def write_readme(path, repo_root, report_dir, layout_rows, evidence_rows):
     ensure_dir(path.parent)
     status = report_status(report_dir)
     layout_csv = read_csv(report_dir / "layout_completeness.csv")
@@ -151,6 +267,7 @@ def write_readme(path, repo_root, report_dir, layout_rows):
             "summary.md",
             "dataflow_compare.md",
             "dip_ablation.md",
+            "key_evidence.md",
             "layout_completeness.md",
             "validation_matrix.md",
             "handoff_manifest.md",
@@ -171,6 +288,14 @@ def write_readme(path, repo_root, report_dir, layout_rows):
                 design,
                 arch,
             ))
+
+        linked_evidence = sum(1 for row in evidence_rows if row["status"] == "LINKED")
+        missing_evidence = sum(1 for row in evidence_rows if row["status"] == "MISSING")
+        handle.write("\n## Raw Evidence Entry Points\n\n")
+        handle.write("- Evidence manifest: `evidence_manifest.csv`\n")
+        handle.write("- Linked raw evidence files: {}\n".format(linked_evidence))
+        handle.write("- Missing raw evidence files: {}\n".format(missing_evidence))
+        handle.write("- Per-arch raw evidence roots: `evidence/ws/`, `evidence/os/`, `evidence/is/`, `evidence/dip/`\n")
 
         handle.write("\n## Regenerate\n\n")
         handle.write("```bash\n")
@@ -208,11 +333,18 @@ def main():
             copied_docs += 1
 
     layout_rows = collect_layout_rows(repo_root, out_dir, args.copy_layout_artifacts)
+    evidence_rows = collect_evidence_rows(repo_root, out_dir)
     write_layout_index(out_dir / "layout_artifacts.csv", layout_rows)
-    write_readme(out_dir / "README.md", repo_root, report_dir, layout_rows)
+    write_evidence_index(out_dir / "evidence_manifest.csv", evidence_rows)
+    write_readme(out_dir / "README.md", repo_root, report_dir, layout_rows, evidence_rows)
 
     print("THESIS_WORKSPACE path={}".format(out_dir))
-    print("THESIS_WORKSPACE reports={} docs={} layout_entries={}".format(copied_reports, copied_docs, len(layout_rows)))
+    print("THESIS_WORKSPACE reports={} docs={} layout_entries={} evidence_entries={}".format(
+        copied_reports,
+        copied_docs,
+        len(layout_rows),
+        len(evidence_rows),
+    ))
     return 0
 
 

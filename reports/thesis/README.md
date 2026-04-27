@@ -13,6 +13,7 @@ make thesis-workspace
 ## 先看这几份
 
 - `summary.md` / `summary.csv`: 总入口，汇总四个数据流的功能、门仿、FM、后端 DRC/connectivity 和交付物状态。
+- `key_evidence.md` / `key_evidence.csv`: 按 RTL 前仿、DC、FM、Innovus、门仿、Calibre 和版图交付组织的原文证据索引。
 - `dataflow_compare.md`: WS/OS/IS/DiP 的统一 PPA 对比表。
 - `dip_ablation.md`: DiP plain vs clock-gated 消融结果；当前只有 DiP 开启 clock gating。
 - `layout_completeness.md` / `layout_completeness.csv`: 版图是否完整、是否有 IO pad ring、VDD/VSS 是否存在。

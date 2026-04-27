@@ -1,0 +1,4 @@
+arch,top,run_mode,selected_profile,constraint_mode,clk_period_ns,area,dynamic_mw,leakage_mw,slack_ns,timing_status,black_box,gating_cells,gated_regs,gated_reg_ratio
+ws,ws_core_top_4x4,base,NA,uniform,5.0,39837.835863,3.038100,0.003392,0.36,MET,no,NA,NA,NA
+is,is_core_top_4x4,base,NA,uniform,5.0,39962.323865,3.086800,0.003402,0.51,MET,no,NA,NA,NA
+os,os_core_top_4x4,base,NA,uniform,5.0,25.615800,0.329219,0.000004,1.79,MET,yes,NA,NA,NA

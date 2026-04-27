@@ -1,0 +1,54 @@
+$ bash /home/host_1/systolic_array_edge/asic_commercial/ws/scripts/run_postsim_suite.sh innovus
+
+[dip-flow][INFO] Running gate postsim suite stage=innovus
+[dip-flow][INFO]   flavor=plain
+[dip-flow][INFO]   netlist=/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus.v
+[dip-flow][INFO]   sdf=/home/host_1/systolic_array_edge/asic_commercial/ws/results/innovus/ws_core_std_top_4x4_innovus.sdf
+[dip-flow][INFO]   vector_dir=/home/host_1/systolic_array_edge/test_vectors/thesis/directed
+[dip-flow][INFO]   force_clock_gates_open=0
+GATE_CASE stage=innovus case=zero status=PASS
+GATE_TXT_CASE stage=innovus case=zero status=PASS
+GATE_CASE stage=innovus case=identity_left status=PASS
+GATE_TXT_CASE stage=innovus case=identity_left status=PASS
+GATE_CASE stage=innovus case=identity_right status=PASS
+GATE_TXT_CASE stage=innovus case=identity_right status=PASS
+GATE_CASE stage=innovus case=neg_identity status=PASS
+GATE_TXT_CASE stage=innovus case=neg_identity status=PASS
+GATE_CASE stage=innovus case=dense_small status=PASS
+GATE_TXT_CASE stage=innovus case=dense_small status=PASS
+GATE_CASE stage=innovus case=signed_mix status=PASS
+GATE_TXT_CASE stage=innovus case=signed_mix status=PASS
+GATE_CASE stage=innovus case=sparse_signed status=PASS
+GATE_TXT_CASE stage=innovus case=sparse_signed status=PASS
+GATE_CASE stage=innovus case=permutation status=PASS
+GATE_TXT_CASE stage=innovus case=permutation status=PASS
+GATE_CASE stage=innovus case=rank1_outer status=PASS
+GATE_TXT_CASE stage=innovus case=rank1_outer status=PASS
+GATE_CASE stage=innovus case=triangular_mix status=PASS
+GATE_TXT_CASE stage=innovus case=triangular_mix status=PASS
+GATE_CASE stage=innovus case=row_sparse status=PASS
+GATE_TXT_CASE stage=innovus case=row_sparse status=PASS
+GATE_CASE stage=innovus case=col_sparse status=PASS
+GATE_TXT_CASE stage=innovus case=col_sparse status=PASS
+GATE_CASE stage=innovus case=wide_range status=PASS
+GATE_TXT_CASE stage=innovus case=wide_range status=PASS
+GATE_CASE stage=innovus case=boundary_mix status=PASS
+GATE_TXT_CASE stage=innovus case=boundary_mix status=PASS
+GATE_CASE stage=innovus case=cancellation status=PASS
+GATE_TXT_CASE stage=innovus case=cancellation status=PASS
+GATE_CASE stage=innovus case=single_a_nonzero status=PASS
+GATE_TXT_CASE stage=innovus case=single_a_nonzero status=PASS
+GATE_CASE stage=innovus case=single_b_nonzero status=PASS
+GATE_TXT_CASE stage=innovus case=single_b_nonzero status=PASS
+GATE_CASE stage=innovus case=diagonal_weight status=PASS
+GATE_TXT_CASE stage=innovus case=diagonal_weight status=PASS
+GATE_CASE stage=innovus case=alternating_signs status=PASS
+GATE_TXT_CASE stage=innovus case=alternating_signs status=PASS
+GATE_CASE stage=innovus case=lower_upper status=PASS
+GATE_TXT_CASE stage=innovus case=lower_upper status=PASS
+GATE_DEBUG_SNAPSHOT path=/home/host_1/systolic_array_edge/reports/thesis/runs/ws/gate/directed/innovus/debug_snapshot.txt
+
+GATE_SUITE stage=innovus status=PASS total=20 pass=20 fail=0
+GATE_SUMMARY summary=/home/host_1/systolic_array_edge/reports/thesis/runs/ws/gate/directed/innovus/summary.md
+[dip-flow][PASS] gate postsim stage=innovus status=pass summary=/home/host_1/systolic_array_edge/reports/thesis/runs/ws/gate/directed/innovus/summary.md
+[dip-flow][PASS] gate postsim stage=innovus debug_snapshot=/home/host_1/systolic_array_edge/reports/thesis/runs/ws/gate/directed/innovus/debug_snapshot.txt

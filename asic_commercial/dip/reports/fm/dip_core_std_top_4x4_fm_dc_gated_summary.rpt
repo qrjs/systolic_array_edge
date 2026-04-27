@@ -1,0 +1,26 @@
+**************************************************
+Report         : status
+                 -short 
+
+Reference      : r:/WORK/dip_core_std_top_4x4
+Implementation : i:/WORK/dip_core_std_top_4x4
+Version        : O-2018.06-SP1
+Date           : Sun Apr 26 15:12:05 2026
+**************************************************
+
+Reference Design:      r:/WORK/dip_core_std_top_4x4
+Implementation Design: i:/WORK/dip_core_std_top_4x4
+Verification
+   Status:             SUCCEEDED
+   Passing Points:     2218
+   Failing Points:     0
+   Aborted Points:     0
+   Unverified Points:  0
+Diagnosis
+   Status:             Not Run
+   Error Candidates:   0
+User Defined Setup
+   Equivalences:       0
+   Compare Points:     0
+   Constants:          0
+1

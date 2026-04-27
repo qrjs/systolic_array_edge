@@ -1,0 +1,26 @@
+**************************************************
+Report         : status
+                 -short 
+
+Reference      : r:/WORK/ws_core_std_top_4x4
+Implementation : i:/WORK/ws_core_std_top_4x4
+Version        : O-2018.06-SP1
+Date           : Mon Apr 27 01:22:49 2026
+**************************************************
+
+Reference Design:      r:/WORK/ws_core_std_top_4x4
+Implementation Design: i:/WORK/ws_core_std_top_4x4
+Verification
+   Status:             SUCCEEDED
+   Passing Points:     1902
+   Failing Points:     0
+   Aborted Points:     0
+   Unverified Points:  0
+Diagnosis
+   Status:             Not Run
+   Error Candidates:   0
+User Defined Setup
+   Equivalences:       0
+   Compare Points:     0
+   Constants:          0
+1

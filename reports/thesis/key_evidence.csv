@@ -1,0 +1,12 @@
+step,summary_entry,raw_evidence_pattern,notes
+rtl_front_simulation,"validation_matrix.md; reports/thesis/runs/validation_summary.md",reports/thesis/runs/logs/<arch>_front_<case>.log,"tracked cases: directed sparse_00/25/50/75/90 random_seed_2026042601..05"
+dc_synthesis,"dataflow_compare.md; dip_ablation.md",asic_commercial/<arch>/reports/<design>_dc_<flavor>_*.rpt,"WS/OS/IS flavor=plain; DIP flavor=gated"
+batch_synthesis_archive,dataflow_compare.md,asic_commercial/syn/reports/thesis_std_base_5ns/,"raw batch DC reports for standard four-arch baseline"
+dip_gated_synthesis_archive,dip_ablation.md,asic_commercial/syn/reports/thesis_dip_std_cg_compile_5ns/,"raw batch DC reports for DIP clock-gated compile"
+fm_dc,"backend_status.md; signoff_check.md",asic_commercial/<arch>/reports/fm/<design>_fm_dc_<flavor>_summary.rpt,"Formality summary after DC"
+innovus_backend,"backend_status.md; layout_completeness.md",asic_commercial/<arch>/reports/innovus/<design>_*.rpt,"timing power area qor pin drc connectivity route"
+fm_innovus,"backend_status.md; signoff_check.md",asic_commercial/<arch>/reports/fm/<design>_fm_innovus_<flavor>_summary.rpt,"Formality summary after Innovus"
+gate_simulation,"validation_matrix.md; signoff_check.md",reports/thesis/runs/logs/<arch>_gate_innovus_<case>.log,"tracked cases: directed sparse_90 random_seed_2026042601"
+calibre_drc,"calibre_drc_summary.md; foundry_signoff_check.md",asic_commercial/<arch>/reports/calibre/<design>_drc_backend.rep,"paired .results is also tracked"
+calibre_lvs,"calibre_lvs_summary.md; calibre_lvs_attempts.md",asic_commercial/<arch>/reports/calibre/<design>_lvs_ports_only_nostdlib.rep,"paired .rep.ext is also tracked"
+layout_handoff,"handoff_manifest.md; layout_completeness.md",asic_commercial/<arch>/results/innovus/,"large generated payload is local; manifest with size and SHA256 is tracked"

@@ -1,0 +1,22 @@
+Creating directory summaryReport.
+Start to collect the design information.
+Build netlist information for Cell ws_core_std_top_4x4.
+Finished collecting the design information.
+Generating standard cells used in the design report.
+Analyze library ... 
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_RV.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_RV.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA9.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA9.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA9.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA8.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA8.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA8.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA7.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA7.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA7.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA6.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA6.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA6.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA5.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA5.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA5.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA4.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA4.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA4.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA3.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA3.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA3.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA2.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA2.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA2.htmsummaryReport/ws_core_std_top_4x4_via_layer_VIA1.htm'.
+** NOTE: Created directory path 'ws_core_std_top_4x4_via_layer_VIA1.htmsummaryReport' for file 'ws_core_std_top_4x4_via_layer_VIA1.htmsummaryReport/ws_core_std_top_4x4_via_layer_CO.htm'.
+Analyze netlist ... 
+Generate no-driven nets information report.
+Analyze timing ... 
+Analyze floorplan/placement ... 
+Analysis Routing ...
+Report saved in file summaryReport/ws_core_std_top_4x4.main.htm.ascii.

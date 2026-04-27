@@ -1,0 +1,25 @@
+VERIFY_CONNECTIVITY use new engine.
+
+******** Start: VERIFY CONNECTIVITY ********
+Start Time: Sun Apr 26 10:25:16 2026
+
+Design Name: is_core_std_top_4x4
+Database Units: 2000
+Design Boundary: (0.0000, 0.0000) (214.2000, 212.8000)
+Error Limit = 1000; Warning Limit = 50
+Check all nets
+**** 10:25:17 **** Processed 5000 nets.
+**** 10:25:17 **** Processed 10000 nets.
+**** 10:25:17 **** Processed 15000 nets.
+
+Begin Summary 
+  Found no problems or warnings.
+End Summary
+
+End Time: Sun Apr 26 10:25:18 2026
+Time Elapsed: 0:00:02.0
+
+******** End: VERIFY CONNECTIVITY ********
+  Verification Complete : 0 Viols.  0 Wrngs.
+  (CPU Time: 0:00:01.1  MEM: -0.398M)
+

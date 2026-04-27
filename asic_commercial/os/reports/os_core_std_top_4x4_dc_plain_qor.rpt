@@ -1,0 +1,84 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : qor
+Design : os_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Sun Apr 26 10:40:26 2026
+****************************************
+
+
+  Timing Path Group 'clk'
+  -----------------------------------
+  Levels of Logic:              37.00
+  Critical Path Length:          1.54
+  Critical Path Slack:           2.39
+  Critical Path Clk Period:      5.00
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+
+
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:         65
+  Hierarchical Port Count:       5806
+  Leaf Cell Count:              15031
+  Buf/Inv Cell Count:            1994
+  Buf Cell Count:                 222
+  Inv Cell Count:                1772
+  CT Buf/Inv Cell Count:            0
+  Combinational Cell Count:     14039
+  Sequential Cell Count:          992
+  Macro Count:                      0
+  -----------------------------------
+
+
+  Area
+  -----------------------------------
+  Combinational Area:    17334.239792
+  Noncombinational Area:  2999.807930
+  Buf/Inv Area:            707.279994
+  Total Buffer Area:           111.89
+  Total Inverter Area:         595.39
+  Macro/Black Box Area:      0.000000
+  Net Area:                  0.000000
+  -----------------------------------
+  Cell Area:             20334.047722
+  Design Area:           20334.047722
+
+
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:         19057
+  Nets With Violations:             0
+  Max Trans Violations:             0
+  Max Cap Violations:               0
+  -----------------------------------
+
+
+  Hostname: IC_EDA
+
+  Compile CPU Statistics
+  -----------------------------------------
+  Resource Sharing:                   38.13
+  Logic Optimization:                 23.87
+  Mapping Optimization:               91.97
+  -----------------------------------------
+  Overall Compile Time:              165.12
+  Overall Compile Wall Clock Time:    51.09
+
+  --------------------------------------------------------------------
+
+  Design  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+
+  Design (Hold)  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+  --------------------------------------------------------------------
+
+
+1

@@ -1,0 +1,145 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Sun Apr 26 14:20:20 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: tt0p9v25c   Library: tcbn28hpcplusbwp12t40p140tt0p9v25c
+Wire Load Model Mode: segmented
+
+  Startpoint: input_row_valid
+              (input port clocked by clk)
+  Endpoint: u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/psum_out_reg_reg[30]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+  dip_core_std_top_4x4
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    1.00       1.00 r
+  input_row_valid (in)                                    0.00       1.00 r
+  u_dip_std_array/u_stream_dip/input_row_valid (systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4)
+                                                          0.00       1.00 r
+  u_dip_std_array/u_stream_dip/U4439/ZN (ND2D0BWP12T40P140)
+                                                          0.01       1.01 f
+  u_dip_std_array/u_stream_dip/U4077/ZN (NR3D0BWP12T40P140)
+                                                          0.17       1.19 r
+  u_dip_std_array/u_stream_dip/U5364/ZN (AOI22D0BWP12T40P140)
+                                                          0.05       1.23 f
+  u_dip_std_array/u_stream_dip/U2973/ZN (NR2D0BWP12T40P140)
+                                                          0.08       1.31 r
+  u_dip_std_array/u_stream_dip/U2428/ZN (INVD0BWP12T40P140)
+                                                          0.05       1.36 f
+  u_dip_std_array/u_stream_dip/U8978/ZN (AOI22D0BWP12T40P140)
+                                                          0.03       1.39 r
+  u_dip_std_array/u_stream_dip/U1744/ZN (OAI22D0BWP12T40P140)
+                                                          0.03       1.42 f
+  u_dip_std_array/u_stream_dip/U966/ZN (ND2D0BWP12T40P140)
+                                                          0.02       1.45 r
+  u_dip_std_array/u_stream_dip/U801/ZN (OAI21D0BWP12T40P140)
+                                                          0.03       1.48 f
+  u_dip_std_array/u_stream_dip/U742/CO (FA1D1BWP12T40P140)
+                                                          0.04       1.53 f
+  u_dip_std_array/u_stream_dip/U600/S (FA1D1BWP12T40P140)
+                                                          0.05       1.57 f
+  u_dip_std_array/u_stream_dip/intadd_258/U3/CO (FA1D1BWP12T40P140)
+                                                          0.04       1.61 f
+  u_dip_std_array/u_stream_dip/intadd_258/U2/CO (FA1D1BWP12T40P140)
+                                                          0.03       1.64 f
+  u_dip_std_array/u_stream_dip/U413/ZN (ND2D0BWP12T40P140)
+                                                          0.01       1.66 r
+  u_dip_std_array/u_stream_dip/U397/ZN (OAI21D0BWP12T40P140)
+                                                          0.03       1.69 f
+  u_dip_std_array/u_stream_dip/intadd_257/U3/CO (FA1D1BWP12T40P140)
+                                                          0.04       1.73 f
+  u_dip_std_array/u_stream_dip/intadd_257/U2/CO (FA1D1BWP12T40P140)
+                                                          0.03       1.76 f
+  u_dip_std_array/u_stream_dip/U359/ZN (ND2D0BWP12T40P140)
+                                                          0.01       1.77 r
+  u_dip_std_array/u_stream_dip/U330/ZN (OAI21D0BWP12T40P140)
+                                                          0.03       1.80 f
+  u_dip_std_array/u_stream_dip/intadd_95/U3/CO (FA1D1BWP12T40P140)
+                                                          0.04       1.85 f
+  u_dip_std_array/u_stream_dip/intadd_95/U2/CO (FA1D1BWP12T40P140)
+                                                          0.03       1.88 f
+  u_dip_std_array/u_stream_dip/U264/ZN (ND2D0BWP12T40P140)
+                                                          0.01       1.89 r
+  u_dip_std_array/u_stream_dip/U243/ZN (OAI21D0BWP12T40P140)
+                                                          0.03       1.92 f
+  u_dip_std_array/u_stream_dip/U218/ZN (MAOI222D0BWP12T40P140)
+                                                          0.04       1.95 r
+  u_dip_std_array/u_stream_dip/U200/ZN (MAOI222D0BWP12T40P140)
+                                                          0.04       1.99 f
+  u_dip_std_array/u_stream_dip/U193/ZN (MAOI222D0BWP12T40P140)
+                                                          0.04       2.03 r
+  u_dip_std_array/u_stream_dip/U175/ZN (IND2D1BWP12T40P140)
+                                                          0.02       2.05 f
+  u_dip_std_array/u_stream_dip/U164/ZN (IOA21D0BWP12T40P140)
+                                                          0.04       2.08 f
+  u_dip_std_array/u_stream_dip/intadd_50/U2/CO (FA1D1BWP12T40P140)
+                                                          0.04       2.12 f
+  u_dip_std_array/u_stream_dip/U136/ZN (ND2D0BWP12T40P140)
+                                                          0.01       2.14 r
+  u_dip_std_array/u_stream_dip/U130/ZN (OAI21D0BWP12T40P140)
+                                                          0.03       2.17 f
+  u_dip_std_array/u_stream_dip/intadd_8/U6/CO (FA1D1BWP12T40P140)
+                                                          0.04       2.21 f
+  u_dip_std_array/u_stream_dip/intadd_8/U5/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.24 f
+  u_dip_std_array/u_stream_dip/intadd_8/U4/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.28 f
+  u_dip_std_array/u_stream_dip/intadd_8/U3/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.31 f
+  u_dip_std_array/u_stream_dip/intadd_8/U2/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.34 f
+  u_dip_std_array/u_stream_dip/U83/ZN (ND2D0BWP12T40P140)
+                                                          0.01       2.35 r
+  u_dip_std_array/u_stream_dip/U70/ZN (AOI21D0BWP12T40P140)
+                                                          0.03       2.38 f
+  u_dip_std_array/u_stream_dip/intadd_251/U3/CO (FA1D1BWP12T40P140)
+                                                          0.04       2.42 f
+  u_dip_std_array/u_stream_dip/intadd_251/U2/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.45 f
+  u_dip_std_array/u_stream_dip/U39/ZN (ND2D0BWP12T40P140)
+                                                          0.01       2.46 r
+  u_dip_std_array/u_stream_dip/U25/ZN (AOI21D0BWP12T40P140)
+                                                          0.02       2.48 f
+  u_dip_std_array/u_stream_dip/U16/S (FA1D1BWP12T40P140)
+                                                          0.05       2.53 f
+  u_dip_std_array/u_stream_dip/U8953/ZN (NR2D0BWP12T40P140)
+                                                          0.01       2.54 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/psum_out_reg_reg[30]/D (DFCNQD1BWP12T40P140)
+                                                          0.00       2.54 r
+  data arrival time                                                  2.54
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  clock uncertainty                                      -0.05       4.95
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/psum_out_reg_reg[30]/CP (DFCNQD1BWP12T40P140)
+                                                          0.00       4.95 r
+  library setup time                                     -0.03       4.92
+  data required time                                                 4.92
+  --------------------------------------------------------------------------
+  data required time                                                 4.92
+  data arrival time                                                 -2.54
+  --------------------------------------------------------------------------
+  slack (MET)                                                        2.38
+
+
+1

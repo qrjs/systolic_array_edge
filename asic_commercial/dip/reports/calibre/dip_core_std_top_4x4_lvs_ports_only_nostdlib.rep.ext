@@ -1,0 +1,150 @@
+
+
+       #############################################################
+       ##                                                         ##
+       ##               C A L I B R E    S Y S T E M              ##
+       ##                                                         ##
+       ##    C I R C U I T   E X T R A C T I O N   R E P O R T    ##
+       ##                                                         ##
+       #############################################################
+
+
+REPORT FILE NAME:         /home/host_1/systolic_array_edge/asic_commercial/dip/reports/calibre/dip_core_std_top_4x4_lvs_ports_only_nostdlib.rep.ext
+LAYOUT NAME:              /home/host_1/systolic_array_edge/asic_commercial/dip/results/innovus/dip_core_std_top_4x4.pre_via_metal_patch.2.gds ('dip_core_std_top_4x4')
+CREATION TIME:            Sun Apr 26 23:22:15 2026
+CURRENT DIRECTORY:        /home/host_1/systolic_array_edge/asic_commercial/dip
+USER NAME:                host_1
+CALIBRE VERSION:          v2019.3_15.11    Tue Jul 2 12:24:58 PDT 2019
+
+
+
+Extraction Errors and Warnings for cell "ICV_23"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 482.
+          Net 3 is selected for stamping.
+          Rejected nets: 483 484 485 486 487 488 489 490
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 482.
+          Net 3 is selected for stamping.
+          Rejected nets: 483 484 485 486 487 488 489 490
+
+
+Extraction Errors and Warnings for cell "ICV_45"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 812.
+          Net 3 is selected for stamping.
+          Rejected nets: 813 814 815 816 817 818 819 820
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 812.
+          Net 3 is selected for stamping.
+          Rejected nets: 813 814 815 816 817 818 819 820
+
+
+Extraction Errors and Warnings for cell "ICV_54"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 931.
+          Net 3 is selected for stamping.
+          Rejected nets: 932 933 934 935 936 937 938 939
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 931.
+          Net 3 is selected for stamping.
+          Rejected nets: 932 933 934 935 936 937 938 939
+
+
+Extraction Errors and Warnings for cell "ICV_59"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 969.
+          Net 5 is selected for stamping.
+          Rejected nets: 971 973 981 991 992 993 994 995
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 969.
+          Net 5 is selected for stamping.
+          Rejected nets: 971 973 981 991 992 993 994 995
+
+
+Extraction Errors and Warnings for cell "ICV_66"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 100.
+          Net 3 is selected for stamping.
+          Rejected nets: 860 861 862 863 864 865 866 867
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 100.
+          Net 3 is selected for stamping.
+          Rejected nets: 860 861 862 863 864 865 866 867
+
+
+Extraction Errors and Warnings for cell "ICV_71"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 4.
+          Net 3 is selected for stamping.
+          Rejected nets: 1051 1054 1055 1056 1057 1058 1059 1060
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 4.
+          Net 3 is selected for stamping.
+          Rejected nets: 1051 1054 1055 1056 1057 1058 1059 1060
+
+
+Extraction Errors and Warnings for cell "ICV_75"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 671.
+          Net 3 is selected for stamping.
+          Rejected nets: 672 673 674 675 676 677 678 679
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 671.
+          Net 3 is selected for stamping.
+          Rejected nets: 672 673 674 675 676 677 678 679
+
+
+Extraction Errors and Warnings for cell "ICV_76"
+------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 161.
+          Net 3 is selected for stamping.
+          Rejected nets: 162 163 164
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Target net: 161.
+          Net 3 is selected for stamping.
+          Rejected nets: 162 163 164
+
+
+Extraction Errors and Warnings for cell "dip_core_std_top_4x4"
+--------------------------------------------------------------
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Net 8 is selected for stamping.
+          Rejected nets: 3 4 6 7 9 10 2821 2822 2823 2824 2825 2826 2827 2828
+
+WARNING:  Stamping conflict in SCONNECT - Multiple source nets stamp one target net.
+          Net 8 is selected for stamping.
+          Rejected nets: 3 4 6 7 9 10 2821 2822 2823 2824 2825 2826 2827 2828
+
+
+
+WARNING: Invalid PATHCHK request "! POWER": no POWER nets present, operation aborted.
+
+
+WARNING: Invalid PATHCHK request "! GROUND": no GROUND nets present, operation aborted.
+

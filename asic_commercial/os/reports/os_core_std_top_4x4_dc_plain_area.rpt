@@ -1,0 +1,30 @@
+ 
+****************************************
+Report : area
+Design : os_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Sun Apr 26 10:40:26 2026
+****************************************
+
+Library(s) Used:
+
+    tcbn28hpcplusbwp12t40p140tt0p9v25c (File: /home/host_1/systolic_array_edge/asic_commercial/pdk_cache/tsmc28_icc/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.db)
+
+Number of ports:                         6460
+Number of nets:                         24527
+Number of cells:                        15096
+Number of combinational cells:          14039
+Number of sequential cells:               992
+Number of macros/black boxes:               0
+Number of buf/inv:                       1994
+Number of references:                       1
+
+Combinational area:              17334.239792
+Buf/Inv area:                      707.279994
+Noncombinational area:            2999.807930
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                 20334.047722
+Total area:                 undefined
+1

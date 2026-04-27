@@ -1,0 +1,182 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Fri Apr 24 11:59:47 2026
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: tt_typical_max_1p10v_25c   Library: sc9mc_logic0040ll_base_rvt_c40_tt_typical_max_1p10v_25c
+Wire Load Model Mode: top
+
+  Startpoint: weight_row_valid
+              (input port clocked by clk)
+  Endpoint: u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/psum_out_reg_reg[31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  dip_core_std_top_4x4
+                     Small                 sc9mc_logic0040ll_base_rvt_c40_tt_typical_max_1p10v_25c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    1.00       1.00 f
+  weight_row_valid (in)                                   0.00       1.00 f
+  u_dip_std_array/weight_row_valid (standard_dip_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4)
+                                                          0.00       1.00 f
+  u_dip_std_array/u_stream_dip/weight_row_valid (systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4)
+                                                          0.00       1.00 f
+  u_dip_std_array/u_stream_dip/U14/Y (INV_X6M_A9TR40)     0.01       1.01 r
+  u_dip_std_array/u_stream_dip/U13/Y (AOI31_X3M_A9TR40)
+                                                          0.03       1.05 f
+  u_dip_std_array/u_stream_dip/U12/Y (INV_X3B_A9TR40)     0.03       1.08 r
+  u_dip_std_array/u_stream_dip/U20/Y (AND2_X11B_A9TR40)
+                                                          0.04       1.12 r
+  u_dip_std_array/u_stream_dip/U19/Y (INV_X5M_A9TR40)     0.03       1.15 f
+  u_dip_std_array/u_stream_dip/U243/Y (OAI22_X2M_A9TR40)
+                                                          0.07       1.22 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/data_in[1] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0)
+                                                          0.00       1.22 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/A[1] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW02_mult_0)
+                                                          0.00       1.22 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/U4/Y (INV_X4M_A9TR40)
+                                                          0.06       1.29 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/U240/Y (NOR2_X0P5A_A9TR40)
+                                                          0.13       1.41 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S0_12/S (ADDF_X1M_A9TR40)
+                                                          0.17       1.58 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_2_11/CO (ADDF_X1M_A9TR40)
+                                                          0.10       1.68 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_3_11/CO (ADDF_X1M_A9TR40)
+                                                          0.11       1.79 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_4_11/S (ADDF_X1M_A9TR40)
+                                                          0.14       1.94 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_5_10/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.07 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_6_9/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.20 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_7_8/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.33 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_8_7/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.46 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_9_6/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.58 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_10_5/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.71 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_11_4/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.84 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_12_3/S (ADDF_X1M_A9TR40)
+                                                          0.13       2.97 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_13_2/S (ADDF_X1M_A9TR40)
+                                                          0.13       3.10 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S2_14_1/S (ADDF_X1M_A9TR40)
+                                                          0.13       3.23 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S4_0/S (ADDF_X1M_A9TR40)
+                                                          0.13       3.35 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/S14_15_0/CO (ADDF_X1M_A9TR40)
+                                                          0.10       3.45 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/B[14] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW01_add_1)
+                                                          0.00       3.45 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U35/Y (NAND2_X1B_A9TR40)
+                                                          0.06       3.50 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U53/Y (INV_X1M_A9TR40)
+                                                          0.03       3.53 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U6/Y (NAND2_X1B_A9TR40)
+                                                          0.04       3.57 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U3/Y (NAND2_X2B_A9TR40)
+                                                          0.03       3.61 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U2/Y (AOI2XB1_X3M_A9TR40)
+                                                          0.05       3.66 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U7/Y (OAI21_X3M_A9TR40)
+                                                          0.04       3.70 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U4/Y (AO1B2_X1M_A9TR40)
+                                                          0.07       3.77 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U20/Y (NAND2_X1B_A9TR40)
+                                                          0.04       3.81 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U19/Y (NAND2_X1B_A9TR40)
+                                                          0.05       3.86 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U5/Y (AOI2XB1_X1M_A9TR40)
+                                                          0.06       3.92 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U17/Y (INV_X1M_A9TR40)
+                                                          0.03       3.95 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U30/Y (NAND2_X1B_A9TR40)
+                                                          0.04       3.99 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U11/Y (NAND2_X2B_A9TR40)
+                                                          0.03       4.02 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U10/Y (AOI2XB1_X2M_A9TR40)
+                                                          0.05       4.07 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U38/Y (INV_X1M_A9TR40)
+                                                          0.03       4.10 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U36/Y (NAND2_X1B_A9TR40)
+                                                          0.03       4.14 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U18/Y (NAND2_X2M_A9TR40)
+                                                          0.03       4.17 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U22/Y (AOI2XB1_X1M_A9TR40)
+                                                          0.05       4.22 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U45/Y (INV_X1M_A9TR40)
+                                                          0.03       4.25 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U13/Y (NAND2_X1B_A9TR40)
+                                                          0.03       4.29 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U14/Y (NAND2_X1M_A9TR40)
+                                                          0.04       4.33 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U26/Y (AOI2XB1_X1M_A9TR40)
+                                                          0.06       4.39 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U25/Y (INV_X1M_A9TR40)
+                                                          0.03       4.42 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U15/Y (NAND2_X1B_A9TR40)
+                                                          0.03       4.45 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U16/Y (NAND2_X1M_A9TR40)
+                                                          0.04       4.50 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U43/Y (OAI21_X1M_A9TR40)
+                                                          0.06       4.56 r
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U9/Y (AO21B_X0P5M_A9TR40)
+                                                          0.06       4.62 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/U8/Y (XOR2_X1M_A9TR40)
+                                                          0.05       4.67 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/FS_1/SUM[29] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW01_add_1)
+                                                          0.00       4.67 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_32/PRODUCT[31] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW02_mult_0)
+                                                          0.00       4.67 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_add_32_aco/A[31] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW02_mult_1)
+                                                          0.00       4.67 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_add_32_aco/U2/Y (AND2_X1M_A9TR40)
+                                                          0.08       4.75 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/mult_add_32_aco/PRODUCT[31] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW02_mult_1)
+                                                          0.00       4.75 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/add_32_aco/B[31] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW01_add_0)
+                                                          0.00       4.75 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/add_32_aco/U1_31/S (ADDF_X1M_A9TR40)
+                                                          0.11       4.86 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/add_32_aco/SUM[31] (dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_0_DW01_add_0)
+                                                          0.00       4.86 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/U38/Y (AO22_X1M_A9TR40)
+                                                          0.06       4.92 f
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/psum_out_reg_reg[31]/D (DFFRPQ_X1M_A9TR40)
+                                                          0.00       4.92 f
+  data arrival time                                                  4.92
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  clock uncertainty                                      -0.05       4.95
+  u_dip_std_array/u_stream_dip/gen_rows[0].gen_cols[0].u_dip_pe/psum_out_reg_reg[31]/CK (DFFRPQ_X1M_A9TR40)
+                                                          0.00       4.95 r
+  library setup time                                     -0.03       4.92
+  data required time                                                 4.92
+  --------------------------------------------------------------------------
+  data required time                                                 4.92
+  data arrival time                                                 -4.92
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

@@ -1,0 +1,187 @@
+Loading db file '/home/host_1/systolic_array_edge/asic_commercial/pdk_cache/tsmc28_icc/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.db'
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : os_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Sun Apr 26 10:40:32 2026
+****************************************
+
+
+Library(s) Used:
+
+    tcbn28hpcplusbwp12t40p140tt0p9v25c (File: /home/host_1/systolic_array_edge/asic_commercial/pdk_cache/tsmc28_icc/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.db)
+
+
+Operating Conditions: tt0p9v25c   Library: tcbn28hpcplusbwp12t40p140tt0p9v25c
+Wire Load Model Mode: segmented
+
+Design        Wire Load Model            Library
+------------------------------------------------
+os_core_std_top_4x4    ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_0
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_1
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_2
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_3
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_4
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_5
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_6
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_7
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_8
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_9
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_10
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_11
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_12
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_13
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_14
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_15
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_0
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_17
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_1
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_18
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_2
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_19
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_3
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_20
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_4
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_21
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_5
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_22
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_6
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_23
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_7
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_24
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_8
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_25
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_9
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_26
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_10
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_27
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_11
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_28
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_12
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_29
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_13
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_30
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_14
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_31
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_15
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_32
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_16
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_17
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_18
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_19
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_20
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_21
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_22
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_23
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_24
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_25
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_26
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_27
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_28
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_29
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_30
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_31
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+
+
+Global Operating Voltage = 0.9  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  =   1.0485 mW   (89%)
+  Net Switching Power  = 124.1708 uW   (11%)
+                         ---------
+Total Dynamic Power    =   1.1727 mW  (100%)
+
+Cell Leakage Power     =  12.8592 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register           0.8656        2.7800e-03        1.8171e+03            0.8702  (  73.41%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational      0.1829            0.1214        1.1041e+04            0.3153  (  26.59%)
+--------------------------------------------------------------------------------------------------
+Total              1.0485 mW         0.1242 mW     1.2859e+04 nW         1.1855 mW
+1

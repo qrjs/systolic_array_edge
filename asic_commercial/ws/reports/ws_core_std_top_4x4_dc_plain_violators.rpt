@@ -1,0 +1,21 @@
+ 
+****************************************
+Report : constraint
+        -all_violators
+Design : ws_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Mon Apr 27 01:16:15 2026
+****************************************
+
+
+   min_capacitance
+
+                             Required        Actual
+   Net                      Capacitance    Capacitance       Slack
+   -----------------------------------------------------------------
+   busy                         0.00           0.00           0.00  (VIOLATED: increase significant digits)
+
+   -----------------------------------------------------------------
+   Total                      1                  -0.00  
+
+1

@@ -1,0 +1,2 @@
+arch,top,run_mode,selected_profile,constraint_mode,clk_period_ns,area,dynamic_mw,leakage_mw,slack_ns,timing_status,black_box,gating_cells,gated_regs,gated_reg_ratio
+dip,dip_core_std_top_4x4,gated,gated_default,uniform,5.0,32189.724116,1.506600,0.002925,0.00,MET,no,27,1757,98.71%

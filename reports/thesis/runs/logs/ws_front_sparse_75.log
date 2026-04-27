@@ -1,0 +1,73 @@
+$ bash /home/host_1/systolic_array_edge/asic_commercial/dip/scripts/run_frontsim_suite.sh
+
+[dip-flow][INFO] Running RTL frontsim suite
+[dip-flow][INFO]   design=ws_core_std_top_4x4
+[dip-flow][INFO]   vector_dir=/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_75
+[dip-flow][INFO]   output_dir=/home/host_1/systolic_array_edge/reports/thesis/runs/ws/front/sparse_75
+FRONT_CASE case=sp75_000 status=PASS
+FRONT_CASE case=sp75_001 status=PASS
+FRONT_CASE case=sp75_002 status=PASS
+FRONT_CASE case=sp75_003 status=PASS
+FRONT_CASE case=sp75_004 status=PASS
+FRONT_CASE case=sp75_005 status=PASS
+FRONT_CASE case=sp75_006 status=PASS
+FRONT_CASE case=sp75_007 status=PASS
+FRONT_CASE case=sp75_008 status=PASS
+FRONT_CASE case=sp75_009 status=PASS
+FRONT_CASE case=sp75_010 status=PASS
+FRONT_CASE case=sp75_011 status=PASS
+FRONT_CASE case=sp75_012 status=PASS
+FRONT_CASE case=sp75_013 status=PASS
+FRONT_CASE case=sp75_014 status=PASS
+FRONT_CASE case=sp75_015 status=PASS
+FRONT_CASE case=sp75_016 status=PASS
+FRONT_CASE case=sp75_017 status=PASS
+FRONT_CASE case=sp75_018 status=PASS
+FRONT_CASE case=sp75_019 status=PASS
+FRONT_CASE case=sp75_020 status=PASS
+FRONT_CASE case=sp75_021 status=PASS
+FRONT_CASE case=sp75_022 status=PASS
+FRONT_CASE case=sp75_023 status=PASS
+FRONT_CASE case=sp75_024 status=PASS
+FRONT_CASE case=sp75_025 status=PASS
+FRONT_CASE case=sp75_026 status=PASS
+FRONT_CASE case=sp75_027 status=PASS
+FRONT_CASE case=sp75_028 status=PASS
+FRONT_CASE case=sp75_029 status=PASS
+FRONT_CASE case=sp75_030 status=PASS
+FRONT_CASE case=sp75_031 status=PASS
+FRONT_CASE case=sp75_032 status=PASS
+FRONT_CASE case=sp75_033 status=PASS
+FRONT_CASE case=sp75_034 status=PASS
+FRONT_CASE case=sp75_035 status=PASS
+FRONT_CASE case=sp75_036 status=PASS
+FRONT_CASE case=sp75_037 status=PASS
+FRONT_CASE case=sp75_038 status=PASS
+FRONT_CASE case=sp75_039 status=PASS
+FRONT_CASE case=sp75_040 status=PASS
+FRONT_CASE case=sp75_041 status=PASS
+FRONT_CASE case=sp75_042 status=PASS
+FRONT_CASE case=sp75_043 status=PASS
+FRONT_CASE case=sp75_044 status=PASS
+FRONT_CASE case=sp75_045 status=PASS
+FRONT_CASE case=sp75_046 status=PASS
+FRONT_CASE case=sp75_047 status=PASS
+FRONT_CASE case=sp75_048 status=PASS
+FRONT_CASE case=sp75_049 status=PASS
+FRONT_CASE case=sp75_050 status=PASS
+FRONT_CASE case=sp75_051 status=PASS
+FRONT_CASE case=sp75_052 status=PASS
+FRONT_CASE case=sp75_053 status=PASS
+FRONT_CASE case=sp75_054 status=PASS
+FRONT_CASE case=sp75_055 status=PASS
+FRONT_CASE case=sp75_056 status=PASS
+FRONT_CASE case=sp75_057 status=PASS
+FRONT_CASE case=sp75_058 status=PASS
+FRONT_CASE case=sp75_059 status=PASS
+FRONT_CASE case=sp75_060 status=PASS
+FRONT_CASE case=sp75_061 status=PASS
+FRONT_CASE case=sp75_062 status=PASS
+FRONT_CASE case=sp75_063 status=PASS
+
+FRONT_SUITE status=PASS total=64 pass=64 fail=0
+FRONT_SUMMARY summary=/home/host_1/systolic_array_edge/reports/thesis/runs/ws/front/sparse_75/summary.md

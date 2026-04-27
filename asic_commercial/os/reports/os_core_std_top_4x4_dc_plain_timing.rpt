@@ -1,0 +1,151 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : os_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Sun Apr 26 10:40:26 2026
+****************************************
+
+Operating Conditions: tt0p9v25c   Library: tcbn28hpcplusbwp12t40p140tt0p9v25c
+Wire Load Model Mode: segmented
+
+  Startpoint: b_data[31] (input port clocked by clk)
+  Endpoint: u_os_std_array/acc_reg[0][1][31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_14
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+  os_core_std_top_4x4
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+  standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+  standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_30
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+  standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_31
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+  standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_14
+                     ZeroWireload          tcbn28hpcplusbwp12t40p140tt0p9v25c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    1.00       1.00 r
+  b_data[31] (in)                                         0.00       1.00 r
+  u_os_std_array/b_data[31] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4)
+                                                          0.00       1.00 r
+  u_os_std_array/mult_137_I2_I1/B[15] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_14)
+                                                          0.00       1.00 r
+  u_os_std_array/mult_137_I2_I1/U95/ZN (INVD1BWP12T40P140)
+                                                          0.02       1.02 f
+  u_os_std_array/mult_137_I2_I1/U377/ZN (NR2D0BWP12T40P140)
+                                                          0.03       1.05 r
+  u_os_std_array/mult_137_I2_I1/U36/Z (XOR2D1BWP12T40P140)
+                                                          0.04       1.09 r
+  u_os_std_array/mult_137_I2_I1/S2_2_13/S (FA1D1BWP12T40P140)
+                                                          0.06       1.14 f
+  u_os_std_array/mult_137_I2_I1/S2_3_12/S (FA1D1BWP12T40P140)
+                                                          0.06       1.20 r
+  u_os_std_array/mult_137_I2_I1/S2_4_11/S (FA1D1BWP12T40P140)
+                                                          0.06       1.26 f
+  u_os_std_array/mult_137_I2_I1/S2_5_10/S (FA1D1BWP12T40P140)
+                                                          0.06       1.32 r
+  u_os_std_array/mult_137_I2_I1/S2_6_9/S (FA1D1BWP12T40P140)
+                                                          0.06       1.37 f
+  u_os_std_array/mult_137_I2_I1/S2_7_8/S (FA1D1BWP12T40P140)
+                                                          0.06       1.43 r
+  u_os_std_array/mult_137_I2_I1/S2_8_7/S (FA1D1BWP12T40P140)
+                                                          0.06       1.49 f
+  u_os_std_array/mult_137_I2_I1/S2_9_6/S (FA1D1BWP12T40P140)
+                                                          0.06       1.55 r
+  u_os_std_array/mult_137_I2_I1/S2_10_5/S (FA1D1BWP12T40P140)
+                                                          0.06       1.60 f
+  u_os_std_array/mult_137_I2_I1/S2_11_4/S (FA1D1BWP12T40P140)
+                                                          0.06       1.66 r
+  u_os_std_array/mult_137_I2_I1/S2_12_3/S (FA1D1BWP12T40P140)
+                                                          0.06       1.72 f
+  u_os_std_array/mult_137_I2_I1/S2_13_2/S (FA1D1BWP12T40P140)
+                                                          0.06       1.78 r
+  u_os_std_array/mult_137_I2_I1/S2_14_1/S (FA1D1BWP12T40P140)
+                                                          0.06       1.83 f
+  u_os_std_array/mult_137_I2_I1/S4_0/S (FA1D1BWP12T40P140)
+                                                          0.06       1.89 r
+  u_os_std_array/mult_137_I2_I1/S14_15_0/S (FA1D1BWP12T40P140)
+                                                          0.05       1.94 f
+  u_os_std_array/mult_137_I2_I1/FS_1/A[13] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_31)
+                                                          0.00       1.94 f
+  u_os_std_array/mult_137_I2_I1/FS_1/SUM[13] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_31)
+                                                          0.00       1.94 f
+  u_os_std_array/mult_137_I2_I1/PRODUCT[15] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_14)
+                                                          0.00       1.94 f
+  u_os_std_array/mult_add_137_I2_I1_aco/A[15] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_30)
+                                                          0.00       1.94 f
+  u_os_std_array/mult_add_137_I2_I1_aco/U17/Z (CKAN2D1BWP12T40P140)
+                                                          0.02       1.97 f
+  u_os_std_array/mult_add_137_I2_I1_aco/PRODUCT[15] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW02_mult_30)
+                                                          0.00       1.97 f
+  u_os_std_array/add_137_I2_I1_aco/B[15] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_14)
+                                                          0.00       1.97 f
+  u_os_std_array/add_137_I2_I1_aco/U1_15/CO (FA1D1BWP12T40P140)
+                                                          0.04       2.00 f
+  u_os_std_array/add_137_I2_I1_aco/U1_16/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.03 f
+  u_os_std_array/add_137_I2_I1_aco/U1_17/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.07 f
+  u_os_std_array/add_137_I2_I1_aco/U1_18/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.10 f
+  u_os_std_array/add_137_I2_I1_aco/U1_19/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.13 f
+  u_os_std_array/add_137_I2_I1_aco/U1_20/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.16 f
+  u_os_std_array/add_137_I2_I1_aco/U1_21/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.20 f
+  u_os_std_array/add_137_I2_I1_aco/U1_22/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.23 f
+  u_os_std_array/add_137_I2_I1_aco/U1_23/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.26 f
+  u_os_std_array/add_137_I2_I1_aco/U1_24/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.29 f
+  u_os_std_array/add_137_I2_I1_aco/U1_25/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.32 f
+  u_os_std_array/add_137_I2_I1_aco/U1_26/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.36 f
+  u_os_std_array/add_137_I2_I1_aco/U1_27/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.39 f
+  u_os_std_array/add_137_I2_I1_aco/U1_28/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.42 f
+  u_os_std_array/add_137_I2_I1_aco/U1_29/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.45 f
+  u_os_std_array/add_137_I2_I1_aco/U1_30/CO (FA1D1BWP12T40P140)
+                                                          0.03       2.48 f
+  u_os_std_array/add_137_I2_I1_aco/U1_31/Z (XOR3D1BWP12T40P140)
+                                                          0.03       2.51 r
+  u_os_std_array/add_137_I2_I1_aco/SUM[31] (standard_os_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_DW01_add_14)
+                                                          0.00       2.51 r
+  u_os_std_array/U1142/Z (AO22D0BWP12T40P140)             0.03       2.54 r
+  u_os_std_array/acc_reg[0][1][31]/D (DFCNQD1BWP12T40P140)
+                                                          0.00       2.54 r
+  data arrival time                                                  2.54
+
+  clock clk (rise edge)                                   5.00       5.00
+  clock network delay (ideal)                             0.00       5.00
+  clock uncertainty                                      -0.05       4.95
+  u_os_std_array/acc_reg[0][1][31]/CP (DFCNQD1BWP12T40P140)
+                                                          0.00       4.95 r
+  library setup time                                     -0.02       4.93
+  data required time                                                 4.93
+  --------------------------------------------------------------------------
+  data required time                                                 4.93
+  data arrival time                                                 -2.54
+  --------------------------------------------------------------------------
+  slack (MET)                                                        2.39
+
+
+1

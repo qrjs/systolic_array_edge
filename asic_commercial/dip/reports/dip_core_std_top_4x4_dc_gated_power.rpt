@@ -1,0 +1,85 @@
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : dip_core_std_top_4x4
+Version: O-2018.06-SP1
+Date   : Sun Apr 26 14:20:20 2026
+****************************************
+
+
+Library(s) Used:
+
+    tcbn28hpcplusbwp12t40p140tt0p9v25c (File: /home/host_1/systolic_array_edge/asic_commercial/pdk_cache/tsmc28_icc/logic/TSMCHOME/digital/Front_End/timing_power_noise/NLDM/tcbn28hpcplusbwp12t40p140_180a/tcbn28hpcplusbwp12t40p140tt0p9v25c.db)
+
+
+Operating Conditions: tt0p9v25c   Library: tcbn28hpcplusbwp12t40p140tt0p9v25c
+Wire Load Model Mode: segmented
+
+Design        Wire Load Model            Library
+------------------------------------------------
+dip_core_std_top_4x4   ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_standard_dip_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_3
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_standard_dip_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_2
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_standard_dip_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_1
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_standard_dip_array_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_0
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_5
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_4
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_3
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_2
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_1
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_0
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_3
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_7
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_11
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_dip_pe_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_14
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+SNPS_CLOCK_GATE_HIGH_systolic_array_dip_4x4_DATA_WIDTH16_WEIGHT_WIDTH16_ACC_WIDTH32_ARRAY_SIZE4_0_2
+                       ZeroWireload      tcbn28hpcplusbwp12t40p140tt0p9v25c
+
+
+Global Operating Voltage = 0.9  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  = 845.6208 uW   (88%)
+  Net Switching Power  = 117.2616 uW   (12%)
+                         ---------
+Total Dynamic Power    = 962.8823 uW  (100%)
+
+Cell Leakage Power     =   9.4443 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network  1.9075e-02        7.7856e-02           27.2115        9.6958e-02  (   9.97%)
+register           0.7900        2.1012e-03        3.1383e+03            0.7953  (  81.79%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational  3.6533e-02        3.7304e-02        6.2787e+03        8.0116e-02  (   8.24%)
+--------------------------------------------------------------------------------------------------
+Total              0.8456 mW         0.1173 mW     9.4443e+03 nW         0.9723 mW
+1

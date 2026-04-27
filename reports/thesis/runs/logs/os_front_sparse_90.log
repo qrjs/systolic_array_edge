@@ -1,0 +1,73 @@
+$ bash /home/host_1/systolic_array_edge/asic_commercial/os/scripts/run_frontsim_suite.sh
+
+[dip-flow][INFO] Running RTL frontsim suite
+[dip-flow][INFO]   design=os_core_std_top_4x4
+[dip-flow][INFO]   vector_dir=/home/host_1/systolic_array_edge/test_vectors/thesis/sparse_90
+[dip-flow][INFO]   output_dir=/home/host_1/systolic_array_edge/reports/thesis/runs/os/front/sparse_90
+FRONT_CASE case=sp90_000 status=PASS
+FRONT_CASE case=sp90_001 status=PASS
+FRONT_CASE case=sp90_002 status=PASS
+FRONT_CASE case=sp90_003 status=PASS
+FRONT_CASE case=sp90_004 status=PASS
+FRONT_CASE case=sp90_005 status=PASS
+FRONT_CASE case=sp90_006 status=PASS
+FRONT_CASE case=sp90_007 status=PASS
+FRONT_CASE case=sp90_008 status=PASS
+FRONT_CASE case=sp90_009 status=PASS
+FRONT_CASE case=sp90_010 status=PASS
+FRONT_CASE case=sp90_011 status=PASS
+FRONT_CASE case=sp90_012 status=PASS
+FRONT_CASE case=sp90_013 status=PASS
+FRONT_CASE case=sp90_014 status=PASS
+FRONT_CASE case=sp90_015 status=PASS
+FRONT_CASE case=sp90_016 status=PASS
+FRONT_CASE case=sp90_017 status=PASS
+FRONT_CASE case=sp90_018 status=PASS
+FRONT_CASE case=sp90_019 status=PASS
+FRONT_CASE case=sp90_020 status=PASS
+FRONT_CASE case=sp90_021 status=PASS
+FRONT_CASE case=sp90_022 status=PASS
+FRONT_CASE case=sp90_023 status=PASS
+FRONT_CASE case=sp90_024 status=PASS
+FRONT_CASE case=sp90_025 status=PASS
+FRONT_CASE case=sp90_026 status=PASS
+FRONT_CASE case=sp90_027 status=PASS
+FRONT_CASE case=sp90_028 status=PASS
+FRONT_CASE case=sp90_029 status=PASS
+FRONT_CASE case=sp90_030 status=PASS
+FRONT_CASE case=sp90_031 status=PASS
+FRONT_CASE case=sp90_032 status=PASS
+FRONT_CASE case=sp90_033 status=PASS
+FRONT_CASE case=sp90_034 status=PASS
+FRONT_CASE case=sp90_035 status=PASS
+FRONT_CASE case=sp90_036 status=PASS
+FRONT_CASE case=sp90_037 status=PASS
+FRONT_CASE case=sp90_038 status=PASS
+FRONT_CASE case=sp90_039 status=PASS
+FRONT_CASE case=sp90_040 status=PASS
+FRONT_CASE case=sp90_041 status=PASS
+FRONT_CASE case=sp90_042 status=PASS
+FRONT_CASE case=sp90_043 status=PASS
+FRONT_CASE case=sp90_044 status=PASS
+FRONT_CASE case=sp90_045 status=PASS
+FRONT_CASE case=sp90_046 status=PASS
+FRONT_CASE case=sp90_047 status=PASS
+FRONT_CASE case=sp90_048 status=PASS
+FRONT_CASE case=sp90_049 status=PASS
+FRONT_CASE case=sp90_050 status=PASS
+FRONT_CASE case=sp90_051 status=PASS
+FRONT_CASE case=sp90_052 status=PASS
+FRONT_CASE case=sp90_053 status=PASS
+FRONT_CASE case=sp90_054 status=PASS
+FRONT_CASE case=sp90_055 status=PASS
+FRONT_CASE case=sp90_056 status=PASS
+FRONT_CASE case=sp90_057 status=PASS
+FRONT_CASE case=sp90_058 status=PASS
+FRONT_CASE case=sp90_059 status=PASS
+FRONT_CASE case=sp90_060 status=PASS
+FRONT_CASE case=sp90_061 status=PASS
+FRONT_CASE case=sp90_062 status=PASS
+FRONT_CASE case=sp90_063 status=PASS
+
+FRONT_SUITE status=PASS total=64 pass=64 fail=0
+FRONT_SUMMARY summary=/home/host_1/systolic_array_edge/reports/thesis/runs/os/front/sparse_90/summary.md
